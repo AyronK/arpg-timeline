@@ -2,18 +2,24 @@
 <rss version="2.0">
   <channel>
     <title>aRPG Seasons Timeline</title>
-    <link>https://ayronk.github.io/arpg-timeline/</link>
+    <link>https://ayronk.github.io/arpg-timeline</link>
     <description>Stay ahead in your favorite ARPGs with our season tracker for Path of Exile, Path of Exile 2, Diablo IV, and Last Epoch. Never miss a season start or end again!</description>
     <language>en-us</language>
     <lastBuildDate>Wed, 21 Apr 2024 17:00:00 CET</lastBuildDate>
     <item>
       <title>Diablo IV Season IV Starts in 14.05.2024!</title>
-      <link>https://ayronk.github.io/arpg-timeline/</link>
+      <link>https://ayronk.github.io/arpg-timeline</link>
       <pubDate>Wed, 21 Apr 2024 17:00:00 CET</pubDate>
       <image>
         <title>Diablo IV</title>
         <url>https://ayronk.github.io/arpg-timeline/assets/d4.avif</url>
-    </image>
+        <link>https://ayronk.github.io/arpg-timeline</link>
+      </image>
+    </item>
+    <item>
+      <title>Site is LIVE!</title>
+      <link>https://ayronk.github.io/arpg-timeline</link>
+      <pubDate>Wed, 21 Apr 2024 17:00:00 CET</pubDate>
     </item>
   </channel>
 </rss>
