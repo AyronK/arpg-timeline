@@ -49,8 +49,36 @@ function updateProgressBar() {
 }
 
 
+function startCountdown(e) {
+    const eventDate = e.getAttribute('data-date');
+    const eventTime = e.getAttribute('data-time');
+    const eventDateTime = new Date(`${eventDate}T${eventTime}:00Z`);
+
+    const timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const targetDate = new Date(eventDateTime).getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            clearInterval(timerInterval);
+            e.textContent = 'Live!';
+            return;
+        }
+
+        const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
+        const days = Math.floor(distance % (1000 * 60 * 60 * 24 * 7) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        e.textContent = `${weeks}W ${days}D ${hours}H ${minutes}M ${seconds}S`; 
+    }, 1000);
+} 
+
+
 (function () {
     const buttons = document.querySelectorAll('[data-action="google-calendar"]');
+    const countdowns = document.querySelectorAll('[data-countdown]');
 
     buttons.forEach(button => {
         button.addEventListener('click', function () {
@@ -69,4 +97,12 @@ function updateProgressBar() {
     setInterval(() => {
         updateProgressBar();
     }, 1000);
+
+
+    countdowns.forEach(startCountdown);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentYear = new Date().getFullYear();
+        document.getElementById('currentYear').textContent = currentYear;
+    });
 })()
