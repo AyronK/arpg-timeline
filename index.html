@@ -14,7 +14,7 @@
   <meta property="og:title" content="aRPG Seasons Timeline" />
   <meta property="og:description"
     content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile, Path of Exile 2, Diablo IV, and Last Epoch. Never miss a season start or end again!" />
-  <meta property="og:image" content="/public/soeimage.jpeg" />
+  <meta property="og:image" content="~/public/soeimage.jpeg" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
@@ -22,18 +22,141 @@
   <meta property="twitter:title" content="aRPG Seasons Timeline" />
   <meta property="twitter:description"
     content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile, Path of Exile 2, Diablo IV, and Last Epoch. Never miss a season start or end again!" />
-  <meta property="twitter:image" content="/public/soeimage.jpeg" />
+  <meta property="twitter:image" content="~/public/soeimage.jpeg" />
 
   <!-- Meta Tags Generated with https://metatags.io -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
   <link rel="stylesheet" href="styles.min.css" />
-  <script type="module" src="script.js"></script>
+  <script type="module" src="src.js"></script>
 </head>
 
-<body>
-  <main>
-    <h1>Home page</h1>
+<body class="bg-sky-950 text-neutral-200">
+  <main class="container mx-auto px-4 mb-20">
+    <h1 class="text-4xl font-semibold text-center pt-8 pb-4">aRPG Timeline</h1>
+    <p class="max-w-prose mx-auto text-center">Stay ahead in your favorite ARPGs with our season tracker for Path of
+      Exile, Path of Exile 2, Diablo IV, and Last Epoch. Never miss a season start or end again!</p>
+    <article class="grid grid-cols-1 md:grid-cols-2 mt-8 2xl:mx-80 gap-4 md:gap-8">
+      <section class="card">
+        <div class="flex flex-row justify-center min-h-[120px]">
+          <img src="/public/poe.png" width="200" alt="path of exile logo" class="my-auto" />
+        </div>
+        <h2 class="sr-only">Path of Exile</h2>
+        <div aria-label="Current Season" class="flex flex-col gap-1">
+          <div class="flex flex-row gap-2">
+            <h3 class="text-lg font-semibold">
+              <a href="https://www.pathofexile.com/necropolis">3.24 - Necropolis</a>
+            </h3>
+            <button title="Add to google calendar" data-action="google-calendar" data-date="2024-03-29"
+              data-time="19:00" data-title="Path of Exile League start">
+              <img width="24" height="24" src="/public/google-calenda.webp" alt="Add to calendar" />
+            </button>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div><strong>Start date:&nbsp;</strong><span data-date-utc>29.03.2024 19:00 UTC</span></div>
+          </div>
+          <div><strong>End date:&nbsp;</strong>Estimated around June-July 2024
+          </div>
+          <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress
+            data-start-time="2024-03-29" data-end-time="2024-07-15">
+            <div class="h-full bg-green-300 rounded-full"></div>
+          </div>
+        </div>
+        <hr class="my-2" />
+        <div aria-label="Next Season" class="flex flex-col gap-1">
+          <h3 class="text-lg font-semibold">
+            Next league - 3.25
+          </h3>
+          <div class="flex flex-col gap-1">
+            <div><strong>Start date:&nbsp;</strong>Estimated around June-July 2024</div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="flex flex-row justify-center min-h-[120px]">
+          <img src="/public/poe2.png" width="200" alt="path of exile logo" class="my-auto" />
+        </div>
+        <div aria-label="Next Season" class="flex flex-col gap-1">
+          <div class="flex flex-row gap-2">
+            <h3 class="text-lg font-semibold">
+              <a href="https://pathofexile2.com/">Open Beta</a>
+            </h3>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div><strong>Start date:&nbsp;</strong>Estimated late 2024</div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="flex flex-row justify-center min-h-[120px]">
+          <img src="/public/d4.avif" width="200" alt="path of exile logo" class="my-auto" />
+        </div>
+        <h2 class="sr-only">Diablo IV</h2>
+        <div aria-label="Current Season" class="flex flex-col gap-1">
+          <div class="flex flex-row gap-2">
+            <h3 class="text-lg font-semibold">
+              <a
+                href="https://news.blizzard.com/en-us/diablo4/24053482/unearth-a-looming-threat-in-season-of-the-construct">Season
+                III - Season of the Construct</a>
+            </h3>
+            <button title="Add to google calendar" data-action="google-calendar" data-date="2024-01-23"
+              data-time="19:00" data-title="Diablo IV Season start">
+              <img width="24" height="24" src="/public/google-calenda.webp" alt="Add to calendar" />
+            </button>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div><strong>Start date:&nbsp;</strong><span data-date-utc>23.01.2024 19:00 UTC</span></div>
+          </div>
+          <div><strong>End date:&nbsp;</strong>14.05.2025</div>
+          <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress
+            data-start-time="2024-01-23" data-end-time="2024-05-14">
+            <div class="h-full bg-green-300 rounded-full"></div>
+          </div>
+        </div>
+        <hr class="my-2" />
+        <div aria-label="Next Season" class="flex flex-col gap-1">
+          <h3 class="text-lg font-semibold">
+            Next Season - Season IV
+          </h3>
+          <div class="flex flex-col gap-1">
+            <div><strong>Start date:&nbsp;</strong>Estimated around May-June 2024</div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="flex flex-row justify-center min-h-[120px]">
+          <img src="/public/lastepoch.png" width="200" alt="path of exile logo" class="my-auto" />
+        </div>
+        <h2 class="sr-only">Last Epoch</h2>
+
+        <div aria-label="Current Season" class="flex flex-col gap-1">
+          <div class="flex flex-row gap-2">
+            <h3 class="text-lg font-semibold"><a href="https://lastepoch.com/ladder">Cycle I - Release</a></h3>
+            <button title="Add to google calendar" data-action="google-calendar" data-date="2024-02-21"
+              data-time="19:00" data-title="Last Epoch New Cycle start">
+              <img width="24" height="24" src="/public/google-calenda.webp" alt="Add to calendar" />
+            </button>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div><strong>Start date:&nbsp;</strong><span data-date-utc>21.02.2024 19:00 UTC</span></div>
+          </div>
+          <div><strong>End date:&nbsp;</strong>Estimated May-June 2024</div>
+          <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress
+            data-start-time="2024-02-21" data-end-time="2024-05-21">
+            <div class="h-full bg-green-300 rounded-full"></div>
+          </div>
+        </div>
+        <hr class="my-2" />
+        <div aria-label="Next Season" class="flex flex-col gap-1">
+          <h3 class="text-lg font-semibold">
+            Next Cycle - Cycle II
+          </h3>
+          <div class="flex flex-col gap-1">
+            <div><strong>Start date:&nbsp;</strong>Estimated around June 2024</div>
+          </div>
+        </div>
+      </section>
+    </article>
   </main>
 </body>
 
