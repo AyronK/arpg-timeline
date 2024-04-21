@@ -6,5 +6,5 @@
   @apply p-6;
   @apply rounded-md;
   @apply flex flex-col gap-4;
-  @apply bg-sky-800;
+  @apply bg-gray-800;
 }
