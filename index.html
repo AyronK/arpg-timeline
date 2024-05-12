@@ -31,9 +31,12 @@
   <meta property="twitter:image" content="https://ayronk.github.io/arpg-timeline/assets/seoimage.jpeg" />
 
   <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="https://ayronk.github.io/arpg-timeline/assets/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://ayronk.github.io/arpg-timeline/assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://ayronk.github.io/arpg-timeline/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="https://ayronk.github.io/arpg-timeline/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="https://ayronk.github.io/arpg-timeline/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="https://ayronk.github.io/arpg-timeline/assets/favicon-16x16.png">
   <link rel="manifest" href="https://ayronk.github.io/arpg-timeline/assets/site.webmanifest">
 
   <!-- Meta Tags Generated with https://metatags.io -->
@@ -174,23 +177,31 @@
           </div>
           <div>
             <span class="sr-only">When is the current Last Epoch cycle (season) ending?</span>
-            <strong>End date:&nbsp;</strong>Estimated May-June 2024
+            <strong>End date:&nbsp;</strong><span data-date-utc>09.07.2024 18:00 UTC</span>
           </div>
           <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress
-            data-start-time="2024-02-21" data-end-time="2024-05-21">
+            data-start-time="2024-02-21" data-end-time="2024-07-09">
             <div class="h-full bg-emerald-200 rounded-full"></div>
           </div>
         </div>
         <hr class="my-2" />
-        <div aria-label="Next Season" class="flex flex-col gap-1">
+        <div aria-label="Next Season" class="flex flex-row gap-2">
           <span class="sr-only">When is the next Last Epoch cycle (season)?</span>
           <h3 class="text-lg font-semibold">
-            Next Cycle - Cycle II
+            <a href="https://lastepoch.com/harbingers-of-ruin">
+              Cycle II - Harbingers of Ruin
+            </a>
           </h3>
-          <div class="flex flex-col gap-1">
-            <span class="sr-only">When is the next Last Epoch cycle (season) starting?</span>
-            <div><strong>Start date:&nbsp;</strong>Estimated around June 2024</div>
-          </div>
+          <button title="Add to google calendar" data-action="google-calendar" data-date="2024-07-09" data-time="16:00"
+            data-title="Last Epoch Cycle II start">
+            <img width="24" height="24" src="./assets/google-calenda.webp" alt="Add to calendar" />
+          </button>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="sr-only">When is the next Last Epoch cycle starting?</span>
+          <div><strong>Start date:&nbsp;</strong><span data-date-utc>09.07.2024 16:00 UTC</span></div>
+          <div data-date="2024-07-09" data-time="16:00" data-countdown
+            class="mt-2 font-mono text-2xl font-bold text-orange-300 ml-auto"> </div>
         </div>
       </section>
       <div class="sr-only" aria-hidden="true">
