@@ -11,5 +11,5 @@ currentSeason:
   startDateNotice: Estimated end of 2024
 nextSeason:
   startDate: ""
-  title: " "
+  title: ""
 ---
