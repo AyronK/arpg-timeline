@@ -5,8 +5,8 @@ media_folder: static/img
 public_folder: /img
 
 collections:
-  - name: "games"
-    label: "Games"
+  - label: "Games"
+    name: "games"    
     label_singular: 'Game'
     editor:
      preview: false
@@ -114,3 +114,44 @@ collections:
             name: "showCountdown"
             widget: "boolean"
             required: false
+
+  - label: "RSS Messages"
+    label_singular: 'RSS Message'
+    name: "rss_messages"
+    folder: "content/rss" 
+    create: true
+    fields:
+      - label: "Title" 
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date" 
+        widget: "datetime"
+        picker_utc: true
+
+      - label: "Author"
+        name: "author" 
+        widget: "string"
+
+      - label: "Link"
+        name: "link" 
+        widget: "string"
+        required: false
+
+      - label: "Content"
+        name: "content"  
+        widget: "markdown"
+        required: false
+
+      - label: "Image"
+        widget: "image"
+        required: false
+        media_library:
+          config:
+            max_file_size: 512000
+
+      - label: "Image Link"
+        name: "imageLink" 
+        widget: "string"
+        required: false
