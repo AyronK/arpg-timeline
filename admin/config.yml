@@ -3,12 +3,100 @@ backend:
   repo: AyronK/arpg-timeline
 media_folder: "static/images/uploads"
 public_folder: "/images/uploads"
+media_library:
+  config:
+    max_file_size: 512000
 
 collections:
-  - name: "game" # Used in routes, e.g., /admin/collections/blog
-    label: "Game" # Used in the UI
-    folder: "games" # The path to the folder where the documents are stored
-    create: true # Allow users to create new documents in this collection
-    slug: "{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
-    fields: # The fields for each document, usually in front matter
-      - { label: "Title", name: "title", widget: "string" }
+  - name: "game"
+    label: "Game"
+    folder: "content/games" 
+    create: true
+    slug: "{{fields.slug}}"
+    fields:
+      - label: "Slug"
+      name: "slug"
+      widget: "string"
+      required: true
+
+      - label: "Title"
+      name: "title"
+      widget: "string"
+      required: true
+
+      - label: "Logo"
+      name: "logo"
+      widget: "image"
+      required: true
+
+      - label: "Current season"
+      name: "currentSeason"
+      widget: "object"
+      collapsed: true
+      fields: 
+        - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+
+        - label: "Url"
+        name: "url"
+        widget: "string"
+
+        - label: "Start date"
+        name: "startDate"
+        widget: "datetime"
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        picker_utc: true
+
+        - label: "Start date notice"
+        name: "startDateNotice"
+        widget: "string"
+
+        - label: "End date"
+        name: "endDate"
+        widget: "datetime"
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        picker_utc: true
+
+        - label: "End date notice"
+        name: "endDateNotice"
+        widget: "string"
+
+      - label: "Next season"
+      name: "nextSeason"
+      widget: "object"
+      collapsed: true
+      fields: 
+        - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+
+        - label: "Url"
+        name: "url"
+        widget: "string"
+
+        - label: "Start date"
+        name: "startDate"
+        widget: "datetime"
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        picker_utc: true
+
+        - label: "Start date notice"
+        name: "startDateNotice"
+        widget: "string"
+
+        - label: "End date"
+        name: "endDate"
+        widget: "datetime"
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        picker_utc: true
+
+        - label: "End date notice"
+        name: "endDateNotice"
+        widget: "string"
