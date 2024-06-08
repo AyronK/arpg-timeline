@@ -45,8 +45,8 @@ collections:
         fields: 
           - label: "Title"
             name: "title"
-            widget: "string"
-            required: true
+            widget: "string"            
+            required: false
 
           - label: "Url"
             name: "url"
@@ -86,7 +86,7 @@ collections:
           - label: "Title"
             name: "title"
             widget: "string"
-            required: true
+            required: false
 
           - label: "Url"
             name: "url"
