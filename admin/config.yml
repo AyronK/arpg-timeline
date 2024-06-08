@@ -35,6 +35,7 @@ collections:
       - label: "Current season"
         name: "currentSeason"
         widget: "object"
+        required: false
         collapsed: true
         fields: 
           - label: "Title"
@@ -45,6 +46,7 @@ collections:
           - label: "Url"
             name: "url"
             widget: "string"
+            required: false
 
           - label: "Start date (UTC)"
             name: "startDate"
@@ -53,10 +55,12 @@ collections:
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
             picker_utc: true
+            required: false
 
           - label: "Start date notice"
             name: "startDateNotice"
             widget: "string"
+            required: false
 
           - label: "End date (UTC)"
             name: "endDate"
@@ -65,15 +69,18 @@ collections:
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
             picker_utc: true
+            required: false
 
           - label: "End date notice"
             name: "endDateNotice"
             widget: "string"
+            required: false
 
       - label: "Next season"
         name: "nextSeason"
         widget: "object"
         collapsed: true
+        required: false
         fields: 
           - label: "Title"
             name: "title"
@@ -83,6 +90,7 @@ collections:
           - label: "Url"
             name: "url"
             widget: "string"
+            required: false
 
           - label: "Start date (UTC)"
             name: "startDate"
@@ -91,10 +99,12 @@ collections:
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
             picker_utc: true
+            required: false
 
           - label: "Start date notice"
             name: "startDateNotice"
             widget: "string"
+            required: false
 
           - label: "End date (UTC)"
             name: "endDate"
@@ -103,7 +113,9 @@ collections:
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
             picker_utc: true
+            required: false
 
           - label: "End date notice"
             name: "endDateNotice"
             widget: "string"
+            required: false
