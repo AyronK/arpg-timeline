@@ -3,9 +3,6 @@ backend:
   repo: AyronK/arpg-timeline
 media_folder: "static/images/uploads"
 public_folder: "/images/uploads"
-media_library:
-  config:
-    max_file_size: 512000
 
 collections:
   - name: "game"
@@ -28,6 +25,9 @@ collections:
         name: "logo"
         widget: "image"
         required: true
+        media_library:
+          config:
+            max_file_size: 512000
 
       - label: "Current season"
         name: "currentSeason"
