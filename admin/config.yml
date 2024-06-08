@@ -43,7 +43,7 @@ collections:
             name: "url"
             widget: "string"
 
-            - label: "Start date"
+          - label: "Start date"
             name: "startDate"
             widget: "datetime"
             date_format: "DD.MM.YYYY"
