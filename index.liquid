@@ -55,8 +55,8 @@
             Never miss a season start or end again!
         </p>
         <article class="grid grid-cols-1 md:grid-cols-2 mt-12 2xl:mx-80 gap-4 md:gap-8">
-
-            {% for game in collections.games %}
+            {% assign sorted_games = collections.games | sort: "data.order" %}
+            {% for game in sorted_games %}
                 <section class="card">
                     <div class="flex flex-row justify-center min-h-[120px]">
                         <img src="./static{{game.data.logo}}" width="200" alt="{{game.data.title}} logo" class="my-auto" />
