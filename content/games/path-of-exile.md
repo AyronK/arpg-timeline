@@ -1,11 +1,11 @@
 ---
 slug: path-of-exile
-title: Path of Exile
-logo: /img/uploads/poe.png
 seasonKeyword: league
+title: Path of Exile
+logo: /img/poe.png
 currentSeason:
-  startDate: 2024-03-29T19:00:00.000Z
-  endDate: 2024-07-15T17:00:00.000Z
+  startDate: 2024-03-29T20:00:00.000Z
+  endDate: 2024-07-14T18:00:00.000Z
   title: 3.24 - Necropolis
   url: https://www.pathofexile.com/necropolis
   endDateNotice: Estimated around end of July 2024
