@@ -5,7 +5,7 @@ import path from 'path';
 
 const engine = new Liquid();
 const templatePath = 'index.liquid';
-const outputPath = 'index2.0.html';
+const outputPath = 'index.html';
 const contentDir = 'content';
 const collections = {};
 
