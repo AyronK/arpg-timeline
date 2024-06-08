@@ -5,9 +5,9 @@ function addToGoogleCalendar(eventTitle, eventDate, eventTime) {
     window.open(googleCalendarUrl, '_blank');
 }
 
-function parseUtcDate(dateStr) {
+function parseDate(dateStr) {
     const dateParts = dateStr.split(' ');
-    const [day, month, year] = dateParts[0].split('.');
+    const [year, month, day] = dateParts[0].split('-');
     const [hours, minutes] = dateParts[1].split(':');
     const utcDate = new Date(Date.UTC(year, month - 1, day, hours, minutes));
 
@@ -19,7 +19,7 @@ function replaceUtcDatesToLocalTime() {
 
     utcDateSpans.forEach(span => {
         const utcDateStr = span.textContent.trim();
-        const localDateStr = parseUtcDate(utcDateStr).toLocaleString();
+        const localDateStr = parseDate(utcDateStr).toLocaleString();
 
         span.textContent = localDateStr;
         span.removeAttribute('data-date-utc');
@@ -35,8 +35,8 @@ function updateProgressBar() {
         const endTime = p.getAttribute('data-end-time');
     
         const currentTime = Date.now(); 
-        const startTimeMs = new Date(startTime).getTime(); 
-        const endTimeMs = new Date(endTime).getTime();
+        const startTimeMs = parseDate(startTime).getTime(); 
+        const endTimeMs = parseDate(endTime).getTime();
     
         const totalDuration = endTimeMs - startTimeMs;
         const elapsedTime = currentTime - startTimeMs;
@@ -49,10 +49,8 @@ function updateProgressBar() {
 }
 
 
-function startCountdown(e) {
-    const eventDate = e.getAttribute('data-date');
-    const eventTime = e.getAttribute('data-time');
-    const eventDateTime = new Date(`${eventDate}T${eventTime}:00Z`);
+function startCountdown(e) {    
+    const eventDateTime = parseDate(e.getAttribute('data-date'));
 
     const timerInterval = setInterval(() => {
         const now = new Date().getTime();

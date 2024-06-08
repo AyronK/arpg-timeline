@@ -1,8 +1,8 @@
 backend:
   name: github
   repo: AyronK/arpg-timeline
-media_folder: "static/images/uploads"
-public_folder: "/images/uploads"
+media_folder: static/img
+public_folder: /img
 
 collections:
   - name: "games"
@@ -16,6 +16,11 @@ collections:
     fields:
       - label: "Slug"
         name: "slug"
+        widget: "string"
+        required: true
+
+      - label: "Season keyword"
+        name: "seasonKeyword"
         widget: "string"
         required: true
 
@@ -40,8 +45,8 @@ collections:
         fields: 
           - label: "Title"
             name: "title"
-            widget: "string"
-            required: true
+            widget: "string"            
+            required: false
 
           - label: "Url"
             name: "url"
@@ -52,8 +57,6 @@ collections:
             name: "startDate"
             default: ""
             widget: "datetime"
-            date_format: "DD.MM.YYYY"
-            time_format: "HH:mm"
             picker_utc: true
             required: false
 
@@ -66,8 +69,6 @@ collections:
             name: "endDate"
             default: ""
             widget: "datetime"
-            date_format: "DD.MM.YYYY"
-            time_format: "HH:mm"
             picker_utc: true
             required: false
 
@@ -85,7 +86,7 @@ collections:
           - label: "Title"
             name: "title"
             widget: "string"
-            required: true
+            required: false
 
           - label: "Url"
             name: "url"
@@ -96,8 +97,6 @@ collections:
             name: "startDate"
             default: ""
             widget: "datetime"
-            date_format: "DD.MM.YYYY"
-            time_format: "HH:mm"
             picker_utc: true
             required: false
 
@@ -106,16 +105,7 @@ collections:
             widget: "string"
             required: false
 
-          - label: "End date (UTC)"
-            name: "endDate"
-            default: ""
-            widget: "datetime"
-            date_format: "DD.MM.YYYY"
-            time_format: "HH:mm"
-            picker_utc: true
-            required: false
-
-          - label: "End date notice"
-            name: "endDateNotice"
-            widget: "string"
+          - label: "Show countdown"
+            name: "showCountdown"
+            widget: "boolean"
             required: false

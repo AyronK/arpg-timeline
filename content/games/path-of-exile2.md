@@ -6,10 +6,9 @@ logo: /img/poe2.png
 currentSeason:
   startDate: ""
   endDate: ""
+nextSeason:
+  startDate: ""
   url: https://pathofexile2.com/
   title: Open Beta (Early Access)
   startDateNotice: Estimated end of 2024
-nextSeason:
-  startDate: ""
-  title: ""
 ---
