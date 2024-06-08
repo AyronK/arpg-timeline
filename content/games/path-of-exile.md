@@ -8,12 +8,12 @@ currentSeason:
   title: 3.24 - Necropolis
   url: https://www.pathofexile.com/necropolis
   endDateNotice: Estimated around end of July 2024
-  startDateNotice: REMOVE IT
+  startDateNotice: ""
 nextSeason:
-  startDate: 08.06.2024T14:30
-  endDate: 08.06.2024T14:30
+  startDate: ""
+  endDate: ""
   title: Next league - 3.25
   startDateNotice: Estimated around end of July 2024
-  url: REMOVE IT
-  endDateNotice: REMOVE IT
+  url: ""
+  endDateNotice: ""
 ---
