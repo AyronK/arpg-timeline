@@ -1,6 +1,6 @@
 # arpg-timeline
 
-[ARPG Timeline Website](https://arpg-timeline.netlify.app/)
+[ARPG Timeline Website](https://arpg-timeline.ayronk.com/)
 
 Stay ahead in your favorite ARPGs with the season tracker.
 Never miss a season start or end again!
