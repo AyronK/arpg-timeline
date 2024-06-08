@@ -62,40 +62,42 @@
                         <img src="./static{{game.data.logo}}" width="200" alt="{{game.data.title}} logo" class="my-auto" />
                     </div>
                     <h2 class="sr-only">{{game.data.title}}</h2>
-                    <div aria-label="Current {{game.data.seasonKeyword}}" class="flex flex-col gap-1">
-                        <div class="flex flex-row gap-2">
-                            <span class="sr-only">What is the current {{game.data.title}} {{game.data.seasonKeyword}}?</span>
-                            <h3 class="text-lg font-semibold">
-                                <a href="{{game.data.currentSeason.url}}" target="_blank" rel="external nofollow">{{game.data.currentSeason.title}}</a>
-                            </h3>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <span class="sr-only">When did the current {{game.data.title}} {{game.data.seasonKeyword}} start?</span>
+                    {% if game.data.currentSeason.title != "" and game.data.currentSeason.title != nil %}
+                        <div aria-label="Current {{game.data.seasonKeyword}}" class="flex flex-col gap-1">
+                            <div class="flex flex-row gap-2">
+                                <span class="sr-only">What is the current {{game.data.title}} {{game.data.seasonKeyword}}?</span>
+                                <h3 class="text-lg font-semibold">
+                                    <a href="{{game.data.currentSeason.url}}" target="_blank" rel="external nofollow">{{game.data.currentSeason.title}}</a>
+                                </h3>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="sr-only">When did the current {{game.data.title}} {{game.data.seasonKeyword}} start?</span>
+                                <div>
+                                    <strong>Start date:&nbsp;</strong>
+                                    {% if game.data.currentSeason.startDateNotice != "" and game.data.currentSeason.startDateNotice != nil %}
+                                    <span>{{ game.data.currentSeason.startDateNotice }}</span>
+                                    {% else %}
+                                    <span data-date-utc>{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
                             <div>
-                                <strong>Start date:&nbsp;</strong>
-                                {% if game.data.currentSeason.startDateNotice != "" and game.data.currentSeason.startDateNotice != nil %}
-                                <span>{{ game.data.currentSeason.startDateNotice }}</span>
-                                {% else %}
-                                <span data-date-utc>{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}</span>
-                                {% endif %}
+                                <span class="sr-only">When is the current {{game.data.title}} {{game.data.seasonKeyword}} ending?</span>
+                                <div>
+                                    <strong>End date:&nbsp;</strong>
+                                    {% if game.data.currentSeason.endDateNotice != "" and game.data.currentSeason.endDateNotice != nil %}
+                                    <span>{{ game.data.currentSeason.endDateNotice }}</span>
+                                    {% else %}
+                                    <span data-date-utc>{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress data-start-time="{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}" data-end-time="{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}">
+                                <div class="h-full bg-emerald-200 rounded-full"></div>
                             </div>
                         </div>
-                        <div>
-                            <span class="sr-only">When is the current {{game.data.title}} {{game.data.seasonKeyword}} ending?</span>
-                            <div>
-                                <strong>End date:&nbsp;</strong>
-                                {% if game.data.currentSeason.endDateNotice != "" and game.data.currentSeason.endDateNotice != nil %}
-                                <span>{{ game.data.currentSeason.endDateNotice }}</span>
-                                {% else %}
-                                <span data-date-utc>{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress data-start-time="{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}" data-end-time="{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}">
-                            <div class="h-full bg-emerald-200 rounded-full"></div>
-                        </div>
-                    </div>
-                    <hr class="my-2" />
+                    <hr class="my-2" />    
+                    {% endif %}
                     <div aria-label="Next Season" class="flex flex-col gap-1">
                         <span class="sr-only">What is the next {{game.data.title}} {{game.data.seasonKeyword}}?</span>
                         <h3 class="text-lg font-semibold">
