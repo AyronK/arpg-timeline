@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "servor --reload"
+    "start": "servor --reload",
+    "start-admin": "servor ./admin --reload"
   },
   "dependencies": {
     "servor": "^4.0.2",
