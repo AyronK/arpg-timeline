@@ -11,11 +11,8 @@ currentSeason:
   endDateNotice: Estimated around end of July 2024
   startDateNotice: ""
 nextSeason:
-  startDate: 2024-07-19T19:00:00.000Z
-  endDate: 2024-10-19T17:00:00.000Z
   title: Next league - 3.25
   startDateNotice: Estimated around end of July 2024
   url: ""
-  endDateNotice: ""
   showCountdown: false
 ---

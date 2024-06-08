@@ -55,132 +55,75 @@
             Never miss a season start or end again!
         </p>
         <article class="grid grid-cols-1 md:grid-cols-2 mt-12 2xl:mx-80 gap-4 md:gap-8">
+
             {% for game in collections.games %}
-            <section class="card">
-                <div class="flex flex-row justify-center min-h-[120px]">
-                    <img src="./static{{game.data.logo}}" width="200" alt="{{game.data.title}} logo" class="my-auto" />
-                </div>
-                <h2 class="sr-only">{{game.data.title}}</h2>
-                <div aria-label="Current {{game.data.seasonKeyword}}" class="flex flex-col gap-1">
-                    <div class="flex flex-row gap-2">
-                        <span class="sr-only">What is the current {{game.data.title}}
-                            {{game.data.seasonKeyword}}?</span>
-                        <h3 class="text-lg font-semibold">
-                            <a href="{{game.data.currentSeason.url}}" target="_blank"
-                                rel="external nofollow">{{game.data.currentSeason.title}}</a>
-                        </h3>
+                <section class="card">
+                    <div class="flex flex-row justify-center min-h-[120px]">
+                        <img src="./static{{game.data.logo}}" width="200" alt="{{game.data.title}} logo" class="my-auto" />
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="sr-only">When did the current {{game.data.title}} {{game.data.seasonKeyword}}
-                            start?</span>
-                        <div><strong>Start date:&nbsp;</strong><span data-date-utc>{{game.data.currentSeason.startDate |
-                                date: "%Y-%m-%d %H:%M"}}</span></div>
-                    </div>
-                    <div>
-                        <span class="sr-only">When is the current {{game.data.title}} {{game.data.seasonKeyword}}
-                            ending?</span>
-                        <div><strong>End date:&nbsp;</strong><span data-date-utc>{{game.data.currentSeason.endDate |
-                                date: "%Y-%m-%d %H:%M"}}</span>
+                    <h2 class="sr-only">{{game.data.title}}</h2>
+                    <div aria-label="Current {{game.data.seasonKeyword}}" class="flex flex-col gap-1">
+                        <div class="flex flex-row gap-2">
+                            <span class="sr-only">What is the current {{game.data.title}} {{game.data.seasonKeyword}}?</span>
+                            <h3 class="text-lg font-semibold">
+                                <a href="{{game.data.currentSeason.url}}" target="_blank" rel="external nofollow">{{game.data.currentSeason.title}}</a>
+                            </h3>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <span class="sr-only">When did the current {{game.data.title}} {{game.data.seasonKeyword}} start?</span>
+                            <div>
+                                <strong>Start date:&nbsp;</strong>
+                                {% if game.data.currentSeason.startDateNotice != "" and game.data.currentSeason.startDateNotice != nil %}
+                                <span>{{ game.data.currentSeason.startDateNotice }}</span>
+                                {% else %}
+                                <span data-date-utc>{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="sr-only">When is the current {{game.data.title}} {{game.data.seasonKeyword}} ending?</span>
+                            <div>
+                                <strong>End date:&nbsp;</strong>
+                                {% if game.data.currentSeason.endDateNotice != "" and game.data.currentSeason.endDateNotice != nil %}
+                                <span>{{ game.data.currentSeason.endDateNotice }}</span>
+                                {% else %}
+                                <span data-date-utc>{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress data-start-time="{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}" data-end-time="{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}">
+                            <div class="h-full bg-emerald-200 rounded-full"></div>
                         </div>
                     </div>
-                    <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress
-                        data-start-time="{{game.data.currentSeason.startDate | date: " %Y-%m-%d %H:%M"}}"
-                        data-end-time="{{game.data.currentSeason.endDate | date: " %Y-%m-%d %H:%M"}}">
-                        <div class="h-full bg-emerald-200 rounded-full"></div>
-                    </div>
-                </div>
-                <hr class="my-2" />
-                <div aria-label="Next Season" class="flex flex-col gap-1">
-                    <span class="sr-only">What is the next {{game.data.title}} {{game.data.seasonKeyword}}?</span>
-                    <h3 class="text-lg font-semibold">
-                        <a href="{{game.data.nextSeason.url}}" target="_blank"
-                            rel="external nofollow">{{game.data.nextSeason.title}}</a>
-                    </h3>
-                    {% comment %} <button title="Add to google calendar" data-action="google-calendar"
-                        data-date="2024-07-09" data-time="16:00"
-                        data-title="{{game.data.title}} {{game.data.seasonKeyword}} start">
-                        <img width="24" height="24" src="./assets/google-calenda.webp" alt="Add to calendar" />
-                    </button> {% endcomment %}
-                    <div class="flex flex-col gap-1">
-                        <span class="sr-only">When is the next {{game.data.title}} {{game.data.seasonKeyword}}
-                            starting?</span>
-                        {% comment %}
-                        <div><strong>Start date:&nbsp;</strong>Estimated around June-July 2024</div>
-                        {% endcomment %}
-                        {% if game.data.nextSeason.showCountdown %}
-                        <div data-date="{{game.data.nextSeason.startDate | date: "%Y-%m-%d %H:%M"}}" data-countdown
-                            class="mt-2 font-mono text-2xl font-bold text-orange-300 ml-auto"> </div>
+                    <hr class="my-2" />
+                    <div aria-label="Next Season" class="flex flex-col gap-1">
+                        <span class="sr-only">What is the next {{game.data.title}} {{game.data.seasonKeyword}}?</span>
+                        <h3 class="text-lg font-semibold">
+                            <a href="{{game.data.nextSeason.url}}" target="_blank" rel="external nofollow">{{game.data.nextSeason.title}}</a>
+                        </h3>
+                        {% if game.data.nextSeason.startDate != "" and game.data.nextSeason.startDate != nil %}
+                        <button title="Add to google calendar" data-action="google-calendar" data-date="{{game.data.nextSeason.startDate | date: "%Y-%m-%d"}}" data-time="{{game.data.nextSeason.startDate | date: "%H:%M"}}" data-title="{{game.data.title}} {{game.data.seasonKeyword}} start">
+                            <img width="24" height="24" src="./assets/google-calenda.webp" alt="Add to calendar" />
+                        </button>
                         {% endif %}
+                        <div class="flex flex-col gap-1">
+                            <span class="sr-only">When is the next {{game.data.title}} {{game.data.seasonKeyword}} starting?</span>
+                            <div>
+                                <strong>Start date:&nbsp;</strong>
+                                {% if game.data.nextSeason.startDateNotice != "" and game.data.nextSeason.startDateNotice != nil %}
+                                <span>{{ game.data.nextSeason.startDateNotice }}</span>
+                                {% else %}
+                                <span data-date-utc>{{game.data.nextSeason.startDate | date: "%Y-%m-%d %H:%M"}}</span>
+                                {% endif %}
+                            </div>
+                            {% if game.data.nextSeason.showCountdown == true %}
+                            <div data-date="{{game.data.nextSeason.startDate | date: "%Y-%m-%d %H:%M"}}" data-countdown class="mt-2 font-mono text-2xl font-bold text-orange-300 ml-auto"> </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            </section>
-            {% endfor %}
-
-            <div class="sr-only" aria-hidden="true">
-                <span>Path of Exile league</span>
-                <span>Path of Exile season</span>
-                <span>Path of Exile cycle</span>
-                <span>Path of Exile 2 league</span>
-                <span>Path of Exile 2 season</span>
-                <span>Path of Exile 2 cycle</span>
-                <span>Diablo IV league</span>
-                <span>Diablo IV season</span>
-                <span>Diablo IV cycle</span>
-                <span>Diablo 4 league</span>
-                <span>Diablo 4 season</span>
-                <span>Diablo 4 cycle</span>
-                <span>Last Epoch league</span>
-                <span>Last Epoch season</span>
-                <span>Last Epoch cycle</span>
-
-                <span>Path of Exile release</span>
-                <span>Path of Exile release</span>
-                <span>Path of Exile release</span>
-                <span>Path of Exile 2 release</span>
-                <span>Path of Exile 2 release</span>
-                <span>Path of Exile 2 release</span>
-                <span>Diablo IV release</span>
-                <span>Diablo IV release</span>
-                <span>Diablo IV release</span>
-                <span>Diablo 4 release</span>
-                <span>Diablo 4 release</span>
-                <span>Diablo 4 release</span>
-                <span>Last Epoch release</span>
-                <span>Last Epoch release</span>
-                <span>Last Epoch release</span>
-
-                <span>When Path of Exile league starts</span>
-                <span>When Path of Exile season starts</span>
-                <span>When Path of Exile cycle starts</span>
-                <span>When Path of Exile 2 league starts</span>
-                <span>When Path of Exile 2 season starts</span>
-                <span>When Path of Exile 2 cycle starts</span>
-                <span>When Diablo IV league starts</span>
-                <span>When Diablo IV season starts</span>
-                <span>When Diablo IV cycle starts</span>
-                <span>When Diablo 4 league starts</span>
-                <span>When Diablo 4 season starts</span>
-                <span>When Diablo 4 cycle starts</span>
-                <span>When Last Epoch league starts</span>
-                <span>When Last Epoch season starts</span>
-                <span>When Last Epoch cycle starts</span>
-
-                <span>When Path of Exile league ends</span>
-                <span>When Path of Exile season ends</span>
-                <span>When Path of Exile cycle ends</span>
-                <span>When Path of Exile 2 league ends</span>
-                <span>When Path of Exile 2 season ends</span>
-                <span>When Path of Exile 2 cycle ends</span>
-                <span>When Diablo IV league ends</span>
-                <span>When Diablo IV season ends</span>
-                <span>When Diablo IV cycle ends</span>
-                <span>When Diablo 4 league ends</span>
-                <span>When Diablo 4 season ends</span>
-                <span>When Diablo 4 cycle ends</span>
-                <span>When Last Epoch league ends</span>
-                <span>When Last Epoch season ends</span>
-                <span>When Last Epoch cycle ends</span>
-            </div>
+                </section>
+            {% endfor %}               
+            
         </article>
         <footer class="mt-12">
             <div class="flex flex-row justify-center gap-8">

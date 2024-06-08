@@ -105,18 +105,6 @@ collections:
             widget: "string"
             required: false
 
-          - label: "End date (UTC)"
-            name: "endDate"
-            default: ""
-            widget: "datetime"
-            picker_utc: true
-            required: false
-
-          - label: "End date notice"
-            name: "endDateNotice"
-            widget: "string"
-            required: false
-
           - label: "Show countdown"
             name: "showCountdown"
             widget: "boolean"
