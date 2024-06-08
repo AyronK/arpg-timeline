@@ -3,10 +3,6 @@ module.exports = function (eleventyConfig) {
         return collection.getFilteredByGlob('content/games/*.md');
     });
 
-    eleventyConfig.addFilter("notEmpty", function (value) {
-        return value.trim().length > 0 ? value : false;
-    });
-
     eleventyConfig.setTemplateFormats(["liquid", "md"]);
 
     return {
