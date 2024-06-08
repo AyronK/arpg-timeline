@@ -5,8 +5,11 @@ media_folder: "static/images/uploads"
 public_folder: "/images/uploads"
 
 collections:
-  - name: "game"
-    label: "Game"
+  - name: "games"
+    label: "Games"
+    label_singular: 'Game'
+    editor:
+     preview: false
     folder: "content/games" 
     create: true
     slug: "{{fields.slug}}"
@@ -43,8 +46,9 @@ collections:
             name: "url"
             widget: "string"
 
-          - label: "Start date"
+          - label: "Start date (UTC)"
             name: "startDate"
+            default: ""
             widget: "datetime"
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
@@ -54,8 +58,9 @@ collections:
             name: "startDateNotice"
             widget: "string"
 
-          - label: "End date"
+          - label: "End date (UTC)"
             name: "endDate"
+            default: ""
             widget: "datetime"
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
@@ -79,8 +84,9 @@ collections:
             name: "url"
             widget: "string"
 
-          - label: "Start date"
+          - label: "Start date (UTC)"
             name: "startDate"
+            default: ""
             widget: "datetime"
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
@@ -90,8 +96,9 @@ collections:
             name: "startDateNotice"
             widget: "string"
 
-          - label: "End date"
+          - label: "End date (UTC)"
             name: "endDate"
+            default: ""
             widget: "datetime"
             date_format: "DD.MM.YYYY"
             time_format: "HH:mm"
