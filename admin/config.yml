@@ -43,7 +43,7 @@ collections:
             name: "url"
             widget: "string"
 
-            - label: "Start date"
+          - label: "Start date"
             name: "startDate"
             widget: "datetime"
             date_format: "DD.MM.YYYY"
@@ -65,11 +65,11 @@ collections:
             name: "endDateNotice"
             widget: "string"
 
-        - label: "Next season"
-          name: "nextSeason"
-          widget: "object"
-          collapsed: true
-          fields: 
+      - label: "Next season"
+        name: "nextSeason"
+        widget: "object"
+        collapsed: true
+        fields: 
           - label: "Title"
             name: "title"
             widget: "string"
