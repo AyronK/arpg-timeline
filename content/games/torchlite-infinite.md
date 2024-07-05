@@ -6,9 +6,9 @@ title: "Torchlight: Infinite"
 logo: /img/torchlightinfinitelogo.png
 currentSeason:
   startDate: 2024-07-05T02:00:00.000Z
-  endDate: 2024-10-05T17:00:00.000Z
+  endDate: 2024-10-05T02:00:00.000Z
   title: Season 6th - Whispering Mist Season (SS4)
-  url: ""
+  url: https://torchlight.xd.com/en/ep
   endDateNotice: Estimated ~ October 2024
 nextSeason:
   startDate: ""
