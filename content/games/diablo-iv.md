@@ -1,6 +1,6 @@
 ---
 slug: diablo-iv
-order: 300
+order: 400
 seasonKeyword: season
 title: Diablo IV
 logo: /img/d4.avif
