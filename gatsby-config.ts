@@ -3,7 +3,7 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `arpgTimeline`,
-    siteUrl: `https://www.yourdomain.tld`
+    siteUrl: `https://www.yourdomain.tld`,
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
@@ -14,12 +14,6 @@ const config: GatsbyConfig = {
     "gatsby-plugin-postcss",
     "gatsby-plugin-image",
     "gatsby-plugin-sitemap",
-    {
-      resolve: 'gatsby-plugin-manifest',
-      options: {
-        "icon": "static/assets/favicon.png"
-      }
-    },
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     {
@@ -50,7 +44,7 @@ const config: GatsbyConfig = {
       resolve: "gatsby-transformer-remark",
       options: {
         plugins: [
-          'gatsby-remark-relative-images',
+          "gatsby-remark-relative-images",
           {
             resolve: "gatsby-remark-images",
             options: {
@@ -69,7 +63,7 @@ const config: GatsbyConfig = {
         ],
       },
     },
-  ]
+  ],
 };
 
 export default config;

@@ -10,6 +10,6 @@
 }
 
 html {
-    @apply bg-gray-900;
-    @apply text-neutral-200;
+  @apply bg-gray-900;
+  @apply text-neutral-200;
 }

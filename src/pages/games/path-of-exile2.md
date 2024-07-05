@@ -3,7 +3,7 @@ slug: path-of-exile2
 order: 200
 seasonKeyword: league
 title: Path of Exile 2
-logo: /img/poe2.png
+logo: /img/uploads/poe2.png
 currentSeason:
   startDate: ""
   endDate: ""
