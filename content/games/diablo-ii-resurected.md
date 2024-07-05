@@ -1,6 +1,6 @@
 ---
 slug: diablo-ii-resurected
-order: 700
+order: 800
 seasonKeyword: season
 title: "Diablo II: Resurrected"
 logo: /img/diablo2-logo-lg.avif

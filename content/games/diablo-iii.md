@@ -1,6 +1,6 @@
 ---
 slug: diablo-iii
-order: 800
+order: 700
 seasonKeyword: season
 title: Diablo III
 logo: /img/diablo_3_logo.png
