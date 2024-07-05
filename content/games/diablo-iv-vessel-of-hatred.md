@@ -1,6 +1,6 @@
 ---
 slug: diablo-iv-vessel-of-hatred
-order: 350
+order: 500
 seasonKeyword: season
 title: "Diablo IV: Vessel of Hatred"
 logo: /img/voh_logo_text_enus.avif
