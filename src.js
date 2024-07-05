@@ -19,7 +19,7 @@ function replaceUtcDatesToLocalTime() {
 
     utcDateSpans.forEach(span => {
         const utcDateStr = span.textContent.trim();
-        const localDateStr = parseDate(utcDateStr).toLocaleString();
+        const localDateStr = parseDate(utcDateStr).toLocaleString("en-US", { month: 'long', day: 'numeric', hourCycle: "h24", hour:"numeric", minute:"numeric" });
 
         span.textContent = localDateStr;
         span.removeAttribute('data-date-utc');
