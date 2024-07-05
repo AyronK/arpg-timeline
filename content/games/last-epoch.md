@@ -1,6 +1,6 @@
 ---
 slug: last-epoch
-order: 400
+order: 300
 seasonKeyword: cycle
 title: Last Epoch
 logo: /img/lastepoch.png
