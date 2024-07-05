@@ -5,14 +5,15 @@ seasonKeyword: season
 title: "Torchlight: Infinite"
 logo: /img/torchlightinfinitelogo.png
 currentSeason:
-  startDate: 2024-04-19T19:00:00.000Z
-  endDate: 2024-07-05T17:00:00.000Z
+  startDate: 2024-07-05T02:00:00.000Z
+  endDate: 2024-10-05T17:00:00.000Z
   title: Season 6th - Whispering Mist Season (SS4)
   url: ""
-  endDateNotice: ""
+  endDateNotice: Estimated ~ October 2024
 nextSeason:
-  startDate: 2024-07-05T17:00:00.000Z
-  title: Season 7th - Clockwork Ballet (SS5)
-  url: https://torchlight.xd.com/en/ep
-  showCountdown: true
+  startDate: ""
+  title: Season 8th
+  url: ""
+  showCountdown: false
+  startDateNotice: Estimated ~ October 2024
 ---
