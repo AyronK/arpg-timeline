@@ -1,6 +1,6 @@
 ---
 slug: torchlite-infinite
-order: 600
+order: 900
 seasonKeyword: season
 title: "Torchlight: Infinite"
 logo: /img/torchlightinfinitelogo.png

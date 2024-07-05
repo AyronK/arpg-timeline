@@ -56,7 +56,7 @@
             <br />
             Never miss a season start or end again!
         </p>
-        <article class="grid grid-cols-1 md:grid-cols-2 mt-12 2xl:mx-80 gap-4 md:gap-8">
+        <article class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-12 gap-4 md:gap-8">
             {% assign sorted_games = collections.games | sort: "data.order" %}
             {% for game in sorted_games %}
                 <section class="card">
@@ -94,7 +94,7 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <div class="h-4 mt-2 bg-gray-500 rounded-full relative" style="width: 100%;" data-progress data-start-time="{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}" data-end-time="{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}">
+                            <div class="h-4 mt-2 bg-gray-500 rounded-full overflow-hidden relative" style="width: 100%;" data-progress data-start-time="{{game.data.currentSeason.startDate | date: "%Y-%m-%d %H:%M"}}" data-end-time="{{game.data.currentSeason.endDate | date: "%Y-%m-%d %H:%M"}}">
                                 <div class="h-full bg-emerald-200 rounded-full"></div>
                             </div>
                         </div>
