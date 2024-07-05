@@ -1,16 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-const LocalDate = ({ utcDate }) => {
-  const [localDate, setLocalDate] = useState(null);
+interface LocalDateProps {
+  utcDate: string;
+}
+
+const dateFormatOptions: Intl.DateTimeFormatOptions = {
+  month: "long",
+  day: "numeric",
+  hourCycle: "h24",
+  hour: "numeric",
+  minute: "numeric",
+};
+
+const locale = "en-US";
+const localIntl = new Intl.DateTimeFormat(locale, dateFormatOptions);
+
+const LocalDate: React.FC<LocalDateProps> = ({ utcDate }) => {
+  const [localDate, setLocalDate] = useState<string | null>(null);
 
   useEffect(() => {
     const date = new Date(utcDate);
-    setLocalDate(date.toLocaleString("en-US", { month: 'long', day: 'numeric', hourCycle: "h24", hour:"numeric", minute:"numeric" }));
+    setLocalDate(localIntl.format(date));
   }, [utcDate]);
 
   return (
     <span>
-      {localDate ? localDate : 'Loading...'}
+      {localDate ? localDate : `${new Date(utcDate).toUTCString()} UTC`}
     </span>
   );
 };
