@@ -1,6 +1,13 @@
 backend:
   name: github
   repo: AyronK/arpg-timeline
+  branch: main
+  commit_messages:
+    create: "Create {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "[skip ci] Upload “{{path}}”"
+    deleteMedia: "[skip ci] Delete “{{path}}”"
 media_folder: static/img
 public_folder: /img
 
@@ -10,7 +17,7 @@ collections:
     label_singular: 'Game'
     editor:
      preview: false
-    folder: "content/games" 
+    folder: "src/pages/games" 
     create: true
     slug: "{{fields.slug}}"
     fields:
@@ -118,7 +125,7 @@ collections:
   - label: "RSS Messages"
     label_singular: 'RSS Message'
     name: "rss_messages"
-    folder: "content/rss" 
+    folder: "src/pages/rss" 
     create: true
     fields:
       - label: "Title" 
