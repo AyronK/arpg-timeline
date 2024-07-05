@@ -1,4 +1,10 @@
 import React from "react";
+import LocalDate from "./LocalDate";
+
+// TODO: bind progress bar
+// TODO: bind calendar
+// TODO: bind counter
+// TODO: typescript and refactoring
 
 const Card = (props) => {
   const { title, logo, currentSeason, nextSeason, seasonKeyword } = props;
@@ -34,7 +40,7 @@ const Card = (props) => {
               currentSeason.startDateNotice !== null ? (
                 <span>{currentSeason.startDateNotice}</span>
               ) : (
-                <span data-date-utc>{currentSeason.startDate}</span>
+                <LocalDate utcDate={currentSeason.startDate}/>
               )}
             </div>
           </div>
@@ -46,7 +52,7 @@ const Card = (props) => {
               currentSeason.endDateNotice !== null ? (
                 <span>{currentSeason.endDateNotice}</span>
               ) : (
-                <span data-date-utc>{currentSeason.endDate}</span>
+                <LocalDate utcDate={currentSeason.endDate}/>
               )}
             </div>
           </div>
@@ -93,7 +99,7 @@ const Card = (props) => {
             nextSeason.startDateNotice !== null ? (
               <span>{nextSeason.startDateNotice}</span>
             ) : (
-              <span data-date-utc>{nextSeason.startDate}</span>
+              <LocalDate utcDate={nextSeason.startDate}/>
             )}
           </div>
           {nextSeason.showCountdown && (
