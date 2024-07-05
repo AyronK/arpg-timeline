@@ -12,7 +12,7 @@ currentSeason:
   endDateNotice: Estimated around end of July 2024
   startDateNotice: ""
 nextSeason:
-  title: Next league - 3.25
+  title: 3.25 - Settlers of Kalguur
   startDateNotice: ""
   url: ""
   showCountdown: true
