@@ -1,6 +1,6 @@
 ---
 slug: path-of-exile2
-order: 200
+order: 1000
 seasonKeyword: league
 title: Path of Exile 2
 shortName: "poe2"

@@ -60,8 +60,8 @@ const Card = (props: CardProps) => {
     props;
 
   return (
-    <section className="card">
-      <div className="flex flex-row justify-center min-h-[140px] min-w-[200px] max-h-[140px]">
+    <section className="p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-gray-800">
+      <div className="relative flex flex-row justify-center h-[100px] w-[140px] max-h-[100px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
         <GatsbyImage
           image={getImage(logo!)!}
           alt={`${title} logo`}
@@ -76,8 +76,8 @@ const Card = (props: CardProps) => {
         >
           <div className="flex flex-row gap-2">
             <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
-            <div className="flex flex-row gap-2">
-              <div className="my-auto">
+            <div className="flex flex-col md:flex-row md:gap-2">
+              <div className="md:my-auto">
                 <Chip className="!bg-slate-500">Now</Chip>
               </div>
               <h3 className="text-lg font-semibold">
@@ -137,8 +137,8 @@ const Card = (props: CardProps) => {
         >
           <div className="flex flex-row gap-2 justify-between">
             <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
-            <div className="flex flex-row gap-2">
-              <div className="my-auto">
+            <div className="flex flex-col md:flex-row md:gap-2">
+              <div className="md:my-auto">
                 <Chip>Next</Chip>
               </div>
               <h3 className="text-lg font-semibold">
@@ -155,13 +155,15 @@ const Card = (props: CardProps) => {
               )}
             </div>
             {!!nextSeason.startDate && (
-              <GoogleCalendarButton
-                title={`${title} ${seasonKeyword} start`}
-                date={new Date(nextSeason.startDate)}
-              />
+              <div className="mt-auto">
+                <GoogleCalendarButton
+                  title={`${title} ${seasonKeyword} start`}
+                  date={new Date(nextSeason.startDate)}
+                />
+              </div>
             )}
           </div>
-          <div className="flex flex-row justify-between items-center min-h-[28px]">
+          <div className="flex flex-row justify-between items-baseline min-h-[28px]">
             <span className="sr-only">{`When is the next ${title} ${seasonKeyword} starting?`}</span>
             <div className="flex flex-row gap-2 text-sm">
               {!!nextSeason.startDateNotice || !nextSeason.startDate ? (

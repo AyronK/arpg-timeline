@@ -46,12 +46,10 @@ export const query = graphql`
             logo {
               childImageSharp {
                 gatsbyImageData(
-                  layout: FIXED
-                  width: 200
-                  height: 140
+                  layout: CONSTRAINED
                   quality: 85
                   placeholder: BLURRED
-                  transformOptions: { fit: INSIDE }
+                  transformOptions: { fit: COVER }
                 )
               }
             }
