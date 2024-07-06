@@ -9,7 +9,7 @@ currentSeason:
   endDate: 2024-07-14T18:00:00.000Z
   title: 3.24 - Necropolis
   url: https://www.pathofexile.com/necropolis
-  endDateNotice: Estimated around end of July 2024
+  endDateNotice: ""
   startDateNotice: ""
 nextSeason:
   title: 3.25 - Settlers of Kalguur
