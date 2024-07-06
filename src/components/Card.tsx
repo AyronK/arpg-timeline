@@ -3,10 +3,11 @@ import LocalDate from "./LocalDate";
 import { GoogleCalendarButton } from "./GoogleCalendarButton";
 import { Countdown } from "./Countdown";
 import { ProgressBar } from "./ProgressBar";
+import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
 
 const Card = (props: {
   title: string;
-  logo: string;
+  logo: ImageDataLike;
   currentSeason: {
     startDate: string;
     endDate: string;
@@ -37,10 +38,18 @@ const Card = (props: {
 
   const progressPercentage = (elapsedTime / totalDuration) * 100;
 
+  const logoImage = getImage(logo);
+
   return (
     <section className="card">
-      <div className="flex flex-row justify-center min-h-[120px]">
-        <img src={logo} width="200" alt={`${title} logo`} className="my-auto" />
+      <div className="flex flex-row justify-center min-h-[140px] min-w-[200px]">
+        {logoImage && (
+          <GatsbyImage
+            image={logoImage}
+            alt={`${title} logo`}
+            className="my-auto"
+          />
+        )}
       </div>
       <h2 className="sr-only">{title}</h2>
       {currentSeason.title && (
@@ -87,7 +96,7 @@ const Card = (props: {
           <ProgressBar progress={progressPercentage} />
         </div>
       )}
-      <hr className="my-2" />
+      {currentSeason.title && nextSeason.title && <hr className="my-2" />}
       <div aria-label={`Next ${seasonKeyword}`} className="flex flex-col gap-1">
         <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
         <h3 className="text-lg font-semibold">

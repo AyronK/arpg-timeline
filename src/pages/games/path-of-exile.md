@@ -3,7 +3,7 @@ slug: path-of-exile
 order: 100
 seasonKeyword: league
 title: Path of Exile
-logo: /img/uploads/poe.png
+logo: /img/poe.png
 currentSeason:
   startDate: 2024-03-29T20:00:00.000Z
   endDate: 2024-07-14T18:00:00.000Z

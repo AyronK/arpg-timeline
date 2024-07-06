@@ -3,7 +3,7 @@ slug: diablo-ii-resurected
 order: 800
 seasonKeyword: season
 title: "Diablo II: Resurrected"
-logo: /img/uploads/diablo2-logo-lg.avif
+logo: /img/diablo2-logo-lg.avif
 currentSeason:
   startDate: 2024-05-23T17:00:00.000Z
   endDate: 2024-08-23T17:00:00.000Z

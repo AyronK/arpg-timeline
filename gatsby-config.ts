@@ -19,21 +19,16 @@ const config: GatsbyConfig = {
         theme_color: "#082f49",
         background_color: "#082f49",
         display: "standalone",
-        icon: "src/static/assets/icon.png",
+        icon: "./src/img/icon.png",
         crossOrigin: `use-credentials`,
       },
     },
-    "gatsby-plugin-decap-cms",
     "gatsby-plugin-postcss",
-    "gatsby-plugin-image",
-    "gatsby-plugin-sitemap",
-    "gatsby-plugin-sharp",
-    "gatsby-transformer-sharp",
     {
       resolve: "gatsby-source-filesystem",
       options: {
         path: `${__dirname}/static/img`,
-        name: "uploads",
+        name: "img",
       },
     },
     {
@@ -50,6 +45,13 @@ const config: GatsbyConfig = {
         name: "assets",
       },
     },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        path: `${__dirname}/src/img`,
+        name: "images",
+      },
+    },
     `gatsby-plugin-image`,
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
@@ -61,10 +63,7 @@ const config: GatsbyConfig = {
           {
             resolve: "gatsby-remark-images",
             options: {
-              // It's important to specify the maxWidth (in pixels) of
-              // the content container as this plugin uses this as the
-              // base for generating different widths of each image.
-              maxWidth: 2048,
+              maxWidth: 512,
             },
           },
           {
@@ -76,6 +75,8 @@ const config: GatsbyConfig = {
         ],
       },
     },
+    "gatsby-plugin-sitemap",
+    "gatsby-plugin-decap-cms",
   ],
 };
 

@@ -9,6 +9,7 @@ export const Footer = () => (
         target="_blank"
       >
         <img
+          loading="lazy"
           src="/assets/bmc-button.png"
           width="200"
           alt="Buy me a coffee logo"

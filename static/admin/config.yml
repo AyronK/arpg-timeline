@@ -8,8 +8,8 @@ backend:
     delete: "Delete {{collection}} “{{slug}}”"
     uploadMedia: "[skip ci] Upload “{{path}}”"
     deleteMedia: "[skip ci] Delete “{{path}}”"
-media_folder: static/img/uploads
-public_folder: /img/uploads
+media_folder: static/img
+public_folder: /img
 
 collections:
   - label: "Games"

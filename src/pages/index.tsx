@@ -31,6 +31,8 @@ const IndexPage = ({ data }: PageProps<IndexQuery>) => {
   );
 };
 
+export { Head } from "../components/Layout";
+
 export const query = graphql`
   query IndexQuery {
     allMarkdownRemark(sort: { frontmatter: { order: ASC } }) {
@@ -41,7 +43,17 @@ export const query = graphql`
             slug
             order
             seasonKeyword
-            logo
+            logo {
+              childImageSharp {
+                gatsbyImageData(
+                  width: 200
+                  height: 140
+                  quality: 85
+                  placeholder: BLURRED
+                  transformOptions: { fit: INSIDE }
+                )
+              }
+            }
             currentSeason {
               startDate
               endDate
@@ -63,6 +75,5 @@ export const query = graphql`
     }
   }
 `;
-
 
 export default IndexPage;
