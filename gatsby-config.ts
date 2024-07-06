@@ -2,14 +2,27 @@ import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `arpgTimeline`,
-    siteUrl: `https://www.yourdomain.tld`,
+    title: `aRPG Timeline`,
+    siteUrl: `https://arpg-timeline.ayronk.com`,
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
   // Learn more at: https://gatsby.dev/graphql-typegen
   graphqlTypegen: true,
   plugins: [
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: "aRPG Seasons Timeline",
+        short_name: "aRPG Timeline",
+        start_url: "/",
+        theme_color: "#082f49",
+        background_color: "#082f49",
+        display: "standalone",
+        icon: "src/static/assets/icon.png",
+        crossOrigin: `use-credentials`,
+      },
+    },
     "gatsby-plugin-decap-cms",
     "gatsby-plugin-postcss",
     "gatsby-plugin-image",

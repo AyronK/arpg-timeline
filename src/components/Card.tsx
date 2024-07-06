@@ -40,7 +40,7 @@ const Card = (props) => {
               currentSeason.startDateNotice !== null ? (
                 <span>{currentSeason.startDateNotice}</span>
               ) : (
-                <LocalDate utcDate={currentSeason.startDate}/>
+                <LocalDate utcDate={currentSeason.startDate} />
               )}
             </div>
           </div>
@@ -52,7 +52,7 @@ const Card = (props) => {
               currentSeason.endDateNotice !== null ? (
                 <span>{currentSeason.endDateNotice}</span>
               ) : (
-                <LocalDate utcDate={currentSeason.endDate}/>
+                <LocalDate utcDate={currentSeason.endDate} />
               )}
             </div>
           </div>
@@ -99,7 +99,7 @@ const Card = (props) => {
             nextSeason.startDateNotice !== null ? (
               <span>{nextSeason.startDateNotice}</span>
             ) : (
-              <LocalDate utcDate={nextSeason.startDate}/>
+              <LocalDate utcDate={nextSeason.startDate} />
             )}
           </div>
           {nextSeason.showCountdown && (
