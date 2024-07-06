@@ -20,11 +20,18 @@ const config: GatsbyConfig = {
         theme_color: "#082f49",
         background_color: "#082f49",
         display: "standalone",
-        icon: "./src/img/icon.png",
+        icon: "./static/assets/icon.png",
         crossOrigin: `use-credentials`,
       },
     },
     "gatsby-plugin-postcss",
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        path: `${__dirname}/static/img`,
+        name: "uploads",
+      },
+    },
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -44,13 +51,6 @@ const config: GatsbyConfig = {
       options: {
         path: `${__dirname}/static/assets`,
         name: "assets",
-      },
-    },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        path: `${__dirname}/src/img`,
-        name: "images",
       },
     },
     `gatsby-plugin-image`,
