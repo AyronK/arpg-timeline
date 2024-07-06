@@ -98,6 +98,7 @@ export const Footer = () => (
       </p>
     </section>
 
+    {/* TODO: Uncomment when RSS feed is fixed
     <div className="flex flex-row justify-end mt-4 gap-1">
       <a
         title="RSS Feed"
@@ -108,7 +109,7 @@ export const Footer = () => (
       >
         RSS
       </a>
-    </div>
+    </div> */}
 
     <div className="flex flex-row justify-end mt-4 gap-1">
       <a
