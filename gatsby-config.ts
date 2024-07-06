@@ -1,4 +1,5 @@
 import type { GatsbyConfig } from "gatsby";
+import adapter from "gatsby-adapter-netlify"
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -85,6 +86,9 @@ const config: GatsbyConfig = {
     "gatsby-plugin-sitemap",
     "gatsby-plugin-decap-cms",
   ],
+  adapter: adapter({
+    excludeDatastoreFromEngineFunction: false,
+  }),
 };
 
 export default config;
