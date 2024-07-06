@@ -1,11 +1,12 @@
 // pages/index.js
 
 import * as React from "react";
-import { graphql } from "gatsby";
+import { graphql, PageProps } from "gatsby";
 import Card from "../components/Card";
 import { Layout } from "../components/Layout";
+import { IndexQuery } from "../queries/indexQuery";
 
-const IndexPage = ({ data }) => {
+const IndexPage = ({ data }: PageProps<IndexQuery>) => {
   const games = data.allMarkdownRemark.edges;
 
   return (
@@ -20,8 +21,11 @@ const IndexPage = ({ data }) => {
           Never miss a season start or end again!
         </p>
         <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-12 gap-4 md:gap-8">
-          {games.map((game) => (
-            <Card key={game.id} {...game.node.frontmatter} />
+          {games.map((dataElement) => (
+            <Card
+              key={dataElement.node.frontmatter.slug}
+              {...dataElement.node.frontmatter}
+            />
           ))}
         </article>
       </div>

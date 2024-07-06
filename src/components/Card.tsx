@@ -1,5 +1,6 @@
 import React from "react";
 import LocalDate from "./LocalDate";
+import { GoogleCalendarButton } from "./GoogleCalendarButton";
 
 // TODO: bind progress bar
 // TODO: bind calendar
@@ -76,20 +77,7 @@ const Card = (props) => {
           </a>
         </h3>
         {nextSeason.startDate !== "" && (
-          <button
-            title="Add to google calendar"
-            data-action="google-calendar"
-            data-date={nextSeason.startDate}
-            data-time={nextSeason.startDate}
-            data-title={`${title} ${seasonKeyword} start`}
-          >
-            <img
-              width="24"
-              height="24"
-              src="./assets/google-calenda.webp"
-              alt="Add to calendar"
-            />
-          </button>
+          <GoogleCalendarButton title={`${title} ${seasonKeyword} start`}  date={nextSeason.startDate}/>
         )}
         <div className="flex flex-col gap-1">
           <span className="sr-only">{`When is the next ${title} ${seasonKeyword} starting?`}</span>
