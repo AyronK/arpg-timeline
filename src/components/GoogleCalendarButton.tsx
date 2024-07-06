@@ -23,7 +23,7 @@ export const GoogleCalendarButton = ({
       <img
         width="24"
         height="24"
-        src="./assets/google-calenda.webp"
+        src="/assets/google-calenda.webp"
         alt="Add to calendar"
       />
     </button>
