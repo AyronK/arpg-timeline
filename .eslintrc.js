@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+
   overrides: [
     {
       files: ["*.ts", "*.tsx"],
@@ -29,4 +30,6 @@ module.exports = {
       },
     },
   ],
+
+  extends: ["plugin:storybook/recommended"],
 };

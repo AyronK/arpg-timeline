@@ -39,17 +39,17 @@ export const query = graphql`
         node {
           frontmatter {
             title
+            shortName
             slug
             order
             seasonKeyword
             logo {
               childImageSharp {
                 gatsbyImageData(
-                  width: 200
-                  height: 140
+                  layout: CONSTRAINED
                   quality: 85
                   placeholder: BLURRED
-                  transformOptions: { fit: INSIDE }
+                  transformOptions: { fit: COVER }
                 )
               }
             }

@@ -3,6 +3,7 @@ slug: torchlite-infinite
 order: 900
 seasonKeyword: season
 title: "Torchlight: Infinite"
+shortName: "ti"
 logo: /img/torchlightinfinitelogo.png
 currentSeason:
   startDate: 2024-07-05T02:00:00.000Z

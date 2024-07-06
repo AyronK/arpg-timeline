@@ -3,6 +3,7 @@ slug: diablo-iii
 order: 700
 seasonKeyword: season
 title: Diablo III
+shortName: "d3"
 logo: /img/diablo_3_logo.png
 currentSeason:
   startDate: 2024-03-27T17:00:00.000Z

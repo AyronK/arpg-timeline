@@ -3,6 +3,7 @@ slug: last-epoch
 order: 300
 seasonKeyword: cycle
 title: Last Epoch
+shortName: "le"
 logo: /img/lastepoch.png
 currentSeason:
   startDate: 2024-02-21T17:00:00.000Z
