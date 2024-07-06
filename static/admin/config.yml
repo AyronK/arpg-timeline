@@ -9,7 +9,7 @@ backend:
     uploadMedia: "[skip ci] Upload “{{path}}”"
     deleteMedia: "[skip ci] Delete “{{path}}”"
 media_folder: static/img
-public_folder: /img
+public_folder: img
 
 collections:
   - label: "Games"

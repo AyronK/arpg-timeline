@@ -50,18 +50,15 @@ const getProgress = (
 
 const Card = (props: CardProps) => {
   const { title, logo, currentSeason, nextSeason, seasonKeyword } = props;
-  const logoImage = logo ? getImage(logo) : null;
 
   return (
     <section className="card">
       <div className="flex flex-row justify-center min-h-[140px] min-w-[200px]">
-        {logoImage && (
-          <GatsbyImage
-            image={logoImage}
-            alt={`${title} logo`}
-            className="my-auto"
-          />
-        )}
+        <GatsbyImage
+          image={getImage(logo!)!}
+          alt={`${title} logo`}
+          className="my-auto"
+        />
       </div>
       <h2 className="sr-only">{title}</h2>
       {currentSeason?.title && (
