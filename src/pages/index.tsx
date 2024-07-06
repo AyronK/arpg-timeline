@@ -1,5 +1,3 @@
-// pages/index.js
-
 import * as React from "react";
 import { graphql, PageProps } from "gatsby";
 import Card from "../components/Card";
@@ -65,5 +63,6 @@ export const query = graphql`
     }
   }
 `;
+
 
 export default IndexPage;

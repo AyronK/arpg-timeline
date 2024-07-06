@@ -1,14 +1,41 @@
 import React from "react";
 import LocalDate from "./LocalDate";
 import { GoogleCalendarButton } from "./GoogleCalendarButton";
+import { Countdown } from "./Countdown";
+import { ProgressBar } from "./ProgressBar";
 
-// TODO: bind progress bar
-// TODO: bind calendar
-// TODO: bind counter
-// TODO: typescript and refactoring
-
-const Card = (props) => {
+const Card = (props: {
+  title: string;
+  logo: string;
+  currentSeason: {
+    startDate: string;
+    endDate: string;
+    title: string;
+    url: string;
+    startDateNotice: string;
+    endDateNotice: string;
+  };
+  nextSeason: {
+    startDate: string;
+    endDate: string;
+    title: string;
+    url: string;
+    startDateNotice: string;
+    endDateNotice: string;
+    showCountdown: boolean;
+  };
+  seasonKeyword: string;
+}) => {
   const { title, logo, currentSeason, nextSeason, seasonKeyword } = props;
+
+  const currentTime = Date.now();
+  const startTimeMs = new Date(currentSeason.startDate).getTime();
+  const endTimeMs = new Date(currentSeason.endDate).getTime();
+
+  const totalDuration = endTimeMs - startTimeMs;
+  const elapsedTime = currentTime - startTimeMs;
+
+  const progressPercentage = (elapsedTime / totalDuration) * 100;
 
   return (
     <section className="card">
@@ -57,15 +84,7 @@ const Card = (props) => {
               )}
             </div>
           </div>
-          <div
-            className="h-4 mt-2 bg-gray-500 rounded-full overflow-hidden relative"
-            style={{ width: "100%" }}
-            data-progress
-            data-start-time={currentSeason.startDate}
-            data-end-time={currentSeason.endDate}
-          >
-            <div className="h-full bg-emerald-200 rounded-full"></div>
-          </div>
+          <ProgressBar progress={progressPercentage} />
         </div>
       )}
       <hr className="my-2" />
@@ -77,7 +96,10 @@ const Card = (props) => {
           </a>
         </h3>
         {nextSeason.startDate !== "" && (
-          <GoogleCalendarButton title={`${title} ${seasonKeyword} start`}  date={nextSeason.startDate}/>
+          <GoogleCalendarButton
+            title={`${title} ${seasonKeyword} start`}
+            date={new Date(nextSeason.startDate)}
+          />
         )}
         <div className="flex flex-col gap-1">
           <span className="sr-only">{`When is the next ${title} ${seasonKeyword} starting?`}</span>
@@ -90,12 +112,8 @@ const Card = (props) => {
               <LocalDate utcDate={nextSeason.startDate} />
             )}
           </div>
-          {nextSeason.showCountdown && (
-            <div
-              data-date={nextSeason.startDate}
-              data-countdown
-              className="mt-2 font-mono text-2xl font-bold text-orange-300 ml-auto"
-            ></div>
+          {nextSeason.showCountdown && nextSeason.startDate && (
+            <Countdown date={new Date(nextSeason.startDate)} />
           )}
         </div>
       </div>

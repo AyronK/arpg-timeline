@@ -22,7 +22,7 @@ export type IndexQuery = {
             title: string;
             startDateNotice: string;
             url: string;
-            showCountdown: string;
+            showCountdown: boolean;
             startDate: string;
           };
         };
@@ -30,36 +30,3 @@ export type IndexQuery = {
     }[];
   };
 };
-
-export const query = graphql`
-  query IndexQuery {
-    allMarkdownRemark(sort: { frontmatter: { order: ASC } }) {
-      edges {
-        node {
-          frontmatter {
-            title
-            slug
-            order
-            seasonKeyword
-            logo
-            currentSeason {
-              startDate
-              endDate
-              title
-              url
-              endDateNotice
-              startDateNotice
-            }
-            nextSeason {
-              title
-              startDateNotice
-              url
-              showCountdown
-              startDate
-            }
-          }
-        }
-      }
-    }
-  }
-`;
