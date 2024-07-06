@@ -12,7 +12,7 @@ currentSeason:
   endDateNotice: Estimated ~ October 2024
 nextSeason:
   startDate: ""
-  title: Season 8th
+  title: Season 7th
   url: ""
   showCountdown: false
   startDateNotice: Estimated ~ October 2024
