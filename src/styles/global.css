@@ -8,3 +8,8 @@
   @apply flex flex-col gap-4;
   @apply bg-gray-800;
 }
+
+html {
+  @apply bg-gray-900;
+  @apply text-neutral-200;
+}

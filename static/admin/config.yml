@@ -1,16 +1,23 @@
 backend:
   name: github
   repo: AyronK/arpg-timeline
+  branch: main
+  commit_messages:
+    create: "Create {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "[skip ci] Upload “{{path}}”"
+    deleteMedia: "[skip ci] Delete “{{path}}”"
 media_folder: static/img
-public_folder: /img
+public_folder: img
 
 collections:
   - label: "Games"
-    name: "games"    
-    label_singular: 'Game'
+    name: "games"
+    label_singular: "Game"
     editor:
-     preview: false
-    folder: "content/games" 
+      preview: false
+    folder: "src/pages/games"
     create: true
     slug: "{{fields.slug}}"
     fields:
@@ -47,10 +54,10 @@ collections:
         widget: "object"
         required: false
         collapsed: true
-        fields: 
+        fields:
           - label: "Title"
             name: "title"
-            widget: "string"            
+            widget: "string"
             required: false
 
           - label: "Url"
@@ -87,7 +94,7 @@ collections:
         widget: "object"
         collapsed: true
         required: false
-        fields: 
+        fields:
           - label: "Title"
             name: "title"
             widget: "string"
@@ -116,36 +123,36 @@ collections:
             required: false
 
   - label: "RSS Messages"
-    label_singular: 'RSS Message'
+    label_singular: "RSS Message"
     name: "rss_messages"
-    folder: "content/rss" 
+    folder: "src/pages/rss"
     create: true
     fields:
-      - label: "Title" 
+      - label: "Title"
         name: "title"
         widget: "string"
 
       - label: "Date"
-        name: "date" 
+        name: "date"
         widget: "datetime"
         picker_utc: true
 
       - label: "Author"
-        name: "author" 
+        name: "author"
         widget: "string"
 
       - label: "Link"
-        name: "link" 
+        name: "link"
         widget: "string"
         required: false
 
       - label: "Content"
-        name: "content"  
+        name: "content"
         widget: "markdown"
         required: false
 
       - label: "Image"
-        name: "image"  
+        name: "image"
         widget: "image"
         required: false
         media_library:
@@ -153,6 +160,6 @@ collections:
             max_file_size: 512000
 
       - label: "Image Link"
-        name: "imageLink" 
+        name: "imageLink"
         widget: "string"
         required: false
