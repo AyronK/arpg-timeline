@@ -2,9 +2,8 @@ import * as React from "react";
 import { graphql, PageProps } from "gatsby";
 import Card from "../components/Card";
 import { Layout } from "../components/Layout";
-import { IndexQuery } from "../queries/indexQuery";
 
-const IndexPage = ({ data }: PageProps<IndexQuery>) => {
+const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const games = data.allMarkdownRemark.edges;
 
   return (
@@ -21,7 +20,7 @@ const IndexPage = ({ data }: PageProps<IndexQuery>) => {
         <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-12 gap-4 md:gap-8">
           {games.map((dataElement) => (
             <Card
-              key={dataElement.node.frontmatter.slug}
+              key={dataElement!.node!.frontmatter!.slug}
               {...dataElement.node.frontmatter}
             />
           ))}
@@ -34,7 +33,7 @@ const IndexPage = ({ data }: PageProps<IndexQuery>) => {
 export { Head } from "../components/Layout";
 
 export const query = graphql`
-  query IndexQuery {
+  query IndexPage {
     allMarkdownRemark(sort: { frontmatter: { order: ASC } }) {
       edges {
         node {
