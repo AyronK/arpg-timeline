@@ -3,6 +3,7 @@ slug: diablo-iv
 order: 400
 seasonKeyword: season
 title: Diablo IV
+shortName: "d4"
 logo: /img/d4.avif
 currentSeason:
   startDate: 2024-05-14T17:00:00.000Z

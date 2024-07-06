@@ -39,6 +39,7 @@ export const query = graphql`
         node {
           frontmatter {
             title
+            shortName
             slug
             order
             seasonKeyword

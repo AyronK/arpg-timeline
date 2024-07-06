@@ -8,6 +8,7 @@ import { Chip } from "./Chip";
 
 type CardProps = Partial<{
   title: string;
+  shortName: string;
   logo: ImageDataLike;
   currentSeason: Partial<{
     startDate: string;
@@ -55,7 +56,8 @@ const getProgress = (
 };
 
 const Card = (props: CardProps) => {
-  const { title, logo, currentSeason, nextSeason, seasonKeyword } = props;
+  const { title, shortName, logo, currentSeason, nextSeason, seasonKeyword } =
+    props;
 
   return (
     <section className="card">
@@ -87,6 +89,9 @@ const Card = (props: CardProps) => {
                   {currentSeason.title}
                 </a>
               </h3>
+              {shortName && (
+                <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword}`}</span>
+              )}
             </div>
           </div>
           <div className="flex flex-row justify-between">
@@ -96,7 +101,12 @@ const Card = (props: CardProps) => {
                 {!!currentSeason.startDateNotice || !currentSeason.startDate ? (
                   <span>{currentSeason.startDateNotice}</span>
                 ) : (
-                  <LocalDate utcDate={currentSeason.startDate} />
+                  <div>
+                    {shortName && (
+                      <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword} release date`}</span>
+                    )}
+                    <LocalDate utcDate={currentSeason.startDate} />
+                  </div>
                 )}
               </div>
             </div>
@@ -110,7 +120,7 @@ const Card = (props: CardProps) => {
                 )}
               </div>
             </div>
-          </div>{" "}
+          </div>
           <ProgressBar
             progress={getProgress(
               currentSeason?.startDate,
@@ -140,6 +150,9 @@ const Card = (props: CardProps) => {
                   {nextSeason.title}
                 </a>
               </h3>
+              {shortName && (
+                <span className="sr-only">{`${shortName} ${nextSeason.title} ${seasonKeyword}`}</span>
+              )}
             </div>
             {!!nextSeason.startDate && (
               <GoogleCalendarButton
@@ -154,7 +167,12 @@ const Card = (props: CardProps) => {
               {!!nextSeason.startDateNotice || !nextSeason.startDate ? (
                 <span>{nextSeason.startDateNotice}</span>
               ) : (
-                <LocalDate utcDate={nextSeason.startDate} />
+                <div>
+                  {shortName && (
+                    <span className="sr-only">{`${shortName} ${nextSeason.title} ${seasonKeyword} release date`}</span>
+                  )}
+                  <LocalDate utcDate={nextSeason.startDate} />
+                </div>
               )}
             </div>
             {nextSeason.showCountdown && nextSeason.startDate && (

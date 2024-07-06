@@ -41,6 +41,11 @@ collections:
         widget: "string"
         required: true
 
+      - label: "Short name"
+        name: "shortName"
+        widget: "string"
+        required: false
+
       - label: "Logo"
         name: "logo"
         widget: "image"
