@@ -1,5 +1,5 @@
 import type { GatsbyConfig } from "gatsby";
-import adapter from "gatsby-adapter-netlify"
+import adapter from "gatsby-adapter-netlify";
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -25,13 +25,6 @@ const config: GatsbyConfig = {
       },
     },
     "gatsby-plugin-postcss",
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        path: `${__dirname}/static/img`,
-        name: "uploads",
-      },
-    },
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -78,6 +71,20 @@ const config: GatsbyConfig = {
     },
     "gatsby-plugin-sitemap",
     "gatsby-plugin-decap-cms",
+    {
+      resolve: "gatsby-plugin-robots-txt",
+      options: {
+        host: "https://arpg-timeline.ayronk.com/",
+        sitemap: "https://arpg-timeline.ayronk.com/sitemap-index.xml",
+        policy: [
+          {
+            userAgent: "*",
+            allow: ["/"],
+            disallow: [],
+          }
+        ],
+      },
+    },
   ],
   adapter: adapter({
     excludeDatastoreFromEngineFunction: false,
