@@ -4,6 +4,7 @@ import { GoogleCalendarButton } from "./GoogleCalendarButton";
 import { Countdown } from "./Countdown";
 import { ProgressBar } from "./ProgressBar";
 import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
+import { Chip } from "./Chip";
 
 type CardProps = Partial<{
   title: string;
@@ -26,22 +27,27 @@ type CardProps = Partial<{
     showCountdown: boolean;
   }>;
   seasonKeyword: string;
+  testProps: {
+    now?: Date;
+    timeLeft?: number;
+  };
 }>;
 
 const getProgress = (
   startDate: string | undefined,
   endDate: string | undefined,
+  currentTime?: Date | undefined,
 ) => {
   if (!startDate || !endDate) {
     return 0;
   }
 
-  const currentTime = Date.now();
+  const now = currentTime?.getTime() ?? Date.now();
   const startTimeMs = new Date(startDate).getTime();
   const endTimeMs = new Date(endDate).getTime();
 
   const totalDuration = endTimeMs - startTimeMs;
-  const elapsedTime = currentTime - startTimeMs;
+  const elapsedTime = now - startTimeMs;
 
   const progressPercentage = (elapsedTime / totalDuration) * 100;
 
@@ -53,7 +59,7 @@ const Card = (props: CardProps) => {
 
   return (
     <section className="card">
-      <div className="flex flex-row justify-center min-h-[140px] min-w-[200px]">
+      <div className="flex flex-row justify-center min-h-[140px] min-w-[200px] max-h-[140px]">
         <GatsbyImage
           image={getImage(logo!)!}
           alt={`${title} logo`}
@@ -68,68 +74,83 @@ const Card = (props: CardProps) => {
         >
           <div className="flex flex-row gap-2">
             <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
-            <h3 className="text-lg font-semibold">
-              <a
-                href={currentSeason.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {currentSeason.title}
-              </a>
-            </h3>
-          </div>
-          <div className="flex flex-col gap-1">
-            <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
-            <div>
-              <strong>Start date:&nbsp;</strong>
-              {!!currentSeason.startDateNotice || !currentSeason.startDate ? (
-                <span>{currentSeason.startDateNotice}</span>
-              ) : (
-                <LocalDate utcDate={currentSeason.startDate} />
-              )}
+            <div className="flex flex-row gap-2">
+              <div className="my-auto">
+                <Chip className="!bg-slate-500">Now</Chip>
+              </div>
+              <h3 className="text-lg font-semibold">
+                <a
+                  href={currentSeason.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {currentSeason.title}
+                </a>
+              </h3>
             </div>
           </div>
-          <div>
-            <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
-            <div>
-              <strong>End date:&nbsp;</strong>
-              {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
-                <span>{currentSeason.endDateNotice}</span>
-              ) : (
-                <LocalDate utcDate={currentSeason.endDate} />
-              )}
+          <div className="flex flex-row justify-between">
+            <div className="flex flex-col gap-1 col-span-4">
+              <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
+              <div className="flex flex-row gap-2 text-sm">
+                {!!currentSeason.startDateNotice || !currentSeason.startDate ? (
+                  <span>{currentSeason.startDateNotice}</span>
+                ) : (
+                  <LocalDate utcDate={currentSeason.startDate} />
+                )}
+              </div>
             </div>
-          </div>
+            <div>
+              <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
+              <div className="flex flex-row-reverse gap-2 text-sm">
+                {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
+                  <span>{currentSeason.endDateNotice}</span>
+                ) : (
+                  <LocalDate utcDate={currentSeason.endDate} />
+                )}
+              </div>
+            </div>
+          </div>{" "}
           <ProgressBar
             progress={getProgress(
               currentSeason?.startDate,
               currentSeason?.endDate,
+              props.testProps?.now,
             )}
           />
         </div>
       )}
-      {currentSeason?.title && nextSeason?.title && <hr className="my-2" />}
       {nextSeason?.title && (
         <div
           aria-label={`Next ${seasonKeyword}`}
-          className="flex flex-col gap-1"
+          className="flex flex-col gap-1 mt-auto"
         >
-          <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
-          <h3 className="text-lg font-semibold">
-            <a href={nextSeason.url} target="_blank" rel="noopener noreferrer">
-              {nextSeason.title}
-            </a>
-          </h3>
-          {!!nextSeason.startDate && (
-            <GoogleCalendarButton
-              title={`${title} ${seasonKeyword} start`}
-              date={new Date(nextSeason.startDate)}
-            />
-          )}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-row gap-2 justify-between">
+            <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
+            <div className="flex flex-row gap-2">
+              <div className="my-auto">
+                <Chip>Next</Chip>
+              </div>
+              <h3 className="text-lg font-semibold">
+                <a
+                  href={nextSeason.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {nextSeason.title}
+                </a>
+              </h3>
+            </div>
+            {!!nextSeason.startDate && (
+              <GoogleCalendarButton
+                title={`${title} ${seasonKeyword} start`}
+                date={new Date(nextSeason.startDate)}
+              />
+            )}
+          </div>
+          <div className="flex flex-row justify-between items-center min-h-[28px]">
             <span className="sr-only">{`When is the next ${title} ${seasonKeyword} starting?`}</span>
-            <div>
-              <strong>Start date:&nbsp;</strong>
+            <div className="flex flex-row gap-2 text-sm">
               {!!nextSeason.startDateNotice || !nextSeason.startDate ? (
                 <span>{nextSeason.startDateNotice}</span>
               ) : (
@@ -137,7 +158,14 @@ const Card = (props: CardProps) => {
               )}
             </div>
             {nextSeason.showCountdown && nextSeason.startDate && (
-              <Countdown date={new Date(nextSeason.startDate)} />
+              <Countdown
+                date={new Date(nextSeason.startDate)}
+                testProps={
+                  props.testProps
+                    ? { timeLeft: props.testProps.timeLeft }
+                    : undefined
+                }
+              />
             )}
           </div>
         </div>
