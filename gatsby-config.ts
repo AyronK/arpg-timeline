@@ -75,6 +75,14 @@ const config: GatsbyConfig = {
       },
     },
     "gatsby-plugin-postcss",
+    {
+      resolve: "gatsby-plugin-simple-analytics",
+      options: {
+        trackPageViews: true,
+        events: true,
+        eventsGlobal: "sa_event",
+      },
+    },
   ],
   adapter: adapter({
     excludeDatastoreFromEngineFunction: false,

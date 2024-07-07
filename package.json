@@ -30,6 +30,7 @@
     "gatsby-plugin-postcss": "^6.13.1",
     "gatsby-plugin-robots-txt": "^1.8.0",
     "gatsby-plugin-sharp": "^5.13.1",
+    "gatsby-plugin-simple-analytics": "^1.0.4",
     "gatsby-plugin-sitemap": "^6.13.1",
     "gatsby-remark-copy-linked-files": "^6.13.1",
     "gatsby-remark-images": "^7.13.1",
