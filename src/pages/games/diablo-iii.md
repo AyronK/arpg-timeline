@@ -1,6 +1,5 @@
 ---
 slug: diablo-iii
-order: 700
 seasonKeyword: season
 title: Diablo III
 shortName: "d3"

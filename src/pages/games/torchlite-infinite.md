@@ -1,6 +1,5 @@
 ---
 slug: torchlite-infinite
-order: 900
 seasonKeyword: season
 title: "Torchlight: Infinite"
 shortName: "ti"

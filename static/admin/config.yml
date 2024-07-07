@@ -26,11 +26,6 @@ collections:
         widget: "string"
         required: true
 
-      - label: "Order"
-        name: "order"
-        widget: "number"
-        required: true
-
       - label: "Season keyword"
         name: "seasonKeyword"
         widget: "string"

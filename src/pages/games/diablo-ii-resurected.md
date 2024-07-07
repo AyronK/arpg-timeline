@@ -1,6 +1,5 @@
 ---
 slug: diablo-ii-resurected
-order: 800
 seasonKeyword: season
 title: "Diablo II: Resurrected"
 shortName: "d2"

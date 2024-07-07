@@ -1,6 +1,5 @@
 ---
 slug: diablo-iv
-order: 400
 seasonKeyword: season
 title: Diablo IV
 shortName: "d4"
