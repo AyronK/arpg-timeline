@@ -2,9 +2,47 @@ import * as React from "react";
 import { graphql, PageProps } from "gatsby";
 import Card from "../components/Card";
 import { Layout } from "../components/Layout";
+import { useSearchParams } from "../hooks/useSearchParams";
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
-  const games = data.allMarkdownRemark.edges;
+  const [, setSearchParam, getSearchParam] = useSearchParams();
+  const games = data.allMarkdownRemark.edges
+    .map((e) => e.node.frontmatter)
+    .map((g) => {
+      if (!g?.nextSeason?.startDate) {
+        return g;
+      }
+      const nextStartDate = new Date(g.nextSeason.startDate);
+      const now = new Date();
+      if (nextStartDate.getTime() < now.getTime()) {
+        return { ...g, currentSeason: g.nextSeason, nextSeason: null };
+      }
+      return g;
+    });
+
+  const visibleGames = games.filter(
+    (g) => !((getSearchParam("exclude") as string[]) ?? []).includes(g!.slug!),
+  );
+
+  const toggleFilter = (slug: string) => {
+    const filtersParams: string | string[] | null = getSearchParam("exclude");
+    const filters =
+      filtersParams instanceof Array
+        ? filtersParams
+        : filtersParams !== null
+          ? [filtersParams]
+          : [];
+
+    if (filters.includes(slug)) {
+      setSearchParam(
+        "exclude",
+        filters.filter((f) => f !== slug),
+      );
+    } else {
+      filters.push(slug);
+      setSearchParam("exclude", filters);
+    }
+  };
 
   return (
     <Layout>
@@ -17,14 +55,30 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <br />
           Never miss a season start or end again!
         </p>
-        <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-12 gap-4 md:gap-8">
-          {games.map((dataElement) => (
-            <Card
-              key={dataElement!.node!.frontmatter!.slug}
-              {...dataElement.node.frontmatter}
-            />
-          ))}
-        </article>
+        <div className="flex flex-col-reverse md:flex-col gap-6 mt-6">
+          <section className="flex flex-row gap-4 justify-center flex-wrap">
+            {games.map((game) => (
+              <div key={game!.slug} className="flex flex-row gap-2">
+                <input
+                  id={`${game?.slug}-filter`}
+                  type="checkbox"
+                  onChange={() => toggleFilter(game!.slug!)}
+                  checked={
+                    !((getSearchParam("exclude") as string[]) ?? []).includes(
+                      game!.slug!,
+                    )
+                  }
+                />
+                <label htmlFor={`${game?.slug}-filter`}>{game?.title}</label>
+              </div>
+            ))}
+          </section>
+          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+            {visibleGames.map((game) => (
+              <Card key={game!.slug} {...game} />
+            ))}
+          </article>
+        </div>
       </div>
     </Layout>
   );
