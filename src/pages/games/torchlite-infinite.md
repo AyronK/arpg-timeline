@@ -11,7 +11,7 @@ currentSeason:
   url: https://torchlight.xd.com/en/ep
   endDateNotice: Estimated ~ October 2024
 nextSeason:
-  startDate: ""
+  startDate: 2024-10-05T02:00:00.000Z
   title: Season 8th
   url: ""
   showCountdown: false

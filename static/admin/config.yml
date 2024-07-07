@@ -70,7 +70,7 @@ collections:
             default: ""
             widget: "datetime"
             picker_utc: true
-            required: false
+            required: true
 
           - label: "Start date notice"
             name: "startDateNotice"
@@ -82,7 +82,7 @@ collections:
             default: ""
             widget: "datetime"
             picker_utc: true
-            required: false
+            required: true
 
           - label: "End date notice"
             name: "endDateNotice"
@@ -110,7 +110,7 @@ collections:
             default: ""
             widget: "datetime"
             picker_utc: true
-            required: false
+            required: true
 
           - label: "Start date notice"
             name: "startDateNotice"
