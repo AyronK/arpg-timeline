@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const getText = (distance: number) => {
+const getTimeComponents = (distance: number) => {
   const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
   const days = Math.floor(
     (distance % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24),
@@ -11,17 +11,7 @@ const getText = (distance: number) => {
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  const timeComponents = [];
-  if (weeks > 0) timeComponents.push(`${weeks}W`);
-  if (days > 0 || weeks > 0) timeComponents.push(`${days}D`);
-  if (hours > 0 || days > 0 || weeks > 0)
-    timeComponents.push(String(hours).padStart(2, "0") + "H");
-  if (minutes > 0 || hours > 0 || days > 0 || weeks > 0)
-    timeComponents.push(String(minutes).padStart(2, "0") + "M");
-  if (seconds > 0 || minutes > 0 || hours > 0 || days > 0 || weeks > 0)
-    timeComponents.push(String(seconds).padStart(2, "0") + "S");
-
-  return timeComponents.join(" ");
+  return { weeks, days, hours, minutes, seconds };
 };
 
 export const Countdown = ({
@@ -31,7 +21,20 @@ export const Countdown = ({
   date: Date;
   testProps?: { timeLeft?: number };
 }) => {
-  const [text, setText] = useState<string | "live">(" ");
+  const [timeComponents, setTimeComponents] = useState<{
+    weeks: number;
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  }>({
+    weeks: 0,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
   useEffect(() => {
     const timerInterval = setInterval(() => {
       const now = new Date().getTime();
@@ -40,17 +43,46 @@ export const Countdown = ({
 
       if (distance < 0) {
         clearInterval(timerInterval);
-        setText("Live!");
+        setTimeComponents({
+          weeks: 0,
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+        });
         return;
       }
 
-      setText(getText(distance));
+      setTimeComponents(getTimeComponents(distance));
     }, 1000);
 
     return () => clearInterval(timerInterval);
-  }, [date]);
+  }, [date, testProps?.timeLeft]);
 
   return (
-    <div className="font-mono text-lg font-bold text-emerald-500">{text}</div>
+    <div className="font-mono text-lg font-bold text-emerald-500 flex flex-row gap-1">
+      {timeComponents.weeks > 0 && <span>{timeComponents.weeks}W</span>}
+      {(timeComponents.days > 0 || timeComponents.weeks > 0) && (
+        <span>{timeComponents.days}D</span>
+      )}
+      {(timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <span>{String(timeComponents.hours).padStart(2, "0")}H</span>
+      )}
+      {(timeComponents.minutes > 0 ||
+        timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <span>{String(timeComponents.minutes).padStart(2, "0")}M</span>
+      )}
+      {(timeComponents.seconds > 0 ||
+        timeComponents.minutes > 0 ||
+        timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <span>{String(timeComponents.seconds).padStart(2, "0")}S</span>
+      )}
+    </div>
   );
 };
