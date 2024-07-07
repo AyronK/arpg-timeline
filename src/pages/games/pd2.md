@@ -3,7 +3,7 @@ slug: pd2
 seasonKeyword: season
 title: Project Diablo 2
 shortName: pd2
-logo: img/projectdiablo2logo.webp
+logo: /img/projectdiablo2logo.webp
 currentSeason:
   startDate: 2024-04-12T17:00:00.000Z
   endDate: 2024-08-30T17:00:00.000Z
