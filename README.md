@@ -36,3 +36,5 @@ Never miss a season start or end again!
 ```npm
 npm run develop
 ```
+## Tracking
+[Simple Analytics](https://dashboard.simpleanalytics.com/arpg-timeline.ayronk.com)
