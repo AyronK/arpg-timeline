@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
 
+const isServer = typeof window === "undefined";
+
 export const useSearchParams = (): [
   URLSearchParams,
   (key: string, value: string | string[]) => void,
   (key: string) => string | string[] | null,
 ] => {
   const [searchParams, setSearchParamsState] = useState<URLSearchParams>(() => {
-    return new URLSearchParams(window.location.search);
+    if (isServer) {
+      return new URLSearchParams();
+    } else {
+      return new URLSearchParams(window.location.search);
+    }
   });
 
   const setSearchParam = (key: string, value: string | string[]) => {
@@ -20,7 +26,9 @@ export const useSearchParams = (): [
       newSearchParams.set(key, value);
     }
     setSearchParamsState(newSearchParams);
-    window.history.pushState({}, "", "?" + newSearchParams.toString());
+    if (!isServer) {
+      window.history.pushState({}, "", "?" + newSearchParams.toString());
+    }
   };
 
   const getSearchParam = (key: string): string | string[] | null => {
@@ -29,15 +37,17 @@ export const useSearchParams = (): [
   };
 
   useEffect(() => {
-    const handlePopState = () => {
-      setSearchParamsState(new URLSearchParams(window.location.search));
-    };
+    if (!isServer) {
+      const handlePopState = () => {
+        setSearchParamsState(new URLSearchParams(window.location.search));
+      };
 
-    window.addEventListener("popstate", handlePopState);
+      window.addEventListener("popstate", handlePopState);
 
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }
   }, []);
 
   return [searchParams, setSearchParam, getSearchParam];
