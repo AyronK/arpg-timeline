@@ -6,7 +6,7 @@ interface LocalDateProps {
 }
 
 const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
-  month: "long",
+  month: "short",
   day: "numeric",
   hourCycle: "h24",
   hour: "numeric",
