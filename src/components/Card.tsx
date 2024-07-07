@@ -156,7 +156,7 @@ const Card = (props: CardProps) => {
               )}
             </div>
             {!!nextSeason.startDate && (
-              <div className="mt-auto">
+              <div className="mt-auto flex">
                 <GoogleCalendarButton
                   title={`${title} ${seasonKeyword} start`}
                   date={new Date(nextSeason.startDate)}
