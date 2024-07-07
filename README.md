@@ -50,6 +50,11 @@ npm run develop
 npm run storybook
 ```
 
+## Contributing
+
+Thank you for considering contributing to the project! I appreciate your time, effort and will to help me build this website!  
+Please check out the [Contributing guide](CONTRIBUTING.md) for guidelines about how to proceed.
+
 ## Tracking
 
 [Simple Analytics](https://dashboard.simpleanalytics.com/arpg-timeline.ayronk.com)
