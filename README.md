@@ -8,18 +8,11 @@ Never miss a season start or end again!
 
 ## Features
 
-- Supported games
-  - Path of Exile
-  - Path of Exile 2
-  - Diablo II: Resurrected
-  - Diablo III
-  - Diablo IV
-  - Last Epoch
-  - Torchlight: Infinite
+- Supported multiple games
 - Timestamps for current and future season start and end dates
 - Progress for the current season (how long until the end)
 - Adding season start date to your Google Calendar
-- RSS channel with season updates
+- ~~RSS channel with season updates~~ feature disabled temporarily
 - FAQ
 - CMS for managing games and seasons
 
@@ -33,9 +26,34 @@ Never miss a season start or end again!
 
 ## Development
 
+### Prerequisites
+- Node >= 20
+- package manager, preferably npm
+
+### Commands
+
+1. Install packages
+
+```
+npm run i
+```
+
+2. To launch Gatsby locally run
+
 ```npm
 npm run develop
 ```
+
+3. To launch Storybook run
+   
+```npm
+npm run storybook
+```
+
+## Contributing
+
+Thank you for considering contributing to the project! I appreciate your time, effort and will to help me build this website!  
+Please check out the [Contributing guide](CONTRIBUTING.md) for guidelines about how to proceed.
 
 ## Tracking
 
