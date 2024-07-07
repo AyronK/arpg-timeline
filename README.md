@@ -55,6 +55,8 @@ npm run storybook
 Thank you for considering contributing to the project! I appreciate your time, effort and will to help me build this website!  
 Please check out the [Contributing guide](CONTRIBUTING.md) for guidelines about how to proceed.
 
+If you'd like to help maintaining the list with up-to-date information about new seasons without coding, visit [this spreadsheet](https://docs.google.com/spreadsheets/d/18h4sOenvKqpc39YnWpCcuw2n9B6PWx0-wu6JH_VmTnk/edit?usp=sharing) and request editor's access. Let me know on Discord that you'd like to help.
+
 ## Tracking
 
 [Simple Analytics](https://dashboard.simpleanalytics.com/arpg-timeline.ayronk.com)
