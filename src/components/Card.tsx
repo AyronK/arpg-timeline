@@ -75,7 +75,7 @@ const Card = (props: CardProps) => {
             aria-label={`Current ${seasonKeyword}`}
             className="flex flex-col gap-1"
           >
-            <div className="gap-4 sm:gap-1 flex sm:flex-col max-sm:items-center">
+            <div className="gap-4 sm:gap-1 flex sm:flex-col max-sm:items-end">
               <div className="flex flex-row gap-2 flex-1">
                 <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
                 <div className="flex flex-col md:flex-row md:gap-2">
@@ -114,7 +114,7 @@ const Card = (props: CardProps) => {
                 </div>
                 <div>
                   <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
-                  <div className="flex flex-row-reverse gap-2 text-sm">
+                  <div className="flex flex-row-reverse gap-2 text-sm max-sm:leading-6">
                     {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
                       <span>{currentSeason.endDateNotice}</span>
                     ) : (
