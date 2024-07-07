@@ -116,7 +116,7 @@ const Card = (props: CardProps) => {
                 {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
                   <span>{currentSeason.endDateNotice}</span>
                 ) : (
-                  <LocalDate utcDate={currentSeason.endDate} />
+                  <LocalDate utcDate={currentSeason.endDate} dateOnly />
                 )}
               </div>
             </div>
