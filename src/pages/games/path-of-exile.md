@@ -1,6 +1,5 @@
 ---
 slug: path-of-exile
-order: 100
 seasonKeyword: league
 title: Path of Exile
 shortName: poe

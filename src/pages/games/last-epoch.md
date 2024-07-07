@@ -1,6 +1,5 @@
 ---
 slug: last-epoch
-order: 300
 seasonKeyword: cycle
 title: Last Epoch
 shortName: "le"
