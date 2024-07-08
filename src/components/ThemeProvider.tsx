@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useLayoutEffect } from "react";
 
 type Theme = "dark" | "light" | "system";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
-  storageKey?: string;
+  storageKey: string;
 };
 
 type ThemeProviderState = {
@@ -14,7 +14,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: "dark",
   setTheme: () => null,
 };
 
@@ -24,7 +24,7 @@ const isServer = typeof window === "undefined";
 export function ThemeProvider({
   children,
   defaultTheme = "system",
-  storageKey = "vite-ui-theme",
+  storageKey,
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() =>
@@ -33,7 +33,7 @@ export function ThemeProvider({
       : (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isServer) {
       return;
     }
