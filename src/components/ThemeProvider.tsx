@@ -19,6 +19,7 @@ const initialState: ThemeProviderState = {
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+const isServer = typeof window === "undefined";
 
 export function ThemeProvider({
   children,
@@ -31,6 +32,10 @@ export function ThemeProvider({
   );
 
   useEffect(() => {
+    if(isServer){
+        return;
+    }
+    
     const root = window.document.documentElement;
 
     root.classList.remove("light", "dark");
