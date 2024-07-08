@@ -98,7 +98,7 @@ const Card = (props: CardProps) => {
                     <Chip className="!bg-slate-500">Now</Chip>
                   </div>
                   <h3
-                    className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis"
+                    className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden md:text-nowrap text-ellipsis"
                     title={currentSeason.title}
                   >
                     <a
@@ -171,7 +171,7 @@ const Card = (props: CardProps) => {
                 <Chip>Next</Chip>
               </div>
               <h3
-                className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis"
+                className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden md:text-nowrap text-ellipsis" 
                 title={nextSeason.title}
               >
                 <a
