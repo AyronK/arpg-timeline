@@ -4,6 +4,7 @@ seasonKeyword: season
 title: Diablo IV
 shortName: "d4"
 logo: /img/d4.avif
+url: https://diablo4.blizzard.com/
 currentSeason:
   startDate: 2024-05-14T17:00:00.000Z
   endDate: 2024-08-06T17:00:00.000Z

@@ -4,6 +4,7 @@ seasonKeyword: season
 title: "Torchlight: Infinite"
 shortName: "ti"
 logo: /img/torchlightinfinitelogo.png
+url: https://torchlight.xd.com/
 currentSeason:
   startDate: 2024-07-05T02:00:00.000Z
   endDate: 2024-10-05T02:00:00.000Z

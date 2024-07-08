@@ -4,6 +4,7 @@ seasonKeyword: cycle
 title: Last Epoch
 shortName: "le"
 logo: /img/lastepoch.png
+url: https://lastepoch.com/
 currentSeason:
   startDate: 2024-02-21T17:00:00.000Z
   endDate: 2024-07-09T16:00:00.000Z

@@ -3,6 +3,7 @@ slug: hero-siege
 seasonKeyword: season
 title: Hero Siege
 logo: /img/site-logo.png
+url: https://panicartstudios.com/#gameid
 currentSeason:
   startDate: 2024-06-07T12:00:00.000Z
   endDate: 2024-08-09T12:00:00.000Z

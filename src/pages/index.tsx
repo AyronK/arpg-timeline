@@ -128,6 +128,7 @@ export const query = graphql`
             shortName
             slug
             seasonKeyword
+            url
             logo {
               childImageSharp {
                 gatsbyImageData(

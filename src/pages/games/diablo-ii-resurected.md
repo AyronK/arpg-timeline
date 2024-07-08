@@ -4,6 +4,7 @@ seasonKeyword: season
 title: "Diablo II: Resurrected"
 shortName: "d2"
 logo: /img/diablo2-logo-lg.avif
+url: https://diablo2.blizzard.com/
 currentSeason:
   startDate: 2024-05-23T17:00:00.000Z
   endDate: 2024-08-23T17:00:00.000Z
