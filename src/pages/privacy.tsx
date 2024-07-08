@@ -57,4 +57,6 @@ const IndexPage = () => {
   );
 };
 
+export { Head } from "@/components/Layout";
+
 export default IndexPage;

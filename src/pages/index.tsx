@@ -113,7 +113,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   );
 };
 
-export { Head } from "../components/Layout";
+export { Head } from "@/components/Layout";
 
 export const query = graphql`
   query IndexPage {
