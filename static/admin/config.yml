@@ -49,6 +49,11 @@ collections:
           config:
             max_file_size: 512000
 
+      - label: "Url"
+        name: "url"
+        widget: "string"
+        required: false
+
       - label: "Current season"
         name: "currentSeason"
         widget: "object"

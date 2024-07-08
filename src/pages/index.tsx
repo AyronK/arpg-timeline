@@ -1,6 +1,6 @@
 import * as React from "react";
 import { graphql, PageProps } from "gatsby";
-import Card from "../components/Card";
+import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
 
@@ -104,7 +104,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           </section>
           <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6">
             {visibleGames.map((game) => (
-              <Card key={game!.slug} {...game} />
+              <SeasonCard key={game!.slug} {...game} />
             ))}
           </article>
         </div>

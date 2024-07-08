@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Card from "./Card";
+import SeasonCard from "./SeasonCard";
 import { ImageDataLike } from "gatsby-plugin-image";
 import React from "react";
 
 const meta = {
-  title: "Components/Card",
-  component: Card,
+  title: "Components/SeasonCard",
+  component: SeasonCard,
   decorators: [
     (Story) => (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-12 gap-4 md:gap-8">
@@ -15,7 +15,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Card>;
+} satisfies Meta<typeof SeasonCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
