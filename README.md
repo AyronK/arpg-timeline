@@ -1,6 +1,7 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/fa2c3ed5-a946-4cc8-9aee-10104c36e385/deploy-status)](https://app.netlify.com/sites/arpg-timeline/deploys)
+[![aRPG Timeline Discord](https://img.shields.io/badge/discord-grey.svg?&logo=discord)](https://discord.gg/jamDYtJM)  
 # arpg-timeline
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/fa2c3ed5-a946-4cc8-9aee-10104c36e385/deploy-status)](https://app.netlify.com/sites/arpg-timeline/deploys)  
 [ARPG Timeline Website](https://arpg-timeline.ayronk.com/)
 
 Stay ahead in your favorite ARPGs with the season tracker.
@@ -8,18 +9,11 @@ Never miss a season start or end again!
 
 ## Features
 
-- Supported games
-  - Path of Exile
-  - Path of Exile 2
-  - Diablo II: Resurrected
-  - Diablo III
-  - Diablo IV
-  - Last Epoch
-  - Torchlight: Infinite
+- Supported multiple games
 - Timestamps for current and future season start and end dates
 - Progress for the current season (how long until the end)
 - Adding season start date to your Google Calendar
-- RSS channel with season updates
+- ~~RSS channel with season updates~~ feature disabled temporarily
 - FAQ
 - CMS for managing games and seasons
 
@@ -33,9 +27,36 @@ Never miss a season start or end again!
 
 ## Development
 
+### Prerequisites
+- Node >= 20
+- package manager, preferably npm
+
+### Commands
+
+1. Install packages
+
+```
+npm run i
+```
+
+2. To launch Gatsby locally run
+
 ```npm
 npm run develop
 ```
+
+3. To launch Storybook run
+   
+```npm
+npm run storybook
+```
+
+## Contributing
+
+Thank you for considering contributing to the project! I appreciate your time, effort and will to help me build this website!  
+Please check out the [Contributing guide](CONTRIBUTING.md) for guidelines about how to proceed.
+
+If you'd like to help maintaining the list with up-to-date information about new seasons without coding, visit [this spreadsheet](https://docs.google.com/spreadsheets/d/18h4sOenvKqpc39YnWpCcuw2n9B6PWx0-wu6JH_VmTnk/edit?usp=sharing) and request editor's access. Let me know on Discord that you'd like to help.
 
 ## Tracking
 
