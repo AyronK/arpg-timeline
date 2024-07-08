@@ -81,4 +81,9 @@
       "rlig" 1,
       "calt" 1;
   }
+
+  [data-gatsby-image-wrapper] img {
+    transition-duration: 125ms !important;
+    transition-timing-function: linear !important;
+  }
 }
