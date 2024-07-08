@@ -1,13 +1,27 @@
 import * as React from "react";
 import { Footer } from "./Footer";
 import useSiteMetadata from "../hooks/useSiteMetadata";
+import { ThemeProvider } from "./ThemeProvider";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
-    <>
+    <ThemeProvider defaultTheme="dark" storageKey="arpgTimeline.uiTheme">
+      <header>
+        <div className="relative">
+          <a href="/" rel="self">
+            <h1 className="text-2xl md:text-4xl font-semibold text-center pt-4 md:pt-12 pb-2 md:pb-4 px-4">
+              aRPG Timeline
+            </h1>
+          </a>
+          <div className="absolute right-4 top-3 md:right-8 md:top-8">
+            <ThemeToggle />
+          </div>
+        </div>
+      </header>
       <main>{children}</main>
       <Footer />
-    </>
+    </ThemeProvider>
   );
 };
 
@@ -16,6 +30,12 @@ export const Head = () => {
   return (
     <>
       <title>{title}</title>
+      {/* Workaround for flickering caused by a theme change due to loading from settings from  local storage */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `"dark"===localStorage["arpgTimeline.uiTheme"]||!(["arpgTimeline.uiTheme"]in localStorage)&&window.matchMedia("(prefers-color-scheme: dark)").matches?document.documentElement.classList.add("dark"):document.documentElement.classList.add("light");`,
+        }}
+      />
       <link rel="canonical" href={siteUrl} />
       <meta
         name="keywords"
