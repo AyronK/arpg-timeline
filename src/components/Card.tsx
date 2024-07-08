@@ -70,65 +70,75 @@ const Card = (props: CardProps) => {
       </div>
       <h2 className="sr-only">{title}</h2>
       {currentSeason?.title && (
-        <div
-          aria-label={`Current ${seasonKeyword}`}
-          className="flex flex-col gap-1"
-        >
-          <div className="flex flex-row gap-2">
-            <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
-            <div className="flex flex-col md:flex-row md:gap-2">
-              <div className="md:my-auto">
-                <Chip className="!bg-slate-500">Now</Chip>
-              </div>
-              <h3 className="text-lg font-semibold">
-                <a
-                  href={currentSeason.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {currentSeason.title}
-                </a>
-              </h3>
-              {shortName && (
-                <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword}`}</span>
-              )}
-            </div>
-          </div>
-          <div className="flex flex-row justify-between">
-            <div className="flex flex-col gap-1 col-span-4">
-              <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
-              <div className="flex flex-row gap-2 text-sm">
-                {!!currentSeason.startDateNotice || !currentSeason.startDate ? (
-                  <span>{currentSeason.startDateNotice}</span>
-                ) : (
-                  <div>
-                    {shortName && (
-                      <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword} release date`}</span>
-                    )}
-                    <LocalDate utcDate={currentSeason.startDate} />
+        <>
+          <div
+            aria-label={`Current ${seasonKeyword}`}
+            className="flex flex-col gap-1"
+          >
+            <div className="gap-4 sm:gap-1 flex sm:flex-col max-sm:items-end">
+              <div className="flex flex-row gap-2 flex-1">
+                <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
+                <div className="flex flex-col md:flex-row md:gap-2">
+                  <div className="md:my-auto hidden sm:block">
+                    <Chip className="!bg-slate-500">Now</Chip>
                   </div>
-                )}
+                  <h3 className="text-base sm:text-lg font-semibold">
+                    <a
+                      href={currentSeason.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {currentSeason.title}
+                    </a>
+                  </h3>
+                  {shortName && (
+                    <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword}`}</span>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-row justify-end sm:justify-between">
+                <div className="flex-col gap-1 col-span-4 hidden sm:flex">
+                  <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
+                  <div className="flex flex-row gap-2 text-sm">
+                    {!!currentSeason.startDateNotice || !currentSeason.startDate ? (
+                      <span>{currentSeason.startDateNotice}</span>
+                    ) : (
+                      <div>
+                        {shortName && (
+                          <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword} release date`}</span>
+                        )}
+                        <LocalDate utcDate={currentSeason.startDate} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
+                  <div className="flex flex-row-reverse gap-2 text-sm max-sm:leading-6">
+                    {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
+                      <span>{currentSeason.endDateNotice}</span>
+                    ) : (
+                      <LocalDate utcDate={currentSeason.endDate} dateOnly />
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
-              <div className="flex flex-row-reverse gap-2 text-sm">
-                {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
-                  <span>{currentSeason.endDateNotice}</span>
-                ) : (
-                  <LocalDate utcDate={currentSeason.endDate} dateOnly />
-                )}
+            <div className="flex w-full items-center gap-1">
+              <Chip className="!bg-slate-500 sm:hidden">Now</Chip>
+              <div className="flex-1">
+                <ProgressBar
+                  progress={getProgress(
+                    currentSeason?.startDate,
+                    currentSeason?.endDate,
+                    props.testProps?.now,
+                  )}
+                  />
               </div>
             </div>
           </div>
-          <ProgressBar
-            progress={getProgress(
-              currentSeason?.startDate,
-              currentSeason?.endDate,
-              props.testProps?.now,
-            )}
-          />
-        </div>
+          <hr className="sm:hidden my-1 border-gray-200/80"/>
+        </>
       )}
       {nextSeason?.title && (
         <div
@@ -138,10 +148,10 @@ const Card = (props: CardProps) => {
           <div className="flex flex-row gap-2 justify-between">
             <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
             <div className="flex flex-col md:flex-row md:gap-2">
-              <div className="md:my-auto">
+              <div className="md:my-auto hidden sm:block">
                 <Chip>Next</Chip>
               </div>
-              <h3 className="text-lg font-semibold">
+              <h3 className="text-base sm:text-lg font-semibold">
                 <a
                   href={nextSeason.url}
                   target="_blank"
@@ -155,7 +165,7 @@ const Card = (props: CardProps) => {
               )}
             </div>
             {!!nextSeason.startDate && (
-              <div className="mt-auto">
+              <div className="mt-auto max-sm:flex">
                 <GoogleCalendarButton
                   title={`${title} ${seasonKeyword} start`}
                   date={new Date(nextSeason.startDate)}
@@ -163,16 +173,20 @@ const Card = (props: CardProps) => {
               </div>
             )}
           </div>
-          <div className="flex flex-row justify-between items-baseline min-h-[28px]">
+          <div className="flex flex-row justify-between sm:items-baseline min-h-[28px]">
             <span className="sr-only">{`When is the next ${title} ${seasonKeyword} starting?`}</span>
             <div className="flex flex-row gap-2 text-sm">
               {!!nextSeason.startDateNotice || !nextSeason.startDate ? (
-                <span>{nextSeason.startDateNotice}</span>
+                <div className="gap-1 flex items-center">
+                  <Chip className="sm:hidden">Next</Chip>
+                  <span>{nextSeason.startDateNotice}</span>
+                </div>
               ) : (
-                <div>
+                <div className="gap-1 flex items-center">
                   {shortName && (
                     <span className="sr-only">{`${shortName} ${nextSeason.title} ${seasonKeyword} release date`}</span>
                   )}
+                  <Chip className="sm:hidden">Next</Chip>
                   <LocalDate utcDate={nextSeason.startDate} />
                 </div>
               )}
