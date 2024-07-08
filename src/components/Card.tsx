@@ -69,7 +69,7 @@ const Card = (props: CardProps) => {
 
   return (
     <section className="border p-4 md:p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-card text-card-foreground">
-      <div className="relative flex flex-row justify-center h-[80px] w-[140px] max-h-[80px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
+      <div className="relative flex flex-row justify-center min-h-[60px] h-auto w-[100px] max-h-[80px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
         <a
           href={url}
           rel="nofollow noreferrer"
@@ -94,11 +94,11 @@ const Card = (props: CardProps) => {
               <div className="flex flex-row gap-2 flex-1">
                 <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
                 <div className="flex flex-col md:flex-row md:gap-2 min-w-0">
-                  <div className="md:my-auto hidden sm:block">
+                  <div className="hidden sm:block">
                     <Chip className="!bg-slate-500">Now</Chip>
                   </div>
                   <h3
-                    className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden md:text-nowrap text-ellipsis"
+                    className="text-base sm:text-lg font-semibold flex-1 md:line-clamp-1"
                     title={currentSeason.title}
                   >
                     <a
@@ -134,8 +134,8 @@ const Card = (props: CardProps) => {
                 <div>
                   <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
                   <div className="flex flex-row-reverse gap-2 text-sm max-sm:leading-6">
-                    {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
-                      <span>{currentSeason.endDateNotice}</span>
+                    {!!currentSeason.endDateNotice || !currentSeason.endDate ? (  
+                      <div className="max-w-32 md:max-w-none text-wrap text-right">{currentSeason.endDateNotice}</div>
                     ) : (
                       <LocalDate utcDate={currentSeason.endDate} dateOnly />
                     )}
@@ -167,11 +167,11 @@ const Card = (props: CardProps) => {
           <div className="flex flex-row gap-2 justify-between">
             <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
             <div className="flex flex-col md:flex-row md:gap-2 min-w-0">
-              <div className="md:my-auto hidden sm:block">
+              <div className="hidden sm:block">
                 <Chip>Next</Chip>
               </div>
               <h3
-                className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden md:text-nowrap text-ellipsis" 
+                className="text-base sm:text-lg font-semibold flex-1 md:line-clamp-1"
                 title={nextSeason.title}
               >
                 <a

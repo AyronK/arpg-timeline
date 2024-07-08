@@ -9,10 +9,10 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
     <ThemeProvider defaultTheme="dark" storageKey="arpgTimeline.uiTheme">
       <header>
         <div className="relative">
-          <h1 className="text-4xl font-semibold text-center pt-12 pb-4">
+          <h1 className="text-2xl md:text-4xl font-semibold text-center pt-4 md:pt-12 pb-2 md:pb-4 px-4">
             aRPG Timeline
           </h1>
-          <div className="absolute right-2 top-2 md:right-8 md:top-8">
+          <div className="absolute right-4 top-3 md:right-8 md:top-8"> 
             <ThemeToggle />
           </div>
         </div>

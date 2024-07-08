@@ -77,14 +77,14 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   };
 
   return (
-    <Layout>
+    <Layout> 
       <div className="container mx-auto px-4 mb-20">
-        <p className="max-w-prose mx-auto text-center text-xl">
+        <p className="hidden md:block max-w-prose mx-auto text-center text-lg md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="flex flex-col-reverse md:flex-col gap-6 mt-6">
+        <div className="flex flex-col-reverse md:flex-col gap-6 mt-2 md:mt-6">
           <section className="flex flex-row gap-4 justify-center flex-wrap">
             {games.map((game) => (
               <div key={game!.slug} className="flex flex-row gap-2">
