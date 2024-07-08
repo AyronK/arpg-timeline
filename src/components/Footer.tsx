@@ -135,6 +135,12 @@ export const Footer = () => (
     </div>
 
     <div className="flex flex-row justify-end mt-4 gap-1">
+      <a className="font-semibold hover:opacity-75" href="/privacy" rel="self">
+        Privacy & GDPR
+      </a>
+    </div>
+
+    <div className="flex flex-row justify-end mt-4 gap-1">
       &copy; <span id="currentYear">{new Date().getFullYear()}</span>-
       <a
         className="font-semibold hover:opacity-75"
