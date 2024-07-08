@@ -1,13 +1,25 @@
 import * as React from "react";
 import { Footer } from "./Footer";
 import useSiteMetadata from "../hooks/useSiteMetadata";
+import { ThemeProvider } from "./ThemeProvider";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
-    <>
+    <ThemeProvider defaultTheme="dark" storageKey="arpgTimeline.uiTheme">
+      <header>
+        <div className="relative">
+          <h1 className="text-2xl md:text-4xl font-semibold text-center pt-4 md:pt-12 pb-2 md:pb-4 px-4">
+            aRPG Timeline
+          </h1>
+          <div className="absolute right-4 top-3 md:right-8 md:top-8">
+            <ThemeToggle />
+          </div>
+        </div>
+      </header>
       <main>{children}</main>
       <Footer />
-    </>
+    </ThemeProvider>
   );
 };
 

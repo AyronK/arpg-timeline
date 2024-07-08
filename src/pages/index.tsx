@@ -79,15 +79,12 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   return (
     <Layout>
       <div className="container mx-auto px-4 mb-20">
-        <h1 className="text-4xl font-semibold text-center pt-12 pb-4">
-          aRPG Timeline
-        </h1>
-        <p className="max-w-prose mx-auto text-center text-xl">
+        <p className="hidden md:block max-w-prose mx-auto text-center text-lg md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="flex flex-col-reverse md:flex-col gap-6 mt-6">
+        <div className="flex flex-col-reverse md:flex-col gap-6 mt-2 md:mt-6">
           <section className="flex flex-row gap-4 justify-center flex-wrap">
             {games.map((game) => (
               <div key={game!.slug} className="flex flex-row gap-2">
@@ -105,7 +102,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               </div>
             ))}
           </section>
-          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6">
             {visibleGames.map((game) => (
               <Card key={game!.slug} {...game} />
             ))}

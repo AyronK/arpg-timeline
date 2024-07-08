@@ -1,7 +1,7 @@
 import React from "react";
 
 export const Footer = () => (
-  <footer className="mt-12 container mx-auto px-4 mb-20">
+  <footer className="mt-12 container mx-auto px-4 mb-8">
     <div className="flex flex-col md:flex-row justify-center gap-2 md:gap-8">
       <a
         className="min-w-[200px]"
@@ -135,7 +135,7 @@ export const Footer = () => (
     </div>
 
     <div className="flex flex-row justify-end mt-4 gap-1">
-      &copy; <span id="currentYear">2024</span>-
+      &copy; <span id="currentYear">{new Date().getFullYear()}</span>-
       <a
         className="font-semibold hover:opacity-75"
         href="https://github.com/AyronK"
@@ -143,7 +143,7 @@ export const Footer = () => (
         target="_blank"
         aria-label="Author's Github Profile - AyronK"
       >
-        AyronK
+        AyronK @ GitHub
       </a>
     </div>
   </footer>
