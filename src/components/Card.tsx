@@ -64,13 +64,13 @@ const Card = (props: CardProps) => {
   return (
     <section className="p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-gray-800">
       <div className="relative flex flex-row justify-center h-[100px] w-[140px] max-h-[100px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
-        <a href={url} rel="nofollow noref">
-          <GatsbyImage
-            image={getImage(logo!)!}
-            alt={`${title} logo`}
-            className="my-auto"
-          />
-        </a>
+          <a href={url} rel="nofollow noreferrer" className="relative flex flex-col gap-2">
+            <GatsbyImage
+              image={getImage(logo!)!}
+              alt={`${title} logo`}
+              className="my-auto"
+            />
+          </a>
       </div>
       <h2 className="sr-only">{title}</h2>
       {currentSeason?.title && (
