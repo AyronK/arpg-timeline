@@ -23,6 +23,7 @@ If you have an idea to improve the project, please open an issue, use the "Featu
 7. If you'd like the code owner to review the PR sooner, reach out on Discord (@ayronk) or mention in the PR to trigger a notification.
 
 Please ensure your pull request adheres to the following guidelines:
+
 - The code should follow the project's coding conventions.
 - Keep the changes focused; avoid unrelated changes.
 - Full backward compatibility.

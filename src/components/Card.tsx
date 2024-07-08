@@ -6,6 +6,14 @@ import { Countdown } from "./Countdown";
 import { ProgressBar } from "./ProgressBar";
 import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
 import { Chip } from "./Chip";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "./DropdownMenu";
 
 type CardProps = Partial<{
   title: string;
@@ -58,23 +66,35 @@ const getProgress = (
 };
 
 const Card = (props: CardProps) => {
-  const { title, shortName, logo, url, currentSeason, nextSeason, seasonKeyword } =
-    props;
+  const {
+    title,
+    shortName,
+    logo,
+    url,
+    currentSeason,
+    nextSeason,
+    seasonKeyword,
+  } = props;
 
   return (
     <section className="p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-gray-800">
       <div className="relative flex flex-row justify-center h-[100px] w-[140px] max-h-[100px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
-        <a href={url} rel="nofollow noreferrer" className="relative flex flex-col gap-2" target="_blank">
+        <a
+          href={url}
+          rel="nofollow noreferrer"
+          className="relative flex flex-col gap-2"
+          target="_blank"
+        >
           <GatsbyImage
-              image={getImage(logo!)!}
-              alt={`${title} logo`}
-              className="my-auto"
+            image={getImage(logo!)!}
+            alt={`${title} logo`}
+            className="my-auto"
           />
         </a>
       </div>
       <h2 className="sr-only">{title}</h2>
       {currentSeason?.title && (
-          <>
+        <>
           <div
             aria-label={`Current ${seasonKeyword}`}
             className="flex flex-col gap-1"
@@ -104,7 +124,8 @@ const Card = (props: CardProps) => {
                 <div className="flex-col gap-1 col-span-4 hidden sm:flex">
                   <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
                   <div className="flex flex-row gap-2 text-sm">
-                    {!!currentSeason.startDateNotice || !currentSeason.startDate ? (
+                    {!!currentSeason.startDateNotice ||
+                    !currentSeason.startDate ? (
                       <span>{currentSeason.startDateNotice}</span>
                     ) : (
                       <div>
@@ -137,11 +158,11 @@ const Card = (props: CardProps) => {
                     currentSeason?.endDate,
                     props.testProps?.now,
                   )}
-                  />
+                />
               </div>
             </div>
           </div>
-          <hr className="sm:hidden my-1 border-gray-200/80"/>
+          <hr className="sm:hidden my-1 border-gray-200/80" />
         </>
       )}
       {nextSeason?.title && (
@@ -170,6 +191,18 @@ const Card = (props: CardProps) => {
             </div>
             {!!nextSeason.startDate && (
               <div className="mt-auto max-sm:flex flex">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Billing</DropdownMenuItem>
+                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuItem>Subscription</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
                 <GoogleCalendarButton
                   title={`${title} ${seasonKeyword} start`}
                   date={new Date(nextSeason.startDate)}
