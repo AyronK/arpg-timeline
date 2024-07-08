@@ -12,4 +12,6 @@ const NotFoundPage = () => (
   </Layout>
 );
 
+export { Head } from "@/components/Layout";
+
 export default NotFoundPage;
