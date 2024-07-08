@@ -4,6 +4,7 @@ seasonKeyword: season
 title: Diablo III
 shortName: "d3"
 logo: /img/diablo_3_logo.png
+url: https://diablo3.blizzard.com/
 currentSeason:
   startDate: 2024-03-27T17:00:00.000Z
   endDate: 2024-07-12T17:00:00.000Z
