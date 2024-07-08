@@ -134,8 +134,10 @@ const Card = (props: CardProps) => {
                 <div>
                   <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
                   <div className="flex flex-row-reverse gap-2 text-sm max-sm:leading-6">
-                    {!!currentSeason.endDateNotice || !currentSeason.endDate ? (  
-                      <div className="max-w-32 md:max-w-none text-wrap text-right">{currentSeason.endDateNotice}</div>
+                    {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
+                      <div className="max-w-32 md:max-w-none text-wrap text-right">
+                        {currentSeason.endDateNotice}
+                      </div>
                     ) : (
                       <LocalDate utcDate={currentSeason.endDate} dateOnly />
                     )}

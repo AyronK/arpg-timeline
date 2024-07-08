@@ -77,7 +77,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   };
 
   return (
-    <Layout> 
+    <Layout>
       <div className="container mx-auto px-4 mb-20">
         <p className="hidden md:block max-w-prose mx-auto text-center text-lg md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
