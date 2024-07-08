@@ -19,6 +19,7 @@ const initialState: ThemeProviderState = {
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+const isServer = typeof window === "undefined";
 
 export function ThemeProvider({
   children,
@@ -26,11 +27,17 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
+  const [theme, setTheme] = useState<Theme>(() =>
+    isServer
+      ? defaultTheme
+      : (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
 
   useEffect(() => {
+    if (isServer) {
+      return;
+    }
+
     const root = window.document.documentElement;
 
     root.classList.remove("light", "dark");

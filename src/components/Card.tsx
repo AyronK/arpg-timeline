@@ -158,7 +158,6 @@ const Card = (props: CardProps) => {
               </div>
             </div>
           </div>
-          <hr className="hidden md:block my-1 border-gray-200/80" />
         </>
       )}
       {nextSeason?.title && (
