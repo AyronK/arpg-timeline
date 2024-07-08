@@ -28,14 +28,14 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
+    () => isServer ? defaultTheme : (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
 
   useEffect(() => {
-    if(isServer){
-        return;
+    if (isServer) {
+      return;
     }
-    
+
     const root = window.document.documentElement;
 
     root.classList.remove("light", "dark");
