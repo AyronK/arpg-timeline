@@ -79,9 +79,6 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   return (
     <Layout>
       <div className="container mx-auto px-4 mb-20">
-        <h1 className="text-4xl font-semibold text-center pt-12 pb-4">
-          aRPG Timeline
-        </h1>
         <p className="max-w-prose mx-auto text-center text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
@@ -105,7 +102,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               </div>
             ))}
           </section>
-          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6">
             {visibleGames.map((game) => (
               <Card key={game!.slug} {...game} />
             ))}

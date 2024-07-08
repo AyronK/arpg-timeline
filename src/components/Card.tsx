@@ -1,19 +1,10 @@
 import React from "react";
 import LocalDate from "./LocalDate";
-import { GoogleCalendarButton } from "./GoogleCalendarButton";
-import { ICSCalendarButton } from "./ICSCalendarButton";
 import { Countdown } from "./Countdown";
 import { ProgressBar } from "./ProgressBar";
 import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
 import { Chip } from "./Chip";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from "./DropdownMenu";
+import { CalendarMenu } from "./CalendarMenu";
 
 type CardProps = Partial<{
   title: string;
@@ -77,8 +68,8 @@ const Card = (props: CardProps) => {
   } = props;
 
   return (
-    <section className="p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-gray-800">
-      <div className="relative flex flex-row justify-center h-[100px] w-[140px] max-h-[100px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
+    <section className="border p-4 md:p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-card text-card-foreground">
+      <div className="relative flex flex-row justify-center h-[80px] w-[140px] max-h-[80px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
         <a
           href={url}
           rel="nofollow noreferrer"
@@ -102,11 +93,11 @@ const Card = (props: CardProps) => {
             <div className="gap-4 sm:gap-1 flex sm:flex-col max-sm:items-end">
               <div className="flex flex-row gap-2 flex-1">
                 <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
-                <div className="flex flex-col md:flex-row md:gap-2">
+                <div className="flex flex-col md:flex-row md:gap-2 min-w-0">
                   <div className="md:my-auto hidden sm:block">
                     <Chip className="!bg-slate-500">Now</Chip>
                   </div>
-                  <h3 className="text-base sm:text-lg font-semibold">
+                  <h3 className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis" title={currentSeason.title}>
                     <a
                       href={currentSeason.url}
                       target="_blank"
@@ -125,7 +116,7 @@ const Card = (props: CardProps) => {
                   <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
                   <div className="flex flex-row gap-2 text-sm">
                     {!!currentSeason.startDateNotice ||
-                    !currentSeason.startDate ? (
+                      !currentSeason.startDate ? (
                       <span>{currentSeason.startDateNotice}</span>
                     ) : (
                       <div>
@@ -162,7 +153,7 @@ const Card = (props: CardProps) => {
               </div>
             </div>
           </div>
-          <hr className="sm:hidden my-1 border-gray-200/80" />
+          <hr className="hidden md:block my-1 border-gray-200/80" />
         </>
       )}
       {nextSeason?.title && (
@@ -172,11 +163,11 @@ const Card = (props: CardProps) => {
         >
           <div className="flex flex-row gap-2 justify-between">
             <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
-            <div className="flex flex-col md:flex-row md:gap-2">
+            <div className="flex flex-col md:flex-row md:gap-2 min-w-0">
               <div className="md:my-auto hidden sm:block">
                 <Chip>Next</Chip>
               </div>
-              <h3 className="text-base sm:text-lg font-semibold">
+              <h3 className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis" title={nextSeason.title}>
                 <a
                   href={nextSeason.url}
                   target="_blank"
@@ -190,26 +181,10 @@ const Card = (props: CardProps) => {
               )}
             </div>
             {!!nextSeason.startDate && (
-              <div className="mt-auto max-sm:flex flex">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
-                    <DropdownMenuItem>Subscription</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                <GoogleCalendarButton
+              <div className="md:h-[28px] h-6 max-sm:flex flex">
+                <CalendarMenu
+                  startDate={nextSeason.startDate}
                   title={`${title} ${seasonKeyword} start`}
-                  date={new Date(nextSeason.startDate)}
-                />
-                <ICSCalendarButton
-                  title={`${title} ${seasonKeyword} start`}
-                  date={new Date(nextSeason.startDate)}
                 />
               </div>
             )}
