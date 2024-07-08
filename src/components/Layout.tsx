@@ -28,6 +28,12 @@ export const Head = () => {
   return (
     <>
       <title>{title}</title>
+      {/* Workaround for flickering caused by a theme change due to loading from settings from  local storage */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `"dark"===localStorage["arpgTimeline.uiTheme"]||!(["arpgTimeline.uiTheme"]in localStorage)&&window.matchMedia("(prefers-color-scheme: dark)").matches?document.documentElement.classList.add("dark"):document.documentElement.classList.add("light");`,
+        }}
+      />
       <link rel="canonical" href={siteUrl} />
       <meta
         name="keywords"

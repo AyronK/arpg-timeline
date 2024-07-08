@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useLayoutEffect,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 type Theme = "dark" | "light" | "system";
 
@@ -19,32 +14,38 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "dark",
+  theme: "system",
   setTheme: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 const isServer = typeof window === "undefined";
 
-export function ThemeProvider({
+// Include this in the head to avoid flickering on page load
+// "dark"===localStorage["arpgTimeline.uiTheme"]||!(["arpgTimeline.uiTheme"]in localStorage)&&window.matchMedia("(prefers-color-scheme: dark)").matches?document.documentElement.classList.add("dark"):document.documentElement.classList.add("light");
+
+export const ThemeProvider = ({
   children,
   defaultTheme = "system",
   storageKey,
   ...props
-}: ThemeProviderProps) {
+}: ThemeProviderProps) => {
+  if (isServer) {
+    return children;
+  }
+
   const [theme, setTheme] = useState<Theme>(() =>
     isServer
       ? defaultTheme
       : (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isServer) {
       return;
     }
 
     const root = window.document.documentElement;
-
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
@@ -73,7 +74,7 @@ export function ThemeProvider({
       {children}
     </ThemeProviderContext.Provider>
   );
-}
+};
 
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
