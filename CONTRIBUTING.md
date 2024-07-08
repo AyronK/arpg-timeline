@@ -31,6 +31,10 @@ Please ensure your pull request adheres to the following guidelines:
 - No changes to project dependencies unless discussed with the code owner.
 - Code is formatted with `npm run format:all`
 
+### Creating new components
+
+It is highly recomended to use https://ui.shadcn.com as a starting point for any new components in the project.
+
 ## Getting Help
 
 If you have any questions or need help, feel free to open an issue or reach out to me on Discord (@ayronk).
