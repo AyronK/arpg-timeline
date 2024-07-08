@@ -1,6 +1,7 @@
 import React from "react";
 import LocalDate from "./LocalDate";
 import { GoogleCalendarButton } from "./GoogleCalendarButton";
+import { ICSCalendarButton } from "./ICSCalendarButton";
 import { Countdown } from "./Countdown";
 import { ProgressBar } from "./ProgressBar";
 import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
@@ -165,8 +166,12 @@ const Card = (props: CardProps) => {
               )}
             </div>
             {!!nextSeason.startDate && (
-              <div className="mt-auto max-sm:flex">
+              <div className="mt-auto max-sm:flex flex">
                 <GoogleCalendarButton
+                  title={`${title} ${seasonKeyword} start`}
+                  date={new Date(nextSeason.startDate)}
+                />
+                <ICSCalendarButton
                   title={`${title} ${seasonKeyword} start`}
                   date={new Date(nextSeason.startDate)}
                 />
