@@ -97,7 +97,10 @@ const Card = (props: CardProps) => {
                   <div className="md:my-auto hidden sm:block">
                     <Chip className="!bg-slate-500">Now</Chip>
                   </div>
-                  <h3 className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis" title={currentSeason.title}>
+                  <h3
+                    className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis"
+                    title={currentSeason.title}
+                  >
                     <a
                       href={currentSeason.url}
                       target="_blank"
@@ -116,7 +119,7 @@ const Card = (props: CardProps) => {
                   <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
                   <div className="flex flex-row gap-2 text-sm">
                     {!!currentSeason.startDateNotice ||
-                      !currentSeason.startDate ? (
+                    !currentSeason.startDate ? (
                       <span>{currentSeason.startDateNotice}</span>
                     ) : (
                       <div>
@@ -167,7 +170,10 @@ const Card = (props: CardProps) => {
               <div className="md:my-auto hidden sm:block">
                 <Chip>Next</Chip>
               </div>
-              <h3 className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis" title={nextSeason.title}>
+              <h3
+                className="text-base sm:text-lg font-semibold flex-1 min-w-0 overflow-hidden text-nowrap text-ellipsis"
+                title={nextSeason.title}
+              >
                 <a
                   href={nextSeason.url}
                   target="_blank"
