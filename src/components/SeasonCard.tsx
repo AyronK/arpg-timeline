@@ -18,6 +18,7 @@ type SeasonCardProps = Partial<{
     url: string;
     startDateNotice: string;
     endDateNotice: string;
+    justStarted?: boolean;
   }>;
   nextSeason: Partial<{
     startDate: string;
@@ -149,7 +150,13 @@ const CurrentSeasonWidget = ({
           <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
           <div className="flex flex-col md:flex-row md:gap-2 min-w-0">
             <div className="hidden sm:block">
-              <Chip className="!bg-slate-500">Now</Chip>
+              <Chip
+                className={
+                  currentSeason.justStarted ? "!bg-blue-500" : "!bg-slate-500"
+                }
+              >
+                {currentSeason.justStarted ? "LIVE" : "Now"}
+              </Chip>
             </div>
             <h3
               className="text-base sm:text-lg font-semibold flex-1 md:line-clamp-1"
@@ -179,7 +186,7 @@ const CurrentSeasonWidget = ({
                   {shortName && (
                     <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword} release date`}</span>
                   )}
-                  <LocalDate utcDate={currentSeason.startDate} />
+                  <LocalDate utcDate={currentSeason.startDate} dateOnly />
                 </div>
               )}
             </div>
@@ -199,7 +206,15 @@ const CurrentSeasonWidget = ({
         </div>
       </div>
       <div className="flex w-full items-center gap-1">
-        <Chip className="!bg-slate-500 sm:hidden">Now</Chip>
+        <Chip
+          className={
+            currentSeason.justStarted
+              ? "!bg-blue-500 sm:hidden"
+              : "!bg-slate-500 sm:hidden"
+          }
+        >
+          {currentSeason.justStarted ? "LIVE" : "Now"}
+        </Chip>
         <div className="flex-1">
           <ProgressBar
             progress={getProgress(
@@ -249,13 +264,15 @@ const SeasonCard = (props: SeasonCardProps) => {
         testProps={props.testProps}
         seasonKeyword={seasonKeyword}
       />
-      <NextSearsonWidget
-        nextSeason={nextSeason}
-        title={title}
-        shortName={shortName}
-        testProps={props.testProps}
-        seasonKeyword={seasonKeyword}
-      />
+      {!currentSeason?.justStarted && (
+        <NextSearsonWidget
+          nextSeason={nextSeason}
+          title={title}
+          shortName={shortName}
+          testProps={props.testProps}
+          seasonKeyword={seasonKeyword}
+        />
+      )}
     </section>
   );
 };

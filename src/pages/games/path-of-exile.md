@@ -18,4 +18,7 @@ nextSeason:
   url: ""
   showCountdown: true
   startDate: 2024-07-26T20:00:00.000Z
+crawlerSettings:
+  keywords: ["3.25"]
+  sources: ["https://poedb.tw/us/"]
 ---

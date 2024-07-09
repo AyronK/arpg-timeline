@@ -4,7 +4,15 @@ import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
 
+const HOUR = 1000 * 60 * 60;
+const DAY = HOUR * 24;
+const GRACE_PERIOD = DAY * 2;
+
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
+  const inGracePeriod = (startDate: string) => {
+    return new Date().getTime() - new Date(startDate).getTime() < GRACE_PERIOD;
+  };
+
   const [, setSearchParam, getSearchParam] = useSearchParams();
   const games = data.allMarkdownRemark.edges
     .map((e) => e.node.frontmatter)
@@ -19,7 +27,36 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
       }
       return g;
     })
+    .map((g) => {
+      if (
+        g?.currentSeason?.startDate &&
+        inGracePeriod(g?.currentSeason?.startDate)
+      ) {
+        const diff =
+          new Date().getTime() - new Date(g.currentSeason.startDate).getTime();
+        return {
+          ...g,
+          currentSeason: {
+            ...g.currentSeason,
+            justStarted: true,
+            startDateNotice:
+              diff < 2 * HOUR
+                ? "Just started"
+                : `Started ${(diff / HOUR).toFixed(0)} hours ago`,
+            endDateNotice: " ",
+          },
+        };
+      }
+      return g;
+    })
     .sort((a, b) => {
+      if (
+        a.currentSeason?.startDate &&
+        inGracePeriod(a.currentSeason.startDate)
+      ) {
+        return -1;
+      }
+
       const aNextSeasonStart = a.nextSeason?.startDate;
       const bNextSeasonStart = b.nextSeason?.startDate;
       const aCurrentSeasonEnd = a.currentSeason?.endDate;
