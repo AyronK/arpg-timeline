@@ -1,7 +1,7 @@
 name: Crawl sources and notify Discord
 
 on:
-  workflow_dispatch:    
+  workflow_dispatch:
 
 jobs:
   check-and-notify:
@@ -9,18 +9,18 @@ jobs:
     defaults:
       run:
         working-directory: ./scripts/crawler
-        
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4.1.7
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4.0.3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.0.3
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run script
-      env:
-        DISCORD_WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK_URL }}
-      run: npm run crawl
+      - name: Run script
+        env:
+          DISCORD_WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK_URL }}
+        run: npm run crawl
