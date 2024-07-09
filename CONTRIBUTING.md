@@ -16,17 +16,24 @@ If you have an idea to improve the project, please open an issue, use the "Featu
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes.
-4. Commit your changes (`git commit -am 'Add some feature'`).
-5. Push to the branch (`git push origin feature/your-feature-name`).
-6. Open a pull request.
-7. If you'd like the code owner to review the PR sooner, reach out on Discord (@ayronk) or mention in the PR to trigger a notification.
+3. Make sure you have husky installed for pre-commit formatting.
+4. Make your changes.
+5. Commit your changes (`git commit -am 'Add some feature'`).
+6. Push to the branch (`git push origin feature/your-feature-name`).
+7. Open a pull request.
+8. If you'd like the code owner to review the PR sooner, reach out on Discord (@ayronk) or mention in the PR to trigger a notification.
 
 Please ensure your pull request adheres to the following guidelines:
+
 - The code should follow the project's coding conventions.
 - Keep the changes focused; avoid unrelated changes.
 - Full backward compatibility.
 - No changes to project dependencies unless discussed with the code owner.
+- Code is formatted with `npm run format:all`
+
+### Creating new components
+
+It is highly recomended to use https://ui.shadcn.com as a starting point for any new components in the project.
 
 ## Getting Help
 

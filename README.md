@@ -1,5 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/fa2c3ed5-a946-4cc8-9aee-10104c36e385/deploy-status)](https://app.netlify.com/sites/arpg-timeline/deploys)
-[![aRPG Timeline Discord](https://img.shields.io/badge/discord-grey.svg?&logo=discord)](https://discord.gg/jamDYtJM)  
+[![aRPG Timeline Discord](https://img.shields.io/badge/discord-grey.svg?&logo=discord)](https://discord.gg/jamDYtJM)
+
 # arpg-timeline
 
 [ARPG Timeline Website](https://arpg-timeline.ayronk.com/)
@@ -28,6 +29,7 @@ Never miss a season start or end again!
 ## Development
 
 ### Prerequisites
+
 - Node >= 20
 - package manager, preferably npm
 
@@ -46,7 +48,7 @@ npm run develop
 ```
 
 3. To launch Storybook run
-   
+
 ```npm
 npm run storybook
 ```

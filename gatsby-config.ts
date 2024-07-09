@@ -83,6 +83,15 @@ const config: GatsbyConfig = {
         eventsGlobal: "sa_event",
       },
     },
+    {
+      resolve: `gatsby-plugin-alias-imports`,
+      options: {
+        alias: {
+          "@": "./src",
+        },
+        extensions: [],
+      },
+    },
   ],
   adapter: adapter({
     excludeDatastoreFromEngineFunction: false,

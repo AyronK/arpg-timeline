@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React, { useState, useEffect } from "react";
 
 interface LocalDateProps {
@@ -36,7 +37,7 @@ const LocalDate: React.FC<LocalDateProps> = ({ utcDate, dateOnly }) => {
   }, [utcDate]);
 
   return (
-    <span>
+    <span className={cn({ "opacity-0": !localDate })}>
       {localDate ? localDate : `${new Date(utcDate).toUTCString()} UTC`}
     </span>
   );

@@ -4,6 +4,7 @@ seasonKeyword: league
 title: Path of Exile 2
 shortName: "poe2"
 logo: /img/poe2.png
+url: https://pathofexile2.com/
 currentSeason:
   startDate: ""
   endDate: ""
