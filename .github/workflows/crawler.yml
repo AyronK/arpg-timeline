@@ -22,5 +22,5 @@ jobs:
 
     - name: Run script
       env:
-        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        DISCORD_WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK_URL }}
       run: npm run crawl
