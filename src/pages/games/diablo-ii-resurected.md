@@ -15,4 +15,7 @@ nextSeason:
   startDate: 2024-08-23T17:00:00.000Z
   title: Season 8
   startDateNotice: Estimated ~ August 2024
+crawlerSettings:
+  keywords: ["season 8"]
+  sources: ["https://news.blizzard.com/en-us/diablo2"]
 ---

@@ -18,5 +18,6 @@ nextSeason:
   showCountdown: false
   startDateNotice: est. end of 2024
 crawlerSettings:
-  keywords: []
+  keywords: ["cycle 1.2", "patch 1.2"]
+  sources: ["https://forum.lastepoch.com/search?q=1.2%20%23announcements"]
 ---

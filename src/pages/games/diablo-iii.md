@@ -15,4 +15,7 @@ nextSeason:
   title: "Season 32: Ethereal Memory"
   url: https://news.blizzard.com/en-us/diablo3/24104599/season-32-ethereal-memory-preview
   showCountdown: true
+crawlerSettings:
+  keywords: ["season 33"]
+  sources: ["https://news.blizzard.com/en-us/diablo3"]
 ---
