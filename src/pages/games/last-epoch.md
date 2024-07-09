@@ -2,17 +2,21 @@
 slug: last-epoch
 seasonKeyword: cycle
 title: Last Epoch
-shortName: "le"
+shortName: le
 logo: /img/lastepoch.png
 url: https://lastepoch.com/
 currentSeason:
-  startDate: 2024-02-21T17:00:00.000Z
-  endDate: 2024-07-09T16:00:00.000Z
-  title: Cycle I - Release
-  url: https://lastepoch.com/ladder
-nextSeason:
   startDate: 2024-07-09T16:00:00.000Z
-  url: https://lastepoch.com/harbingers-of-ruin
+  endDate: 2024-12-09T16:00:00.000Z
   title: Cycle II - Harbingers of Ruin
-  showCountdown: true
+  url: https://lastepoch.com/ladder
+  endDateNotice: est. end of 2024
+nextSeason:
+  startDate: 2024-12-09T16:00:00.000Z
+  url: ""
+  title: Cycle III
+  showCountdown: false
+  startDateNotice: est. end of 2024
+crawlerSettings:
+  keywords: []
 ---
