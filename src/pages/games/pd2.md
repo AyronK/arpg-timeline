@@ -15,4 +15,11 @@ nextSeason:
   startDate: 2024-08-30T17:00:00.000Z
   title: Season 10
   startDateNotice: Estimated ~ August/September
+crawlerSettings:
+  keywords: ["season 10"]
+  sources:
+    [
+      "https://www.projectdiablo2.com/",
+      "https://wiki.projectdiablo2.com/wiki/Seasons",
+    ]
 ---
