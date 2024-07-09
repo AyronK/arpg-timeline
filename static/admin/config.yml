@@ -136,12 +136,14 @@ collections:
           - label: "Crawler keywords"
             name: "keywords"
             widget: "list"
-            default: []
+            allow_add: true
+            max: 10
 
           - label: "Sources"
             name: "sources"
             widget: "list"
-            default: []
+            allow_add: true
+            max: 3
 
   - label: "RSS Messages"
     label_singular: "RSS Message"
