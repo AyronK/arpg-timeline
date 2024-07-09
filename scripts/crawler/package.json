@@ -1,0 +1,15 @@
+{
+    "name": "arpg-timeline-crawler",
+    "version": "1.0.0",
+    "description": "A script to check for season updates and notify a Discord server.",
+    "main": "crawler.js",
+    "scripts": {
+        "crawl": "node crawler.js",
+        "crawl:develop": "node --env-file=.env crawler.js"
+    },
+    "dependencies": {
+        "fs": "^0.0.1-security",
+        "node-fetch": "^3.3.2",
+        "remark-frontmatter": "^5.0.0"
+    }
+}
