@@ -61,29 +61,40 @@ export const Countdown = ({
   }, [date, testProps?.timeLeft]);
 
   return (
-      <div className="font-mono text-lg font-bold text-emerald-300 flex flex-row gap-1">
-        {timeComponents.weeks > 0 && <Time component={timeComponents.weeks} char="W"/>}
-        {(timeComponents.days > 0 || timeComponents.weeks > 0) && (
-            <Time component={timeComponents.days} char="D"/>
-        )}
-        {(timeComponents.hours > 0 ||
-            timeComponents.days > 0 ||
-            timeComponents.weeks > 0) && (
-            <Time component={String(timeComponents.hours).padStart(2, "0")} char="H"/>
-        )}
-        {(timeComponents.minutes > 0 ||
-            timeComponents.hours > 0 ||
-            timeComponents.days > 0 ||
-            timeComponents.weeks > 0) && (
-            <Time component={String(timeComponents.minutes).padStart(2, "0")} char="M"/>
-        )}
-        {(timeComponents.seconds > 0 ||
-            timeComponents.minutes > 0 ||
-            timeComponents.hours > 0 ||
-            timeComponents.days > 0 ||
-            timeComponents.weeks > 0) && (
-            <Time component={String(timeComponents.seconds).padStart(2, "0")} char="S"/>
-        )}
-      </div>
+    <div className="font-mono text-lg font-bold text-emerald-300 flex flex-row gap-1">
+      {timeComponents.weeks > 0 && (
+        <Time component={timeComponents.weeks} char="W" />
+      )}
+      {(timeComponents.days > 0 || timeComponents.weeks > 0) && (
+        <Time component={timeComponents.days} char="D" />
+      )}
+      {(timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <Time
+          component={String(timeComponents.hours).padStart(2, "0")}
+          char="H"
+        />
+      )}
+      {(timeComponents.minutes > 0 ||
+        timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <Time
+          component={String(timeComponents.minutes).padStart(2, "0")}
+          char="M"
+        />
+      )}
+      {(timeComponents.seconds > 0 ||
+        timeComponents.minutes > 0 ||
+        timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <Time
+          component={String(timeComponents.seconds).padStart(2, "0")}
+          char="S"
+        />
+      )}
+    </div>
   );
 };

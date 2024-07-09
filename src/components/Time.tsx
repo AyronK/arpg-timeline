@@ -4,11 +4,11 @@ export const Time = ({
   component,
   char,
 }: {
-    component: string | number;
-    char: string;
+  component: string | number;
+  char: string;
 }) => (
-    <span>
-        {component}
-        <span className="text-emerald-500">{char}</span>
-    </span>
+  <span>
+    {component}
+    <span className="text-emerald-500">{char}</span>
+  </span>
 );
