@@ -14,6 +14,11 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   };
 
   const [, setSearchParam, getSearchParam] = useSearchParams();
+  const searchParam = getSearchParam("exclude");
+  const excludedSlugs =
+    typeof searchParam === "string"
+      ? [searchParam]
+      : (searchParam as string[]) ?? [];
   const games = data.allMarkdownRemark.edges
     .map((e) => e.node.frontmatter)
     .map((g) => {
@@ -89,9 +94,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
       return 0;
     });
 
-  const visibleGames = games.filter(
-    (g) => !((getSearchParam("exclude") as string[]) ?? []).includes(g!.slug!),
-  );
+  const visibleGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
 
   const toggleFilter = (slug: string) => {
     const filtersParams: string | string[] | null = getSearchParam("exclude");
@@ -129,11 +132,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   id={`${game?.slug}-filter`}
                   type="checkbox"
                   onChange={() => toggleFilter(game!.slug!)}
-                  checked={
-                    !((getSearchParam("exclude") as string[]) ?? []).includes(
-                      game!.slug!,
-                    )
-                  }
+                  checked={!excludedSlugs.includes(game!.slug!)}
                 />
                 <label htmlFor={`${game?.slug}-filter`}>{game?.title}</label>
               </div>
