@@ -14,7 +14,7 @@ export const Layout = ({
       <header>
         <div className="relative">
           <a href="/" rel="self">
-            <h1 className="text-2xl md:text-4xl font-semibold text-center pt-4 md:pt-12 pb-2 md:pb-4 px-4">
+            <h1 className="text-2xl md:text-4xl font-semibold text-center pt-4 md:pt-8 pb-2 px-4">
               aRPG Timeline
             </h1>
           </a>
