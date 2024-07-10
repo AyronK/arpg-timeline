@@ -21,6 +21,6 @@ nextSeason:
   showCountdown: true
   startDate: 2024-07-26T20:00:00.000Z
 crawlerSettings:
-  keywords: ["season 5"]
-  sources: ["https://ud.floor.line.games/us/bbs/notice/notice_us/1"]
+  keywords: ["3.26"]
+  sources: ["https://poedb.tw/us/"]
 ---
