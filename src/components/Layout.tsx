@@ -48,7 +48,7 @@ export const Head = () => {
       <link rel="canonical" href={siteUrl} />
       <meta
         name="keywords"
-        content="path of exile, diablo 4, diablo iv, last epoch, action rpg, arpg, season, cycle, league"
+        content="path of exile, diablo, last epoch, torchlight infinite, hero siege, new league release date, new season release date, diablo alternative, poe alternative, best arpgs, season start, league start, new cycle release date, diablo 2, diablo 3, diablo 4, diablo iv, action rpg, arpg, arpg-timeline, arpg tracker, season, seasons, arpg seasons, cycle, league, poe, poe2"
       />
       <meta name="title" content={title} />
       <meta
