@@ -150,7 +150,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
 
   return (
     <Layout themeButtonClassName="top-16 md:top-8">
-      <div className="container mx-auto px-4 mb-20">
+      <div className="container mx-auto mb-20">
         <p className="hidden md:block max-w-prose mx-auto text-center text-lg md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
@@ -173,7 +173,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onGroupCheckedChange={toggleGroupFilter}
             />
           </aside>
-          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6">
+          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-3 md:gap-6">
             {visibleGames.map((game) => (
               <SeasonCard key={game!.slug} {...game} />
             ))}
