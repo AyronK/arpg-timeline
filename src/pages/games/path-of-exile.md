@@ -5,6 +5,7 @@ title: Path of Exile
 shortName: poe
 logo: /img/poe.png
 url: https://www.pathofexile.com/
+group: Path of Exile
 currentSeason:
   startDate: 2024-03-29T20:00:00.000Z
   endDate: 2024-07-24T18:00:00.000Z

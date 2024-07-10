@@ -4,3 +4,6 @@ This favicon was generated using the following graphics from Twitter Twemoji:
 - Graphics Author: Copyright 2020 Twitter, Inc and other contributors (https://github.com/twitter/twemoji)
 - Graphics Source: https://github.com/twitter/twemoji/blob/master/assets/svg/2694.svg
 - Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+
+More information on licenses for third party tools and libraries can be found here:
+https://github.com/AyronK/arpg-timeline/blob/main/README.md#License
