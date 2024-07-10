@@ -156,7 +156,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="flex flex-col gap-6 mt-2 md:mt-8">
+        <div className="flex flex-col gap-4 mt-2 md:mt-0">
           <div className="max-w-[1200px]">
             <FiltersDialog
               checked={games
@@ -173,7 +173,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
-          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-3 md:gap-6">
+          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-2 md:gap-4">
             {visibleGames.map((game) => (
               <SeasonCard key={game!.slug} {...game} />
             ))}
