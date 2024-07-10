@@ -94,7 +94,6 @@ export const Footer = () => (
           href="https://github.com/AyronK/arpg-timeline/issues"
           rel="external nofollow"
           target="_blank"
-          aria-label="Author's Github Profile - AyronK"
         >
           GitHub page
         </a>
@@ -110,7 +109,6 @@ export const Footer = () => (
           href="https://github.com/AyronK/arpg-timeline/issues"
           rel="external nofollow"
           target="_blank"
-          aria-label="Author's Github Profile - AyronK"
         >
           GitHub page
         </a>
