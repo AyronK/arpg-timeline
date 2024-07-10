@@ -3,7 +3,7 @@ name: Crawl sources and notify Discord
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 0 * * *
+    - cron: 0 18 * * *
 
 jobs:
   check-and-notify:
@@ -24,5 +24,5 @@ jobs:
 
       - name: Run script
         env:
-          DISCORD_WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: npm run crawl
