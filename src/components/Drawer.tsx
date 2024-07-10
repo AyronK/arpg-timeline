@@ -55,6 +55,18 @@ const DrawerContent = React.forwardRef<
 ));
 DrawerContent.displayName = "DrawerContent";
 
+const DrawerHandle = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Handle>,
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Handle>
+>(({ className, ...props }, ref) => (
+  <DrawerPrimitive.Handle
+    ref={ref}
+    className={cn("md:hidden w-[33vw] bg-foreground", className)}
+    {...props}
+  />
+));
+DrawerHandle.displayName = "DrawerHandle";
+
 const DrawerHeader = ({
   className,
   ...props
@@ -108,6 +120,7 @@ export {
   DrawerTrigger,
   DrawerClose,
   DrawerContent,
+  DrawerHandle,
   DrawerHeader,
   DrawerFooter,
   DrawerTitle,

@@ -5,15 +5,17 @@ import {
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
+  DrawerHandle,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "./Drawer";
 
-import { Eye, EyeOff, Filter } from "lucide-react";
+import { Eye, EyeOff, Filter, Lightbulb } from "lucide-react";
 import { Button } from "./Button";
 import { Switch } from "./Switch";
 import { cn } from "@/lib/utils";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 
 export const FiltersDrawer = ({
   filters,
@@ -26,6 +28,7 @@ export const FiltersDrawer = ({
   onCheckedChange: (value: string, checked: boolean) => void;
   onGroupCheckedChange: (group: string, checked: boolean) => void;
 }) => {
+  const { isMd } = useBreakpoint("md");
   const groups = filters.reduce(
     (prev, curr) => {
       const group = prev[curr.group ?? ""] ?? [];
@@ -36,23 +39,27 @@ export const FiltersDrawer = ({
   );
 
   return (
-    <Drawer direction="right">
+    <Drawer direction={isMd ? "right" : "bottom"} handleOnly>
       <DrawerTrigger asChild>
         <Button variant="outline">
           <Filter className="h-4 w-4 mr-2" /> Filter games
         </Button>
       </DrawerTrigger>
       <DrawerContent>
+        <DrawerHandle />
         <DrawerHeader>
           <DrawerTitle>Which games would you like to see?</DrawerTitle>
           <DrawerDescription>
-            <p className="md:max-w-80 text-balance">
-              You can add this website to your bookmarks so you'll always have
-              the same setup!
-            </p>
+            <div className="border p-2 mt-2 rounded-md flex flex-row gap-2">
+              <Lightbulb className="h-4 w-4 flex-shrink-0 mt-1" />
+              <p className="md:max-w-80">
+                You can add this website to your bookmarks so you'll always have
+                the same setup!
+              </p>
+            </div>
           </DrawerDescription>
         </DrawerHeader>
-        <div className="py-2 px-6 flex flex-col gap-6 overflow-auto">
+        <div className="px-6 flex flex-col gap-6 overflow-auto">
           {Object.keys(groups)
             .sort()
             .map((g) => {
@@ -106,7 +113,7 @@ export const FiltersDrawer = ({
             })}
         </div>
         <DrawerFooter>
-          <div className="mr-auto ml-auto md:ml-0">
+          <div className="md:mr-auto ml-auto md:ml-0">
             <DrawerClose asChild>
               <Button variant="outline">Close</Button>
             </DrawerClose>
