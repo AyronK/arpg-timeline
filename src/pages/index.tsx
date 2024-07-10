@@ -3,6 +3,7 @@ import { graphql, PageProps } from "gatsby";
 import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
+import { Checkbox } from "@/components/Checkbox";
 
 const HOUR = 1000 * 60 * 60;
 const DAY = HOUR * 24;
@@ -128,13 +129,18 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <section className="flex flex-row gap-4 justify-center flex-wrap">
             {games.map((game) => (
               <div key={game!.slug} className="flex flex-row gap-2">
-                <input
-                  id={`${game?.slug}-filter`}
-                  type="checkbox"
-                  onChange={() => toggleFilter(game!.slug!)}
-                  checked={!excludedSlugs.includes(game!.slug!)}
-                />
-                <label htmlFor={`${game?.slug}-filter`}>{game?.title}</label>
+                <div className="items-top flex space-x-2">
+                  <Checkbox
+                    id={`${game?.slug}-filter`}
+                    onCheckedChange={() => toggleFilter(game!.slug!)}
+                    checked={!excludedSlugs.includes(game!.slug!)}
+                  />
+                  <div className="grid gap-1.5 leading-none">
+                    <label htmlFor={`${game?.slug}-filter`}>
+                      {game?.title}
+                    </label>
+                  </div>
+                </div>
               </div>
             ))}
           </section>
