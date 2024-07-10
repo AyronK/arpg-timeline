@@ -60,7 +60,7 @@ const DrawerHandle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Handle
     ref={ref}
-    className={cn("!md:hidden w-[33vw] bg-foreground top-0", className)}
+    className={cn("md:!hidden w-[33vw] bg-foreground top-0", className)}
     {...props}
   />
 ));
