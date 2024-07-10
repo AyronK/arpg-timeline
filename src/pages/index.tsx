@@ -3,7 +3,7 @@ import { graphql, PageProps } from "gatsby";
 import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
-import { FiltersDrawer } from "@/components/FiltersDrawer";
+import { FiltersDialog } from "@/components/FiltersDialog";
 
 const HOUR = 1000 * 60 * 60;
 const DAY = HOUR * 24;
@@ -157,8 +157,8 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           Never miss a season start or end again!
         </p>
         <div className="flex flex-col gap-6 mt-2 md:mt-8">
-          <aside>
-            <FiltersDrawer
+          <div className="max-w-[1200px]">
+            <FiltersDialog
               checked={games
                 .map((g) => g!.slug!)
                 .filter((s) => !excludedSlugs.includes(s!))}
@@ -172,7 +172,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onCheckedChange={toggleFilter}
               onGroupCheckedChange={toggleGroupFilter}
             />
-          </aside>
+          </div>
           <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-3 md:gap-6">
             {visibleGames.map((game) => (
               <SeasonCard key={game!.slug} {...game} />

@@ -12,7 +12,6 @@ export default {
       "2xl": "1536px",
       "3xl": "1920px",
       "4xl": "2560px",
-      "5xl": "3440px",
     },
     container: {
       center: true,
@@ -22,7 +21,6 @@ export default {
         lg: "4rem",
         xl: "5rem",
         "2xl": "6rem",
-        "5xl": "20rem",
       },
     },
     extend: {
