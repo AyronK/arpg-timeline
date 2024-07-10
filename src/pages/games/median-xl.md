@@ -1,10 +1,10 @@
 ---
 slug: median-xl
 seasonKeyword: season
-title: Median XL
-official: false
-group: Diablo Mods
 logo: /img/medianxl-logo.png
+official: false
+title: Median XL
+group: Diablo Mods
 url: https://www.median-xl.com/
 currentSeason:
   startDate: 2024-05-03T02:00:00.000Z
@@ -22,6 +22,6 @@ crawlerSettings:
     - https://www.median-xl.com/changelog
   keywords:
     - season 38
-    - "2.10"
-    - "3.0"
+    - patch 3.0
+    - patch 2.10
 ---
