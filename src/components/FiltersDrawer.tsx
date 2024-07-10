@@ -41,8 +41,21 @@ export const FiltersDrawer = ({
   return (
     <Drawer direction={isMd ? "right" : "bottom"} handleOnly>
       <DrawerTrigger asChild>
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          className={cn("relative", {
+            "animate-pulse":
+              checked?.length === filters?.length && filters?.length > 0,
+          })}
+        >
           <Filter className="h-4 w-4 mr-2" /> Filter games
+          {checked?.length !== filters?.length && filters?.length > 0 && (
+            <span className="motion-reduce:hidden motion-safe:flex absolute h-6 w-6 -top-3 -right-3 scale-75">
+              <span className="relative text-white grid place-content-center rounded-full h-6 w-6 bg-slate-500">
+                {checked.length}
+              </span>
+            </span>
+          )}
         </Button>
       </DrawerTrigger>
       <DrawerContent>

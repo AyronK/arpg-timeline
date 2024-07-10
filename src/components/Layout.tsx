@@ -3,8 +3,12 @@ import { Footer } from "./Footer";
 import useSiteMetadata from "../hooks/useSiteMetadata";
 import { ThemeProvider } from "./ThemeProvider";
 import { ThemeToggle } from "./ThemeToggle";
+import { cn } from "@/lib/utils";
 
-export const Layout = ({ children }: React.PropsWithChildren) => {
+export const Layout = ({
+  children,
+  themeButtonClassName,
+}: React.PropsWithChildren & { themeButtonClassName?: string | undefined }) => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="arpgTimeline.uiTheme">
       <header>
@@ -14,7 +18,12 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
               aRPG Timeline
             </h1>
           </a>
-          <div className="absolute right-4 top-3 md:right-8 md:top-8">
+          <div
+            className={cn(
+              "absolute right-4 top-3 md:right-8 md:top-8",
+              themeButtonClassName,
+            )}
+          >
             <ThemeToggle />
           </div>
         </div>
