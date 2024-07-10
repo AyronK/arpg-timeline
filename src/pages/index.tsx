@@ -3,7 +3,7 @@ import { graphql, PageProps } from "gatsby";
 import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
-import { Checkbox } from "@/components/Checkbox";
+import { FiltersDrawer } from "@/components/FiltersDrawer";
 
 const HOUR = 1000 * 60 * 60;
 const DAY = HOUR * 24;
@@ -125,25 +125,19 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="flex flex-col-reverse md:flex-col gap-6 mt-2 md:mt-6">
-          <section className="flex flex-row gap-4 justify-center flex-wrap">
-            {games.map((game) => (
-              <div key={game!.slug} className="flex flex-row gap-2">
-                <div className="items-top flex space-x-2">
-                  <Checkbox
-                    id={`${game?.slug}-filter`}
-                    onCheckedChange={() => toggleFilter(game!.slug!)}
-                    checked={!excludedSlugs.includes(game!.slug!)}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <label htmlFor={`${game?.slug}-filter`}>
-                      {game?.title}
-                    </label>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </section>
+        <div className="flex flex-col gap-6 mt-2 md:mt-6">
+          <aside>
+            <FiltersDrawer
+              checked={games
+                .map((g) => g.slug)
+                .filter((s) => !excludedSlugs.includes(s))}
+              filters={games.map((g) => ({
+                label: g!.title!,
+                value: g!.slug!,
+              }))}
+              onCheckedChange={toggleFilter}
+            />
+          </aside>
           <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6">
             {visibleGames.map((game) => (
               <SeasonCard key={game!.slug} {...game} />
