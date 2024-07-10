@@ -63,6 +63,13 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
         return -1;
       }
 
+      if (
+        b.currentSeason?.startDate &&
+        inGracePeriod(b.currentSeason.startDate)
+      ) {
+        return 1;
+      }
+
       const aNextSeasonStart = a.nextSeason?.startDate;
       const bNextSeasonStart = b.nextSeason?.startDate;
       const aCurrentSeasonEnd = a.currentSeason?.endDate;
