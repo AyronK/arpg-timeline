@@ -41,6 +41,11 @@ collections:
         widget: "string"
         required: false
 
+      - label: "Group"
+        name: "group"
+        widget: "string"
+        required: false
+
       - label: "Logo"
         name: "logo"
         widget: "image"

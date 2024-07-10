@@ -97,7 +97,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
 
   const visibleGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
 
-  const toggleFilter = (slug: string) => {
+  const toggleFilter = (slug: string, value: boolean) => {
     const filtersParams: string | string[] | null = getSearchParam("exclude");
     const filters =
       filtersParams instanceof Array
@@ -106,7 +106,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           ? [filtersParams]
           : [];
 
-    if (filters.includes(slug)) {
+    if (value) {
       setSearchParam(
         "exclude",
         filters.filter((f) => f !== slug),
@@ -114,6 +114,30 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     } else {
       filters.push(slug);
       setSearchParam("exclude", filters);
+    }
+  };
+
+  const toggleGroupFilter = (group: string, value: boolean) => {
+    const slugs = games
+      .filter((g) => (group ? g?.group === group : !g?.group))
+      .map((g) => g?.slug ?? "")
+      .filter((g) => !!g);
+
+    const filtersParams: string | string[] | null = getSearchParam("exclude");
+    const filters =
+      filtersParams instanceof Array
+        ? filtersParams
+        : filtersParams !== null
+          ? [filtersParams]
+          : [];
+
+    if (value) {
+      setSearchParam(
+        "exclude",
+        filters.filter((f) => !slugs.includes(f)),
+      );
+    } else {
+      setSearchParam("exclude", [...filters, ...slugs]);
     }
   };
 
@@ -125,17 +149,21 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="flex flex-col gap-6 mt-2 md:mt-6">
+        <div className="flex flex-col gap-6 mt-2 md:mt-8">
           <aside>
             <FiltersDrawer
               checked={games
-                .map((g) => g.slug)
-                .filter((s) => !excludedSlugs.includes(s))}
-              filters={games.map((g) => ({
-                label: g!.title!,
-                value: g!.slug!,
-              }))}
+                .map((g) => g!.slug!)
+                .filter((s) => !excludedSlugs.includes(s!))}
+              filters={games
+                .map((g) => ({
+                  label: g!.title!,
+                  value: g!.slug!,
+                  group: g!.group!,
+                }))
+                .sort((a, b) => (a.label > b.label ? 1 : -1))}
               onCheckedChange={toggleFilter}
+              onGroupCheckedChange={toggleGroupFilter}
             />
           </aside>
           <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6">
@@ -162,6 +190,7 @@ export const query = graphql`
             slug
             seasonKeyword
             url
+            group
             logo {
               childImageSharp {
                 gatsbyImageData(

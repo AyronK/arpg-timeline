@@ -4,6 +4,7 @@ seasonKeyword: season
 title: "Diablo IV: Vessel of Hatred"
 logo: /img/voh_logo_text_enus.avif
 url: https://diablo4.blizzard.com/en-us/vessel-of-hatred
+group: Blizzard
 currentSeason:
   startDate: ""
   endDate: ""
