@@ -41,6 +41,12 @@ collections:
         widget: "string"
         required: false
 
+      - label: "Is this an official game/ladder?"
+        name: "official"
+        widget: "boolean"
+        required: true
+        default: true
+
       - label: "Group"
         name: "group"
         widget: "string"

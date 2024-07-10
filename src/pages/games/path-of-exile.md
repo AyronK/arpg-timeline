@@ -3,6 +3,7 @@ slug: path-of-exile
 seasonKeyword: league
 title: Path of Exile
 shortName: poe
+official: true
 logo: /img/poe.png
 url: https://www.pathofexile.com/
 group: Path of Exile
@@ -20,6 +21,6 @@ nextSeason:
   showCountdown: true
   startDate: 2024-07-26T20:00:00.000Z
 crawlerSettings:
-  keywords: ["3.26"]
-  sources: ["https://poedb.tw/us/"]
+  keywords: ["season 5"]
+  sources: ["https://ud.floor.line.games/us/bbs/notice/notice_us/1"]
 ---

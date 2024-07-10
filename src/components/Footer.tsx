@@ -55,40 +55,66 @@ export const Footer = () => (
       </h3>
       <p className="ml-2">
         Yes! All dates are displayed in the local time of your machine. You can
-        even add an event to your Google Calendar!
+        even add an event to your favorite calendar!
+      </p>
+
+      <h3 className="font-semibold mt-1">
+        What does the "UNOFFICIAL" tag mean?
+      </h3>
+      <p className="ml-2">
+        The "UNOFFICIAL*" tag indicates that a game or cycle is not officially
+        recognized or supported by its original publishers. This means it is
+        created by fans or third parties without the endorsement or active
+        support of the official game developers or publishers. As a result, the
+        original publishers do not provide support for "UNOFFICIAL*" content,
+        and any issues or questions should be directed to the creators or the
+        community that developed it.
       </p>
 
       <h3 className="font-semibold mt-4">How often is this site updated?</h3>
       <p className="ml-2">
         The site is updated promptly upon receiving notifications. Expect
-        updates for upcoming seasons within one day of their availability to the
+        updates for upcoming seasons within 48h of their availability to the
         public. End dates may experience slight delays as they are less
         prominently advertised by game publishers.
       </p>
 
-      <h3 className="font-semibold mt-1">Can I subscribe to the news?</h3>
-      <p className="ml-2">
-        Certainly! You need to have a RSS feed reader. You can find RSS link at
-        the bottom of the page.
-      </p>
-
       <h3 className="font-semibold mt-4">Do you update the site manually?</h3>
       <p className="ml-2">
-        Unfortunately, yes, at the moment. Automation is being considered for
-        future implementation.
+        Partialy, although as the sites grows it becomes inevitable.
       </p>
 
       <h3 className="font-semibold mt-4">
         Would you add a new game to the list?
       </h3>
       <p className="ml-2">
-        Absolutely! Please submit an issue on our GitHub page (linked above).
+        Absolutely! Please submit an issue on our
+        <a
+          className="font-semibold hover:opacity-75"
+          href="https://github.com/AyronK/arpg-timeline/issues"
+          rel="external nofollow"
+          target="_blank"
+          aria-label="Author's Github Profile - AyronK"
+        >
+          GitHub page
+        </a>
+        .
       </p>
 
       <h3 className="font-semibold mt-4">Would you add a new feature?</h3>
       <p className="ml-2">
         Certainly! Feel free to suggest new features by submitting an issue on
-        our GitHub page.
+        our{" "}
+        <a
+          className="font-semibold hover:opacity-75"
+          href="https://github.com/AyronK/arpg-timeline/issues"
+          rel="external nofollow"
+          target="_blank"
+          aria-label="Author's Github Profile - AyronK"
+        >
+          GitHub page
+        </a>
+        .
       </p>
 
       <h3 className="font-semibold mt-4">Can I support your work?</h3>

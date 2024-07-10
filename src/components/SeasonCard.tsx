@@ -10,6 +10,7 @@ type SeasonCardProps = Partial<{
   title: string;
   shortName: string;
   logo: ImageDataLike;
+  official: boolean;
   url: string;
   currentSeason: Partial<{
     startDate: string;
@@ -238,10 +239,11 @@ const SeasonCard = (props: SeasonCardProps) => {
     currentSeason,
     nextSeason,
     seasonKeyword,
+    official,
   } = props;
 
   return (
-    <section className="border p-4 md:p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-card text-card-foreground">
+    <section className="relative border p-4 md:p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-card text-card-foreground">
       <div className="relative flex flex-row justify-center min-h-[60px] h-auto w-[100px] max-h-[80px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
         <a
           href={url}
@@ -272,6 +274,14 @@ const SeasonCard = (props: SeasonCardProps) => {
           testProps={props.testProps}
           seasonKeyword={seasonKeyword}
         />
+      )}
+      {!official && (
+        <span
+          className="absolute font-mono top-2 left-4 font-semibold text-yellow-400 opacity-75 text-xs md:text-sm tracking-wider"
+          title="This is not an official game or cycle, which means it is not actively supported by the publishers."
+        >
+          UNOFFICIAL*
+        </span>
       )}
     </section>
   );

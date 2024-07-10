@@ -2,6 +2,7 @@
 slug: median-xl
 seasonKeyword: season
 title: Median XL
+official: false
 group: Diablo Mods
 logo: /img/medianxl-logo.png
 url: https://www.median-xl.com/
