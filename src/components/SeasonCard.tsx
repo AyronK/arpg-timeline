@@ -91,7 +91,7 @@ const NextSearsonWidget = ({
             <span className="sr-only">{`${shortName} ${nextSeason.title} ${seasonKeyword}`}</span>
           )}
         </div>
-        {!!nextSeason.startDate && (
+        {nextSeason.showCountdown && nextSeason.startDate && (
           <div className="md:h-[28px] h-6 max-sm:flex flex">
             <CalendarMenu
               startDate={nextSeason.startDate}
