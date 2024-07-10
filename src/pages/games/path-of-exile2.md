@@ -3,6 +3,7 @@ slug: path-of-exile2
 seasonKeyword: league
 title: Path of Exile 2
 shortName: "poe2"
+official: true
 logo: /img/poe2.png
 url: https://pathofexile2.com/
 group: Path of Exile

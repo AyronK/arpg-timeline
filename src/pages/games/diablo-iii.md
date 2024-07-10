@@ -3,6 +3,7 @@ slug: diablo-iii
 seasonKeyword: season
 title: Diablo III
 shortName: "d3"
+official: true
 logo: /img/diablo_3_logo.png
 url: https://diablo3.blizzard.com/
 group: Diablo Official

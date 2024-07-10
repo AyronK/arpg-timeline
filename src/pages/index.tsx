@@ -194,6 +194,7 @@ export const query = graphql`
           frontmatter {
             title
             shortName
+            official
             slug
             seasonKeyword
             url
