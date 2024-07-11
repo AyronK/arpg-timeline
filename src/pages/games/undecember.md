@@ -21,4 +21,5 @@ crawlerSettings:
     - https://ud.floor.line.games/us/bbs/notice
   keywords:
     - season 6
+  steamId: 1549250
 ---

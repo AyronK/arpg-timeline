@@ -18,4 +18,6 @@ nextSeason:
   url: ""
   showCountdown: false
   startDateNotice: Estimated ~ October 2024
+crawlerSettings:
+  steamId: 1974050
 ---

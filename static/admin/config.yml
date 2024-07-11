@@ -156,6 +156,23 @@ collections:
             allow_add: true
             max: 3
 
+          - label: "Steam ID"
+            name: "steamId"
+            widget: "string"
+            required: false
+
+          - label: "Steam RSS options"
+            name: "steamRss"
+            widget: "object"
+            collapsed: true
+            required: false
+            fields:
+              - label: "Crawl RSS Descriptions"
+                name: "crawlDescriptions"
+                widget: "boolean"
+                required: false
+                default: false
+
   - label: "RSS Messages"
     label_singular: "RSS Message"
     name: "rss_messages"

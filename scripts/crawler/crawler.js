@@ -11,6 +11,7 @@ const importDependencies = async () => {
   const { unified } = await import("unified");
   const { read } = await import("to-vfile");
   const { matter } = await import("vfile-matter");
+  const { XMLParser } = await import("fast-xml-parser");
 
   return {
     fsPromises,
@@ -22,6 +23,7 @@ const importDependencies = async () => {
     unified,
     read,
     matter,
+    XMLParser,
   };
 };
 
@@ -36,6 +38,7 @@ const importDependencies = async () => {
     unified,
     read,
     matter,
+    XMLParser,
   } = await importDependencies();
 
   const loadGames = async (directoryPath) => {
@@ -64,32 +67,73 @@ const importDependencies = async () => {
 
     const fetchAndProcess = async (game) => {
       const { sources = [], keywords = [] } = game.crawlerSettings || {};
+      const mappedSources = sources.map((s) => ({
+        url: s,
+        options: {},
+      }));
 
-      if (sources.length > 0 && keywords.length > 0) {
-        const fetchPromises = sources.map(async (source) => {
+      // Add steam RSS to the sources
+      if (game.crawlerSettings?.steamId) {
+        mappedSources.push({
+          url: `https://store.steampowered.com/feeds/news/app/${game.crawlerSettings?.steamId}`,
+          options: {
+            selector: "item title",
+            rss: true,
+            crawlDescriptions: game.crawlerSettings.steamRss?.crawlDescriptions,
+          },
+        });
+      }
+
+      if (mappedSources.length > 0 && keywords.length > 0) {
+        const fetchPromises = mappedSources.map(async (source) => {
           try {
-            const result = await fetch(source);
+            const result = await fetch(source.url);
             if (result.ok) {
+              let keywordMatch = false;
               const text = await result.text();
-              const normalized = text.toLowerCase();
 
-              const keywordMatch = keywords.find((k) =>
-                normalized.includes(k.toLowerCase()),
-              );
+              if (!source.options.selector) {
+                // default flow, parse full text content
+                const normalized = text.toLowerCase();
+
+                keywordMatch = keywords.find((k) =>
+                  normalized.includes(k.toLowerCase()),
+                );
+              } else if (source.options.rss) {
+                // rss flow, read xml and search for keywords in feed items' titles
+                const parser = new XMLParser();
+                const jsonObj = parser.parse(text);
+
+                const items = jsonObj.rss.channel.item;
+                const titles = items.map((item) => item.title);
+                const descriptions = items.map((item) => item.description);
+
+                keywordMatch = keywords.find((k) =>
+                  titles.find((e) => e.toLowerCase().includes(k.toLowerCase())),
+                );
+
+                if (source.options.crawlDescriptions) {
+                  keywordMatch = keywords.find((k) =>
+                    descriptions.find((e) =>
+                      e.toLowerCase().includes(k.toLowerCase()),
+                    ),
+                  );
+                }
+              }
 
               if (keywordMatch) {
                 notifications.push(
-                  `🔍 **${game.title}**: '${keywordMatch}' keyword on ${source}`,
+                  `🔍 **${game.title}**: '${keywordMatch}' keyword on ${source.url}`,
                 );
               }
             } else {
               notifications.push(
-                `❌ **${game.title}**: Failed to fetch data from ${source}: ${result.status} - ${result.statusText}`,
+                `❌ **${game.title}**: Failed to fetch data from ${source.url}: ${result.status} - ${result.statusText}`,
               );
             }
           } catch (error) {
             notifications.push(
-              `❌ **${game.title}**: Error fetching data from ${source}: ${error.message}`,
+              `❌ **${game.title}**: Error fetching data from ${source.url}: ${error.message}`,
             );
           }
         });

@@ -21,4 +21,5 @@ nextSeason:
 crawlerSettings:
   keywords: ["season 6"]
   sources: ["https://news.blizzard.com/en-us/diablo4"]
+  steamId: 2344520
 ---

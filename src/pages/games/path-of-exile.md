@@ -25,4 +25,5 @@ crawlerSettings:
     - "3.26"
   sources:
     - https://poedb.tw/us/
+  steamId: 238960
 ---
