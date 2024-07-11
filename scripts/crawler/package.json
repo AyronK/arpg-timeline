@@ -8,6 +8,7 @@
     "crawl:develop": "node --env-file=.env crawler.js"
   },
   "dependencies": {
+    "fast-xml-parser": "^4.4.0",
     "node-fetch": "^3.3.2",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",

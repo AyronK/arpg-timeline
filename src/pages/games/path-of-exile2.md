@@ -15,4 +15,10 @@ nextSeason:
   url: https://pathofexile2.com/
   title: Open Beta (Early Access)
   startDateNotice: Estimated November 2024
+crawlerSettings:
+  keywords:
+    - "early access"
+    - "open beta"
+    - "starts"
+  steamId: 2694490
 ---

@@ -21,4 +21,5 @@ crawlerSettings:
       "https://herosiege.wiki.gg/wiki/Hero_Siege_Wiki",
       "https://panicartstudios.com/hsportal/index.php?page=patch_notes",
     ]
+  steamId: 269210
 ---
