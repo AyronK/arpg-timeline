@@ -80,14 +80,14 @@ const NextSearsonWidget = ({
           <div className="hidden sm:block">
             <Chip>Next</Chip>
           </div>
-          <h3
+          <h4
             className="text-base sm:text-lg font-semibold flex-1 md:line-clamp-1"
             title={nextSeason.title}
           >
             <a href={nextSeason.url} target="_blank" rel="noopener noreferrer">
               {nextSeason.title}
             </a>
-          </h3>
+          </h4>
           {shortName && (
             <span className="sr-only">{`${shortName} ${nextSeason.title} ${seasonKeyword}`}</span>
           )}
@@ -159,7 +159,7 @@ const CurrentSeasonWidget = ({
                 {currentSeason.justStarted ? "LIVE" : "Now"}
               </Chip>
             </div>
-            <h3
+            <h4
               className="text-base sm:text-lg font-semibold flex-1 md:line-clamp-1"
               title={currentSeason.title}
             >
@@ -170,7 +170,7 @@ const CurrentSeasonWidget = ({
               >
                 {currentSeason.title}
               </a>
-            </h3>
+            </h4>
             {shortName && (
               <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword}`}</span>
             )}
@@ -258,7 +258,7 @@ const SeasonCard = (props: SeasonCardProps) => {
           />
         </a>
       </div>
-      <h2 className="sr-only">{title}</h2>
+      <h3 className="sr-only">{title}</h3>
       <CurrentSeasonWidget
         currentSeason={currentSeason}
         title={title}
