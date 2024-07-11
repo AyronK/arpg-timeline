@@ -16,7 +16,7 @@ nextSeason:
   startDate: 2024-07-12T19:00:00.000Z
   title: "Season 32: Ethereal Memory"
   url: https://news.blizzard.com/en-us/diablo3/24104599/season-32-ethereal-memory-preview
-  showCountdown: true
+  showCountdown: false
   startDateNotice: 17:00 PST/CET/KST
 crawlerSettings:
   keywords:
