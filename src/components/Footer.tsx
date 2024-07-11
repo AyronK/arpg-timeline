@@ -1,21 +1,8 @@
 import React from "react";
 
 export const Footer = () => (
-  <footer className="mt-12 container mx-auto px-4 mb-8">
-    <div className="mx-auto max-w-prose">
-      {/* TODO: Uncomment when RSS feed is fixed
-    <div className="flex flex-row justify-end mt-4 gap-1">
-      <a
-        title="RSS Feed"
-        target="_blank"
-        rel="noopener noreferrer nofollow"
-        className="font-semibold hover:opacity-75"
-        href="/assets/rss.xml"
-      >
-        RSS
-      </a>
-    </div> */}
-
+  <footer className="mt-12 px-4 mb-8">
+    <div>
       <div className="flex flex-row justify-end mt-4 gap-1">
         <a
           title="RSS Feed"
@@ -24,18 +11,7 @@ export const Footer = () => (
           className="font-semibold hover:opacity-75"
           href="/assets/about.txt"
         >
-          About site and licences
-        </a>
-      </div>
-
-      <div className="flex flex-row justify-end mt-4 gap-1">
-        <a
-          target="_blank"
-          className="font-semibold hover:opacity-75"
-          href="https://100dayscss.ayronk.com/"
-          rel="me"
-        >
-          My other work
+          Licences
         </a>
       </div>
 
