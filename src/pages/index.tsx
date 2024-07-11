@@ -4,6 +4,7 @@ import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
 import { FiltersDialog } from "@/components/FiltersDialog";
+import { Faq } from "@/components/Faq";
 
 const HOUR = 1000 * 60 * 60;
 const DAY = HOUR * 24;
@@ -150,7 +151,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
 
   return (
     <Layout themeButtonClassName="top-16 md:top-8">
-      <div className="container mx-auto mb-20">
+      <div className="container mx-auto mb-8">
         <p className="hidden md:block max-w-prose mx-auto text-center text-lg md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
@@ -174,12 +175,14 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
             />
           </div>
           <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-2 md:gap-4">
+            <h2 className="sr-only">Game seasons</h2>
             {visibleGames.map((game) => (
               <SeasonCard key={game!.slug} {...game} />
             ))}
           </article>
         </div>
       </div>
+      <Faq />
     </Layout>
   );
 };
