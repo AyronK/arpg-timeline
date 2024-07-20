@@ -24,4 +24,5 @@ crawlerSettings:
   steamId: 899770
   steamRss:
     crawlDescriptions: true
+    notifyAboutNews: true
 ---
