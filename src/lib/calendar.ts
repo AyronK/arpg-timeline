@@ -58,3 +58,25 @@ export function addToOutlookCalendar(eventTitle: string, eventDate: Date) {
   const outlookCalendarUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(eventTitle)}&startdt=${encodeURIComponent(startDateTime)}&enddt=${encodeURIComponent(endDateTime)}&allday=false&body=&location=`;
   window.open(outlookCalendarUrl, "_blank");
 }
+
+const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
+  month: "short",
+  day: "numeric",
+  hourCycle: "h24",
+  hour: "numeric",
+  minute: "numeric",
+};
+
+const locale = "en-US";
+const localDateIntl = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
+
+export function addToTickTick(eventTitle: string, eventDate: Date) {
+  const clipboardDate = localDateIntl.format(eventDate);
+  const formattedDate =
+    eventDate.toISOString().replace(/[-:]/g, "").slice(0, -5) + "+0000";
+  window.open(
+    `ticktick://v1/add_task?title=${encodeURIComponent(eventTitle)}&startDate=${formattedDate}&allDay=false`,
+    "_blank",
+  );
+  navigator.clipboard.writeText(`${eventTitle} ${clipboardDate}`);
+}
