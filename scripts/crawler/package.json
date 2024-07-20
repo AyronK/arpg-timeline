@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "crawl": "node dist/crawler.js",
+    "crawl": "tsc & node dist/crawler.js",
     "crawl:develop": "tsc & node --env-file=.env dist/crawler.js"
   },
   "dependencies": {
