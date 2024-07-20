@@ -5,6 +5,8 @@ import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
+import { Button } from "@/components/Button";
+import { UsersRound } from "lucide-react";
 
 const HOUR = 1000 * 60 * 60;
 const DAY = HOUR * 24;
@@ -151,7 +153,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
 
   return (
     <Layout themeButtonClassName="top-16 md:top-8">
-      <div className="container mx-auto mb-8">
+      <div className="container relative mx-auto mb-8">
         <p className="mx-auto hidden max-w-prose text-center text-lg md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
@@ -173,6 +175,18 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onCheckedChange={toggleFilter}
               onGroupCheckedChange={toggleGroupFilter}
             />
+          </div>
+          <div className="relative z-20 text-center text-xs before:absolute before:inset-0 before:-z-10 md:right-auto xl:absolute xl:-top-12">
+            <Button
+              variant={"warning"}
+              asChild
+              className="w-full px-2 md:px-4 xl:w-auto"
+            >
+              <a href="/looking-for-moderators" rel="self">
+                <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
+                Looking for moderators!
+              </a>
+            </Button>
           </div>
           <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
