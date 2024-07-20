@@ -3,28 +3,23 @@ import { Footer } from "./Footer";
 import useSiteMetadata from "../hooks/useSiteMetadata";
 import { ThemeProvider } from "./ThemeProvider";
 import { ThemeToggle } from "./ThemeToggle";
-import { cn } from "@/lib/utils";
 import { Button } from "./Button";
 
-export const Layout = ({
-  children,
-  themeButtonClassName,
-}: React.PropsWithChildren & { themeButtonClassName?: string | undefined }) => {
+export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="arpgTimeline.uiTheme">
       <header>
         <div className="relative">
-          <a href="/" rel="self">
-            <h1 className="px-4 pb-2 pt-4 text-center text-2xl font-semibold md:pt-8 md:text-4xl">
-              aRPG Timeline
-            </h1>
-          </a>{" "}
-          <div
-            className={cn(
-              "container absolute left-0 right-0 top-3 flex flex-row justify-end gap-2 md:top-8",
-              themeButtonClassName,
-            )}
-          >
+          <div className="flex justify-center">
+            <a
+              href="/"
+              rel="self"
+              className="relative z-20 mx-auto my-4 mb-2 text-2xl font-semibold md:my-8 md:text-4xl"
+            >
+              <h1>aRPG Timeline</h1>
+            </a>
+          </div>
+          <div className="container absolute left-0 right-0 top-16 z-10 flex flex-row justify-end gap-2 md:top-8">
             <Button variant={"outline"} asChild className="px-2 md:px-4">
               <a
                 href="https://www.buymeacoffee.com/ayron"
@@ -113,12 +108,6 @@ export const Head = () => {
       <meta property="twitter:image" content="/assets/seoimage.jpeg" />
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link
-        rel="alternate"
-        type="application/rss+xml"
-        title="RSS Feed"
-        href="/rss.xml"
-      />
     </>
   );
 };

@@ -52,7 +52,7 @@ export const FiltersDialog = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>
+            <DialogDescription asChild>
               <Description />
             </DialogDescription>
           </DialogHeader>
@@ -72,11 +72,11 @@ export const FiltersDialog = ({
       <DrawerTrigger asChild>
         <Trigger checked={checked} filters={filters} />
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className={!isMd ? "left-0" : null}>
         <DrawerHandle />
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
-          <DrawerDescription>
+          <DrawerDescription asChild>
             <Description />
           </DrawerDescription>
         </DrawerHeader>
@@ -101,23 +101,23 @@ export const FiltersDialog = ({
 const Description = () => (
   <div className="mt-2 flex flex-row gap-2 rounded-md border p-2">
     <Lightbulb className="mt-1 h-4 w-4 flex-shrink-0" />
-    <p className="md:max-w-80">
+    <span className="md:max-w-80">
       You can add this website to your bookmarks so you'll always have the same
       setup!
-    </p>
+    </span>
   </div>
 );
 
-const Trigger = ({
-  filters,
-  checked,
-  ...rest
-}: React.ComponentPropsWithoutRef<typeof Button> &
-  Pick<FiltersDialogProps, "checked" | "filters">) => (
+const Trigger = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<typeof Button> &
+    Pick<FiltersDialogProps, "checked" | "filters">
+>(({ filters, checked, ...rest }, ref) => (
   <Button
     {...rest}
+    ref={ref}
     variant="outline"
-    className={cn("relative", {
+    className={cn("relative z-10", {
       "animate-pulse":
         checked?.length === filters?.length && filters?.length > 0,
     })}
@@ -131,7 +131,7 @@ const Trigger = ({
       </span>
     )}
   </Button>
-);
+));
 
 const Filters = ({
   filters,
@@ -155,7 +155,7 @@ const Filters = ({
         .map((g) => {
           const anyChecked = !!groups[g].find((f) => checked.includes(f.value));
           return (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3" key={g}>
               <div className="flex flex-row items-center">
                 <h3 className="font-lg font-semibold">
                   {g !== "" ? g : "Uncategorized"}
