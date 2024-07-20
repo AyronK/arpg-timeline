@@ -152,7 +152,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   };
 
   return (
-    <Layout themeButtonClassName="top-16 md:top-8">
+    <Layout>
       <div className="container relative mx-auto mb-8">
         <p className="mx-auto hidden max-w-prose text-center text-lg md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
@@ -176,11 +176,11 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
-          <div className="relative z-20 text-center text-xs before:absolute before:inset-0 before:-z-10 md:right-auto xl:absolute xl:-top-12">
+          <div className="relative z-0 flex text-xs lg:container lg:absolute lg:left-0 lg:right-0 lg:top-14 lg:w-full">
             <Button
               variant={"warning"}
               asChild
-              className="w-full px-2 md:px-4 xl:w-auto"
+              className="w-full px-2 lg:ml-auto lg:w-auto lg:px-4"
             >
               <a href="/looking-for-moderators" rel="self">
                 <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
