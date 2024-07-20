@@ -11,7 +11,9 @@ import {
   addToGoogleCalendar,
   addToICloudCalendar,
   addToOutlookCalendar,
+  addToTickTick,
 } from "@/lib/calendar";
+import { cn } from "@/lib/utils";
 
 export const CalendarMenu = ({
   title,
@@ -36,7 +38,7 @@ export const CalendarMenu = ({
           width="24"
           height="24"
           src="/assets/google-calendar-logo.png"
-          alt="Add to Google calendar"
+          aria-hidden
         />
         <span>Gmail</span>
       </DropdownMenuItem>
@@ -49,7 +51,7 @@ export const CalendarMenu = ({
           width="24"
           height="24"
           src="/assets/apple-logo.svg"
-          alt="Add to iCloud calendar"
+          aria-hidden
         />
         <span>iCloud</span>
       </DropdownMenuItem>
@@ -62,9 +64,23 @@ export const CalendarMenu = ({
           width="24"
           height="24"
           src="/assets/outlook-logo.png"
-          alt="Add to Outlook"
+          aria-hidden
         />
         <span>Outlook</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        className={cn({ hidden: !navigator?.clipboard })}
+        onClick={() => addToTickTick(title, new Date(startDate))}
+        aria-label="Add to TickTick Calendar"
+      >
+        <img
+          className="mr-2 h-4 w-4"
+          width="24"
+          height="24"
+          src="/assets/tick-tick-logo.png"
+          aria-hidden
+        />
+        <span>TickTick</span>
       </DropdownMenuItem>
       <DropdownMenuItem
         onClick={() => downloadICSFile(title, new Date(startDate))}
