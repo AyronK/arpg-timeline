@@ -7,15 +7,17 @@ official: true
 logo: /img/undecember-logo.png
 url: https://undecember.line.games/
 currentSeason:
-  startDate: 2024-03-28T05:00:00.000Z
-  endDate: 2024-07-18T05:00:00.000Z
-  title: Season 4
-  url: ""
-nextSeason:
   startDate: 2024-07-18T05:00:00.000Z
+  endDate: 2024-12-12T05:00:00.000Z
   title: "Season 5: Exodium"
-  url: https://event.line.games/ud/season5_pre_register
-  showCountdown: true
+  url: ""
+  endDateNotice: ""
+nextSeason:
+  startDate: 2024-12-12T05:00:00.000Z
+  title: Season 6
+  url: ""
+  showCountdown: false
+  startDateNotice: est. end of 2024
 crawlerSettings:
   sources:
     - https://ud.floor.line.games/us/bbs/notice
