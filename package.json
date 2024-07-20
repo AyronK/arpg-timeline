@@ -87,8 +87,25 @@
     "lint-staged": "^15.2.7",
     "netlify-plugin-discord": "^0.0.2",
     "prettier": "3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "storybook": "^8.1.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.15.0"
+  },
+  "prettier": {
+    "endOfLine": "crlf",
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": false,
+    "semi": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "quoteProps": "as-needed",
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }

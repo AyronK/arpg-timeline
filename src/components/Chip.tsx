@@ -6,7 +6,7 @@ export const Chip = ({
   className,
 }: PropsWithChildren<{ className?: string }>) => (
   <span
-    className={`px-2 font-semibold rounded-md text-xs text-white bg-emerald-600 ${className ?? ""}`}
+    className={`rounded-md bg-emerald-600 px-2 text-xs font-semibold text-white ${className ?? ""}`}
   >
     {children}
   </span>

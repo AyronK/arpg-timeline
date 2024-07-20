@@ -69,7 +69,9 @@ export const CalendarMenu = ({
         <span>Outlook</span>
       </DropdownMenuItem>
       <DropdownMenuItem
-        className={cn({ hidden: !navigator?.clipboard })}
+        className={cn({
+          hidden: typeof window === "undefined" || !navigator?.clipboard,
+        })}
         onClick={() => addToTickTick(title, new Date(startDate))}
         aria-label="Add to TickTick Calendar"
       >

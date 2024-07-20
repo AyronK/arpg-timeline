@@ -5,8 +5,8 @@ import { Button } from "@/components/Button";
 const IndexPage = () => {
   return (
     <Layout>
-      <div className="container mx-auto px-4 mb-20 max-w-prose">
-        <h2 className="text-2xl font-semibold text-center pt-2 pb-4">
+      <div className="container mx-auto mb-20 max-w-prose px-4">
+        <h2 className="pb-4 pt-2 text-center text-2xl font-semibold">
           Privacy
         </h2>
         <p>
@@ -53,7 +53,7 @@ const IndexPage = () => {
           </Button>
           .
         </p>
-        <h2 className="text-2xl font-semibold text-center pt-2 pb-4">
+        <h2 className="pb-4 pt-2 text-center text-2xl font-semibold">
           What we do and do not collect
         </h2>
         <p>
@@ -85,7 +85,7 @@ const IndexPage = () => {
           <br />
           <br />
           Otherwise:
-          <ul className="list list-disc list-inside">
+          <ul className="list list-inside list-disc">
             <li>We do collect and store whether visits are unique</li>
             <li>
               We do <strong>NOT</strong> set any cookies (or use similar

@@ -87,7 +87,7 @@ export const FiltersDialog = ({
           onGroupCheckedChange={onGroupCheckedChange}
         />
         <DrawerFooter>
-          <div className="md:mr-auto ml-auto md:ml-0">
+          <div className="ml-auto md:ml-0 md:mr-auto">
             <DrawerClose asChild>
               <Button variant="outline">Close</Button>
             </DrawerClose>
@@ -99,8 +99,8 @@ export const FiltersDialog = ({
 };
 
 const Description = () => (
-  <div className="border p-2 mt-2 rounded-md flex flex-row gap-2">
-    <Lightbulb className="h-4 w-4 flex-shrink-0 mt-1" />
+  <div className="mt-2 flex flex-row gap-2 rounded-md border p-2">
+    <Lightbulb className="mt-1 h-4 w-4 flex-shrink-0" />
     <p className="md:max-w-80">
       You can add this website to your bookmarks so you'll always have the same
       setup!
@@ -122,10 +122,10 @@ const Trigger = ({
         checked?.length === filters?.length && filters?.length > 0,
     })}
   >
-    <Filter className="h-4 w-4 mr-2" /> Filter games
+    <Filter className="mr-2 h-4 w-4" /> Filter games
     {checked?.length !== filters?.length && filters?.length > 0 && (
-      <span className="motion-reduce:hidden motion-safe:flex absolute h-6 w-6 -top-3 -right-3 scale-75">
-        <span className="relative text-white grid place-content-center rounded-full h-6 w-6 bg-slate-500">
+      <span className="absolute -right-3 -top-3 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
+        <span className="relative grid h-6 w-6 place-content-center rounded-full bg-slate-500 text-white">
           {checked.length}
         </span>
       </span>
@@ -149,7 +149,7 @@ const Filters = ({
   );
 
   return (
-    <div className="px-6 flex flex-col gap-6 overflow-auto">
+    <div className="flex flex-col gap-6 overflow-auto px-6">
       {Object.keys(groups)
         .sort()
         .map((g) => {
@@ -166,9 +166,9 @@ const Filters = ({
                   onClick={() => onGroupCheckedChange(g, !anyChecked)}
                 >
                   {anyChecked ? (
-                    <Eye className="w-4 h-4" />
+                    <Eye className="h-4 w-4" />
                   ) : (
-                    <EyeOff className="w-4 h-4" />
+                    <EyeOff className="h-4 w-4" />
                   )}
                 </Button>
               </div>
@@ -183,7 +183,7 @@ const Filters = ({
                       />
                       <label
                         className={cn(
-                          "cursor-pointer transition-all ease-in-out duration-150",
+                          "cursor-pointer transition-all duration-150 ease-in-out",
                           {
                             "opacity-50": !checked.includes(f.value),
                           },

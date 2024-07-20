@@ -72,16 +72,16 @@ const NextSearsonWidget = ({
   return (
     <div
       aria-label={`Next ${seasonKeyword}`}
-      className="flex flex-col gap-1 mt-auto"
+      className="mt-auto flex flex-col gap-1"
     >
-      <div className="flex flex-row gap-2 justify-between">
+      <div className="flex flex-row justify-between gap-2">
         <span className="sr-only">{`What is the next ${title} ${seasonKeyword}?`}</span>
-        <div className="flex flex-col md:flex-row md:gap-2 min-w-0">
+        <div className="flex min-w-0 flex-col md:flex-row md:gap-2">
           <div className="hidden sm:block">
             <Chip>Next</Chip>
           </div>
           <h4
-            className="text-base sm:text-lg font-semibold flex-1 md:line-clamp-1"
+            className="flex-1 text-base font-semibold sm:text-lg md:line-clamp-1"
             title={nextSeason.title}
           >
             <a href={nextSeason.url} target="_blank" rel="noopener noreferrer">
@@ -93,7 +93,7 @@ const NextSearsonWidget = ({
           )}
         </div>
         {nextSeason.showCountdown && nextSeason.startDate && (
-          <div className="md:h-[28px] h-6 max-sm:flex flex">
+          <div className="flex h-6 max-sm:flex md:h-[28px]">
             <CalendarMenu
               startDate={nextSeason.startDate}
               title={`${title} ${seasonKeyword} start`}
@@ -101,16 +101,16 @@ const NextSearsonWidget = ({
           </div>
         )}
       </div>
-      <div className="flex flex-row justify-between sm:items-baseline min-h-[28px]">
+      <div className="flex min-h-[28px] flex-row justify-between sm:items-baseline">
         <span className="sr-only">{`When is the next ${title} ${seasonKeyword} starting?`}</span>
         <div className="flex flex-row gap-2 text-sm">
           {!!nextSeason.startDateNotice || !nextSeason.startDate ? (
-            <div className="gap-1 flex items-center">
+            <div className="flex items-center gap-1">
               <Chip className="sm:hidden">Next</Chip>
               <span>{nextSeason.startDateNotice}</span>
             </div>
           ) : (
-            <div className="gap-1 flex items-center">
+            <div className="flex items-center gap-1">
               {shortName && (
                 <span className="sr-only">{`${shortName} ${nextSeason.title} ${seasonKeyword} release date`}</span>
               )}
@@ -146,10 +146,10 @@ const CurrentSeasonWidget = ({
       aria-label={`Current ${seasonKeyword}`}
       className="flex flex-col gap-1"
     >
-      <div className="gap-4 sm:gap-1 flex sm:flex-col max-sm:items-end">
-        <div className="flex flex-row gap-2 flex-1">
+      <div className="flex gap-4 max-sm:items-end sm:flex-col sm:gap-1">
+        <div className="flex flex-1 flex-row gap-2">
           <span className="sr-only">{`What is the current ${title} ${seasonKeyword}?`}</span>
-          <div className="flex flex-col md:flex-row md:gap-2 min-w-0">
+          <div className="flex min-w-0 flex-col md:flex-row md:gap-2">
             <div className="hidden sm:block">
               <Chip
                 className={
@@ -160,7 +160,7 @@ const CurrentSeasonWidget = ({
               </Chip>
             </div>
             <h4
-              className="text-base sm:text-lg font-semibold flex-1 md:line-clamp-1"
+              className="flex-1 text-base font-semibold sm:text-lg md:line-clamp-1"
               title={currentSeason.title}
             >
               <a
@@ -177,7 +177,7 @@ const CurrentSeasonWidget = ({
           </div>
         </div>
         <div className="flex flex-row justify-end sm:justify-between">
-          <div className="flex-col gap-1 col-span-4 hidden sm:flex">
+          <div className="col-span-4 hidden flex-col gap-1 sm:flex">
             <span className="sr-only">{`When did the current ${title} ${seasonKeyword} start?`}</span>
             <div className="flex flex-row gap-2 text-sm">
               {!!currentSeason.startDateNotice || !currentSeason.startDate ? (
@@ -196,7 +196,7 @@ const CurrentSeasonWidget = ({
             <span className="sr-only">{`When is the current ${title} ${seasonKeyword} ending?`}</span>
             <div className="flex flex-row-reverse gap-2 text-sm max-sm:leading-6">
               {!!currentSeason.endDateNotice || !currentSeason.endDate ? (
-                <div className="max-w-32 md:max-w-none text-wrap text-right">
+                <div className="max-w-32 text-wrap text-right md:max-w-none">
                   {currentSeason.endDateNotice}
                 </div>
               ) : (
@@ -243,8 +243,8 @@ const SeasonCard = (props: SeasonCardProps) => {
   } = props;
 
   return (
-    <section className="relative border p-4 md:p-6 rounded-md flex flex-col gap-2 md:gap-4 bg-card text-card-foreground">
-      <div className="relative flex flex-row justify-center min-h-[60px] h-auto w-[100px] max-h-[80px] md:h-[140px] md:w-[200px] md:max-h-[140px] place-self-center">
+    <section className="relative flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:gap-4 md:p-6">
+      <div className="relative flex h-auto max-h-[80px] min-h-[60px] w-[100px] flex-row justify-center place-self-center md:h-[140px] md:max-h-[140px] md:w-[200px]">
         <a
           href={url}
           rel="nofollow noreferrer"
@@ -277,7 +277,7 @@ const SeasonCard = (props: SeasonCardProps) => {
       )}
       {!official && (
         <span
-          className="absolute font-mono top-2 left-4 font-semibold text-yellow-400 opacity-75 text-xs md:text-sm tracking-wider"
+          className="absolute left-4 top-2 font-mono text-xs font-semibold tracking-wider text-yellow-400 opacity-75 md:text-sm"
           title="This is not an official game or cycle, which means it is not actively supported by the publishers."
         >
           UNOFFICIAL*

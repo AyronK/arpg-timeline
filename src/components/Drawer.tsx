@@ -43,7 +43,7 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed right-0 pt-6 bottom-0 top-16 md:top-0 z-50 flex h-auto flex-col rounded-t-[10px] border bg-background",
+        "fixed bottom-0 right-0 top-16 z-50 flex h-auto flex-col rounded-t-[10px] border bg-background pt-6 md:top-0",
         className,
       )}
       {...props}
@@ -60,7 +60,7 @@ const DrawerHandle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Handle
     ref={ref}
-    className={cn("md:!hidden w-[33vw] bg-foreground top-0", className)}
+    className={cn("top-0 w-[33vw] bg-foreground md:!hidden", className)}
     {...props}
   />
 ));
