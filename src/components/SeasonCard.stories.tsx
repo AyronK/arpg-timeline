@@ -8,7 +8,7 @@ const meta = {
   component: SeasonCard,
   decorators: [
     (Story) => (
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-12 gap-4 md:gap-8">
+      <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
         <div>
           <Story />
         </div>

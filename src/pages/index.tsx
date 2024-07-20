@@ -152,12 +152,12 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   return (
     <Layout themeButtonClassName="top-16 md:top-8">
       <div className="container mx-auto mb-8">
-        <p className="hidden md:block max-w-prose mx-auto text-center text-lg md:text-xl">
+        <p className="mx-auto hidden max-w-prose text-center text-lg md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="flex flex-col gap-4 mt-2 md:mt-0">
+        <div className="mt-2 flex flex-col gap-4 md:mt-0">
           <div className="max-w-[1200px]">
             <FiltersDialog
               checked={games
@@ -174,7 +174,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
-          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-2 md:gap-4">
+          <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
             {visibleGames.map((game) => (
               <SeasonCard key={game!.slug} {...game} />
