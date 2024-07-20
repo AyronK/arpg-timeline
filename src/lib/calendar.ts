@@ -72,11 +72,6 @@ const localDateIntl = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
 
 export function addToTickTick(eventTitle: string, eventDate: Date) {
   const clipboardDate = localDateIntl.format(eventDate);
-  const formattedDate =
-    eventDate.toISOString().replace(/[-:]/g, "").slice(0, -5) + "+0000";
-  window.open(
-    `ticktick://v1/add_task?title=${encodeURIComponent(eventTitle)}&startDate=${formattedDate}&allDay=false`,
-    "_blank",
-  );
+  window.open("https://ticktick.com/webapp", "_blank");
   navigator.clipboard.writeText(`${eventTitle} ${clipboardDate}`);
 }
