@@ -22,7 +22,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build script
+        run: npm run build
+
       - name: Run script
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: npm run crawl
+        
+      - name: Notify Discord if fails
+        if: failure()
+        uses: discord-actions/message@v2
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: "Crawler has failed"
