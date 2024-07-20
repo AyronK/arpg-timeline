@@ -24,4 +24,6 @@ crawlerSettings:
   keywords:
     - season 6
   steamId: 1549250
+  steamRss:
+    notifyAboutNews: true
 ---

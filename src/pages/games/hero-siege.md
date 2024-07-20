@@ -22,4 +22,6 @@ crawlerSettings:
       "https://panicartstudios.com/hsportal/index.php?page=patch_notes",
     ]
   steamId: 269210
+  steamRss:
+    notifyAboutNews: true
 ---

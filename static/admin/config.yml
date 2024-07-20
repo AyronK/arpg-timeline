@@ -173,6 +173,12 @@ collections:
                 required: false
                 default: false
 
+              - label: "Notify about new RSS messages"
+                name: "notifyAboutNews"
+                widget: "boolean"
+                required: false
+                default: false
+
   - label: "RSS Messages"
     label_singular: "RSS Message"
     name: "rss_messages"
