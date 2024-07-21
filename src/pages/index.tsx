@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { lazy, Suspense } from "react";
 import { graphql, PageProps } from "gatsby";
 import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
@@ -7,6 +7,13 @@ import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/components/Button";
 import { UsersRound } from "lucide-react";
+import { getProgress } from "@/lib/getProgress";
+
+const Timeline = lazy(() =>
+  import("@/components/Timeline").then((module) => ({
+    default: module.Timeline,
+  })),
+);
 
 const HOUR = 1000 * 60 * 60;
 const DAY = HOUR * 24;
@@ -151,6 +158,27 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     }
   };
 
+  const currentSeasons = visibleGames
+    .filter((g) => g?.currentSeason?.startDate)
+    .map((g) => ({
+      name: `${g?.title} - ${g?.currentSeason?.title}`,
+      start: new Date(g?.currentSeason?.startDate),
+      end: new Date(g?.currentSeason.endDate),
+      progress: getProgress(
+        g?.currentSeason?.startDate,
+        g?.currentSeason.endDate,
+      ),
+    }));
+  const nextSeasons = visibleGames
+    .filter((g) => g?.nextSeason?.startDate)
+    .map((g) => ({
+      name: `${g?.title} - ${g?.nextSeason?.title}`,
+      start: new Date(g?.nextSeason?.startDate),
+    }));
+  const events = [...currentSeasons, ...nextSeasons].sort(
+    (a, b) => a.start.getTime() - b.start.getTime(),
+  );
+
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
@@ -193,6 +221,11 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
             {visibleGames.map((game) => (
               <SeasonCard key={game!.slug} {...game} />
             ))}
+            <div className="relative col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
+              <Suspense fallback="Loading">
+                <Timeline events={events} />
+              </Suspense>
+            </div>
           </article>
         </div>
       </div>

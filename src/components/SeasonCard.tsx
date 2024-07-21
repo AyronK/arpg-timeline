@@ -5,6 +5,7 @@ import { ProgressBar } from "./ProgressBar";
 import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
 import { Chip } from "./Chip";
 import { CalendarMenu } from "./CalendarMenu";
+import { getProgress } from "../lib/getProgress";
 
 type SeasonCardProps = Partial<{
   title: string;
@@ -36,27 +37,6 @@ type SeasonCardProps = Partial<{
     timeLeft?: number;
   };
 }>;
-
-const getProgress = (
-  startDate: string | undefined,
-  endDate: string | undefined,
-  currentTime?: Date | undefined,
-) => {
-  if (!startDate || !endDate) {
-    return 0;
-  }
-
-  const now = currentTime?.getTime() ?? Date.now();
-  const startTimeMs = new Date(startDate).getTime();
-  const endTimeMs = new Date(endDate).getTime();
-
-  const totalDuration = endTimeMs - startTimeMs;
-  const elapsedTime = now - startTimeMs;
-
-  const progressPercentage = (elapsedTime / totalDuration) * 100;
-
-  return progressPercentage;
-};
 
 const NextSearsonWidget = ({
   nextSeason,
