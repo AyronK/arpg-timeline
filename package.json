@@ -3,9 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "description": "arpg-timeline",
-  "author": "Marcin Kotlicki",
+  "author": {
+    "name": "Marcin Kotlicki",
+    "email": "contact@arpg-timeline.com"
+  },
   "keywords": [
-    "gatsby"
+    "arpg",
+    "timeline",
+    "seasons",
+    "poe",
+    "path of exile",
+    "diablo",
+    "last epoch"
   ],
   "scripts": {
     "develop": "gatsby develop",
@@ -96,10 +105,11 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.17.0",
-    "ws": "^8.17.1"
+    "ws": "^8.18.0"
   },
+  "license": "MIT",
   "overrides": {
-    "ws": "^8.17.1",
+    "ws": "^8.18.0",
     "webpack-dev-middleware": "^6.1.2",
     "axios": "1.7.2"
   },
