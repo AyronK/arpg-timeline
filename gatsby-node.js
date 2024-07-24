@@ -23,3 +23,12 @@ exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions;
   createNodeHandler(createNodeField, node);
 };
+
+exports.onCreateBabelConfig = ({ actions }) => {
+  actions.setBabelPlugin({
+    name: "@babel/plugin-transform-react-jsx",
+    options: {
+      runtime: "automatic",
+    },
+  });
+};
