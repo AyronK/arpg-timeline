@@ -1,13 +1,8 @@
-import { Game, Season } from "@/lib/cms/games.types";
-
-export type CurrentSeason = Season & {
-  justStarted?: boolean;
-};
+import { Game } from "@/lib/cms/games.types";
 
 export type SeasonCardTestProps = TestProps<{
   now?: Date;
   timeLeft?: number;
 }>;
 
-export type SeasonCardProps = SeasonCardTestProps &
-  Replace<Game, "currentSeason", CurrentSeason>;
+export type SeasonCardProps = SeasonCardTestProps & Game;

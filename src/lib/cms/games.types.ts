@@ -9,7 +9,7 @@ export type Game = {
   readonly url: string | null;
   readonly group: string | null;
   readonly logo: ImageDataLike;
-  readonly currentSeason: Season;
+  readonly currentSeason: CurrentSeason;
   readonly nextSeason: NextSeason;
 };
 
@@ -24,4 +24,8 @@ export type Season = {
 
 export type NextSeason = Season & {
   readonly showCountdown: boolean | null;
+};
+
+export type CurrentSeason = Season & {
+  readonly justStarted: boolean | null;
 };

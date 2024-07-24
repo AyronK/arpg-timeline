@@ -2,12 +2,10 @@ import { lazy, Suspense, useState } from "react";
 import { graphql, PageProps } from "gatsby";
 import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { Layout } from "@/components/Layout";
-import { useSearchParams } from "@/hooks/useSearchParams";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
 import { ChevronsUpDown, UsersRound } from "lucide-react";
-import { getProgress } from "@/lib/getProgress";
 import { cn } from "@/lib/utils";
 import {
   Collapsible,
@@ -16,6 +14,9 @@ import {
 } from "@/ui/Collapsible";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Game } from "@/lib/cms/games.types";
+import { useGameFilters } from "@/hooks/useGameFilters";
+import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
+import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -23,203 +24,21 @@ const Timeline = lazy(() =>
   })),
 );
 
-const HOUR = 1000 * 60 * 60;
-const DAY = HOUR * 24;
-const GRACE_PERIOD = DAY * 2;
-
-const inGracePeriod = (startDate: string) => {
-  return new Date().getTime() - new Date(startDate).getTime() < GRACE_PERIOD;
-};
-
-const sortBySeasons = (a, b) => {
-  if (a.currentSeason?.startDate && inGracePeriod(a.currentSeason.startDate)) {
-    return -1;
-  }
-
-  if (b.currentSeason?.startDate && inGracePeriod(b.currentSeason.startDate)) {
-    return 1;
-  }
-
-  const aNextSeasonStart = a.nextSeason?.startDate;
-  const bNextSeasonStart = b.nextSeason?.startDate;
-  const aCurrentSeasonEnd = a.currentSeason?.endDate;
-  const bCurrentSeasonEnd = b.currentSeason?.endDate;
-
-  if (aNextSeasonStart && bNextSeasonStart) {
-    return (
-      new Date(aNextSeasonStart).getTime() -
-      new Date(bNextSeasonStart).getTime()
-    );
-  }
-  if (aNextSeasonStart) {
-    return -1;
-  }
-  if (bNextSeasonStart) {
-    return 1;
-  }
-  if (aCurrentSeasonEnd && bCurrentSeasonEnd) {
-    return (
-      new Date(aCurrentSeasonEnd).getTime() -
-      new Date(bCurrentSeasonEnd).getTime()
-    );
-  }
-  if (aCurrentSeasonEnd) {
-    return -1;
-  }
-  if (bCurrentSeasonEnd) {
-    return 1;
-  }
-  return 0;
-};
-
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
-  const [, setSearchParam, getSearchParam] = useSearchParams();
   const { isMd } = useBreakpoint("md");
   const [timelineOpen, setTimelineOpen] = useState<boolean>();
-  const searchParam = getSearchParam("exclude");
-  const excludedSlugs =
-    typeof searchParam === "string"
-      ? [searchParam]
-      : ((searchParam as string[]) ?? []);
-  const games = data.allMarkdownRemark.edges
-    .map((e) => e.node.frontmatter as Game)
-    .map((g) => {
-      if (!g?.nextSeason?.startDate) {
-        return g;
-      }
-      const nextStartDate = new Date(g.nextSeason.startDate);
-      const now = new Date();
-      if (nextStartDate.getTime() < now.getTime()) {
-        return { ...g, currentSeason: g.nextSeason, nextSeason: null };
-      }
-      return g;
-    })
-    .map((g) => {
-      if (
-        g?.currentSeason?.startDate &&
-        inGracePeriod(g?.currentSeason?.startDate)
-      ) {
-        const diff =
-          new Date().getTime() - new Date(g.currentSeason.startDate).getTime();
-        return {
-          ...g,
-          currentSeason: {
-            ...g.currentSeason,
-            justStarted: true,
-            startDateNotice:
-              diff < 2 * HOUR
-                ? "Just started"
-                : `Started ${(diff / HOUR).toFixed(0)} hours ago`,
-            endDateNotice: " ",
-          },
-        };
-      }
-      return g;
-    })
-    .sort(sortBySeasons);
 
-  const visibleGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
+  const games = useGamesFromMarkdown(data);
 
-  const toggleFilter = (slug: string, value: boolean) => {
-    const filtersParams: string | string[] | null = getSearchParam("exclude");
-    const filters =
-      filtersParams instanceof Array
-        ? filtersParams
-        : filtersParams !== null
-          ? [filtersParams]
-          : [];
+  const {
+    gameFilters,
+    toggleGameFilter,
+    toggleGroupFilter,
+    filteredGames,
+    activeFilters,
+  } = useGameFilters(games as Game[]);
 
-    if (value) {
-      setSearchParam(
-        "exclude",
-        filters.filter((f) => f !== slug),
-      );
-    } else {
-      filters.push(slug);
-      setSearchParam("exclude", filters);
-    }
-  };
-
-  const toggleGroupFilter = (group: string, value: boolean) => {
-    const slugs = games
-      .filter((g) => (group ? g?.group === group : !g?.group))
-      .map((g) => g?.slug ?? "")
-      .filter((g) => !!g);
-
-    const filtersParams: string | string[] | null = getSearchParam("exclude");
-    const filters =
-      filtersParams instanceof Array
-        ? filtersParams
-        : filtersParams !== null
-          ? [filtersParams]
-          : [];
-
-    if (value) {
-      setSearchParam(
-        "exclude",
-        filters.filter((f) => !slugs.includes(f)),
-      );
-    } else {
-      setSearchParam("exclude", [...filters, ...slugs]);
-    }
-  };
-
-  const events = visibleGames.reduce(
-    (prev, g) =>
-      g?.currentSeason?.startDate
-        ? [
-            ...prev,
-            {
-              name: g?.currentSeason?.title,
-              game: g.title,
-              gameShort: g.shortName,
-              startDate: new Date(g?.currentSeason?.startDate),
-              startDateNotice: g?.currentSeason?.startDateNotice,
-              endDate: new Date(g?.currentSeason.endDate),
-              endDateNotice: g?.currentSeason?.endDateNotice,
-              progress: getProgress(
-                g?.currentSeason?.startDate,
-                g?.currentSeason.endDate,
-              ),
-            },
-            {
-              name: g?.nextSeason?.title,
-              game: g.title,
-              gameShort: g.shortName,
-              startDate: new Date(g?.nextSeason?.startDate),
-              startDateNotice: g?.nextSeason?.startDateNotice,
-              endDate: new Date(
-                new Date(g.nextSeason.startDate).getTime() +
-                  120 * 24 * 50 * 60 * 1000,
-              ),
-              endDateNotice: g?.nextSeason?.endDateNotice ?? "",
-            },
-          ]
-        : [
-            ...prev,
-            {
-              game: g.title,
-              gameShort: g.shortName,
-              startDate: new Date(g?.nextSeason?.startDate),
-              startDateNotice: g?.nextSeason?.startDateNotice,
-              endDate: new Date(g?.nextSeason?.startDate),
-              endDateNotice: "n/a",
-            },
-            {
-              name: g?.nextSeason?.title,
-              game: g.title,
-              gameShort: g.shortName,
-              startDate: new Date(g?.nextSeason?.startDate),
-              startDateNotice: g?.nextSeason?.startDateNotice,
-              endDate: new Date(
-                new Date(g.nextSeason.startDate).getTime() +
-                  120 * 24 * 50 * 60 * 1000,
-              ),
-              endDateNotice: g?.nextSeason?.endDateNotice ?? "",
-            },
-          ],
-    [],
-  );
+  const events = useTimelineEvents(filteredGames);
 
   return (
     <Layout>
@@ -232,17 +51,9 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
         <div className="mt-2 flex flex-col gap-4 md:mt-0">
           <div className="max-w-[1200px]">
             <FiltersDialog
-              checked={games
-                .map((g) => g!.slug!)
-                .filter((s) => !excludedSlugs.includes(s!))}
-              filters={games
-                .map((g) => ({
-                  label: g!.title!,
-                  value: g!.slug!,
-                  group: g!.group!,
-                }))
-                .sort((a, b) => (a.label > b.label ? 1 : -1))}
-              onCheckedChange={toggleFilter}
+              checked={activeFilters}
+              filters={gameFilters}
+              onCheckedChange={toggleGameFilter}
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
@@ -260,7 +71,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           </div>
           <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
-            {visibleGames.map((game, idx) => (
+            {filteredGames.map((game, idx) => (
               <div
                 key={game!.slug}
                 className={cn("order-last flex", {

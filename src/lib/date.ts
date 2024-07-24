@@ -22,3 +22,6 @@ export const INTL_LOCAL_DATE = new Intl.DateTimeFormat(
   locale,
   dateFormatOptions,
 );
+
+export const HOUR = 1000 * 60 * 60;
+export const DAY = HOUR * 24;
