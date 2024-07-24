@@ -18,7 +18,7 @@ import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Game } from "@/lib/cms/games.types";
 
 const Timeline = lazy(() =>
-  import("@/components/Timeline").then((module) => ({
+  import("@/components/Timeline/Timeline").then((module) => ({
     default: module.Timeline,
   })),
 );

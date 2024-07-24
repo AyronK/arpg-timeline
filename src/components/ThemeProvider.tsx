@@ -3,15 +3,14 @@ import {
   useContext,
   useState,
   useEffect,
-  ReactNode,
+  PropsWithChildren,
 } from "react";
 
 type Theme = "dark" | "light" | "system";
 
-type ThemeProviderProps = {
-  children: ReactNode;
+type ThemeProviderProps = PropsWithChildren & {
   defaultTheme?: Theme;
-  storageKey: string;
+  storageKey?: string | null;
 };
 
 type ThemeProviderState = {
@@ -41,7 +40,7 @@ export const ThemeProvider = ({
   }
 
   const [theme, setTheme] = useState<Theme>(() =>
-    isServer
+    isServer || !storageKey
       ? defaultTheme
       : (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
@@ -67,10 +66,16 @@ export const ThemeProvider = ({
     root.classList.add(theme);
   }, [theme]);
 
+  useEffect(() => {
+    setTheme(defaultTheme);
+  }, [defaultTheme]);
+
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
+      if (storageKey) {
+        localStorage.setItem(storageKey, theme);
+      }
       setTheme(theme);
     },
   };
