@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { graphql, PageProps } from "gatsby";
 import SeasonCard from "../components/SeasonCard";
 import { Layout } from "../components/Layout";
@@ -6,8 +6,16 @@ import { useSearchParams } from "../hooks/useSearchParams";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/components/Button";
-import { UsersRound } from "lucide-react";
+import { ChevronsUpDown, UsersRound } from "lucide-react";
 import { getProgress } from "@/lib/getProgress";
+import { cn } from "@/lib/utils";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/Collapsible";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { Game } from "@/lib/cms/games.types";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline").then((module) => ({
@@ -19,19 +27,62 @@ const HOUR = 1000 * 60 * 60;
 const DAY = HOUR * 24;
 const GRACE_PERIOD = DAY * 2;
 
-const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
-  const inGracePeriod = (startDate: string) => {
-    return new Date().getTime() - new Date(startDate).getTime() < GRACE_PERIOD;
-  };
+const inGracePeriod = (startDate: string) => {
+  return new Date().getTime() - new Date(startDate).getTime() < GRACE_PERIOD;
+};
 
+const sortBySeasons = (a, b) => {
+  if (a.currentSeason?.startDate && inGracePeriod(a.currentSeason.startDate)) {
+    return -1;
+  }
+
+  if (b.currentSeason?.startDate && inGracePeriod(b.currentSeason.startDate)) {
+    return 1;
+  }
+
+  const aNextSeasonStart = a.nextSeason?.startDate;
+  const bNextSeasonStart = b.nextSeason?.startDate;
+  const aCurrentSeasonEnd = a.currentSeason?.endDate;
+  const bCurrentSeasonEnd = b.currentSeason?.endDate;
+
+  if (aNextSeasonStart && bNextSeasonStart) {
+    return (
+      new Date(aNextSeasonStart).getTime() -
+      new Date(bNextSeasonStart).getTime()
+    );
+  }
+  if (aNextSeasonStart) {
+    return -1;
+  }
+  if (bNextSeasonStart) {
+    return 1;
+  }
+  if (aCurrentSeasonEnd && bCurrentSeasonEnd) {
+    return (
+      new Date(aCurrentSeasonEnd).getTime() -
+      new Date(bCurrentSeasonEnd).getTime()
+    );
+  }
+  if (aCurrentSeasonEnd) {
+    return -1;
+  }
+  if (bCurrentSeasonEnd) {
+    return 1;
+  }
+  return 0;
+};
+
+const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const [, setSearchParam, getSearchParam] = useSearchParams();
+  const { isMd } = useBreakpoint("md");
+  const [timelineOpen, setTimelineOpen] = useState<boolean>();
   const searchParam = getSearchParam("exclude");
   const excludedSlugs =
     typeof searchParam === "string"
       ? [searchParam]
-      : (searchParam as string[]) ?? [];
+      : ((searchParam as string[]) ?? []);
   const games = data.allMarkdownRemark.edges
-    .map((e) => e.node.frontmatter)
+    .map((e) => e.node.frontmatter as Game)
     .map((g) => {
       if (!g?.nextSeason?.startDate) {
         return g;
@@ -65,52 +116,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
       }
       return g;
     })
-    .sort((a, b) => {
-      if (
-        a.currentSeason?.startDate &&
-        inGracePeriod(a.currentSeason.startDate)
-      ) {
-        return -1;
-      }
-
-      if (
-        b.currentSeason?.startDate &&
-        inGracePeriod(b.currentSeason.startDate)
-      ) {
-        return 1;
-      }
-
-      const aNextSeasonStart = a.nextSeason?.startDate;
-      const bNextSeasonStart = b.nextSeason?.startDate;
-      const aCurrentSeasonEnd = a.currentSeason?.endDate;
-      const bCurrentSeasonEnd = b.currentSeason?.endDate;
-
-      if (aNextSeasonStart && bNextSeasonStart) {
-        return (
-          new Date(aNextSeasonStart).getTime() -
-          new Date(bNextSeasonStart).getTime()
-        );
-      }
-      if (aNextSeasonStart) {
-        return -1;
-      }
-      if (bNextSeasonStart) {
-        return 1;
-      }
-      if (aCurrentSeasonEnd && bCurrentSeasonEnd) {
-        return (
-          new Date(aCurrentSeasonEnd).getTime() -
-          new Date(bCurrentSeasonEnd).getTime()
-        );
-      }
-      if (aCurrentSeasonEnd) {
-        return -1;
-      }
-      if (bCurrentSeasonEnd) {
-        return 1;
-      }
-      return 0;
-    });
+    .sort(sortBySeasons);
 
   const visibleGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
 
@@ -158,25 +164,61 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     }
   };
 
-  const currentSeasons = visibleGames
-    .filter((g) => g?.currentSeason?.startDate)
-    .map((g) => ({
-      name: `${g?.title} - ${g?.currentSeason?.title}`,
-      start: new Date(g?.currentSeason?.startDate),
-      end: new Date(g?.currentSeason.endDate),
-      progress: getProgress(
-        g?.currentSeason?.startDate,
-        g?.currentSeason.endDate,
-      ),
-    }));
-  const nextSeasons = visibleGames
-    .filter((g) => g?.nextSeason?.startDate)
-    .map((g) => ({
-      name: `${g?.title} - ${g?.nextSeason?.title}`,
-      start: new Date(g?.nextSeason?.startDate),
-    }));
-  const events = [...currentSeasons, ...nextSeasons].sort(
-    (a, b) => a.start.getTime() - b.start.getTime(),
+  const events = visibleGames.reduce(
+    (prev, g) =>
+      g?.currentSeason?.startDate
+        ? [
+            ...prev,
+            {
+              name: g?.currentSeason?.title,
+              game: g.title,
+              gameShort: g.shortName,
+              startDate: new Date(g?.currentSeason?.startDate),
+              startDateNotice: g?.currentSeason?.startDateNotice,
+              endDate: new Date(g?.currentSeason.endDate),
+              endDateNotice: g?.currentSeason?.endDateNotice,
+              progress: getProgress(
+                g?.currentSeason?.startDate,
+                g?.currentSeason.endDate,
+              ),
+            },
+            {
+              name: g?.nextSeason?.title,
+              game: g.title,
+              gameShort: g.shortName,
+              startDate: new Date(g?.nextSeason?.startDate),
+              startDateNotice: g?.nextSeason?.startDateNotice,
+              endDate: new Date(
+                new Date(g.nextSeason.startDate).getTime() +
+                  120 * 24 * 50 * 60 * 1000,
+              ),
+              endDateNotice: g?.nextSeason?.endDateNotice ?? "",
+            },
+          ]
+        : [
+            ...prev,
+            {
+              game: g.title,
+              gameShort: g.shortName,
+              startDate: new Date(g?.nextSeason?.startDate),
+              startDateNotice: g?.nextSeason?.startDateNotice,
+              endDate: new Date(g?.nextSeason?.startDate),
+              endDateNotice: "n/a",
+            },
+            {
+              name: g?.nextSeason?.title,
+              game: g.title,
+              gameShort: g.shortName,
+              startDate: new Date(g?.nextSeason?.startDate),
+              startDateNotice: g?.nextSeason?.startDateNotice,
+              endDate: new Date(
+                new Date(g.nextSeason.startDate).getTime() +
+                  120 * 24 * 50 * 60 * 1000,
+              ),
+              endDateNotice: g?.nextSeason?.endDateNotice ?? "",
+            },
+          ],
+    [],
   );
 
   return (
@@ -218,13 +260,41 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           </div>
           <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
-            {visibleGames.map((game) => (
-              <SeasonCard key={game!.slug} {...game} />
+            {visibleGames.map((game, idx) => (
+              <div
+                key={game!.slug}
+                className={cn("order-last flex", {
+                  "order-first": idx <= 1,
+                  "xl:order-first": idx <= 2,
+                  "3xl:order-first": idx <= 3,
+                  "4xl:order-first": idx <= 4,
+                })}
+              >
+                <SeasonCard {...game} />
+              </div>
             ))}
-            <div className="relative col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
-              <Suspense fallback="Loading">
-                <Timeline events={events} />
-              </Suspense>
+            <div
+              aria-hidden
+              className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5"
+            >
+              <Collapsible
+                onOpenChange={() => setTimelineOpen(true)}
+                open={isMd || timelineOpen}
+              >
+                <CollapsibleTrigger
+                  className={cn("flex w-full flex-row justify-between", {
+                    hidden: isMd || timelineOpen,
+                  })}
+                >
+                  Click to view timeline
+                  <ChevronsUpDown className="h-6 w-6" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <Suspense fallback={<div className="h-[500px]">Loading</div>}>
+                    <Timeline events={events} />
+                  </Suspense>
+                </CollapsibleContent>
+              </Collapsible>
             </div>
           </article>
         </div>

@@ -37,32 +37,6 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
-
-    --gantt-bg-color: hsl(var(--card)) !important;
-    --gantt-popup-bg-color: hsl(var(--popover)) !important;
-    --gantt-bar-color: hsl(var(--background)) !important;
-    --gantt-bar-color-important: hsl(var(--accent)) !important;
-    --gantt-bar-stroke: hsl(var(--border)) !important;
-    --gantt-dark-stroke-color: hsl(var(--border)) !important;
-    --gantt-stroke-color: hsl(var(--border)) !important;
-    --gantt-light-bg: hsl(var(--background)) !important;
-    --gantt-light-border-color: hsl(var(--border)) !important;
-    --gantt-holiday-color: hsl(var(--card)) !important;
-    --gantt-text-muted: hsl(var(--muted-foreground)) !important;
-    --gantt-text-grey: hsl(var(--muted-foreground)) !important;
-    --gantt-text-light: hsl(var(--primary-foreground)) !important;
-    --gantt-text-dark: hsl(var(--foreground)) !important;
-    --gantt-progress: hsl(var(--border)) !important;
-    --gantt-handle-color: hsl(var(--muted)) !important;
-    --gantt-handle-color-important: hsl(var(--accent)) !important;
-    --gantt-accent-light: hsl(var(--accent)) !important;
-    --gantt-accent-mid: hsl(var(--primary)) !important;
-    --gantt-accent-dark: hsl(var(--primary)) !important;
-    --gantt-today-bg-color: hsl(var(--card)) !important;
-    --gantt-today-text-color: hsl(var(--foreground)) !important;
-
-    --gantt-bar-color-hover: hsl(var(--background)) !important;
-    --gantt-accent-light-hover: hsl(var(--accent)) !important;
   }
 
   .dark {
@@ -101,27 +75,34 @@
     --radius: 0.5rem;
   }
 
-  .dark .gantt-dark {
-    --gantt-bg-color: hsl(var(--background));
-    --gantt-popup-bg-color: hsl(var(--popover));
-    --gantt-bar-color: hsl(var(--card));
-    --gantt-bar-color-important: hsl(var(--accent-foreground));
-    --gantt-bar-stroke: hsl(var(--border));
-    --gantt-dark-stroke-color: hsl(var(--border));
-    --gantt-stroke-color: hsl(var(--border));
-    --gantt-light-bg: hsl(var(--card));
-    --gantt-light-border-color: hsl(var(--border));
-    --gantt-text-muted: hsl(var(--muted-foreground));
-    --gantt-text-light: hsl(var(--card-foreground));
-    --gantt-text-dark: hsl(var(--foreground));
-    --gantt-accent-light: hsl(var(--muted-foreground));
-    --gantt-accent-mid: hsl(var(--primary-foreground));
-    --gantt-accent-dark: hsl(var(--primary-foreground));
-    --gantt-today-bg-color: hsl(var(--card));
-    --gantt-today-text-color: hsl(var(--card-foreground));
+  .chart g text:not([text-anchor="start"]) {
+    @apply !fill-foreground;
+    @apply !font-normal;
+  }
 
-    --gantt-bar-color-dark-hover: hsl(var(--card));
-    --gantt-accent-light-dark-hover: hsl(var(--muted-foreground));
+  .chart g text {
+    @apply cursor-default;
+    @apply select-none;
+  }
+
+  .chart .google-visualization-tooltip {
+    @apply bg-transparent;
+    @apply shadow-none;
+    @apply border-none;
+    @apply text-popover-foreground;
+  }
+
+  .chart .today {
+    @apply stroke-destructive stroke-2 opacity-75;
+  }
+
+  .chart .today-text {
+    @apply text-xs;
+  }
+
+  /* Fix for noncustomizable focus outline */
+  .chart [stroke="#000000"] {
+    @apply stroke-0;
   }
 }
 

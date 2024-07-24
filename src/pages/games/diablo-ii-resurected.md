@@ -2,7 +2,7 @@
 slug: diablo-ii-resurected
 seasonKeyword: season
 title: "Diablo II: Resurrected"
-shortName: "d2"
+shortName: "D2"
 official: true
 logo: /img/diablo2-logo-lg.avif
 url: https://diablo2.blizzard.com/

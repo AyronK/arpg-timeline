@@ -74,7 +74,6 @@ const config: GatsbyConfig = {
         crossOrigin: `use-credentials`,
       },
     },
-    `gatsby-plugin-sass`,
     "gatsby-plugin-postcss",
     {
       resolve: "gatsby-plugin-simple-analytics",

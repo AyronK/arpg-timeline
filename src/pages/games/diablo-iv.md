@@ -2,7 +2,7 @@
 slug: diablo-iv
 seasonKeyword: season
 title: Diablo IV
-shortName: "d4"
+shortName: "D4"
 official: true
 logo: /img/d4.avif
 url: https://diablo4.blizzard.com/

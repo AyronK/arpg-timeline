@@ -2,7 +2,7 @@
 slug: torchlite-infinite
 seasonKeyword: season
 title: "Torchlight: Infinite"
-shortName: "ti"
+shortName: TI
 official: true
 logo: /img/torchlightinfinitelogo.png
 url: https://torchlight.xd.com/

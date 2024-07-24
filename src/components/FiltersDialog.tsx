@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Drawer,
   DrawerClose,
@@ -24,6 +23,7 @@ import { Button } from "./Button";
 import { Switch } from "./Switch";
 import { cn } from "@/lib/utils";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { forwardRef } from "react";
 
 export type FiltersDialogProps = {
   filters: { value: string; label: string; group?: string | undefined }[];
@@ -72,7 +72,7 @@ export const FiltersDialog = ({
       <DrawerTrigger asChild>
         <Trigger checked={checked} filters={filters} />
       </DrawerTrigger>
-      <DrawerContent className={!isMd ? "left-0" : null}>
+      <DrawerContent className={!isMd ? "left-0" : undefined}>
         <DrawerHandle />
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
@@ -102,13 +102,13 @@ const Description = () => (
   <div className="mt-2 flex flex-row gap-2 rounded-md border p-2">
     <Lightbulb className="mt-1 h-4 w-4 flex-shrink-0" />
     <span className="md:max-w-80">
-      You can add this website to your bookmarks so you'll always have the same
-      setup!
+      You can add this website to your bookmarks so you&apos;ll always have the
+      same setup!
     </span>
   </div>
 );
 
-const Trigger = React.forwardRef<
+const Trigger = forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<typeof Button> &
     Pick<FiltersDialogProps, "checked" | "filters">
@@ -132,6 +132,8 @@ const Trigger = React.forwardRef<
     )}
   </Button>
 ));
+
+Trigger.displayName = "Trigger";
 
 const Filters = ({
   filters,

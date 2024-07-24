@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/Button";
 
@@ -25,7 +24,7 @@ const IndexPage = () => {
           <Button className="px-0 text-base" variant="link" asChild>
             <a
               href="https://docs.simpleanalytics.com/gdpr"
-              rel="noopener nofolow"
+              rel="noopener nofolow noreferrer"
               target="_blank"
             >
               here
@@ -45,7 +44,7 @@ const IndexPage = () => {
           <Button className="px-0 text-base" variant="link" asChild>
             <a
               href="https://github.com/AyronK/arpg-timeline/issues"
-              rel="noopener nofolow"
+              rel="noopener nofolow noreferrer"
               target="_blank"
             >
               GitHub

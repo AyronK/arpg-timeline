@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import SeasonCard from "./SeasonCard";
 import { ImageDataLike } from "gatsby-plugin-image";
-import React from "react";
 
 const meta = {
   title: "Components/SeasonCard",

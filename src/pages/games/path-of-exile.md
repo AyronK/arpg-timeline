@@ -1,11 +1,11 @@
 ---
 slug: path-of-exile
 seasonKeyword: league
-title: Path of Exile
-shortName: poe
-official: true
-group: Path of Exile
+shortName: PoE
 logo: /img/poe.png
+official: true
+title: Path of Exile
+group: Path of Exile
 url: https://www.pathofexile.com/
 currentSeason:
   startDate: 2024-03-29T20:00:00.000Z
@@ -27,3 +27,4 @@ crawlerSettings:
     - https://poedb.tw/us/
   steamId: 238960
 ---
+

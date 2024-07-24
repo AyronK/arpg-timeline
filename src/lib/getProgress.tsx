@@ -1,7 +1,7 @@
 export const getProgress = (
-  startDate: string | undefined,
-  endDate: string | undefined,
-  currentTime?: Date | undefined,
+  startDate: string | null,
+  endDate: string | null,
+  currentTime?: Date | null,
 ) => {
   if (!startDate || !endDate) {
     return 0;

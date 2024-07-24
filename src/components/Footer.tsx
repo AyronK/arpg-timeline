@@ -1,5 +1,3 @@
-import React from "react";
-
 export const Footer = () => (
   <footer className="mb-8 mt-12 px-4">
     <div>
@@ -40,7 +38,7 @@ export const Footer = () => (
         <a
           className="font-semibold hover:opacity-75"
           href="https://github.com/AyronK"
-          rel="external nofollow"
+          rel="external nofollow noreferrer"
           target="_blank"
           aria-label="Author's Github Profile - AyronK"
         >

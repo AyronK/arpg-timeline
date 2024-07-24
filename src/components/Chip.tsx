@@ -1,4 +1,3 @@
-import React from "react";
 import { PropsWithChildren } from "react";
 
 export const Chip = ({

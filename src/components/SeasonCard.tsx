@@ -1,4 +1,3 @@
-import React from "react";
 import LocalDate from "./LocalDate";
 import { Countdown } from "./Countdown";
 import { ProgressBar } from "./ProgressBar";
@@ -6,6 +5,8 @@ import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
 import { Chip } from "./Chip";
 import { CalendarMenu } from "./CalendarMenu";
 import { getProgress } from "../lib/getProgress";
+import { NextSeason, Season } from "@/lib/cms/games.types";
+import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
 type SeasonCardProps = Partial<{
   title: string;
@@ -13,24 +14,10 @@ type SeasonCardProps = Partial<{
   logo: ImageDataLike;
   official: boolean;
   url: string;
-  currentSeason: Partial<{
-    startDate: string;
-    endDate: string;
-    title: string;
-    url: string;
-    startDateNotice: string;
-    endDateNotice: string;
+  currentSeason: Season & {
     justStarted?: boolean;
-  }>;
-  nextSeason: Partial<{
-    startDate: string;
-    endDate: string;
-    title: string;
-    url: string;
-    startDateNotice: string;
-    endDateNotice: string;
-    showCountdown: boolean;
-  }>;
+  };
+  nextSeason: NextSeason;
   seasonKeyword: string;
   testProps: {
     now?: Date;
@@ -64,9 +51,13 @@ const NextSearsonWidget = ({
             className="flex-1 text-base font-semibold sm:text-lg md:line-clamp-1"
             title={nextSeason.title}
           >
-            <a href={nextSeason.url} target="_blank" rel="noopener noreferrer">
+            <MaybeLinkWrapper
+              href={nextSeason.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {nextSeason.title}
-            </a>
+            </MaybeLinkWrapper>
           </h4>
           {shortName && (
             <span className="sr-only">{`${shortName} ${nextSeason.title} ${seasonKeyword}`}</span>
@@ -143,13 +134,13 @@ const CurrentSeasonWidget = ({
               className="flex-1 text-base font-semibold sm:text-lg md:line-clamp-1"
               title={currentSeason.title}
             >
-              <a
+              <MaybeLinkWrapper
                 href={currentSeason.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {currentSeason.title}
-              </a>
+              </MaybeLinkWrapper>
             </h4>
             {shortName && (
               <span className="sr-only">{`${shortName} ${currentSeason.title} ${seasonKeyword}`}</span>
@@ -223,7 +214,7 @@ const SeasonCard = (props: SeasonCardProps) => {
   } = props;
 
   return (
-    <section className="relative flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:gap-4 md:p-6">
+    <section className="relative flex flex-1 flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:gap-4 md:p-6">
       <div className="relative flex h-auto max-h-[80px] min-h-[60px] w-[100px] flex-row justify-center place-self-center md:h-[140px] md:max-h-[140px] md:w-[200px]">
         <a
           href={url}

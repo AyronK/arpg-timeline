@@ -4,6 +4,7 @@ seasonKeyword: season
 logo: /img/medianxl-logo.png
 official: false
 title: Median XL
+shortName: MXL
 group: Diablo Mods
 url: https://www.median-xl.com/
 currentSeason:
@@ -13,7 +14,7 @@ currentSeason:
   endDateNotice: est. September/October
   url: https://www.median-xl.com/changelog
 nextSeason:
-  startDate: 2024-10-01T02:00:00.000Z
+  startDate: 2024-10-01T09:00:00.000Z
   startDateNotice: est. September/October
   title: Season 38
 crawlerSettings:

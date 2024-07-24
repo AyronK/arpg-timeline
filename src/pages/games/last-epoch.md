@@ -2,7 +2,7 @@
 slug: last-epoch
 seasonKeyword: cycle
 title: Last Epoch
-shortName: le
+shortName: LE
 official: true
 logo: /img/lastepoch.png
 url: https://lastepoch.com/
