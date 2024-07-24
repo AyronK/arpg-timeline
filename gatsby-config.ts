@@ -46,7 +46,6 @@ const config: GatsbyConfig = {
     `gatsby-plugin-image`,
     "gatsby-plugin-sharp",
     "gatsby-plugin-sitemap",
-    "gatsby-plugin-decap-cms",
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {

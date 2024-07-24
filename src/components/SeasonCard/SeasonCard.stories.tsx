@@ -3,7 +3,7 @@ import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { ImageDataLike } from "gatsby-plugin-image";
 
 const meta = {
-  title: "Components/SeasonCard",
+  title: "Components/Season Card",
   component: SeasonCard,
   decorators: [
     (Story) => (
