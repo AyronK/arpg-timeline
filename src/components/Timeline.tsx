@@ -96,7 +96,7 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
           TIMELINE_COLUMNS,
           ...events.map((e) => {
             return [
-              isMd ? e.game : e.gameShort ?? e.game,
+              isMd ? e.game : (e.gameShort ?? e.game),
               e.name ? (isMd ? `${e.game} - ${e.name}` : e.name) : "",
               timelinePopover(e),
               new Date(e.startDate),
