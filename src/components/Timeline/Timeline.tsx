@@ -1,13 +1,11 @@
+import "@/components/Timeline/Timeline.css";
+
 import { useTheme } from "@/components/ThemeProvider";
 import { INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { drawVerticalLineHighlightingToday } from "@/lib/google-charts/utils";
-import {
-  getTodaysXCoordinate,
-  TIMELINE_OPTIONS,
-  TimelineEvent,
-} from "@/lib/google-charts/timeline";
+import { useRef } from "react";
+import { TimelineEvent, TIMELINE_OPTIONS } from "@/components/Timeline/Conts";
 
 const TIMELINE_COLUMNS = [
   { type: "string", id: "Game" },
@@ -41,6 +39,12 @@ const getEventPeriods = (event: TimelineEvent) => {
   const launchesIn = running < 0 ? -running : 0;
 
   return { running, left, lasts, launchesIn };
+};
+
+const todaysPopover = () => {
+  const popoverClass =
+    "z-50 grid gap-4 overflow-hidden rounded-md border bg-popover p-2 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2";
+  return `<div class="${popoverClass}">Today</div>`;
 };
 
 const timelinePopover = (event: TimelineEvent) => {
@@ -89,24 +93,49 @@ const timelinePopover = (event: TimelineEvent) => {
   `;
 };
 
+const todaysEntrySelector = `.chart g rect:last-of-type[fill="#303a50"]`;
+
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
+  const parentRef = useRef<HTMLDivElement | null>(null);
   const { theme } = useTheme();
   const { isMd } = useBreakpoint("md");
   const options = TIMELINE_OPTIONS[theme];
 
+  if (events.length < 3) {
+    return null;
+  }
+
   return (
-    <div className="relative overflow-x-auto overflow-y-hidden pb-2 md:pb-1">
+    <div
+      ref={parentRef}
+      className="relative overflow-x-auto overflow-y-hidden pb-2 md:pb-1"
+      style={{
+        height:
+          Math.min((events.length / 2) * 40 + 96, isMd ? 296 : 216) + "px",
+      }}
+    >
       <Chart
         chartEvents={[
           {
             eventName: "ready",
-            callback: ({ chartWrapper }) =>
-              drawVerticalLineHighlightingToday(
-                getTodaysXCoordinate(chartWrapper.getDataTable()),
-              ),
+            callback: () => {
+              const todaysElement = document.querySelector(todaysEntrySelector);
+              if (parentRef.current && todaysElement) {
+                console.log(
+                  todaysElement.getBoundingClientRect().left -
+                    parentRef.current.getBoundingClientRect().left,
+                );
+                parentRef.current.scroll({
+                  left:
+                    todaysElement.getBoundingClientRect().left -
+                    parentRef.current.getBoundingClientRect().left -
+                    parentRef.current.clientWidth / 2,
+                });
+              }
+            },
           },
         ]}
-        className="chart w-[400%] md:w-full"
+        className="chart w-[200%] md:w-full"
         options={options}
         chartType="Timeline"
         data={[
@@ -120,8 +149,9 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
               new Date(e.endDate),
             ];
           }),
+          ["⁠", "Today", todaysPopover(), new Date(), new Date()],
         ]}
-        height="214px"
+        height={isMd ? 296 : 216 + "px"}
       />
     </div>
   );

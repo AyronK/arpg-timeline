@@ -74,36 +74,6 @@
 
     --radius: 0.5rem;
   }
-
-  .chart g text:not([text-anchor="start"]) {
-    @apply !fill-foreground;
-    @apply !font-normal;
-  }
-
-  .chart g text {
-    @apply cursor-default;
-    @apply select-none;
-  }
-
-  .chart .google-visualization-tooltip {
-    @apply bg-transparent;
-    @apply shadow-none;
-    @apply border-none;
-    @apply text-popover-foreground;
-  }
-
-  .chart .today {
-    @apply stroke-destructive stroke-2 opacity-75;
-  }
-
-  .chart .today-text {
-    @apply text-xs;
-  }
-
-  /* Fix for noncustomizable focus outline */
-  .chart [stroke="#000000"] {
-    @apply stroke-0;
-  }
 }
 
 @layer base {

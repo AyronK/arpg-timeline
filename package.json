@@ -50,7 +50,6 @@
     "vaul": "^0.9.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.19",
     "@chromatic-com/storybook": "^1.6.1",
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@storybook/addon-essentials": "^8.2.6",
@@ -70,6 +69,7 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.17.0",
+    "autoprefixer": "^10.4.19",
     "css-loader": "^7.1.2",
     "eslint": "^8.57.0",
     "eslint-plugin-no-relative-import-paths": "1.5.5",

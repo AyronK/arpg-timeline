@@ -1,0 +1,43 @@
+.chart g text:not([text-anchor="start"]) {
+  @apply !fill-foreground;
+  @apply !font-normal;
+}
+
+.chart g text {
+  @apply cursor-default;
+  @apply select-none;
+}
+
+.chart .google-visualization-tooltip {
+  @apply bg-transparent;
+  @apply shadow-none;
+  @apply border-none;
+  @apply text-popover-foreground;
+}
+
+.chart g rect:last-of-type[fill="#303a50"],
+.chart g rect:last-of-type[fill="#cbd5e1"] {
+  height: 2000px;
+  fill: hsl(var(--destructive)) !important;
+  transform: translateY(-1969px);
+  opacity: 50%;
+  pointer-events: none;
+}
+
+.chart g rect:last-of-type[fill="#303a50"] + text,
+.chart g rect:last-of-type[fill="#cbd5e1"] + text {
+  pointer-events: none;
+}
+
+.chart .today {
+  @apply stroke-destructive stroke-2 opacity-75;
+}
+
+.chart .today-text {
+  @apply text-xs;
+}
+
+/* Fix for noncustomizable focus outline */
+.chart [stroke="#000000"] {
+  @apply stroke-0;
+}

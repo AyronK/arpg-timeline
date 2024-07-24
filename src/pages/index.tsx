@@ -1,22 +1,16 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense } from "react";
 import { graphql, PageProps } from "gatsby";
 import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
-import { ChevronsUpDown, UsersRound } from "lucide-react";
+import { UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/ui/Collapsible";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
-import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
-import { useTimelineEvents } from "@/hooks/useTimelineEvents";
+import { useGamesFromMarkdown } from "@/pages/useGamesFromMarkdown";
+import { useTimelineEvents } from "@/pages/useTimelineEvents";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -25,9 +19,6 @@ const Timeline = lazy(() =>
 );
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
-  const { isMd } = useBreakpoint("md");
-  const [timelineOpen, setTimelineOpen] = useState<boolean>();
-
   const games = useGamesFromMarkdown(data);
 
   const {
@@ -88,24 +79,16 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               aria-hidden
               className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5"
             >
-              <Collapsible
-                onOpenChange={() => setTimelineOpen(true)}
-                open={isMd || timelineOpen}
-              >
-                <CollapsibleTrigger
-                  className={cn("flex w-full flex-row justify-between", {
-                    hidden: isMd || timelineOpen,
-                  })}
+              <div>
+                <h3 className="mb-1.5 font-semibold sm:text-lg">Timeline</h3>
+                <Suspense
+                  fallback={
+                    <div className="h-[255px] md:h-[296px]">Loading</div>
+                  }
                 >
-                  Click to view timeline
-                  <ChevronsUpDown className="h-6 w-6" />
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <Suspense fallback={<div className="h-[500px]">Loading</div>}>
-                    <Timeline events={events} />
-                  </Suspense>
-                </CollapsibleContent>
-              </Collapsible>
+                  <Timeline events={events} />
+                </Suspense>
+              </div>
             </div>
           </article>
         </div>

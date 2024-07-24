@@ -27,4 +27,3 @@ crawlerSettings:
     - https://poedb.tw/us/
   steamId: 238960
 ---
-
