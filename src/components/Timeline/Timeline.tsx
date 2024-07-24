@@ -97,9 +97,10 @@ const todaysEntrySelector = `.chart g rect:last-of-type[fill="#303a50"]`;
 
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
-  const { theme } = useTheme();
+  const { theme, getPreference } = useTheme();
   const { isMd } = useBreakpoint("md");
-  const options = TIMELINE_OPTIONS[theme];
+  const options =
+    TIMELINE_OPTIONS[theme === "system" ? getPreference() : theme];
 
   if (events.length < 3) {
     return null;

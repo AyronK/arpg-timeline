@@ -16,11 +16,13 @@ type ThemeProviderProps = PropsWithChildren & {
 type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  getPreference: () => "dark" | "light";
 };
 
 const initialState: ThemeProviderState = {
   theme: "system",
   setTheme: () => null,
+  getPreference: () => "dark",
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
@@ -78,6 +80,10 @@ export const ThemeProvider = ({
       }
       setTheme(theme);
     },
+    getPreference: () =>
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light",
   };
 
   return (
