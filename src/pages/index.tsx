@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState } from "react";
 import { graphql, PageProps } from "gatsby";
-import SeasonCard from "../components/SeasonCard";
+import SeasonCard from "@/components/SeasonCard/SeasonCard.1";
 import { Layout } from "../components/Layout";
 import { useSearchParams } from "../hooks/useSearchParams";
 import { FiltersDialog } from "@/components/FiltersDialog";

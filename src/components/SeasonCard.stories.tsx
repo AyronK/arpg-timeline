@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import SeasonCard from "./SeasonCard";
+import SeasonCard from "./SeasonCard/SeasonCard";
 import { ImageDataLike } from "gatsby-plugin-image";
 
 const meta = {

@@ -5,13 +5,6 @@ type AnchorProps = DetailedHTMLProps<
   HTMLAnchorElement
 >;
 
-type Identity<T> = { [P in keyof T]: T[P] };
-type Replace<T, K extends keyof T, TReplace> = Identity<
-  Pick<T, Exclude<keyof T, K>> & {
-    [P in K]: TReplace;
-  }
->;
-
 export type MaybeLinkWrapperProps = Replace<
   AnchorProps,
   "href",
