@@ -9,8 +9,8 @@ import { UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
-import { useGamesFromMarkdown } from "@/pages/useGamesFromMarkdown";
-import { useTimelineEvents } from "@/pages/useTimelineEvents";
+import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
+import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -75,10 +75,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                 <SeasonCard {...game} />
               </div>
             ))}
-            <div
-              aria-hidden
-              className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5"
-            >
+            <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
               <div>
                 <h3 className="mb-1.5 font-semibold sm:text-lg">Timeline</h3>
                 <Suspense
