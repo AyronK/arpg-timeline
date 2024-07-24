@@ -8,7 +8,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./Drawer";
+} from "@/ui/Drawer";
 import {
   Dialog,
   DialogContent,
@@ -16,11 +16,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./Dialog";
+} from "@/ui/Dialog";
 
 import { Eye, EyeOff, Filter, Lightbulb } from "lucide-react";
-import { Button } from "./Button";
-import { Switch } from "./Switch";
+import { Button } from "@/ui/Button";
+import { Switch } from "@/ui/Switch";
 import { cn } from "@/lib/utils";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { forwardRef } from "react";

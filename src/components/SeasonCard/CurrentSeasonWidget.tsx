@@ -1,9 +1,9 @@
-import LocalDate from "../LocalDate";
-import { ProgressBar } from "../ProgressBar";
-import { Chip } from "../Chip";
-import { getProgress } from "../../lib/getProgress";
-import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
-import { SeasonCardProps } from "./SeasonCard.types";
+import LocalDate from "@/components/LocalDate";
+import { ProgressBar } from "@/components/ProgressBar";
+import { getProgress } from "@/lib/getProgress";
+import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
+import { SeasonCardProps } from "@/components/SeasonCard/SeasonCard.types";
+import { Chip } from "@/ui/Chip";
 
 export const CurrentSeasonWidget = ({
   currentSeason,

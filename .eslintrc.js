@@ -19,8 +19,12 @@ module.exports = {
         "react/prop-types": "off",
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
+        "no-relative-import-paths/no-relative-import-paths": [
+          "warn",
+          { allowSameFolder: false, rootDir: "src", prefix: "@" },
+        ],
       },
-      plugins: ["react"],
+      plugins: ["react", "no-relative-import-paths"],
     },
     {
       files: ["*.graphql"],

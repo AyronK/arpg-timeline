@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { Button } from "@/ui/Button";
 
 export const Faq = () => (
   <section className="container my-8 flex flex-col gap-4">

@@ -6,7 +6,7 @@ export type Game = {
   readonly official: boolean;
   readonly slug: string;
   readonly seasonKeyword: string;
-  readonly url: string;
+  readonly url: string | null;
   readonly group: string | null;
   readonly logo: ImageDataLike;
   readonly currentSeason: Season;

@@ -1,11 +1,11 @@
 import { lazy, Suspense, useState } from "react";
 import { graphql, PageProps } from "gatsby";
-import SeasonCard from "@/components/SeasonCard/SeasonCard.1";
-import { Layout } from "../components/Layout";
-import { useSearchParams } from "../hooks/useSearchParams";
+import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
+import { Layout } from "@/components/Layout";
+import { useSearchParams } from "@/hooks/useSearchParams";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
-import { Button } from "@/components/Button";
+import { Button } from "@/ui/Button";
 import { ChevronsUpDown, UsersRound } from "lucide-react";
 import { getProgress } from "@/lib/getProgress";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/Collapsible";
+} from "@/ui/Collapsible";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Game } from "@/lib/cms/games.types";
 

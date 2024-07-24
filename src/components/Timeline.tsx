@@ -1,4 +1,4 @@
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "@/components/ThemeProvider";
 import { INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
 import { useBreakpoint } from "@/hooks/useBreakpoint";

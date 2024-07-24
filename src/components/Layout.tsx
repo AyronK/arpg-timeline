@@ -1,8 +1,8 @@
-import { Footer } from "./Footer";
-import useSiteMetadata from "../hooks/useSiteMetadata";
-import { ThemeProvider } from "./ThemeProvider";
-import { ThemeToggle } from "./ThemeToggle";
-import { Button } from "./Button";
+import { Footer } from "@/components/Footer";
+import useSiteMetadata from "@/hooks/useSiteMetadata";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/ui/Button";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (

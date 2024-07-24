@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import SeasonCard from "./SeasonCard/SeasonCard";
+import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { ImageDataLike } from "gatsby-plugin-image";
 
 const meta = {
@@ -22,6 +22,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     title: "New Season",
+    group: null,
+    official: true,
+    shortName: "sn",
+    slug: "slug",
+    url: null,
     logo: {
       images: {
         fallback: {
@@ -42,6 +47,7 @@ export const Default: Story = {
       url: "/",
       startDateNotice: "March 21, 2024",
       endDateNotice: "June 20, 2024",
+      justStarted: false,
     },
     nextSeason: {
       startDate: "2024-06-21",
