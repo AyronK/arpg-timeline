@@ -4,19 +4,21 @@ import { Timeline } from "@/components/Timeline/Timeline";
 const meta = {
   title: "Components/Timeline",
   component: Timeline,
-  decorators: [
-    (Story) => (
-      <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
-        <div>
-          <Story />
-        </div>
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof Timeline>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const currentDate = new Date();
+const referralDate = new Date(
+  `2024-07-24T${new Date().toISOString().split("T")[1]}`,
+);
+
+const getUpdatedDate = (date: Date, currentDate: Date) => {
+  return new Date(
+    currentDate.getTime() + Math.floor(date.getTime() - referralDate.getTime()),
+  );
+};
 
 export const Default: Story = {
   args: {
@@ -25,243 +27,150 @@ export const Default: Story = {
         name: "3.24 - Necropolis",
         game: "Path of Exile",
         gameShort: "PoE",
-        startDate: "2024-03-29T20:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-03-29T20:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: "",
-        endDate: "2024-07-23T07:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-07-23T07:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "",
-        progress: 101.22334081158027,
       },
       {
         name: "3.25 - Settlers of Kalguur",
         game: "Path of Exile",
         gameShort: "PoE",
-        startDate: "2024-07-26T20:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-07-26T20:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: "",
-        endDate: "2024-11-03T20:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-11-03T20:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "",
       },
       {
         name: "Season IV - Loot reborn",
         game: "Diablo IV",
         gameShort: "D4",
-        startDate: "2024-05-14T17:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-05-14T17:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: null,
-        endDate: "2024-08-06T17:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-08-06T17:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "",
-        progress: 84.51878838734568,
       },
       {
         name: "Next Season - Season V",
         game: "Diablo IV",
         gameShort: "D4",
-        startDate: "2024-08-06T17:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-08-06T17:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: "",
-        endDate: "2024-11-14T17:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-11-14T17:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "",
       },
       {
         name: "Season 4",
         game: "Hero Siege",
         gameShort: "HS",
-        startDate: "2024-06-07T12:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-06-07T12:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: null,
-        endDate: "2024-08-09T12:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-08-09T12:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "Estimated ~ 9th or 16th August",
-        progress: 74.92716758524396,
       },
       {
         name: "Season 5",
         game: "Hero Siege",
         gameShort: "HS",
-        startDate: "2024-08-09T12:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-08-09T12:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: "Estimated ~ 9th or 16th August",
-        endDate: "2024-11-17T12:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-11-17T12:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "",
       },
       {
         name: "Season 7",
         game: "Diablo II: Resurrected",
         gameShort: "D2",
-        startDate: "2024-05-23T17:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-05-23T17:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: null,
-        endDate: "2024-08-23T17:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-08-23T17:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "Estimated ~ August 2024",
-        progress: 67.38671983192431,
       },
       {
         name: "Season 8",
         game: "Diablo II: Resurrected",
         gameShort: "D2",
-        startDate: "2024-08-23T17:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-08-23T17:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: "Estimated ~ August 2024",
-        endDate: "2024-12-01T17:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-12-01T17:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "",
       },
       {
         name: "Season 9 - Anarchy",
         game: "Project Diablo 2",
         gameShort: "PD2",
-        startDate: "2024-04-12T17:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-04-12T17:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: null,
-        endDate: "2024-08-30T17:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-08-30T17:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "Estimated ~ August/September",
-        progress: 73.56841588955027,
       },
       {
         name: "Season 10",
         game: "Project Diablo 2",
         gameShort: "PD2",
-        startDate: "2024-08-30T17:00:00.000Z",
+        startDate: getUpdatedDate(
+          new Date("2024-08-30T17:00:00.000Z"),
+          currentDate,
+        ),
         startDateNotice: "Estimated ~ August/September",
-        endDate: "2024-12-08T17:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        name: "Season 12",
-        game: "Path of Diablo",
-        gameShort: "PoD",
-        startDate: "2024-03-08T22:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2024-08-30T22:00:00.000Z",
-        endDateNotice: "est. August",
-        progress: 78.73568509259259,
-      },
-      {
-        name: "Season 13",
-        game: "Path of Diablo",
-        gameShort: "PoD",
-        startDate: "2024-08-30T22:00:00.000Z",
-        startDateNotice: "est. August",
-        endDate: "2024-12-08T22:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        name: "Season 37",
-        game: "Median XL",
-        gameShort: "MXL",
-        startDate: "2024-05-03T02:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2024-10-01T09:00:00.000Z",
-        endDateNotice: "est. September/October",
-        progress: 54.61026642492121,
-      },
-      {
-        name: "Season 38",
-        game: "Median XL",
-        gameShort: "MXL",
-        startDate: "2024-10-01T09:00:00.000Z",
-        startDateNotice: "est. September/October",
-        endDate: "2025-01-09T09:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        name: "Season 7th Clockwork Ballet (SS5)",
-        game: "Torchlight: Infinite",
-        gameShort: "TI",
-        startDate: "2024-07-05T02:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2024-10-05T02:00:00.000Z",
-        endDateNotice: "Estimated ~ October 2024",
-        progress: 21.326937223228665,
-      },
-      {
-        name: "Season 8th",
-        game: "Torchlight: Infinite",
-        gameShort: "TI",
-        startDate: "2024-10-05T02:00:00.000Z",
-        startDateNotice: "Estimated ~ October 2024",
-        endDate: "2025-01-13T02:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        game: "Diablo IV: Vessel of Hatred",
-        gameShort: "D4 VoH",
-        startDate: "2024-10-08T17:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2024-10-08T17:00:00.000Z",
-        endDateNotice: "n/a",
-      },
-      {
-        name: "Diablo IV: Vessel of Hatred (Season VI)",
-        game: "Diablo IV: Vessel of Hatred",
-        gameShort: "D4 VoH",
-        startDate: "2024-10-08T17:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2025-01-16T17:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        name: "Season 32: Ethereal Memory",
-        game: "Diablo III",
-        gameShort: "D3",
-        startDate: "2024-07-12T17:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2024-10-12T17:00:00.000Z",
-        endDateNotice: "est. October",
-        progress: 13.038893744967794,
-      },
-      {
-        name: "Season 33",
-        game: "Diablo III",
-        gameShort: "D3",
-        startDate: "2024-10-12T19:00:00.000Z",
-        startDateNotice: "est. October",
-        endDate: "2025-01-20T19:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        game: "Path of Exile 2",
-        gameShort: "PoE2",
-        startDate: "2024-11-11T20:00:00.000Z",
-        startDateNotice: "Estimated November 2024",
-        endDate: "2024-11-11T20:00:00.000Z",
-        endDateNotice: "n/a",
-      },
-      {
-        name: "Open Beta (Early Access)",
-        game: "Path of Exile 2",
-        gameShort: "PoE2",
-        startDate: "2024-11-11T20:00:00.000Z",
-        startDateNotice: "Estimated November 2024",
-        endDate: "2025-02-19T20:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        name: "Cycle II - Harbingers of Ruin",
-        game: "Last Epoch",
-        gameShort: "LE",
-        startDate: "2024-07-09T16:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2024-12-09T16:00:00.000Z",
-        endDateNotice: "est. end of 2024",
-        progress: 9.828397981723553,
-      },
-      {
-        name: "Cycle III",
-        game: "Last Epoch",
-        gameShort: "LE",
-        startDate: "2024-12-09T16:00:00.000Z",
-        startDateNotice: "est. end of 2024",
-        endDate: "2025-03-19T16:00:00.000Z",
-        endDateNotice: "",
-      },
-      {
-        name: "Season 5: Exodium",
-        game: "Undecember",
-        gameShort: "UD",
-        startDate: "2024-07-18T05:00:00.000Z",
-        startDateNotice: null,
-        endDate: "2024-12-12T05:00:00.000Z",
-        endDateNotice: "",
-        progress: 4.41889948664651,
-      },
-      {
-        name: "Season 6",
-        game: "Undecember",
-        gameShort: "UD",
-        startDate: "2024-12-12T05:00:00.000Z",
-        startDateNotice: "est. end of 2024",
-        endDate: "2025-03-22T05:00:00.000Z",
+        endDate: getUpdatedDate(
+          new Date("2024-12-08T17:00:00.000Z"),
+          currentDate,
+        ),
         endDateNotice: "",
       },
     ],

@@ -17,21 +17,38 @@ const TIMELINE_COLUMNS = [
   { type: "date", id: "End" },
 ];
 
-const timelinePopover = (event: TimelineEvent) => {
-  if (!event.name) {
-    return "";
-  }
-
+const getEventPeriods = (event: TimelineEvent) => {
   const running = event.startDate
     ? Math.floor(
         (new Date().getTime() - new Date(event.startDate).getTime()) /
           (1000 * 60 * 60 * 24),
       )
-    : NaN;
-  const left = Math.floor(
-    (new Date(event.endDate).getTime() - new Date().getTime()) /
+    : 0;
+
+  const left = Math.max(
+    Math.floor(
+      (new Date(event.endDate).getTime() - new Date().getTime()) /
+        (1000 * 60 * 60 * 24),
+    ),
+    0,
+  );
+
+  const lasts = Math.floor(
+    (new Date(event.endDate).getTime() - new Date(event.startDate).getTime()) /
       (1000 * 60 * 60 * 24),
   );
+
+  const launchesIn = running < 0 ? -running : 0;
+
+  return { running, left, lasts, launchesIn };
+};
+
+const timelinePopover = (event: TimelineEvent) => {
+  if (!event.name) {
+    return "";
+  }
+
+  const { running, lasts, launchesIn, left } = getEventPeriods(event);
 
   const popoverClass =
     "z-50 grid gap-4 overflow-hidden rounded-md border bg-popover p-2 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2";
@@ -47,7 +64,7 @@ const timelinePopover = (event: TimelineEvent) => {
                 <span class="font-bold">Start date</span><span class="col-span-2">${INTL_LOCAL_DATETIME.format(new Date(event.startDate))}</span>
             </div>
           <div class="grid grid-cols-3 items-center gap-2">
-              <span class="font-bold">Remaining</span><span class="col-span-2">${-running} day(s)</span>
+              <span class="font-bold">Launches in</span><span class="col-span-2">${launchesIn} day(s)</span>
           </div>
         </div>
       </div>
@@ -62,10 +79,10 @@ const timelinePopover = (event: TimelineEvent) => {
               <span class="font-bold">End date</span><span class="col-span-2">${INTL_LOCAL_DATETIME.format(new Date(event.endDate))}</span>
           </div>
           <div class="grid grid-cols-3 items-center gap-2">
-              <span class="font-bold">Running</span><span class="col-span-2">${running} day(s)</span>
+              <span class="font-bold">${left > 0 ? "Running" : "Lasted"}</span><span class="col-span-2">${left > 0 ? running : lasts} day(s)</span>
           </div>
           <div class="grid grid-cols-3 items-center gap-2">
-              <span class="font-bold">Remaining</span><span class="col-span-2">${left} day(s)</span>
+              <span class="font-bold">Remaining</span><span class="col-span-2">${Math.max(left, 0)} day(s)</span>
           </div>
       </div>
     </div>

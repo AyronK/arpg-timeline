@@ -30,7 +30,7 @@ export const Default: Story = {
     logo: {
       images: {
         fallback: {
-          src: "https://placehold.co/200x140?text=ARPG Game",
+          src: "https://placehold.co/200x140/svg?text=game-logo",
           srcSet: "",
           sizes: "",
         },

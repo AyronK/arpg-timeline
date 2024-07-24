@@ -1,15 +1,13 @@
 import { ChartWrapperOptions, GoogleDataTable } from "react-google-charts";
 
 export interface TimelineEvent {
-  id: string;
   name: string;
   game: string;
   gameShort: string;
   startDate: Date;
-  startDateNotice?: string | undefined;
+  startDateNotice?: string | null;
   endDate: Date;
-  endDateNotice?: string | undefined;
-  progress: number | undefined;
+  endDateNotice?: string | null;
 }
 
 export const TIMELINE_OPTIONS: Record<string, ChartWrapperOptions["options"]> =
