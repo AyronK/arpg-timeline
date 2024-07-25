@@ -94,6 +94,7 @@ const timelinePopover = (event: TimelineEvent) => {
 const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#303a50"]`;
 const ROW_HEIGHT = 40;
 const CARD_OFFSET = 96;
+const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
 
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
@@ -101,10 +102,9 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const { isMd } = useBreakpoint("md");
   const chartTheme = theme === "system" ? getPreference() : theme;
   const options = TIMELINE_OPTIONS[chartTheme];
-  const chartHeight = isMd ? 296 : 216;
   const containerHeight = Math.min(
     (events.length / 2) * ROW_HEIGHT + CARD_OFFSET,
-    chartHeight,
+    CHART_MAX_HEIGHT,
   );
 
   if (events.length < 3) {
@@ -158,7 +158,7 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
           }),
           ["⁠", "Today", todaysPopover(), new Date(), new Date()],
         ]}
-        height={`${chartHeight}px`}
+        height={`${CHART_MAX_HEIGHT}px`}
       />
     </div>
   );
