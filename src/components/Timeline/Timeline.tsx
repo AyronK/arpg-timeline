@@ -34,7 +34,7 @@ const getEventPeriods = (event: TimelineEvent) => {
       DAY,
   );
 
-  const launchesIn = running < 0 ? -running : 0;
+  const launchesIn = Math.max(running < 0 ? -running - 1 : 0, 0);
 
   return { running, left, lasts, launchesIn };
 };
