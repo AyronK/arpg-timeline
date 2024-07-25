@@ -3,7 +3,6 @@ import "@/components/Timeline/Timeline.css";
 import { useTheme } from "@/components/ThemeProvider";
 import { DAY, INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useRef } from "react";
 import { TimelineEvent, TIMELINE_OPTIONS } from "@/components/Timeline/Conts";
 
@@ -99,7 +98,6 @@ const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const { theme, getPreference } = useTheme();
-  const { isMd } = useBreakpoint("md");
   const chartTheme = theme === "system" ? getPreference() : theme;
   const options = TIMELINE_OPTIONS[chartTheme];
   const containerHeight = Math.min(
@@ -142,15 +140,15 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
             },
           },
         ]}
-        className="chart w-[200%] md:w-full"
+        className="chart w-[300%] md:w-full"
         options={options}
         chartType="Timeline"
         data={[
           TIMELINE_COLUMNS,
           ...events.map((e) => {
             return [
-              isMd ? e.game : (e.gameShort ?? e.game),
-              e.name ? (isMd ? `${e.game} - ${e.name}` : e.name) : "",
+              e.game,
+              e.name ? `${e.game} - ${e.name}` : "",
               timelinePopover(e),
               new Date(e.startDate),
               new Date(e.endDate),

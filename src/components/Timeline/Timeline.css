@@ -1,4 +1,4 @@
-.chart g text:not([text-anchor="start"]) {
+.chart g text {
   @apply !fill-foreground;
   @apply !font-normal;
 }
@@ -15,8 +15,8 @@
   @apply text-popover-foreground;
 }
 
-.chart g rect:last-of-type[fill="#303a50"],
-.chart g rect:last-of-type[fill="#cbd5e1"] {
+.chart g:not(:last-of-type) rect:last-of-type[fill="#303a50"],
+.chart g:not(:last-of-type) rect:last-of-type[fill="#cbd5e1"] {
   height: 2000px;
   fill: hsl(var(--destructive)) !important;
   transform: translateY(-1969px);

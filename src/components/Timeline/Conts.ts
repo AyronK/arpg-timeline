@@ -3,7 +3,6 @@ import { ChartWrapperOptions } from "react-google-charts";
 export interface TimelineEvent {
   name: string;
   game: string;
-  gameShort: string;
   startDate: Date;
   startDateNotice?: string | null;
   endDate: Date;

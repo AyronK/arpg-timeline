@@ -1,5 +1,5 @@
+import { TimelineEvent } from "@/components/Timeline/Conts";
 import { Game } from "@/lib/cms/games.types";
-import { TimelineEvent } from "@/lib/google-charts/timeline";
 
 export const useTimelineEvents = (games: Game[]) => {
   return games.reduce((prev: TimelineEvent[], g: Game) => {
@@ -9,7 +9,6 @@ export const useTimelineEvents = (games: Game[]) => {
       next.push({
         name: g.currentSeason.title ?? "",
         game: g.title,
-        gameShort: g.shortName ?? g.title,
         startDate: new Date(g.currentSeason.startDate),
         startDateNotice: g.currentSeason.startDateNotice,
         endDate: new Date(g.currentSeason.endDate ?? "Invalid Date"),
@@ -19,7 +18,6 @@ export const useTimelineEvents = (games: Game[]) => {
       next.push({
         name: "",
         game: g.title,
-        gameShort: g.shortName ?? g.title,
         startDate: new Date(g.nextSeason.startDate),
         startDateNotice: g?.nextSeason.startDateNotice,
         endDate: new Date(g.nextSeason.startDate),
@@ -29,7 +27,6 @@ export const useTimelineEvents = (games: Game[]) => {
       next.push({
         name: "",
         game: g.title,
-        gameShort: g.shortName ?? g.title,
         startDate: new Date(),
         startDateNotice: "n/a",
         endDate: new Date(),
@@ -41,7 +38,6 @@ export const useTimelineEvents = (games: Game[]) => {
       next.push({
         name: g.nextSeason.title ?? "",
         game: g.title,
-        gameShort: g.shortName ?? g.title,
         startDate: new Date(g?.nextSeason?.startDate ?? "Invalid Date"),
         startDateNotice: g?.nextSeason?.startDateNotice,
         endDate: new Date(
@@ -54,7 +50,6 @@ export const useTimelineEvents = (games: Game[]) => {
       next.push({
         name: g.nextSeason.title ?? "",
         game: g.title,
-        gameShort: g.shortName ?? g.title,
         startDate: new Date(g.currentSeason?.endDate),
         startDateNotice: g?.nextSeason?.startDateNotice,
         endDate: new Date(
@@ -67,7 +62,6 @@ export const useTimelineEvents = (games: Game[]) => {
       next.push({
         name: "",
         game: g.title,
-        gameShort: g.shortName ?? g.title,
         startDate: new Date(),
         startDateNotice: "n/a",
         endDate: new Date(),
