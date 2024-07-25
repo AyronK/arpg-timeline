@@ -93,14 +93,21 @@ const timelinePopover = (event: TimelineEvent) => {
   `;
 };
 
-const todaysEntrySelector = `.chart g rect:last-of-type[fill="#303a50"]`;
+const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#303a50"]`;
+const ROW_HEIGHT = 40;
+const CARD_OFFSET = 96;
 
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const { theme, getPreference } = useTheme();
   const { isMd } = useBreakpoint("md");
-  const options =
-    TIMELINE_OPTIONS[theme === "system" ? getPreference() : theme];
+  const chartTheme = theme === "system" ? getPreference() : theme;
+  const options = TIMELINE_OPTIONS[chartTheme];
+  const chartHeight = isMd ? 296 : 216;
+  const containerHeight = Math.min(
+    (events.length / 2) * ROW_HEIGHT + CARD_OFFSET,
+    chartHeight,
+  );
 
   if (events.length < 3) {
     return null;
@@ -109,10 +116,9 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   return (
     <div
       ref={parentRef}
-      className="relative overflow-x-auto overflow-y-hidden pb-2 md:pb-1"
+      className="relative overflow-x-auto overflow-y-hidden"
       style={{
-        height:
-          Math.min((events.length / 2) * 40 + 96, isMd ? 296 : 216) + "px",
+        height: `${containerHeight}px`,
       }}
     >
       <Chart
@@ -120,7 +126,9 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
           {
             eventName: "ready",
             callback: () => {
-              const todaysElement = document.querySelector(todaysEntrySelector);
+              const todaysElement = document.querySelector(
+                TODAYS_ENTRY_SELECTOR,
+              );
               if (parentRef.current && todaysElement) {
                 console.log(
                   todaysElement.getBoundingClientRect().left -
@@ -152,7 +160,7 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
           }),
           ["⁠", "Today", todaysPopover(), new Date(), new Date()],
         ]}
-        height={isMd ? 296 : 216 + "px"}
+        height={`${chartHeight}px`}
       />
     </div>
   );
