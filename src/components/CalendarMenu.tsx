@@ -3,9 +3,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/DropdownMenu";
+} from "@/ui/DropdownMenu";
 import { Calendar, CalendarPlus } from "lucide-react";
-import React from "react";
+
 import {
   downloadICSFile,
   addToGoogleCalendar,

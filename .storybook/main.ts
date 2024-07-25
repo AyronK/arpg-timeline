@@ -1,3 +1,4 @@
+import path from "path";
 import type { StorybookConfig } from "@storybook/react-webpack5";
 
 const config: StorybookConfig = {
@@ -9,25 +10,58 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
-    "@storybook/addon-styling-webpack",
     {
-      name: "@storybook/addon-postcss",
+      name: "@storybook/addon-styling-webpack",
       options: {
-        cssLoaderOptions: {
-          // When you have splitted your css over multiple files
-          // and use @import('./other-styles.css')
-          importLoaders: 1,
-        },
-        postcssLoaderOptions: {
-          // When using postCSS 8
-          implementation: require("postcss"),
-        },
+        rules: [
+          {
+            test: /\.css$/,
+            sideEffects: true,
+            use: [
+              require.resolve("style-loader"),
+              {
+                loader: require.resolve("css-loader"),
+                options: {
+                  importLoaders: 1,
+                },
+              },
+              {
+                loader: require.resolve("postcss-loader"),
+                options: {
+                  implementation: require.resolve("postcss"),
+                },
+              },
+            ],
+          },
+        ],
       },
     },
+    "@storybook/addon-themes",
   ],
   framework: {
     name: "@storybook/react-webpack5",
-    options: {},
+    options: {
+      builder: {
+        useSWC: true,
+      },
+    },
+  },
+  swc: () => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: "automatic",
+        },
+      },
+    },
+  }),
+  webpackFinal: async (config) => {
+    config.resolve!.alias = {
+      ...config.resolve!.alias,
+      "@": path.resolve(__dirname, "../src"),
+    };
+
+    return config;
   },
 };
 export default config;

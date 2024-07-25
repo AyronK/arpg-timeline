@@ -2,7 +2,7 @@
 slug: undecember
 seasonKeyword: season
 title: Undecember
-shortName: ud
+shortName: UD
 official: true
 logo: /img/undecember-logo.png
 url: https://undecember.line.games/

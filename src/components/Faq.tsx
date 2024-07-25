@@ -1,5 +1,4 @@
-import React from "react";
-import { Button } from "./Button";
+import { Button } from "@/ui/Button";
 
 export const Faq = () => (
   <section className="container my-8 flex flex-col gap-4">
@@ -9,7 +8,7 @@ export const Faq = () => (
         <Button variant={"outline"} size="lg" asChild>
           <a
             href="https://www.buymeacoffee.com/ayron"
-            rel="external nofollow"
+            rel="external nofollow noreferrer"
             target="_blank"
           >
             <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full dark:bg-current">
@@ -25,7 +24,7 @@ export const Faq = () => (
         <Button variant={"outline"} size="lg" asChild>
           <a
             href="https://github.com/AyronK/arpg-timeline/issues"
-            rel="external nofollow"
+            rel="external nofollow noreferrer"
             target="_blank"
           >
             <svg
@@ -53,7 +52,7 @@ export const Faq = () => (
         <div>
           <h3 className="font-semibold">What is a season tracker?</h3>
           <p className="ml-2">
-            ARPG is a very special genre. The large part of these games'
+            ARPG is a very special genre. The large part of these games&apos;
             community are the same people cycling between new seasons. If you
             are one of those people playing aRPGs for a couple of days or weeks
             each cycle, this site can help you plan your time in regard of new
@@ -93,16 +92,17 @@ export const Faq = () => (
 
         <div>
           <h3 className="font-semibold">
-            What does the "UNOFFICIAL" tag mean?
+            What does the &quot;UNOFFICIAL&quot; tag mean?
           </h3>
           <p className="ml-2">
-            The "UNOFFICIAL*" tag indicates that a game or cycle is not
-            officially recognized or supported by its original publishers. This
-            means it is created by fans or third parties without the endorsement
-            or active support of the official game developers or publishers. As
-            a result, the original publishers do not provide support for
-            "UNOFFICIAL*" content, and any issues or questions should be
-            directed to the creators or the community that developed it.
+            The &quot;UNOFFICIAL*&quot; tag indicates that a game or cycle is
+            not officially recognized or supported by its original publishers.
+            This means it is created by fans or third parties without the
+            endorsement or active support of the official game developers or
+            publishers. As a result, the original publishers do not provide
+            support for &quot;UNOFFICIAL*&quot; content, and any issues or
+            questions should be directed to the creators or the community that
+            developed it.
           </p>
         </div>
 
@@ -124,7 +124,7 @@ export const Faq = () => (
             <a
               className="font-semibold hover:opacity-75"
               href="https://github.com/AyronK/arpg-timeline/issues"
-              rel="external nofollow"
+              rel="external nofollow noreferrer"
               target="_blank"
             >
               GitHub page
@@ -141,7 +141,7 @@ export const Faq = () => (
             <a
               className="font-semibold hover:opacity-75"
               href="https://github.com/AyronK/arpg-timeline/issues"
-              rel="external nofollow"
+              rel="external nofollow noreferrer"
               target="_blank"
             >
               GitHub page

@@ -2,6 +2,7 @@
 slug: path-of-diablo
 seasonKeyword: season
 title: Path of Diablo
+shortName: PoD
 official: false
 group: Diablo Mods
 logo: /img/pathofdiablo-logo.png

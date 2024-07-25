@@ -93,3 +93,55 @@
     transition-timing-function: linear !important;
   }
 }
+
+@layer utilities {
+  html {
+    ::-webkit-scrollbar {
+      @apply w-1.5;
+      @apply h-1.5;
+      @apply bg-muted;
+    }
+
+    ::-webkit-scrollbar-corner {
+      @apply bg-muted;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      @apply bg-muted-foreground;
+      @apply rounded-full;
+    }
+
+    ::-moz-scrollbar {
+      @apply w-1.5;
+      @apply h-1.5;
+      @apply bg-muted;
+    }
+
+    ::-moz-scrollbar-thumb {
+      @apply bg-muted-foreground;
+      @apply rounded-full;
+    }
+
+    ::-ms-scrollbar {
+      @apply w-1.5;
+      @apply h-1.5;
+      @apply bg-muted;
+    }
+
+    ::-ms-scrollbar-thumb {
+      @apply bg-muted-foreground;
+      @apply rounded-full;
+    }
+
+    ::scrollbar {
+      @apply w-1.5;
+      @apply h-1.5;
+      @apply bg-muted;
+    }
+
+    ::scrollbar-thumb {
+      @apply bg-muted-foreground;
+      @apply rounded-full;
+    }
+  }
+}

@@ -1,9 +1,8 @@
-import * as React from "react";
-import { Footer } from "./Footer";
-import useSiteMetadata from "../hooks/useSiteMetadata";
-import { ThemeProvider } from "./ThemeProvider";
-import { ThemeToggle } from "./ThemeToggle";
-import { Button } from "./Button";
+import { Footer } from "@/components/Footer";
+import useSiteMetadata from "@/hooks/useSiteMetadata";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/ui/Button";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
@@ -23,7 +22,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
             <Button variant={"outline"} asChild className="px-2 md:px-4">
               <a
                 href="https://www.buymeacoffee.com/ayron"
-                rel="external nofollow"
+                rel="external nofollow noreferrer"
                 target="_blank"
               >
                 <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full dark:bg-current 2xl:mr-2">
@@ -39,7 +38,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
             <Button variant={"outline"} asChild className="px-2 2xl:px-4">
               <a
                 href="https://github.com/AyronK/arpg-timeline/issues"
-                rel="external nofollow"
+                rel="external nofollow noreferrer"
                 target="_blank"
               >
                 <svg

@@ -2,6 +2,7 @@
 slug: hero-siege
 seasonKeyword: season
 title: Hero Siege
+shortName: HS
 official: true
 logo: /img/site-logo.png
 url: https://panicartstudios.com/hsportal/

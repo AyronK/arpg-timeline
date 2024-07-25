@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Time } from "./Time";
+import { useEffect, useState } from "react";
+import { Time } from "@/components/Time";
 
 const getTimeComponents = (distance: number) => {
   const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));

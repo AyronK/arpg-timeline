@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import SeasonCard from "./SeasonCard";
+import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { ImageDataLike } from "gatsby-plugin-image";
-import React from "react";
 
 const meta = {
-  title: "Components/SeasonCard",
+  title: "Components/Season Card",
   component: SeasonCard,
   decorators: [
     (Story) => (
@@ -23,10 +22,15 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     title: "New Season",
+    group: null,
+    official: true,
+    shortName: "sn",
+    slug: "slug",
+    url: null,
     logo: {
       images: {
         fallback: {
-          src: "https://placehold.co/200x140?text=ARPG Game",
+          src: "https://placehold.co/200x140/svg?text=game-logo",
           srcSet: "",
           sizes: "",
         },
@@ -43,6 +47,7 @@ export const Default: Story = {
       url: "/",
       startDateNotice: "March 21, 2024",
       endDateNotice: "June 20, 2024",
+      justStarted: false,
     },
     nextSeason: {
       startDate: "2024-06-21",

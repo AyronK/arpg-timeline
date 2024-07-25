@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Layout } from "@/components/Layout";
 
 const Page = () => {
@@ -12,8 +11,8 @@ const Page = () => {
           Join our team of moderators and help us build the aRPG Timeline!
         </p>
         <p className="mb-4">
-          As a moderator, you'll play a crucial role in keeping the website up
-          to date. If you stay informed about your favorite games and want to
+          As a moderator, you&apos;ll play a crucial role in keeping the website
+          up to date. If you stay informed about your favorite games and want to
           help build this community, please{" "}
           <a
             className="font-semibold hover:opacity-75"
@@ -43,7 +42,7 @@ const Page = () => {
         </p>
         <p className="mb-4">
           While we strive to automate as much as possible, the human crosscheck
-          is essential for maintaining the website's reliability.
+          is essential for maintaining the website&apos;s reliability.
         </p>
       </div>
     </Layout>

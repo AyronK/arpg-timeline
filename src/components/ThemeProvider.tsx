@@ -1,21 +1,28 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  PropsWithChildren,
+} from "react";
 
 type Theme = "dark" | "light" | "system";
 
-type ThemeProviderProps = {
-  children: React.ReactNode;
+type ThemeProviderProps = PropsWithChildren & {
   defaultTheme?: Theme;
-  storageKey: string;
+  storageKey?: string | null;
 };
 
 type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  getPreference: () => "dark" | "light";
 };
 
 const initialState: ThemeProviderState = {
   theme: "system",
   setTheme: () => null,
+  getPreference: () => "dark",
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
@@ -35,7 +42,7 @@ export const ThemeProvider = ({
   }
 
   const [theme, setTheme] = useState<Theme>(() =>
-    isServer
+    isServer || !storageKey
       ? defaultTheme
       : (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
@@ -61,12 +68,22 @@ export const ThemeProvider = ({
     root.classList.add(theme);
   }, [theme]);
 
+  useEffect(() => {
+    setTheme(defaultTheme);
+  }, [defaultTheme]);
+
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
+      if (storageKey) {
+        localStorage.setItem(storageKey, theme);
+      }
       setTheme(theme);
     },
+    getPreference: () =>
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light",
   };
 
   return (

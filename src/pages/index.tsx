@@ -1,155 +1,35 @@
-import * as React from "react";
+import { lazy, Suspense } from "react";
 import { graphql, PageProps } from "gatsby";
-import SeasonCard from "../components/SeasonCard";
-import { Layout } from "../components/Layout";
-import { useSearchParams } from "../hooks/useSearchParams";
+import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
+import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
-import { Button } from "@/components/Button";
+import { Button } from "@/ui/Button";
 import { UsersRound } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Game } from "@/lib/cms/games.types";
+import { useGameFilters } from "@/hooks/useGameFilters";
+import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
+import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 
-const HOUR = 1000 * 60 * 60;
-const DAY = HOUR * 24;
-const GRACE_PERIOD = DAY * 2;
+const Timeline = lazy(() =>
+  import("@/components/Timeline/Timeline").then((module) => ({
+    default: module.Timeline,
+  })),
+);
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
-  const inGracePeriod = (startDate: string) => {
-    return new Date().getTime() - new Date(startDate).getTime() < GRACE_PERIOD;
-  };
+  const games = useGamesFromMarkdown(data);
 
-  const [, setSearchParam, getSearchParam] = useSearchParams();
-  const searchParam = getSearchParam("exclude");
-  const excludedSlugs =
-    typeof searchParam === "string"
-      ? [searchParam]
-      : (searchParam as string[]) ?? [];
-  const games = data.allMarkdownRemark.edges
-    .map((e) => e.node.frontmatter)
-    .map((g) => {
-      if (!g?.nextSeason?.startDate) {
-        return g;
-      }
-      const nextStartDate = new Date(g.nextSeason.startDate);
-      const now = new Date();
-      if (nextStartDate.getTime() < now.getTime()) {
-        return { ...g, currentSeason: g.nextSeason, nextSeason: null };
-      }
-      return g;
-    })
-    .map((g) => {
-      if (
-        g?.currentSeason?.startDate &&
-        inGracePeriod(g?.currentSeason?.startDate)
-      ) {
-        const diff =
-          new Date().getTime() - new Date(g.currentSeason.startDate).getTime();
-        return {
-          ...g,
-          currentSeason: {
-            ...g.currentSeason,
-            justStarted: true,
-            startDateNotice:
-              diff < 2 * HOUR
-                ? "Just started"
-                : `Started ${(diff / HOUR).toFixed(0)} hours ago`,
-            endDateNotice: " ",
-          },
-        };
-      }
-      return g;
-    })
-    .sort((a, b) => {
-      if (
-        a.currentSeason?.startDate &&
-        inGracePeriod(a.currentSeason.startDate)
-      ) {
-        return -1;
-      }
+  const {
+    gameFilters,
+    toggleGameFilter,
+    toggleGroupFilter,
+    filteredGames,
+    activeFilters,
+  } = useGameFilters(games as Game[]);
 
-      if (
-        b.currentSeason?.startDate &&
-        inGracePeriod(b.currentSeason.startDate)
-      ) {
-        return 1;
-      }
-
-      const aNextSeasonStart = a.nextSeason?.startDate;
-      const bNextSeasonStart = b.nextSeason?.startDate;
-      const aCurrentSeasonEnd = a.currentSeason?.endDate;
-      const bCurrentSeasonEnd = b.currentSeason?.endDate;
-
-      if (aNextSeasonStart && bNextSeasonStart) {
-        return (
-          new Date(aNextSeasonStart).getTime() -
-          new Date(bNextSeasonStart).getTime()
-        );
-      }
-      if (aNextSeasonStart) {
-        return -1;
-      }
-      if (bNextSeasonStart) {
-        return 1;
-      }
-      if (aCurrentSeasonEnd && bCurrentSeasonEnd) {
-        return (
-          new Date(aCurrentSeasonEnd).getTime() -
-          new Date(bCurrentSeasonEnd).getTime()
-        );
-      }
-      if (aCurrentSeasonEnd) {
-        return -1;
-      }
-      if (bCurrentSeasonEnd) {
-        return 1;
-      }
-      return 0;
-    });
-
-  const visibleGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
-
-  const toggleFilter = (slug: string, value: boolean) => {
-    const filtersParams: string | string[] | null = getSearchParam("exclude");
-    const filters =
-      filtersParams instanceof Array
-        ? filtersParams
-        : filtersParams !== null
-          ? [filtersParams]
-          : [];
-
-    if (value) {
-      setSearchParam(
-        "exclude",
-        filters.filter((f) => f !== slug),
-      );
-    } else {
-      filters.push(slug);
-      setSearchParam("exclude", filters);
-    }
-  };
-
-  const toggleGroupFilter = (group: string, value: boolean) => {
-    const slugs = games
-      .filter((g) => (group ? g?.group === group : !g?.group))
-      .map((g) => g?.slug ?? "")
-      .filter((g) => !!g);
-
-    const filtersParams: string | string[] | null = getSearchParam("exclude");
-    const filters =
-      filtersParams instanceof Array
-        ? filtersParams
-        : filtersParams !== null
-          ? [filtersParams]
-          : [];
-
-    if (value) {
-      setSearchParam(
-        "exclude",
-        filters.filter((f) => !slugs.includes(f)),
-      );
-    } else {
-      setSearchParam("exclude", [...filters, ...slugs]);
-    }
-  };
+  const events = useTimelineEvents(filteredGames);
 
   return (
     <Layout>
@@ -162,17 +42,9 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
         <div className="mt-2 flex flex-col gap-4 md:mt-0">
           <div className="max-w-[1200px]">
             <FiltersDialog
-              checked={games
-                .map((g) => g!.slug!)
-                .filter((s) => !excludedSlugs.includes(s!))}
-              filters={games
-                .map((g) => ({
-                  label: g!.title!,
-                  value: g!.slug!,
-                  group: g!.group!,
-                }))
-                .sort((a, b) => (a.label > b.label ? 1 : -1))}
-              onCheckedChange={toggleFilter}
+              checked={activeFilters}
+              filters={gameFilters}
+              onCheckedChange={toggleGameFilter}
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
@@ -190,9 +62,31 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           </div>
           <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
-            {visibleGames.map((game) => (
-              <SeasonCard key={game!.slug} {...game} />
+            {filteredGames.map((game, idx) => (
+              <div
+                key={game!.slug}
+                className={cn("order-last flex", {
+                  "order-first": idx <= 1,
+                  "xl:order-first": idx <= 2,
+                  "3xl:order-first": idx <= 3,
+                  "4xl:order-first": idx <= 4,
+                })}
+              >
+                <SeasonCard {...game} />
+              </div>
             ))}
+            <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
+              <div>
+                <h3 className="mb-1.5 font-semibold sm:text-lg">Timeline</h3>
+                <Suspense
+                  fallback={
+                    <div className="h-[255px] md:h-[296px]">Loading</div>
+                  }
+                >
+                  <Timeline events={events} />
+                </Suspense>
+              </div>
+            </div>
           </article>
         </div>
       </div>
