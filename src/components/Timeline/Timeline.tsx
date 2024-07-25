@@ -1,7 +1,7 @@
 import "@/components/Timeline/Timeline.css";
 
 import { useTheme } from "@/components/ThemeProvider";
-import { INTL_LOCAL_DATETIME } from "@/lib/date";
+import { DAY, INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useRef } from "react";
@@ -18,22 +18,20 @@ const TIMELINE_COLUMNS = [
 const getEventPeriods = (event: TimelineEvent) => {
   const running = event.startDate
     ? Math.floor(
-        (new Date().getTime() - new Date(event.startDate).getTime()) /
-          (1000 * 60 * 60 * 24),
+        (new Date().getTime() - new Date(event.startDate).getTime()) / DAY,
       )
     : 0;
 
   const left = Math.max(
     Math.floor(
-      (new Date(event.endDate).getTime() - new Date().getTime()) /
-        (1000 * 60 * 60 * 24),
+      (new Date(event.endDate).getTime() - new Date().getTime()) / DAY,
     ),
     0,
   );
 
   const lasts = Math.floor(
     (new Date(event.endDate).getTime() - new Date(event.startDate).getTime()) /
-      (1000 * 60 * 60 * 24),
+      DAY,
   );
 
   const launchesIn = running < 0 ? -running : 0;
