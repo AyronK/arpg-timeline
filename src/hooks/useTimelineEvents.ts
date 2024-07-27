@@ -48,7 +48,7 @@ export const useTimelineEvents = (games: Game[]) => {
       } satisfies TimelineEvent);
     } else if (g.currentSeason?.endDate) {
       next.push({
-        name: g.nextSeason.title ?? "",
+        name: g.nextSeason?.title ?? "",
         game: g.title,
         startDate: new Date(g.currentSeason?.endDate),
         startDateNotice: g?.nextSeason?.startDateNotice,
@@ -56,7 +56,7 @@ export const useTimelineEvents = (games: Game[]) => {
           new Date(g.currentSeason?.endDate).getTime() +
             120 * 24 * 50 * 60 * 1000,
         ),
-        endDateNotice: g.nextSeason.endDateNotice ?? "",
+        endDateNotice: g.nextSeason?.endDateNotice ?? "",
       } satisfies TimelineEvent);
     } else {
       next.push({

@@ -12,7 +12,22 @@ export const useGamesFromMarkdown = (data: Queries.IndexPageQuery) => {
       const nextStartDate = new Date(g.nextSeason.startDate);
       const now = new Date();
       if (nextStartDate.getTime() < now.getTime()) {
-        return { ...g, currentSeason: g.nextSeason, nextSeason: null };
+        return {
+          ...g,
+          currentSeason: {
+            ...g.nextSeason,
+            endDate: new Date(
+              new Date(g.nextSeason.startDate).getTime() +
+                120 * 24 * 50 * 60 * 1000,
+            ),
+          },
+          nextSeason: {
+            startDate:
+              new Date(g.nextSeason.startDate).getTime() +
+              120 * 24 * 50 * 60 * 1000,
+            title: `Next ${g.seasonKeyword} TBA`,
+          },
+        };
       }
       return g;
     })
