@@ -15,7 +15,8 @@ currentSeason:
   endDateNotice: ""
 nextSeason:
   startDate: 2024-08-06T17:00:00.000Z
-  title: Next Season - Season V
+  title: Season V - Infernal Hordes
+  url: https://news.blizzard.com/en-us/diablo4/24119591/
   startDateNotice: ""
   showCountdown: true
 crawlerSettings:
