@@ -11,8 +11,9 @@ currentSeason:
   endDate: 2024-08-16T12:00:00.000Z
   title: Season 4
 nextSeason:
-  startDate: 2024-08-16T12:00:00.000Z
+  startDate: 2024-08-16T11:00:00.000Z
   title: Season 4.5
+  showCountdown: true
 crawlerSettings:
   keywords: ["season 5 patch notes", "season 5 ", "4.5"]
   sources:
