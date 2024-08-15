@@ -19,7 +19,6 @@ nextSeason:
   startDateNotice: est. August
 crawlerSettings:
   keywords:
-    - news=43
     - news=44
     - news=45
   sources:
