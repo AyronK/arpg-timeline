@@ -11,10 +11,10 @@ currentSeason:
   startDate: ""
   endDate: ""
 nextSeason:
-  startDate: 2024-11-11T20:00:00.000Z
+  startDate: 2024-11-15T20:00:00.000Z
   url: https://pathofexile2.com/
-  title: Open Beta (Early Access)
-  startDateNotice: Estimated November 2024
+  title: Early Access
+  showCountdown: true
 crawlerSettings:
   keywords:
     - "early access"
