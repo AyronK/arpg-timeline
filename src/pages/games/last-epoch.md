@@ -8,16 +8,14 @@ logo: /img/lastepoch.png
 url: https://lastepoch.com/
 currentSeason:
   startDate: 2024-07-09T16:00:00.000Z
-  endDate: 2024-12-09T16:00:00.000Z
-  title: Cycle II - Harbingers of Ruin
+  endDate: 2024-09-19T16:00:00.000Z
+  title: Cycle 1.1 - Harbingers of Ruin
   url: https://lastepoch.com/ladder
-  endDateNotice: est. end of 2024
 nextSeason:
-  startDate: 2024-12-09T16:00:00.000Z
-  url: ""
-  title: Cycle III
-  showCountdown: false
-  startDateNotice: est. end of 2024
+  startDate: 2024-09-19T16:00:00.000Z
+  url: "https://forum.lastepoch.com/t/announcing-1-1-refresh-cycle-event-the-imperial-uprising/73532"
+  title: Imperial Uprising Cycle Event
+  showCountdown: true
 crawlerSettings:
   keywords: ["cycle 1.2", "patch 1.2"]
   sources: ["https://forum.lastepoch.com/search?q=1.2%20%23announcements"]
