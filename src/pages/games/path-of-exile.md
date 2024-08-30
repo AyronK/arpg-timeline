@@ -8,18 +8,18 @@ title: Path of Exile
 group: Path of Exile
 url: https://www.pathofexile.com/
 currentSeason:
-  startDate: 2024-03-29T20:00:00.000Z
-  endDate: 2024-07-23T22:00:00.000Z
-  title: 3.24 - Necropolis
-  url: https://www.pathofexile.com/necropolis
-  endDateNotice: ""
+  startDate: 2024-07-26T20:00:00.000Z
+  endDate: 2024-12-01T22:00:00.000Z
+  title: 3.25 - Settlers of Kalguur
+  url: https://www.pathofexile.com/settlers
+  endDateNotice: "Est. end of 2024"
   startDateNotice: ""
 nextSeason:
-  title: 3.25 - Settlers of Kalguur
-  startDateNotice: ""
+  title: 3.26 - Next League
+  startDateNotice: "TBA"
   url: ""
-  showCountdown: true
-  startDate: 2024-07-26T20:00:00.000Z
+  showCountdown: false
+  startDate: 2024-12-01T20:00:00.000Z
 crawlerSettings:
   keywords:
     - "3.26"
