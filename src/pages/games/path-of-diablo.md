@@ -14,9 +14,9 @@ currentSeason:
   url: https://beta.pathofdiablo.com/ladder
   endDateNotice: est. September
 nextSeason:
-  startDate: 2024-09-08T22:00:00.000Z
+  startDate: 2024-10-01T22:00:00.000Z
   title: Season 13
-  startDateNotice: est. September
+  startDateNotice: est. September/October
 crawlerSettings:
   keywords:
     - news=44
