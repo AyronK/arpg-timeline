@@ -9,14 +9,14 @@ logo: /img/pathofdiablo-logo.png
 url: https://pathofdiablo.com/
 currentSeason:
   startDate: 2024-03-08T22:00:00.000Z
-  endDate: 2024-08-30T22:00:00.000Z
+  endDate: 2024-09-08T22:00:00.000Z
   title: Season 12
   url: https://beta.pathofdiablo.com/ladder
-  endDateNotice: est. August
+  endDateNotice: est. September
 nextSeason:
-  startDate: 2024-08-30T22:00:00.000Z
+  startDate: 2024-09-08T22:00:00.000Z
   title: Season 13
-  startDateNotice: est. August
+  startDateNotice: est. September
 crawlerSettings:
   keywords:
     - news=44
