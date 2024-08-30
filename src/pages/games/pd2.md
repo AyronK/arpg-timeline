@@ -9,14 +9,14 @@ url: https://www.projectdiablo2.com
 group: Diablo Mods
 currentSeason:
   startDate: 2024-04-12T17:00:00.000Z
-  endDate: 2024-08-30T17:00:00.000Z
+  endDate: 2024-10-01T17:00:00.000Z
   title: Season 9 - Anarchy
   url: https://www.projectdiablo2.com
-  endDateNotice: Estimated ~ August/September
+  endDateNotice: Estimated ~ September/October
 nextSeason:
-  startDate: 2024-08-30T17:00:00.000Z
+  startDate: 2024-10-01T17:00:00.000Z
   title: Season 10
-  startDateNotice: Estimated ~ August/September
+  startDateNotice: Estimated ~ September/October
 crawlerSettings:
   keywords: ["season 10"]
   sources:
