@@ -7,15 +7,18 @@ official: true
 logo: /img/site-logo.png
 url: https://panicartstudios.com/hsportal/
 currentSeason:
-  startDate: 2024-06-07T12:00:00.000Z
-  endDate: 2024-08-16T12:00:00.000Z
-  title: Season 4
-nextSeason:
   startDate: 2024-08-16T11:00:00.000Z
   title: Season 4.5
   showCountdown: true
+  endDate: 2024-08-16T12:00:00.000Z
+  endDateNotice: TBA
+nextSeason:
+  startDate: 2024-08-16T11:00:00.000Z
+  title: Season 5
+  showCountdown: false
+  startDateNotice: TBA
 crawlerSettings:
-  keywords: ["season 5 patch notes", "season 5 ", "4.5"]
+  keywords: ["season 5 patch notes", "season 5 "]
   sources:
     [
       "https://herosiege.wiki.gg/wiki/Hero_Siege_Wiki",
