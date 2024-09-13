@@ -210,7 +210,7 @@ collections:
       preview: false
     folder: "src/documents/seasons"
     create: true
-    slug: "{{fields.slug}}"
+    slug: "{{fields.name}}"
     summary: "{{game}} | {{name}}"
     view_groups:
       - label: Game
@@ -224,15 +224,10 @@ collections:
         value_field: "name"
         display_fields: ["name"]
 
-      - label: "Slug"
-        name: "slug"
-        widget: "string"
-        required: true
-
       - label: "Name"
         name: "name"
         widget: "string"
-        required: false
+        required: true
 
       - label: "Url"
         name: "url"
@@ -247,7 +242,6 @@ collections:
         fields:
           - label: "Start Date UTC"
             name: "startDate"
-            default: ""
             widget: "datetime"
             picker_utc: true
             required: false
