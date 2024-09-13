@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
 name: 3.23.0 - Affliction
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Affliction
+url: https://www.poewiki.net/wiki/Affliction_league
 start:
   confirmed: true
   startDate: 2023-12-08T19:00:00.000Z

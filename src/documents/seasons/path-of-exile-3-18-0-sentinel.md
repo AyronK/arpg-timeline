@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
 name: 3.18.0 - Sentinel
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Sentinel
+url: https://www.poewiki.net/wiki/Sentinel_league
 start:
   confirmed: true
   startDate: 2022-05-13T20:00:00.000Z

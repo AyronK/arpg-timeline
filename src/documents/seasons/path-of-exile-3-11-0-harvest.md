@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
 name: 3.11.0 - Harvest
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Harvest
+url: https://www.poewiki.net/wiki/Harvest_league
 start:
   confirmed: true
   startDate: 2020-06-19T20:00:00.000Z

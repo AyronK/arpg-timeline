@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
-name: 3.20.0 - The Forbidden Sanctum
-url: https://www.poewiki.net/wiki/Path_of_Exile:_The_Forbidden_Sanctum
+name: 3.20.0 - Sanctum
+url: https://www.poewiki.net/wiki/Sanctum_league
 start:
   confirmed: true
   startDate: 2022-12-09T20:00:00.000Z

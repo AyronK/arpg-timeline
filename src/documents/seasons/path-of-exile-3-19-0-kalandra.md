@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
-name: 3.19.0 - Lake of Kalandra
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Lake_of_Kalandra
+name: 3.19.0 - Kalandra
+url: https://www.poewiki.net/wiki/Kalandra_league
 start:
   confirmed: true
   startDate: 2022-08-19T20:00:00.000Z

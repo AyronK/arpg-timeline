@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
 name: 3.12.0 - Heist
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Heist
+url: https://www.poewiki.net/wiki/Heist_league
 start:
   confirmed: true
   startDate: 2020-09-18T20:00:00.000Z

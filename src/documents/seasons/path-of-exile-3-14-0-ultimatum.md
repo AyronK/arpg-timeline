@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
 name: 3.14.0 - Ultimatum
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Ultimatum
+url: https://www.poewiki.net/wiki/Ultimatum_league
 start:
   confirmed: true
   startDate: 2021-04-16T20:00:00.000Z

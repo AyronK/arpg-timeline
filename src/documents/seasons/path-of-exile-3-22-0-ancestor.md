@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
-name: 3.22.0 - Trial of the Ancestors
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Trial_of_the_Ancestors
+name: 3.22.0 - Ancestor
+url: https://www.poewiki.net/wiki/Ancestor_league
 start:
   confirmed: true
   startDate: 2023-08-18T20:00:00.000Z

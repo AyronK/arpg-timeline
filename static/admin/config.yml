@@ -194,23 +194,15 @@ collections:
         widget: "string"
         required: false
 
-      - label: "Seasons"
-        name: "seasons"
-        widget: "relation"
-        multiple: true
-        collection: "seasons"
-        search_fields: ["name", "slug"]
-        value_field: "slug"
-        display_fields: ["name"]
-
   - label: "Seasons"
     name: "seasons"
+    sortable_fields: ['name', 'start.startDate']
     label_singular: "Season"
     editor:
       preview: false
     folder: "src/documents/seasons"
     create: true
-    slug: "{{fields.name}}"
+    slug: "{{fields.game}}-{{fields.name}}"
     summary: "{{game}} | {{name}}"
     view_groups:
       - label: Game

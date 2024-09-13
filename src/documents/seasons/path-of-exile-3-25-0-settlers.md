@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
-name: 3.25.0 - Settlers of Kalguur
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Settlers_of_Kalguur
+name: 3.25.0 - Settlers
+url: https://www.poewiki.net/wiki/Settlers_league
 start:
   confirmed: true
   startDate: 2024-07-26T18:00:00.000Z

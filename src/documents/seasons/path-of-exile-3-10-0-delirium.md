@@ -1,7 +1,7 @@
 ---
 game: Path of Exile
 name: 3.10.0 - Delirium
-url: https://www.poewiki.net/wiki/Path_of_Exile:_Delirium
+url: https://www.poewiki.net/wiki/Delirium_league
 start:
   confirmed: true
   startDate: 2020-03-13T00:00:00.000Z
