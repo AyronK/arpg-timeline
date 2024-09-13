@@ -1,7 +1,7 @@
 import { ImageDataLike } from "gatsby-plugin-image";
 
 export type Game = {
-  readonly title: string;
+  readonly name: string;
   readonly shortName: string | null;
   readonly official: boolean;
   readonly slug: string;
@@ -9,8 +9,6 @@ export type Game = {
   readonly url: string | null;
   readonly group: string | null;
   readonly logo: ImageDataLike;
-  readonly currentSeason: CurrentSeason;
-  readonly nextSeason: NextSeason;
 };
 
 export type Season = {

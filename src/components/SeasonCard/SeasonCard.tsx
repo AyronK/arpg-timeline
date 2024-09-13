@@ -6,7 +6,7 @@ import { UnofficialLabel } from "@/components/UnofficialLabel";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 
 export const SeasonCard = ({
-  title,
+  name: title,
   shortName,
   logo,
   url,
@@ -35,7 +35,7 @@ export const SeasonCard = ({
       <h3 className="sr-only">{title}</h3>
       <CurrentSeasonWidget
         currentSeason={currentSeason}
-        title={title}
+        name={title}
         shortName={shortName}
         testProps={testProps}
         seasonKeyword={seasonKeyword}
@@ -43,7 +43,7 @@ export const SeasonCard = ({
       {!currentSeason?.justStarted && (
         <NextSearsonWidget
           nextSeason={nextSeason}
-          title={title}
+          name={title}
           shortName={shortName}
           testProps={testProps}
           seasonKeyword={seasonKeyword}

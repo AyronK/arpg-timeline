@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: Path of Diablo
 shortName: PoD

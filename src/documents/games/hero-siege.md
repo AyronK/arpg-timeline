@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: Hero Siege
 shortName: HS

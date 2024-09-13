@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: "Torchlight: Infinite"
 shortName: TI

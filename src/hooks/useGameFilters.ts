@@ -62,7 +62,7 @@ export const useGameFilters = (games: Game[]) => {
 
   const gameFilters = games
     .map((g) => ({
-      label: g!.title!,
+      label: g!.name!,
       value: g!.slug!,
       group: g!.group!,
     }))

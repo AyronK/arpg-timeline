@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: Diablo III
 shortName: D3

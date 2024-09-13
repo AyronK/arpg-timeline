@@ -8,7 +8,7 @@ import { Chip } from "@/ui/Chip";
 export const NextSearsonWidget = ({
   nextSeason,
   seasonKeyword,
-  title,
+  name: title,
   shortName,
   testProps,
 }: Pick<

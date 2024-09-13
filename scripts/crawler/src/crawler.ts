@@ -18,7 +18,7 @@ const __dirname = dirname(__filename);
 const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL as string;
 const gamesMarkdownDirectoryPath = path.resolve(
   __dirname,
-  "../../../src/pages/games",
+  "../../../src/documents/games",
 );
 
 // Function to handle promises with a timeout

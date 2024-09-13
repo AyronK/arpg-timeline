@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: "Diablo IV: Vessel of Hatred"
 shortName: D4 VoH

@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: league
 shortName: PoE
 logo: /img/poe.png

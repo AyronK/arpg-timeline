@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 logo: /img/medianxl-logo.png
 official: false

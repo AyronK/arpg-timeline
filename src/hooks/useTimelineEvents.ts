@@ -8,7 +8,7 @@ export const useTimelineEvents = (games: Game[]) => {
     if (g.currentSeason?.startDate) {
       next.push({
         name: g.currentSeason.title ?? "",
-        game: g.title,
+        game: g.name,
         startDate: new Date(g.currentSeason.startDate),
         startDateNotice: g.currentSeason.startDateNotice,
         endDate: new Date(g.currentSeason.endDate ?? "Invalid Date"),
@@ -17,7 +17,7 @@ export const useTimelineEvents = (games: Game[]) => {
     } else if (g.nextSeason?.startDate) {
       next.push({
         name: "",
-        game: g.title,
+        game: g.name,
         startDate: new Date(g.nextSeason.startDate),
         startDateNotice: g?.nextSeason.startDateNotice,
         endDate: new Date(g.nextSeason.startDate),
@@ -26,7 +26,7 @@ export const useTimelineEvents = (games: Game[]) => {
     } else {
       next.push({
         name: "",
-        game: g.title,
+        game: g.name,
         startDate: new Date(),
         startDateNotice: "n/a",
         endDate: new Date(),
@@ -37,7 +37,7 @@ export const useTimelineEvents = (games: Game[]) => {
     if (g.nextSeason?.startDate) {
       next.push({
         name: g.nextSeason.title ?? "",
-        game: g.title,
+        game: g.name,
         startDate: new Date(g?.nextSeason?.startDate ?? "Invalid Date"),
         startDateNotice: g?.nextSeason?.startDateNotice,
         endDate: new Date(
@@ -49,7 +49,7 @@ export const useTimelineEvents = (games: Game[]) => {
     } else if (g.currentSeason?.endDate) {
       next.push({
         name: g.nextSeason?.title ?? "",
-        game: g.title,
+        game: g.name,
         startDate: new Date(g.currentSeason?.endDate),
         startDateNotice: g?.nextSeason?.startDateNotice,
         endDate: new Date(
@@ -61,7 +61,7 @@ export const useTimelineEvents = (games: Game[]) => {
     } else {
       next.push({
         name: "",
-        game: g.title,
+        game: g.name,
         startDate: new Date(),
         startDateNotice: "n/a",
         endDate: new Date(),

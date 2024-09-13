@@ -20,7 +20,8 @@ const Timeline = lazy(() =>
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const games = useGamesFromMarkdown(data);
-
+    console.log(games, data.seasons);
+  return null;
   const {
     gameFilters,
     toggleGameFilter,
@@ -30,6 +31,8 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   } = useGameFilters(games as Game[]);
 
   const events = useTimelineEvents(filteredGames);
+
+  
 
   return (
     <Layout>
@@ -99,14 +102,13 @@ export { Head } from "@/components/Layout";
 
 export const query = graphql`
   query IndexPage {
-    allMarkdownRemark {
+    games: allMarkdownRemark(filter: {frontmatter: {type: {eq: "game"}}}) {
       edges {
         node {
           frontmatter {
-            title
+            name
             shortName
             official
-            slug
             seasonKeyword
             url
             group
@@ -116,24 +118,32 @@ export const query = graphql`
                   layout: CONSTRAINED
                   quality: 85
                   placeholder: BLURRED
-                  transformOptions: { fit: COVER }
+                  transformOptions: {fit: COVER}
                 )
               }
             }
-            currentSeason {
+          }
+        }
+      }
+    }    
+    seasons: allMarkdownRemark(filter: {frontmatter: {type: {eq: "season"}}}) {
+      edges {
+        node {
+          frontmatter {
+            name
+            game
+            url
+            start {
               startDate
-              endDate
-              title
-              url
-              endDateNotice
-              startDateNotice
+              confirmed
+              overrideText
+              additionalText
             }
-            nextSeason {
-              title
-              startDateNotice
-              url
-              showCountdown
-              startDate
+            end {
+              endDate
+              confirmed
+              overrideText
+              additionalText
             }
           }
         }

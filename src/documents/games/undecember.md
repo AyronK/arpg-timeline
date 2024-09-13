@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: Undecember
 shortName: UD

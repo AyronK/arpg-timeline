@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: Project Diablo 2
 shortName: PD2

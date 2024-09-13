@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: season
 name: "Diablo II: Resurrected"
 shortName: "D2"

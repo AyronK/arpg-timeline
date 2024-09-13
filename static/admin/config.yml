@@ -22,7 +22,7 @@ collections:
       preview: false
     folder: "src/documents/crawlerSources"
     summary: "HTTP source | {{game}} | {{source}}"
-    filter: { field: "type", value: "http" }
+    filter: { field: "type", value: "crawlerSources_http" }
     create: true
     view_groups:
       - label: Game
@@ -31,7 +31,7 @@ collections:
       - label: "Type"
         name: "type"
         widget: "hidden"
-        default: "http"
+        default: "crawlerSources_http"
 
       - label: "Game"
         name: "game"
@@ -60,12 +60,12 @@ collections:
     view_groups:
       - label: Game
         field: game
-    filter: { field: "type", value: "steam" }
+    filter: { field: "type", value: "crawlerSources_steam" }
     fields:
       - label: "Type"
         name: "type"
         widget: "hidden"
-        default: "steam"
+        default: "crawlerSources_steam"
 
       - label: "Game"
         name: "game"
@@ -104,12 +104,12 @@ collections:
     view_groups:
       - label: Game
         field: game
-    filter: { field: "type", value: "reddit" }
+    filter: { field: "type", value: "crawlerSources_reddit" }
     fields:
       - label: "Type"
         name: "type"
         widget: "hidden"
-        default: "reddit"
+        default: "crawlerSources_reddit"
 
       - label: "Game"
         name: "game"
@@ -130,10 +130,15 @@ collections:
     label_singular: "Game"
     editor:
       preview: false
-    folder: "src/pages/games"
+    folder: "src/documents/games"
     create: true
     slug: "{{fields.name}}"
     fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "game"
+
       - label: "Name"
         name: "name"
         widget: "string"
@@ -199,6 +204,11 @@ collections:
       - label: Game
         field: game
     fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "season"
+
       - label: "Game"
         name: "game"
         widget: "relation"
@@ -238,11 +248,13 @@ collections:
           - label: "Override text"
             name: "overrideText"
             widget: "string"
+            default: ""
             required: false
 
           - label: "Additional text"
             name: "additionalText"
             widget: "string"
+            default: ""
             required: false
 
       - label: "End"
@@ -267,9 +279,11 @@ collections:
           - label: "Override text"
             name: "overrideText"
             widget: "string"
+            default: ""
             required: false
 
           - label: "Additional text"
             name: "additionalText"
             widget: "string"
+            default: ""
             required: false

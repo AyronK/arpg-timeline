@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: cycle
 name: Last Epoch
 shortName: LE

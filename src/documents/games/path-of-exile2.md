@@ -1,4 +1,5 @@
 ---
+type: game
 seasonKeyword: league
 name: Path of Exile 2
 shortName: PoE2
