@@ -15,7 +15,7 @@ currentSeason:
   url: https://news.blizzard.com/en-us/diablo2/24111638/diablo-ii-resurrected-ladder-season-8-coming-soon
 nextSeason:
   startDate: 2024-11-24T00:00:00.000Z
-  title: Season 8  
+  title: Season 8
   showCountdown: false
   startDateNotice: "Est. November"
 crawlerSettings:
