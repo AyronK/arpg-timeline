@@ -91,6 +91,7 @@ const config: GatsbyConfig = {
         extensions: [],
       },
     },
+    `gatsby-plugin-decap-cms`
   ],
   adapter: adapter({
     excludeDatastoreFromEngineFunction: false,
