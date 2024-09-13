@@ -1,7 +1,6 @@
 ---
-slug: diablo-iv
 seasonKeyword: season
-title: Diablo IV
+name: Diablo IV
 shortName: "D4"
 official: true
 logo: /img/d4.avif

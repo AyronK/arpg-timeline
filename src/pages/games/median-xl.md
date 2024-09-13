@@ -1,9 +1,8 @@
 ---
-slug: median-xl
 seasonKeyword: season
 logo: /img/medianxl-logo.png
 official: false
-title: Median XL
+name: Median XL
 shortName: MXL
 group: Diablo Mods
 url: https://www.median-xl.com/

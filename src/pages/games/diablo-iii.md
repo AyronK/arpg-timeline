@@ -1,7 +1,6 @@
 ---
-slug: diablo-iii
 seasonKeyword: season
-title: Diablo III
+name: Diablo III
 shortName: D3
 official: true
 group: Diablo Official

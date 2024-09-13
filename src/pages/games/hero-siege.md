@@ -1,7 +1,6 @@
 ---
-slug: hero-siege
 seasonKeyword: season
-title: Hero Siege
+name: Hero Siege
 shortName: HS
 official: true
 logo: /img/site-logo.png

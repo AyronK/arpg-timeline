@@ -1,7 +1,6 @@
 ---
-slug: diablo-ii-resurected
 seasonKeyword: season
-title: "Diablo II: Resurrected"
+name: "Diablo II: Resurrected"
 shortName: "D2"
 official: true
 logo: /img/diablo2-logo-lg.avif

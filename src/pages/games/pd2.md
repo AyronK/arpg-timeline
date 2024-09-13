@@ -1,7 +1,6 @@
 ---
-slug: pd2
 seasonKeyword: season
-title: Project Diablo 2
+name: Project Diablo 2
 shortName: PD2
 official: false
 logo: /img/projectdiablo2logo.webp

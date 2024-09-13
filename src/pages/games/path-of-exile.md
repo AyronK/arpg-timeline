@@ -1,10 +1,9 @@
 ---
-slug: path-of-exile
 seasonKeyword: league
 shortName: PoE
 logo: /img/poe.png
 official: true
-title: Path of Exile
+name: Path of Exile
 group: Path of Exile
 url: https://www.pathofexile.com/
 currentSeason:

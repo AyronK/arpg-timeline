@@ -1,7 +1,6 @@
 ---
-slug: undecember
 seasonKeyword: season
-title: Undecember
+name: Undecember
 shortName: UD
 official: true
 logo: /img/undecember-logo.png

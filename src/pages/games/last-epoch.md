@@ -1,7 +1,6 @@
 ---
-slug: last-epoch
 seasonKeyword: cycle
-title: Last Epoch
+name: Last Epoch
 shortName: LE
 official: true
 logo: /img/lastepoch.png

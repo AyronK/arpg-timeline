@@ -1,7 +1,6 @@
 ---
-slug: path-of-exile2
 seasonKeyword: league
-title: Path of Exile 2
+name: Path of Exile 2
 shortName: PoE2
 official: true
 logo: /img/poe2.png

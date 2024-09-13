@@ -1,7 +1,6 @@
 ---
-slug: path-of-diablo
 seasonKeyword: season
-title: Path of Diablo
+name: Path of Diablo
 shortName: PoD
 official: false
 group: Diablo Mods
