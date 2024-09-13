@@ -20,12 +20,12 @@ collections:
     editor:
       preview: false
     folder: "src/documents/crawlerSources"
-    summary: "HTTP source | {{game}} | {{source}}"   
-    filter: 
+    summary: "HTTP source | {{game}} | {{source}}"
+    filter:
       - field: "type"
         value: "http"
     create: true
-    view_groups:    
+    view_groups:
       - label: Game
         field: game
     fields:
@@ -36,7 +36,7 @@ collections:
 
       - label: "Game"
         name: "game"
-        widget: "relation"        
+        widget: "relation"
         collection: "games"
         search_fields: ["name", "slug", "shortName"]
         value_field: "name"
@@ -62,11 +62,11 @@ collections:
       preview: false
     folder: "src/documents/crawlerSources"
     create: true
-    summary: "Steam source | {{game}}"   
-    view_groups:    
+    summary: "Steam source | {{game}}"
+    view_groups:
       - label: Game
         field: game
-    filter: 
+    filter:
       - field: "type"
         value: "steam"
     fields:
@@ -113,11 +113,11 @@ collections:
       preview: false
     folder: "src/documents/crawlerSources"
     create: true
-    summary: "Reddit source | {{game}}"   
-    view_groups:    
+    summary: "Reddit source | {{game}}"
+    view_groups:
       - label: Game
         field: game
-    filter: 
+    filter:
       - field: "type"
         value: "reddit"
     fields:
@@ -143,11 +143,11 @@ collections:
       - label: "Subreddit"
         name: "steamId"
         widget: "string"
-        required: true        
+        required: true
 
   - label: "Games"
     name: "games"
-    summary: "{{name}}"   
+    summary: "{{name}}"
     label_singular: "Game"
     editor:
       preview: false
@@ -204,21 +204,21 @@ collections:
         display_fields: ["name"]
 
   - label: "Seasons"
-    name: "seasons" 
+    name: "seasons"
     label_singular: "Season"
     editor:
       preview: false
     folder: "src/documents/seasons"
     create: true
     slug: "{{fields.slug}}"
-    summary: "{{game}} | {{name}}"   
-    view_groups:    
+    summary: "{{game}} | {{name}}"
+    view_groups:
       - label: Game
         field: game
     fields:
       - label: "Game"
         name: "game"
-        widget: "relation"        
+        widget: "relation"
         collection: "games"
         search_fields: ["name", "slug", "shortName"]
         value_field: "name"
@@ -243,7 +243,7 @@ collections:
         name: "start"
         widget: "object"
         required: false
-        collapsed: false  
+        collapsed: false
         fields:
           - label: "Start Date UTC"
             name: "startDate"
@@ -272,7 +272,7 @@ collections:
         name: "end"
         widget: "object"
         required: false
-        collapsed: false  
+        collapsed: false
         fields:
           - label: "End Date UTC"
             name: "endDate"
