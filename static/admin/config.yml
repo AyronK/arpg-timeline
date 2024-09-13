@@ -22,7 +22,7 @@ collections:
       preview: false
     folder: "src/documents/crawlerSources"
     summary: "HTTP source | {{game}} | {{source}}"
-    filter: {field: "type", value: "http"}
+    filter: { field: "type", value: "http" }
     create: true
     view_groups:
       - label: Game
@@ -60,7 +60,7 @@ collections:
     view_groups:
       - label: Game
         field: game
-    filter: {field: "type", value: "steam"}
+    filter: { field: "type", value: "steam" }
     fields:
       - label: "Type"
         name: "type"
@@ -104,7 +104,7 @@ collections:
     view_groups:
       - label: Game
         field: game
-    filter: {field: "type", value: "reddit"}
+    filter: { field: "type", value: "reddit" }
     fields:
       - label: "Type"
         name: "type"
@@ -171,19 +171,19 @@ collections:
       - label: "Url"
         name: "url"
         widget: "string"
-        required: false      
+        required: false
 
       - label: "Crawler settings"
         name: "crawlerSettings"
         widget: "object"
         required: false
         collapsed: false
-        fields:  
-        - label: "Keywords"
-          name: "keywords"
-          widget: "list"
-          allow_add: true
-          max: 10
+        fields:
+          - label: "Keywords"
+            name: "keywords"
+            widget: "list"
+            allow_add: true
+            max: 10
 
   - label: "Seasons"
     name: "seasons"
