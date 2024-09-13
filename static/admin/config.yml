@@ -196,7 +196,7 @@ collections:
 
   - label: "Seasons"
     name: "seasons"
-    sortable_fields: ['name', 'start.startDate']
+    sortable_fields: ["name", "start.startDate"]
     label_singular: "Season"
     editor:
       preview: false
