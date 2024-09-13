@@ -17,9 +17,4 @@ nextSeason:
   showCountdown: true
 crawlerSettings:
   keywords: ["cycle 1.2", "patch 1.2"]
-  sources: ["https://forum.lastepoch.com/search?q=1.2%20%23announcements"]
-  steamId: 899770
-  steamRss:
-    crawlDescriptions: true
-    notifyAboutNews: true
 ---
