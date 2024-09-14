@@ -1,4 +1,5 @@
 ---
+slug: pd2
 type: game
 seasonKeyword: season
 name: Project Diablo 2

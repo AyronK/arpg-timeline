@@ -1,7 +1,7 @@
 ---
 type: season
 game: Path of Exile
-name: 3.25.0 - Settlers
+name: 3.25 - Settlers of Kalguur
 url: https://www.poewiki.net/wiki/Settlers_league
 start:
   confirmed: true

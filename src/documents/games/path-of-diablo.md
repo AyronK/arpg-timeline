@@ -1,4 +1,5 @@
 ---
+slug: path-of-diablo
 type: game
 seasonKeyword: season
 name: Path of Diablo

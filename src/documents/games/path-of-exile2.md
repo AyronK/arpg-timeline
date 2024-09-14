@@ -1,4 +1,5 @@
 ---
+slug: path-of-exile2
 type: game
 seasonKeyword: league
 name: Path of Exile 2

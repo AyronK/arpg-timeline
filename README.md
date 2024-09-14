@@ -53,6 +53,18 @@ npm run develop
 npm run storybook
 ```
 
+4. To launch local CMS run
+
+```npm
+npx decap-server
+```
+
+and set this config in `/static/admin/config.yml`
+
+```yaml
+local_backend: true
+```
+
 ## Contributing
 
 Thank you for considering contributing to the project! I appreciate your time, effort and will to help me build this website!  

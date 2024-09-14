@@ -1,4 +1,5 @@
 ---
+slug: diablo-iii
 type: game
 seasonKeyword: season
 name: Diablo III

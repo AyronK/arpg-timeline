@@ -9,21 +9,28 @@ export type Game = {
   readonly url: string | null;
   readonly group: string | null;
   readonly logo: ImageDataLike;
+  readonly currentSeason: Season | null;
+  readonly nextSeason: Season | null;
 };
 
 export type Season = {
-  readonly endDate: string | null;
-  readonly endDateNotice: string | null;
-  readonly startDate: string | null;
-  readonly startDateNotice: string | null;
-  readonly url: string | null;
-  readonly title: string | null;
+  start: SeasonStart | null;
+  end: SeasonEnd | null;
+  readonly url?: string | null;
+  readonly name: string | null;
 };
 
-export type NextSeason = Season & {
-  readonly showCountdown: boolean | null;
+export type BaseSeasonDate = {
+  confirmed: boolean | null;
+  overrideText?: string | null;
+  additionalText?: string | null;
 };
 
-export type CurrentSeason = Season & {
-  readonly justStarted: boolean | null;
+export type SeasonStart = BaseSeasonDate & {
+  justStarted?: boolean | null;
+  startDate: string | null;
+};
+
+export type SeasonEnd = BaseSeasonDate & {
+  endDate: string | null;
 };

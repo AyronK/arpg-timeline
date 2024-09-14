@@ -132,7 +132,7 @@ collections:
       preview: false
     folder: "src/documents/games"
     create: true
-    slug: "{{fields.name}}"
+    slug: "{{fields.slug}}"
     fields:
       - label: "Type"
         name: "type"
@@ -148,6 +148,11 @@ collections:
         name: "shortName"
         widget: "string"
         required: false
+
+      - label: "Slug"
+        name: "slug"
+        widget: "string"
+        required: true
 
       - label: "Season keyword"
         name: "seasonKeyword"

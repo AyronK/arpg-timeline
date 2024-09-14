@@ -1,4 +1,5 @@
 ---
+slug: undecember
 type: game
 seasonKeyword: season
 name: Undecember

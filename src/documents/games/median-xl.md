@@ -1,4 +1,5 @@
 ---
+slug: median-xl
 type: game
 seasonKeyword: season
 logo: /img/medianxl-logo.png

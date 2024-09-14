@@ -8,18 +8,24 @@ export const inGracePeriod = (startDate: string) => {
 };
 
 export const sortBySeasons = (a: Game, b: Game) => {
-  if (a.currentSeason?.startDate && inGracePeriod(a.currentSeason.startDate)) {
+  if (
+    a.currentSeason?.start?.startDate &&
+    inGracePeriod(a.currentSeason.start?.startDate)
+  ) {
     return -1;
   }
 
-  if (b.currentSeason?.startDate && inGracePeriod(b.currentSeason.startDate)) {
+  if (
+    b.currentSeason?.start?.startDate &&
+    inGracePeriod(b.currentSeason.start?.startDate)
+  ) {
     return 1;
   }
 
-  const aNextSeasonStart = a.nextSeason?.startDate;
-  const bNextSeasonStart = b.nextSeason?.startDate;
-  const aCurrentSeasonEnd = a.currentSeason?.endDate;
-  const bCurrentSeasonEnd = b.currentSeason?.endDate;
+  const aNextSeasonStart = a.nextSeason?.start?.startDate;
+  const bNextSeasonStart = b.nextSeason?.start?.startDate;
+  const aCurrentSeasonEnd = a.currentSeason?.end?.endDate;
+  const bCurrentSeasonEnd = b.currentSeason?.end?.endDate;
 
   if (aNextSeasonStart && bNextSeasonStart) {
     return (

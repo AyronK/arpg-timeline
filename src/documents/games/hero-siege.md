@@ -1,4 +1,5 @@
 ---
+slug: hero-siege
 type: game
 seasonKeyword: season
 name: Hero Siege

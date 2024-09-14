@@ -1,4 +1,5 @@
 ---
+slug: diablo-ii-resurected
 type: game
 seasonKeyword: season
 name: "Diablo II: Resurrected"

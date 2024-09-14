@@ -1,5 +1,6 @@
 ---
 type: game
+slug: last-epoch
 seasonKeyword: cycle
 name: Last Epoch
 shortName: LE

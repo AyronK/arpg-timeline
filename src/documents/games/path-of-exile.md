@@ -1,4 +1,5 @@
 ---
+slug: path-of-exile
 type: game
 seasonKeyword: league
 shortName: PoE

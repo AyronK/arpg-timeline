@@ -1,4 +1,5 @@
 ---
+slug: torchlite-infinite
 type: game
 seasonKeyword: season
 name: "Torchlight: Infinite"

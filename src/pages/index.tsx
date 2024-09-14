@@ -20,8 +20,6 @@ const Timeline = lazy(() =>
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const games = useGamesFromMarkdown(data);
-  console.log(games, data.seasons);
-  return null;
   const {
     gameFilters,
     toggleGameFilter,
@@ -29,9 +27,8 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     filteredGames,
     activeFilters,
   } = useGameFilters(games as Game[]);
-
   const events = useTimelineEvents(filteredGames);
-
+  console.log(games, events);
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
@@ -106,6 +103,7 @@ export const query = graphql`
       edges {
         node {
           frontmatter {
+            slug
             name
             shortName
             official
