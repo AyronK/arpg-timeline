@@ -91,7 +91,13 @@ const config: GatsbyConfig = {
         extensions: [],
       },
     },
-    `gatsby-plugin-decap-cms`,
+    {
+      resolve: `gatsby-plugin-decap-cms`,
+      options: {
+        manualInit: true,
+        modulePath: `${__dirname}/src/cms.ts`,
+      },
+    },
   ],
   adapter: adapter({
     excludeDatastoreFromEngineFunction: false,
