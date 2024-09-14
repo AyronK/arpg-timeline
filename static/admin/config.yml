@@ -1,7 +1,5 @@
-local_backend: true
-
 backend:
-  name: git-gateway
+  name: github
   repo: AyronK/arpg-timeline
   branch: decap
   commit_messages:
