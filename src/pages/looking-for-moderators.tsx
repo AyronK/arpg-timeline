@@ -16,7 +16,7 @@ const Page = () => {
           help build this community, please{" "}
           <a
             className="font-semibold hover:opacity-75"
-            href="https://discord.gg/agAVP5jm"
+            href="https://discord.gg/39mTbjkePg"
             rel="noopener noreferrer"
           >
             contact us on Discord
@@ -34,7 +34,10 @@ const Page = () => {
         <p className="mb-4">
           <span className="font-semibold">Why we need you:</span>
           <ul className="ml-4 list-inside list-disc">
-            <li>Help verify season launch and end dates.</li>
+            <li>
+              Help verify season launch and end dates based on automatic
+              notifications.
+            </li>
             <li>Contribute to website content.</li>
             <li>Suggest new features.</li>
             <li>Assist in further automating processes.</li>

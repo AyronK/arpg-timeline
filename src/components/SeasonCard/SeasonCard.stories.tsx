@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    title: "New Season",
+    name: "New Season",
     group: null,
     official: true,
     shortName: "sn",

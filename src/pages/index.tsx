@@ -20,7 +20,6 @@ const Timeline = lazy(() =>
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const games = useGamesFromMarkdown(data);
-
   const {
     gameFilters,
     toggleGameFilter,
@@ -28,9 +27,8 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     filteredGames,
     activeFilters,
   } = useGameFilters(games as Game[]);
-
   const events = useTimelineEvents(filteredGames);
-
+  console.log(games, events);
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
@@ -48,15 +46,15 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
-          <div className="relative z-0 flex text-xs lg:container lg:absolute lg:left-0 lg:right-0 lg:top-14 lg:w-full">
+          <div className="relative z-0 flex text-xs xl:container xl:absolute xl:left-0 xl:right-0 xl:top-14 xl:w-full">
             <Button
               variant={"warning"}
               asChild
-              className="w-full px-2 lg:ml-auto lg:w-auto lg:px-4"
+              className="w-full px-2 lg:ml-auto lg:px-4 xl:w-auto"
             >
               <a href="/looking-for-moderators" rel="self">
                 <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
-                Looking for moderators!
+                Looking for moderators! (fixed Discord)
               </a>
             </Button>
           </div>
@@ -99,14 +97,16 @@ export { Head } from "@/components/Layout";
 
 export const query = graphql`
   query IndexPage {
-    allMarkdownRemark {
+    games: allMarkdownRemark(
+      filter: { frontmatter: { type: { eq: "game" } } }
+    ) {
       edges {
         node {
           frontmatter {
-            title
+            slug
+            name
             shortName
             official
-            slug
             seasonKeyword
             url
             group
@@ -120,20 +120,30 @@ export const query = graphql`
                 )
               }
             }
-            currentSeason {
+          }
+        }
+      }
+    }
+    seasons: allMarkdownRemark(
+      filter: { frontmatter: { type: { eq: "season" } } }
+    ) {
+      edges {
+        node {
+          frontmatter {
+            name
+            game
+            url
+            start {
               startDate
-              endDate
-              title
-              url
-              endDateNotice
-              startDateNotice
+              confirmed
+              overrideText
+              additionalText
             }
-            nextSeason {
-              title
-              startDateNotice
-              url
-              showCountdown
-              startDate
+            end {
+              endDate
+              confirmed
+              overrideText
+              additionalText
             }
           }
         }

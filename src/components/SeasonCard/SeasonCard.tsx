@@ -6,7 +6,7 @@ import { UnofficialLabel } from "@/components/UnofficialLabel";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 
 export const SeasonCard = ({
-  title,
+  name,
   shortName,
   logo,
   url,
@@ -27,23 +27,23 @@ export const SeasonCard = ({
         >
           <GatsbyImage
             image={getImage(logo!)!}
-            alt={`${title} logo`}
+            alt={`${name} logo`}
             className="my-auto"
           />
         </MaybeLinkWrapper>
       </div>
-      <h3 className="sr-only">{title}</h3>
+      <h3 className="sr-only">{name}</h3>
       <CurrentSeasonWidget
         currentSeason={currentSeason}
-        title={title}
+        name={name}
         shortName={shortName}
         testProps={testProps}
         seasonKeyword={seasonKeyword}
       />
-      {!currentSeason?.justStarted && (
+      {!currentSeason?.start?.justStarted && (
         <NextSearsonWidget
           nextSeason={nextSeason}
-          title={title}
+          name={name}
           shortName={shortName}
           testProps={testProps}
           seasonKeyword={seasonKeyword}

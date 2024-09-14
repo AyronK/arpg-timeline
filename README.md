@@ -1,5 +1,5 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/fa2c3ed5-a946-4cc8-9aee-10104c36e385/deploy-status)](https://app.netlify.com/sites/arpg-timeline/deploys)
-[![aRPG Timeline Discord](https://img.shields.io/badge/discord-grey.svg?&logo=discord)](https://discord.gg/jamDYtJM)
+[![aRPG Timeline Discord](https://img.shields.io/badge/discord-grey.svg?&logo=discord)](https://discord.gg/39mTbjkePg)
 
 # arpg-timeline
 
@@ -51,6 +51,18 @@ npm run develop
 
 ```npm
 npm run storybook
+```
+
+4. To launch local CMS run
+
+```npm
+npx decap-server
+```
+
+and set this config in `/static/admin/config.yml`
+
+```yaml
+local_backend: true
 ```
 
 ## Contributing

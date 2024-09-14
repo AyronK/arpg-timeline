@@ -1,25 +1,52 @@
-export interface GameCrawlerSettings {
-  steamId?: string;
-  steamRss?: {
-    crawlDescriptions?: boolean;
-    notifyAboutNews?: boolean;
-  };
-  sources?: string[];
-  keywords?: string[];
+export interface CrawlerSourceHttp {
+  type: "crawlerSources_http";
+  game: string;
+  source: string;
 }
 
-export interface Game {
-  title: string;
-  crawlerSettings?: GameCrawlerSettings;
+export interface CrawlerSourceSteam {
+  type: "crawlerSources_steam";
+  game: string;
+  steamId: string;
+  crawlDescriptions?: boolean;
+  notifyAboutNews?: boolean;
 }
 
-export interface Source {
+export interface CrawlerSourceReddit {
+  type: "crawlerSources_reddit";
+  game: string;
+  subreddit: string;
+  crawlDescriptions?: boolean;
+  notifyAboutNews?: boolean;
+}
+
+export type CrawlerSource =
+  | CrawlerSourceHttp
+  | CrawlerSourceSteam
+  | CrawlerSourceReddit;
+
+export type Game = {
+  name: string;
+  crawlerSettings?:
+    | {
+        keywords: string[];
+      }
+    | undefined;
+};
+
+export interface FetchSource {
+  type:
+    | "crawlerSources_reddit"
+    | "crawlerSources_http"
+    | "crawlerSources_steam";
   url: string;
-  options: {
-    rss?: boolean;
-    crawlDescriptions?: boolean;
-    notifyAboutNews?: boolean;
-  };
+  options?:
+    | {
+        rss?: boolean;
+        crawlDescriptions?: boolean;
+        notifyAboutNews?: boolean;
+      }
+    | undefined;
 }
 
 export interface Notification {
@@ -28,21 +55,33 @@ export interface Notification {
   text: string;
 }
 
-export interface RssFeed {
+export interface SteamRssFeed {
   rss: {
     version: string;
-    channel: RssChannel;
+    channel: SteamRssChannel;
   };
 }
 
-export interface RssChannel {
+export interface SteamRssChannel {
   title: string;
   description: string;
   link: string;
-  item: RssItem[];
+  item: SteamRssItem[];
 }
 
-export interface RssItem {
+export interface RedditRssFeed {
+  feed: {
+    entry: RedditRssEntry[];
+  };
+}
+
+export interface RedditRssEntry {
+  content: Content;
+  title: string;
+  published: string;
+}
+
+export interface SteamRssItem {
   title: string;
   link: string;
   description: string;

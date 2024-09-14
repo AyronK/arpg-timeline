@@ -18,8 +18,8 @@ const config: GatsbyConfig = {
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        path: `${__dirname}/src/pages`,
-        name: "pages",
+        path: `${__dirname}/src/documents`,
+        name: "documents",
       },
     },
     {
@@ -91,6 +91,7 @@ const config: GatsbyConfig = {
         extensions: [],
       },
     },
+    `gatsby-plugin-decap-cms`,
   ],
   adapter: adapter({
     excludeDatastoreFromEngineFunction: false,
