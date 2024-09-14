@@ -17,6 +17,4 @@ nextSeason:
   url: "https://forum.lastepoch.com/t/announcing-1-1-refresh-cycle-event-the-imperial-uprising/73532"
   title: Imperial Uprising Cycle Event
   showCountdown: true
-crawlerSettings:
-  keywords: ["cycle 1.2", "patch 1.2"]
 ---

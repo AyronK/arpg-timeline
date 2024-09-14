@@ -16,6 +16,8 @@ export interface CrawlerSourceReddit {
   type: "crawlerSources_reddit";
   game: string;
   subreddit: string;
+  crawlDescriptions?: boolean;
+  notifyAboutNews?: boolean;
 }
 
 export type CrawlerSource =
@@ -33,6 +35,10 @@ export type Game = {
 };
 
 export interface FetchSource {
+  type:
+    | "crawlerSources_reddit"
+    | "crawlerSources_http"
+    | "crawlerSources_steam";
   url: string;
   options?:
     | {
@@ -49,21 +55,33 @@ export interface Notification {
   text: string;
 }
 
-export interface RssFeed {
+export interface SteamRssFeed {
   rss: {
     version: string;
-    channel: RssChannel;
+    channel: SteamRssChannel;
   };
 }
 
-export interface RssChannel {
+export interface SteamRssChannel {
   title: string;
   description: string;
   link: string;
-  item: RssItem[];
+  item: SteamRssItem[];
 }
 
-export interface RssItem {
+export interface RedditRssFeed {
+  feed: {
+    entry: RedditRssEntry[];
+  };
+}
+
+export interface RedditRssEntry {
+  content: Content;
+  title: string;
+  published: string;
+}
+
+export interface SteamRssItem {
   title: string;
   link: string;
   description: string;

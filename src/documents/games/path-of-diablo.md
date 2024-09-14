@@ -12,4 +12,6 @@ crawlerSettings:
   keywords:
     - news=44
     - news=45
+    - s13
+    - season 13
 ---

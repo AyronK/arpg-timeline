@@ -124,6 +124,18 @@ collections:
         widget: "string"
         required: true
 
+      - label: "Crawl RSS Descriptions"
+        name: "crawlDescriptions"
+        widget: "boolean"
+        required: false
+        default: false
+
+      - label: "Notify about new RSS messages"
+        name: "notifyAboutNews"
+        widget: "boolean"
+        required: false
+        default: false
+
   - label: "Games"
     name: "games"
     summary: "{{name}}"
