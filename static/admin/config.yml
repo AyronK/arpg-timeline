@@ -120,7 +120,7 @@ collections:
         display_fields: ["name"]
 
       - label: "Subreddit"
-        name: "steamId"
+        name: "subreddit"
         widget: "string"
         required: true
 

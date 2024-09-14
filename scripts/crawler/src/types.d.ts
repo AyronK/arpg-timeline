@@ -1,25 +1,46 @@
-export interface GameCrawlerSettings {
-  steamId?: string;
-  steamRss?: {
-    crawlDescriptions?: boolean;
-    notifyAboutNews?: boolean;
-  };
-  sources?: string[];
-  keywords?: string[];
+export interface CrawlerSourceHttp {
+  type: "crawlerSources_http";
+  game: string;
+  source: string;
 }
 
-export interface Game {
-  title: string;
-  crawlerSettings?: GameCrawlerSettings;
+export interface CrawlerSourceSteam {
+  type: "crawlerSources_steam";
+  game: string;
+  steamId: string;
+  crawlDescriptions?: boolean;
+  notifyAboutNews?: boolean;
 }
 
-export interface Source {
+export interface CrawlerSourceReddit {
+  type: "crawlerSources_reddit";
+  game: string;
+  subreddit: string;
+}
+
+export type CrawlerSource =
+  | CrawlerSourceHttp
+  | CrawlerSourceSteam
+  | CrawlerSourceReddit;
+
+export type Game = {
+  name: string;
+  crawlerSettings?:
+    | {
+        keywords: string[];
+      }
+    | undefined;
+};
+
+export interface FetchSource {
   url: string;
-  options: {
-    rss?: boolean;
-    crawlDescriptions?: boolean;
-    notifyAboutNews?: boolean;
-  };
+  options?:
+    | {
+        rss?: boolean;
+        crawlDescriptions?: boolean;
+        notifyAboutNews?: boolean;
+      }
+    | undefined;
 }
 
 export interface Notification {
