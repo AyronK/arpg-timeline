@@ -17,6 +17,7 @@
     "crawl:develop": "tsc && tsc-alias && node --env-file=.env dist/index.js"
   },
   "devDependencies": {
+    "@types/he": "^1.2.3",
     "@types/node": "^20.4.2",
     "fast-xml-parser": "^4.4.0",
     "node-fetch": "^3.3.2",
@@ -29,6 +30,7 @@
     "vfile-matter": "^5.0.0"
   },
   "dependencies": {
+    "he": "^1.2.0",
     "openai": "^4.61.0",
     "tsc-alias": "^1.8.10"
   }

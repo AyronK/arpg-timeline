@@ -4,7 +4,6 @@ import { matchKeywordOrRss } from "../sourceReader";
 import { Game, FetchSource } from "../types";
 import { withTimeout } from "../withTimeout";
 import { Notification } from "../types";
-
 export const fetchSourceNotifications = async (
   game: Game,
   source: FetchSource,
@@ -17,7 +16,7 @@ export const fetchSourceNotifications = async (
       return {
         type: "error",
         game: game.name,
-        text: `❌ **${game.name}**: Failed to fetch data from \`${source.url}\`: ${result.status} - ${result.statusText}`,
+        text: `❌ **${game.name}**: Failed to fetch data from ${source.url}\nStatus: ${result.status} - ${result.statusText}`,
       };
     }
 
@@ -38,7 +37,7 @@ export const fetchSourceNotifications = async (
         text:
           `📡 **${game.name}**: New RSS messages:\n${notes}` +
           (gptComment
-            ? ` GPT comment on the most recent RSS entry: \`${gptComment}\``
+            ? `\n\n**Text snippet:**\n> ${gptPrompt}\n\n**GPT's assert for the snippet:**\n> ${gptComment}`
             : ""),
       };
     } else if (match) {
@@ -46,23 +45,23 @@ export const fetchSourceNotifications = async (
         type: "warn",
         game: game.name,
         text:
-          `🔍 **${game.name}**: \`${match}\` keyword match on \`${source.url}\`.` +
+          `🔍 **${game.name}**: Keyword match: \`${match}\`\n${source.url}` +
           (gptComment
-            ? ` GPT comment on matched RSS entry: \`${gptComment}\``
+            ? `\n\n**Text snippet:**\n> ${gptPrompt}\n\n**GPT's assert for the snippet:**\n> ${gptComment}`
             : ""),
       };
     } else {
       return {
         type: "trace",
         game: game.name,
-        text: `🔇 **${game.name}**: Nothing found on \`${source.url}\``,
+        text: `🔇 **${game.name}**: Nothing found on ${source.url}`,
       };
     }
   } catch (error) {
     return {
       type: "error",
       game: game.name,
-      text: `❌ **${game.name}**: Error fetching data from \`${source.url}\`: ${(error as Error).message}`,
+      text: `❌ **${game.name}**: Error fetching data from ${source.url}\n> ${(error as Error).message}`,
     };
   }
 };

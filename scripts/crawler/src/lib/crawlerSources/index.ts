@@ -13,7 +13,7 @@ import {
   CrawlerSourceReddit,
 } from "../types";
 
-export const crawlForNotifications = async (
+export const fetchNotifications = async (
   source: CrawlerSource,
   game: Game,
   notifications: Notification[],

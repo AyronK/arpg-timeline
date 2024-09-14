@@ -3,7 +3,7 @@ import path, { dirname } from "path";
 import { Notification, CrawlerSource, Game } from "./lib/types";
 import { sendDiscordNotification } from "./lib/discord";
 import { loadFromMarkdown } from "./lib/markdown";
-import { crawlForNotifications as fetchNotifications } from "./lib/crawlerSources";
+import { fetchNotifications } from "./lib/crawlerSources";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

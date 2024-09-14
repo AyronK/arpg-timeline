@@ -12,8 +12,8 @@ const formatNotifications = (notifications: Notification[]): string => {
   }
 
   const parsedNotifications = importantNotifications
-    .map((n) => `- ${n.text}`)
-    .join("\n");
+    .map((n, idx) => `*🔹 Notification #${idx + 1}*\n ${n.text}`)
+    .join("\n\n");
 
   return `⚠️ **Crawler got ${importantNotifications.length} alert(s)** @here\n\n${parsedNotifications}`;
 };
