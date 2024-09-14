@@ -95,6 +95,7 @@ const config: GatsbyConfig = {
       resolve: `gatsby-plugin-decap-cms`,
       options: {
         manualInit: true,
+        enableIdentityWidget: false,
         modulePath: `${__dirname}/src/cms.ts`,
       },
     },
