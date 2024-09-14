@@ -13,4 +13,3 @@ end:
   overrideText: ""
   additionalText: ""
 ---
-
