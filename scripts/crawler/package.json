@@ -6,23 +6,30 @@
   },
   "version": "1.0.0",
   "description": "A script to check for season updates and notify a Discord server.",
-  "main": "dist/crawler.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist/lib/**"
+  ],
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "crawl": "tsc & node dist/crawler.js",
-    "crawl:develop": "tsc & node --env-file=.env dist/crawler.js"
+    "build": "tsc && tsc-alias",
+    "crawl": "tsc  && tsc-alias && node dist/index.js",
+    "crawl:develop": "tsc && tsc-alias && node --env-file=.env dist/index.js"
   },
   "devDependencies": {
+    "@types/node": "^20.4.2",
     "fast-xml-parser": "^4.4.0",
     "node-fetch": "^3.3.2",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "to-vfile": "^8.0.0",
+    "typescript": "^5.5.3",
     "unified": "^11.0.5",
-    "vfile-matter": "^5.0.0",
-    "@types/node": "^20.4.2",
-    "typescript": "^5.5.3"
+    "vfile-matter": "^5.0.0"
+  },
+  "dependencies": {
+    "openai": "^4.61.0",
+    "tsc-alias": "^1.8.10"
   }
 }

@@ -85,6 +85,5 @@ export interface SteamRssItem {
   title: string;
   link: string;
   description: string;
-  pubDate: string; // Date in RFC 822 format
-  [key: string]: any; // Allows additional optional fields
+  pubDate: string;
 }
