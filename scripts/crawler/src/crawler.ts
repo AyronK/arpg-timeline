@@ -125,7 +125,16 @@ const getSourceNotification = async (
   keywords: string[],
 ): Promise<Notification> => {
   try {
-    const result = await withTimeout(fetch(source.url), 5000);
+    const promise = source.url.startsWith("https://www.reddit.com/")
+      ? fetch(source.url, {
+          method: "GET",
+          headers: {
+            "User-Agent": "Mozilla/5.0",
+            Accept: "application/json",
+          },
+        })
+      : fetch(source.url);
+    const result = await withTimeout(promise, 5000);
 
     if (!result.ok) {
       return {
@@ -203,7 +212,7 @@ const crawlHttpForNotifications = (
 const crawlRedditForNotifications = (
   source: CrawlerSourceReddit,
 ): FetchSource[] => {
-  return [{ url: `https://www.reddit.com/r/${source.subreddit}/new` }];
+  return [{ url: `https://www.reddit.com/r/${source.subreddit}/new.json` }];
 };
 
 const crawlForNotifications = async (
