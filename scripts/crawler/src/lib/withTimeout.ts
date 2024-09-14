@@ -7,4 +7,3 @@ export const withTimeout = async <T>(
   );
   return Promise.race([promise, timeoutPromise]);
 };
-

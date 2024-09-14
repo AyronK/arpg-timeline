@@ -49,4 +49,3 @@ export const crawlForNotifications = async (
 
   await Promise.all(fetchPromises);
 };
-

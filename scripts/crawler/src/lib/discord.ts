@@ -38,4 +38,3 @@ export const sendDiscordNotification = async (
     throw e;
   }
 };
-

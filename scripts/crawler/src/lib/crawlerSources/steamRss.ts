@@ -26,4 +26,3 @@ export const crawlSteamForNotifications = (
 
   return mappedSources;
 };
-

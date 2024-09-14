@@ -26,4 +26,3 @@ export const loadFromMarkdown = async <T>(
 
   return values;
 };
-
