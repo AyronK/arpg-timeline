@@ -46,15 +46,15 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
-          <div className="relative z-0 flex text-xs lg:container lg:absolute lg:left-0 lg:right-0 lg:top-14 lg:w-full">
+          <div className="relative z-0 flex text-xs xl:container xl:absolute xl:left-0 xl:right-0 xl:top-14 xl:w-full">
             <Button
               variant={"warning"}
               asChild
-              className="w-full px-2 lg:ml-auto lg:w-auto lg:px-4"
+              className="w-full px-2 lg:ml-auto lg:px-4 xl:w-auto"
             >
               <a href="/looking-for-moderators" rel="self">
                 <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
-                Looking for moderators!
+                Looking for moderators! (fixed Discord)
               </a>
             </Button>
           </div>
