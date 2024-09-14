@@ -91,7 +91,12 @@ const config: GatsbyConfig = {
         extensions: [],
       },
     },
-    `gatsby-plugin-decap-cms`,
+    {
+      resolve: `gatsby-plugin-decap-cms`,
+      options: {
+        enableIdentityWidget: true,
+      },
+    },
   ],
   adapter: adapter({
     excludeDatastoreFromEngineFunction: false,
