@@ -4,9 +4,7 @@ export const GPT_PROMPT = `Your task is to identify a clear and explicit stateme
 If the text mentions a stream, event, or update but **does not directly state that a new season/league/cycle is starting**, respond with "Negative." Only respond with "Positive" if there is a direct statement of the season/league/cycle start date.
 If a season/league/cycle start date is confirmed, respond with \`Positive, YYYY-MM-DDTHH:mm:ss.sssZ\` in the correct UTC format. Otherwise, respond with "Negative."`;
 
-const openAiClient = new OpenAI({
-  apiKey: process.env.OPEN_AI_API_KEY,
-});
+const openAiClient = new OpenAI();
 
 export async function askGtpAboutLaunchDate(text: string): Promise<string> {
   const stream = await openAiClient.chat.completions.create({
