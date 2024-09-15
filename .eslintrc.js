@@ -4,7 +4,6 @@ module.exports = {
   overrides: [
     {
       files: ["*.ts", "*.tsx"],
-      processor: "@graphql-eslint/graphql",
       parser: "@typescript-eslint/parser",
       extends: [
         "eslint:recommended",
