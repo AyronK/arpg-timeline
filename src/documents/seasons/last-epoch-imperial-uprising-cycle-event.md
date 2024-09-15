@@ -9,8 +9,8 @@ start:
   additionalText: ""
   startDate: 2024-09-19T16:00:00.000Z
 end:
-  endDate: ""
+  endDate: 2025-02-01T16:00:00.000Z
   confirmed: false
-  overrideText: ""
+  overrideText: ~ Q1 of 2025
   additionalText: ""
 ---
