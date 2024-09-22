@@ -1,15 +1,15 @@
 ---
 type: season
 game: Project Diablo 2
-name: Season 10
+name: Season 10 - Desecration
 start:
-  confirmed: false
-  overrideText: Estimated ~ September/October
-  additionalText: ""
-  startDate: 2024-10-15T17:00:00.000Z
-end:
-  endDate: ""
-  confirmed: false
+  confirmed: true
   overrideText: ""
+  additionalText: ""
+  startDate: 2024-10-25T17:00:00.000Z
+end:
+  endDate: 2025-04-01T17:00:00.000Z
+  confirmed: false
+  overrideText: est. April 2025
   additionalText: ""
 ---
