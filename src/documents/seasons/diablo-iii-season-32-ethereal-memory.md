@@ -9,8 +9,8 @@ start:
   overrideText: ""
   additionalText: ""
 end:
-  endDate: 2024-10-12T00:00:00.000Z
-  confirmed: false
-  overrideText: est. October
+  endDate: 2024-10-25T00:00:00.000Z
+  confirmed: true
+  overrideText: ""
   additionalText: ""
 ---
