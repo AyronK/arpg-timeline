@@ -3,7 +3,7 @@ import adapter from "gatsby-adapter-netlify";
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `aRPG Timeline`,
+    title: `aRPG ⚔️ Time`,
     siteUrl: `https://arpg-timeline.ayronk.com`,
   },
   graphqlTypegen: true,
