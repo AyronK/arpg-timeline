@@ -1,19 +1,17 @@
 import { Footer } from "@/components/Footer";
 import useSiteMetadata from "@/hooks/useSiteMetadata";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/ui/Button";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="arpgTimeline.uiTheme">
+    <>
       <header>
         <div className="relative">
           <div className="flex justify-center">
             <a
               href="/"
               rel="self"
-              className="relative z-20 mx-auto my-4 mb-2 text-2xl font-semibold md:my-8 md:text-4xl"
+              className="relative z-20 mx-auto my-4 mb-2 text-2xl font-semibold tracking-widest md:my-8 md:text-4xl"
             >
               <h1>aRPG Timeline</h1>
             </a>
@@ -25,7 +23,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                 rel="external nofollow noreferrer"
                 target="_blank"
               >
-                <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full dark:bg-current 2xl:mr-2">
+                <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-2">
                   <img
                     src="/assets/bmc-logo-no-background.png"
                     className="m-auto h-[1rem] w-[1rem]"
@@ -53,13 +51,12 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                 <span className="hidden 2xl:block">Request a feature</span>
               </a>
             </Button>
-            <ThemeToggle />
           </div>
         </div>
       </header>
       <main>{children}</main>
       <Footer />
-    </ThemeProvider>
+    </>
   );
 };
 
@@ -68,12 +65,6 @@ export const Head = () => {
   return (
     <>
       <title>{title}</title>
-      {/* Workaround for flickering caused by a theme change due to loading from settings from  local storage */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `"dark"===localStorage["arpgTimeline.uiTheme"]||!(["arpgTimeline.uiTheme"]in localStorage)&&window.matchMedia("(prefers-color-scheme: dark)").matches?document.documentElement.classList.add("dark"):document.documentElement.classList.add("light");`,
-        }}
-      />
       <link rel="canonical" href={siteUrl} />
       <meta
         name="keywords"

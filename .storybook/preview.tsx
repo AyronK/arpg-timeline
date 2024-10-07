@@ -1,8 +1,6 @@
 import type { Preview } from "@storybook/react";
 import { withThemeFromJSXProvider } from "@storybook/addon-themes";
-import { ThemeProvider } from "../src/components/ThemeProvider";
 import GlobalStyles from "./global-styles";
-import React from "react";
 
 const preview: Preview = {
   parameters: {
@@ -15,19 +13,10 @@ const preview: Preview = {
   },
   decorators: [
     withThemeFromJSXProvider({
-      Provider: ({ theme, children }) => {
-        return (
-          <ThemeProvider defaultTheme={theme} storageKey="arpgTimeline.uiTheme">
-            {children}
-          </ThemeProvider>
-        );
+      Provider: ({ children }) => {
+        return children;
       },
       GlobalStyles: GlobalStyles,
-      defaultTheme: "dark",
-      themes: {
-        dark: "dark",
-        light: "light",
-      },
     }),
   ],
 };

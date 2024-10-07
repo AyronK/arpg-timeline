@@ -61,7 +61,7 @@ export const Countdown = ({
   }, [date, testProps?.timeLeft]);
 
   return (
-    <div className="flex flex-row gap-1 font-mono text-lg font-bold text-emerald-500 dark:text-emerald-300">
+    <div className="flex flex-row gap-1 font-mono text-lg font-bold text-emerald-300">
       {timeComponents.weeks > 0 && (
         <Time component={timeComponents.weeks} char="W" />
       )}

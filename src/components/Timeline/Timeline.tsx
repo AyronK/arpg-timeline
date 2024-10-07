@@ -1,6 +1,5 @@
 import "@/components/Timeline/Timeline.css";
 
-import { useTheme } from "@/components/ThemeProvider";
 import { DAY, INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
 import { useRef } from "react";
@@ -54,7 +53,7 @@ const timelinePopover = (event: TimelineEvent) => {
   const popoverClass =
     "z-50 grid gap-4 overflow-hidden rounded-md border bg-popover p-2 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2";
   const labelsWrapperClass = "grid gap-1";
-  const titleWrapper = `<div class="space-y-2"><p class="font-medium text-base leading-none">${event.game}</p><p class="text-sm text-muted-foreground">${event.name}</p></div>`;
+  const titleWrapper = `<div class="space-y-1"><p class="font-medium text-xl leading-none font-heading">${event.game}</p><p class="text-sm font-heading">${event.name}</p></div>`;
 
   if (running < 0) {
     return `
@@ -97,9 +96,7 @@ const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
 
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
-  const { theme, getPreference } = useTheme();
-  const chartTheme = theme === "system" ? getPreference() : theme;
-  const options = TIMELINE_OPTIONS[chartTheme];
+  const options = TIMELINE_OPTIONS;
   const containerHeight = Math.min(
     (events.length / 2) * ROW_HEIGHT + CARD_OFFSET,
     CHART_MAX_HEIGHT,

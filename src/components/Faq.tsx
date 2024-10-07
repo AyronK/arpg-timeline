@@ -11,7 +11,7 @@ export const Faq = () => (
             rel="external nofollow noreferrer"
             target="_blank"
           >
-            <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full dark:bg-current">
+            <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current">
               <img
                 src="/assets/bmc-logo-no-background.png"
                 className="m-auto h-[1rem] w-[1rem]"
@@ -50,7 +50,7 @@ export const Faq = () => (
 
       <div className="flex flex-col gap-4 md:gap-6">
         <div>
-          <h3 className="font-semibold">What is a season tracker?</h3>
+          <h3 className="mb-2 text-xl">What is a season tracker?</h3>
           <p className="ml-2">
             ARPG is a very special genre. The large part of these games&apos;
             community are the same people cycling between new seasons. If you
@@ -61,7 +61,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">How does aRPG Timeline work?</h3>
+          <h3 className="mb-2 text-xl">How does aRPG Timeline work?</h3>
           <p className="ml-2">
             We gather the most popular aRPG games and collect information about
             their current and future seasons. These games are then presented in
@@ -71,7 +71,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">How often is this site updated?</h3>
+          <h3 className="mb-2 text-xl">How often is this site updated?</h3>
           <p className="ml-2">
             The site is updated promptly upon receiving official season
             announcement. You can expect updates for upcoming seasons within 48h
@@ -81,7 +81,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">
+          <h3 className="mb-2 text-xl">
             Are dates displayed in my local time?
           </h3>
           <p className="ml-2">
@@ -91,7 +91,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">
+          <h3 className="mb-2 text-xl">
             What does the &quot;UNOFFICIAL&quot; tag mean?
           </h3>
           <p className="ml-2">
@@ -107,7 +107,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">Do you update the site manually?</h3>
+          <h3 className="mb-2 text-xl">Do you update the site manually?</h3>
           <p className="ml-2">
             Partialy, although as the sites grows it becomes inevitable. We are
             working hard to maintain the website updated without too much manual
@@ -116,7 +116,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">
+          <h3 className="mb-2 text-xl">
             Could you add a new game to the list?
           </h3>
           <p className="ml-2">
@@ -134,7 +134,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">Could you add a new feature?</h3>
+          <h3 className="mb-2 text-xl">Could you add a new feature?</h3>
           <p className="ml-2">
             Certainly! Feel free to suggest new features by submitting an issue
             on our{" "}
@@ -151,7 +151,7 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="font-semibold">Can I support your work?</h3>
+          <h3 className="mb-2 text-xl">Can I support your work?</h3>
           <p className="ml-2">
             Yes! You can support us by donating a coffee (via the yellow button)
             or contributing to the development of this site (contact us via

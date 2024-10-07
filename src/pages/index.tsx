@@ -28,11 +28,10 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     activeFilters,
   } = useGameFilters(games as Game[]);
   const events = useTimelineEvents(filteredGames);
-  console.log(games, events);
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
-        <p className="mx-auto hidden max-w-prose text-center text-lg md:block md:text-xl">
+        <p className="font-heading mx-auto hidden max-w-prose text-center text-lg md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
@@ -48,9 +47,9 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           </div>
           <div className="relative z-0 flex text-xs xl:container xl:absolute xl:left-0 xl:right-0 xl:top-14 xl:w-full">
             <Button
-              variant={"warning"}
+              variant={"default"}
               asChild
-              className="w-full px-2 lg:ml-auto lg:px-4 xl:w-auto"
+              className="font-ui w-full px-2 font-semibold opacity-80 transition-all hover:opacity-100 lg:ml-auto lg:px-4 xl:w-auto"
             >
               <a href="/looking-for-moderators" rel="self">
                 <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
