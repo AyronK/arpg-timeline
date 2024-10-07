@@ -31,7 +31,7 @@ export const NextSearsonWidget = ({
             <Chip>Next</Chip>
           </div>
           <h4
-            className="font-heading flex-1 text-base md:line-clamp-1"
+            className="flex-1 font-heading text-base md:line-clamp-1"
             title={nextSeason.name ?? undefined}
           >
             <MaybeLinkWrapper

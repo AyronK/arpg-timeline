@@ -31,7 +31,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
-        <p className="font-heading mx-auto hidden max-w-prose text-center text-lg md:block md:text-xl">
+        <p className="mx-auto hidden max-w-prose text-center font-heading text-lg md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
@@ -49,7 +49,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
             <Button
               variant={"default"}
               asChild
-              className="font-ui w-full px-2 font-semibold opacity-80 transition-all hover:opacity-100 lg:ml-auto lg:px-4 xl:w-auto"
+              className="w-full px-2 font-ui font-semibold opacity-80 transition-all hover:opacity-100 lg:ml-auto lg:px-4 xl:w-auto"
             >
               <a href="/looking-for-moderators" rel="self">
                 <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
