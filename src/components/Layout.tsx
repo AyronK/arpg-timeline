@@ -11,9 +11,10 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
             <a
               href="/"
               rel="self"
-              className="relative z-20 mx-auto my-4 mb-2 text-2xl font-semibold tracking-widest md:my-8 md:text-4xl"
+              className="relative z-20 mx-auto my-4 mb-2 text-2xl font-semibold tracking-[0.3rem] md:my-8 md:text-4xl"
             >
-              <h1>aRPG Timeline</h1>
+              <h1>aRPG ⚔️ Time</h1>
+              <hr className="mx-6 mt-2 border-foreground" />
             </a>
           </div>
           <div className="container absolute left-0 right-0 top-16 z-10 flex flex-row justify-end gap-2 md:top-8">
