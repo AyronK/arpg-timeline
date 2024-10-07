@@ -1,12 +1,12 @@
 ---
 type: season
-game: Path of Diablo
-name: Season 13
+game: Undecember
+name: Next season
 start:
   confirmed: false
-  overrideText: est. October/November
+  overrideText: est. end of 2024
   additionalText: ""
-  startDate: 2024-11-14T22:00:00.000Z
+  startDate: 2024-12-12T05:00:00.000Z
 end:
   endDate: ""
   confirmed: false
