@@ -4,9 +4,9 @@ game: Path of Diablo
 name: Season 13
 start:
   confirmed: false
-  overrideText: est. October
+  overrideText: est. October/November
   additionalText: ""
-  startDate: 2024-10-14T22:00:00.000Z
+  startDate: 2024-11-14T22:00:00.000Z
 end:
   endDate: ""
   confirmed: false
