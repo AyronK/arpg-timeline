@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Time } from "@/components/Time";
+import { cn } from "@/lib/utils";
 
 const getTimeComponents = (distance: number) => {
   const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
@@ -60,43 +61,32 @@ export const Countdown = ({
   }, [date, testProps?.timeLeft]);
 
   return (
-    <div className="flex h-[32px] flex-row items-center justify-center gap-1 bg-background px-5 pt-0.5 font-heading text-lg font-bold text-foreground md:h-[40px] md:text-2xl">
-      {timeComponents.weeks > 0 && (
-        <Time component={timeComponents.weeks} char="W" />
-      )}
-      {(timeComponents.days > 0 || timeComponents.weeks > 0) && (
-        <Time
-          component={String(timeComponents.days).padStart(2, "0")}
-          char="D"
-        />
-      )}
-      {(timeComponents.hours > 0 ||
-        timeComponents.days > 0 ||
-        timeComponents.weeks > 0) && (
-        <Time
-          component={String(timeComponents.hours).padStart(2, "0")}
-          char="H"
-        />
-      )}
-      {(timeComponents.minutes > 0 ||
-        timeComponents.hours > 0 ||
-        timeComponents.days > 0 ||
-        timeComponents.weeks > 0) && (
-        <Time
-          component={String(timeComponents.minutes).padStart(2, "0")}
-          char="M"
-        />
-      )}
-      {(timeComponents.seconds > 0 ||
-        timeComponents.minutes > 0 ||
-        timeComponents.hours > 0 ||
-        timeComponents.days > 0 ||
-        timeComponents.weeks > 0) && (
-        <Time
-          component={String(timeComponents.seconds).padStart(2, "0")}
-          char="S"
-        />
-      )}
+    <div className="flex flex-row items-center justify-center gap-1 px-5 pt-0.5 font-heading text-lg font-bold text-foreground md:text-2xl">
+      <Time
+        className={cn({ "opacity-60": timeComponents.weeks <= 0 })}
+        component={timeComponents.weeks}
+        char="W"
+      />
+      <Time
+        className={cn({ "opacity-60": timeComponents.days <= 0 })}
+        component={timeComponents.days}
+        char="D"
+      />
+      <Time
+        className={cn({ "opacity-60": timeComponents.hours <= 0 })}
+        component={timeComponents.hours}
+        char="H"
+      />
+      <Time
+        className={cn({ "opacity-60": timeComponents.minutes <= 0 })}
+        component={timeComponents.minutes}
+        char="M"
+      />
+      <Time
+        className={cn({ "opacity-60": timeComponents.seconds <= 0 })}
+        component={timeComponents.seconds}
+        char="S"
+      />
     </div>
   );
 };

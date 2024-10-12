@@ -58,7 +58,7 @@ export const KnownDate: Story = {
         <LocalDate longDate utcDate={new Date().toUTCString()} />
       </div>
     ),
-    timer: <Countdown date={new Date()} testProps={{ timeLeft: 9845734895 }} />,
+    timer: <Countdown date={new Date()} testProps={{ timeLeft: 45734895 }} />,
     action: (
       <div>
         <CalendarMenu startDate={new Date().toUTCString()} title="title" />

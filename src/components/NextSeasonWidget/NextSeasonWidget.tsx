@@ -2,6 +2,7 @@ import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { Chip } from "@/ui/Chip";
 import { cn } from "@/lib/utils";
 import { NextSeasonWidgetProps } from "@/components/NextSeasonWidget/NextSeasonWidget.types";
+import { FramedAction } from "../FramedAction/FramedAction";
 
 export const NextSeasonWidget = ({
   name,
@@ -51,10 +52,7 @@ export const NextSeasonWidget = ({
                 {footer && <div className="text-xs md:text-sm">{footer}</div>}
               </div>
             </div>
-            <div className="relative mt-2 flex flex-row overflow-hidden rounded-md before:absolute before:inset-0 before:rounded-md before:border before:border-emerald-600">
-              <div className="flex-1">{timer}</div>
-              {action}
-            </div>
+            <FramedAction action={action}>{timer}</FramedAction>
           </div>
         ) : (
           <div>

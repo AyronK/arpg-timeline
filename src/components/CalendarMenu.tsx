@@ -26,8 +26,8 @@ export const CalendarMenu = ({
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <Button
-        variant={"ghost"}
-        className="!h-[32px] !w-[32px] flex-1 !rounded-bl-none !rounded-tl-none !border !border-emerald-900 !bg-emerald-900 md:!h-[40px] md:!w-[40px]"
+        variant={"link"}
+        className="!h-[32px] !w-[32px] flex-1 md:!h-[40px] md:!w-[40px]"
         size={"icon"}
         title="Add to calendar"
       >
