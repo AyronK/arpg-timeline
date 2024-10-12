@@ -2,7 +2,7 @@ import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { Chip } from "@/ui/Chip";
 import { cn } from "@/lib/utils";
 import { NextSeasonWidgetProps } from "@/components/NextSeasonWidget/NextSeasonWidget.types";
-import { FramedAction } from "../FramedAction/FramedAction";
+import { FramedAction } from "@/components/FramedAction/FramedAction";
 
 export const NextSeasonWidget = ({
   name,
