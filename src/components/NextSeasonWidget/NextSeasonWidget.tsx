@@ -8,6 +8,7 @@ export const NextSeasonWidget = ({
   url,
   srNextSeason,
   srGameSeason,
+  srSeasonStart,
   action,
   timer,
   startLabel,
@@ -16,18 +17,13 @@ export const NextSeasonWidget = ({
   return (
     <div
       {...divProps}
-      className={cn(divProps.className, "flex flex-col gap-4 md:gap-2")}
+      className={cn(divProps.className, "flex flex-col gap-1 md:gap-2")}
     >
       <div className="flex flex-1 flex-row items-start gap-4">
         <span className="sr-only">{srNextSeason}</span>
-        <div className="flex w-full min-w-0 flex-row-reverse items-start gap-2 font-heading text-lg md:mb-0 md:min-h-[40px] md:flex-row md:items-center">
-          <div className="flex h-[1.5em] justify-center md:mb-0">
-            <Chip className={"m-auto w-14 bg-emerald-700 text-center"}>
-              Next
-            </Chip>
-          </div>
+        <div className="flex w-full min-w-0 flex-row items-start justify-between gap-2 font-heading text-lg md:mb-0 md:items-center">
           <h4
-            className="flex-1 font-heading text-lg text-white md:line-clamp-1"
+            className="flex-1 text-balance font-heading text-lg text-white md:line-clamp-1 md:text-left"
             title={name}
           >
             <MaybeLinkWrapper
@@ -39,19 +35,28 @@ export const NextSeasonWidget = ({
             </MaybeLinkWrapper>
             <span className="sr-only">{srGameSeason}</span>
           </h4>
+          <Chip className={"mb-auto mt-1 w-14 bg-emerald-700 text-center"}>
+            Next
+          </Chip>
         </div>
       </div>
       <div className="flex flex-1 items-center md:min-h-[28px]">
         {timer ? (
           <div className="flex flex-1 flex-col-reverse gap-2">
-            <div className="flex flex-row justify-between">
-              {startLabel}
+            <div className="flex flex-row items-center justify-between">
+              <div>
+                <span className="sr-only">{srSeasonStart}</span>
+                {startLabel}
+              </div>
               {action}
             </div>
-            <div className="flex-1">{timer}</div>
+            <div className="mt-2 flex-1 md:mb-1 md:mt-4">{timer}</div>
           </div>
         ) : (
-          startLabel
+          <div>
+            <span className="sr-only">{srSeasonStart}</span>
+            {startLabel}
+          </div>
         )}
       </div>
     </div>

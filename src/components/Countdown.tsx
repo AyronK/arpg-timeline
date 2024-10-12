@@ -62,7 +62,7 @@ export const Countdown = ({
 
   return (
     <TrailingBorder>
-      <div className="flex flex-row gap-1 font-heading text-xl font-bold text-accent-foreground">
+      <div className="flex flex-row gap-1 font-heading text-xl font-bold text-accent-foreground md:text-2xl">
         {timeComponents.weeks > 0 && (
           <Time component={timeComponents.weeks} char="W" />
         )}

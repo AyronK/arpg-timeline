@@ -37,33 +37,34 @@ export const CurrentSeasonWidget = ({
       {...divProps}
       className={cn(divProps.className, "flex flex-col gap-1")}
     >
-      <div className="flex flex-col items-stretch md:gap-2">
-        <div className="order-1 flex flex-1 flex-row gap-2">
+      <div className="flex flex-col items-stretch gap-2">
+        <div className="flex flex-1 flex-row justify-between gap-2">
           <span className="sr-only">{srCurrentSeason}</span>
-          <div className="mb-2 flex min-w-0 flex-row-reverse gap-2 font-heading text-lg md:mb-0 md:flex-row">
-            <div className="flex h-[1.5em] justify-center md:mb-0">
-              <Chip
-                className={cn(ChipColorMap[chip], "m-auto w-14 text-center")}
-              >
-                {ChipColorText[chip]}
-              </Chip>
-            </div>
-            <h4
-              className="flex-1 font-heading text-lg text-white md:line-clamp-1"
-              title={name}
+          <h4
+            className="flex-1 text-balance text-left font-heading text-lg text-white md:line-clamp-1 md:text-left"
+            title={name}
+          >
+            <MaybeLinkWrapper
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <MaybeLinkWrapper
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {name}
-              </MaybeLinkWrapper>
-              <span className="sr-only">{srGameSeason}</span>
-            </h4>
+              {name}
+            </MaybeLinkWrapper>
+            <span className="sr-only">{srGameSeason}</span>
+          </h4>
+          <Chip
+            className={cn(ChipColorMap[chip], "mb-auto mt-1 w-14 text-center")}
+          >
+            {ChipColorText[chip]}
+          </Chip>
+        </div>
+        <div className="flex w-full items-center gap-3">
+          <div className="flex-1">
+            <ProgressBar progress={progress} />
           </div>
         </div>
-        <div className="order-2 mb-1 flex flex-row justify-between md:order-3">
+        <div className="mb-1 flex flex-row justify-between">
           <div className="text-sm">
             <span className="sr-only">{srSeasonStart}</span>
             {progressStart}
@@ -71,11 +72,6 @@ export const CurrentSeasonWidget = ({
           <div className="text-sm">
             <span className="sr-only">{srSeasonEnd}</span>
             {progressEnd}
-          </div>
-        </div>
-        <div className="order-3 flex w-full items-center gap-3 md:order-2">
-          <div className="flex-1">
-            <ProgressBar progress={progress} />
           </div>
         </div>
       </div>

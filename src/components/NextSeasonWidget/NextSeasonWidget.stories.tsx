@@ -33,7 +33,7 @@ type Story = StoryObj<typeof NextSeasonWidget>;
 
 export const ToBeAnnounced: Story = {
   args: {
-    name: "To be announced",
+    name: "Next season to be announced",
   },
 };
 
@@ -45,7 +45,7 @@ export const ToBeAnnouncedEstimated: Story = {
         est. November/December
       </div>
     ),
-    name: "To be announced",
+    name: "Next season to be announced",
   },
 };
 
