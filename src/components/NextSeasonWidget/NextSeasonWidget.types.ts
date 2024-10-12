@@ -9,4 +9,5 @@ export type NextSeasonWidgetProps = React.HTMLAttributes<HTMLDivElement> & {
   readonly srNextSeason: string;
   readonly srSeasonStart: string;
   readonly action?: ReactNode | undefined;
+  readonly footer?: ReactNode | undefined;
 };

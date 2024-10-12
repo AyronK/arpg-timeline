@@ -5,6 +5,7 @@ import LocalDate from "@/components/LocalDate";
 import {
   CalendarClock,
   CalendarOff,
+  InfoIcon,
   Timer,
   TimerOff,
   TimerReset,
@@ -120,5 +121,17 @@ export const JustStarted: Story = {
       </div>
     ),
     progress: 0,
+  },
+};
+
+export const CurrentWithFooter: Story = {
+  args: {
+    ...Current.args,
+    footer: (
+      <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
+        <InfoIcon className="h-4 w-4" />
+        Ladder reset at 5 p.m. PDT/CET/KST
+      </div>
+    ),
   },
 };

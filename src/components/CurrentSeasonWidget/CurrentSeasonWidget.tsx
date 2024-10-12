@@ -30,6 +30,7 @@ export const CurrentSeasonWidget = ({
   srSeasonStart,
   srSeasonEnd,
   srGameSeason,
+  footer,
   ...divProps
 }: CurrentSeasonWidgetProps) => {
   return (
@@ -64,15 +65,18 @@ export const CurrentSeasonWidget = ({
             <ProgressBar progress={progress} />
           </div>
         </div>
-        <div className="mb-1 flex flex-row justify-between">
-          <div className="text-sm">
-            <span className="sr-only">{srSeasonStart}</span>
-            {progressStart}
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-row justify-between">
+            <div className="text-sm">
+              <span className="sr-only">{srSeasonStart}</span>
+              {progressStart}
+            </div>
+            <div className="text-sm">
+              <span className="sr-only">{srSeasonEnd}</span>
+              {progressEnd}
+            </div>
           </div>
-          <div className="text-sm">
-            <span className="sr-only">{srSeasonEnd}</span>
-            {progressEnd}
-          </div>
+          {footer && <div className="mt-1 text-sm">{footer}</div>}
         </div>
       </div>
     </div>

@@ -12,12 +12,13 @@ export const NextSeasonWidget = ({
   action,
   timer,
   startLabel,
+  footer,
   ...divProps
 }: NextSeasonWidgetProps) => {
   return (
     <div
       {...divProps}
-      className={cn(divProps.className, "flex flex-col gap-1 md:gap-2")}
+      className={cn(divProps.className, "flex flex-col gap-1")}
     >
       <div className="flex flex-1 flex-row items-start gap-4">
         <span className="sr-only">{srNextSeason}</span>
@@ -42,20 +43,22 @@ export const NextSeasonWidget = ({
       </div>
       <div className="flex flex-1 items-center md:min-h-[28px]">
         {timer ? (
-          <div className="flex flex-1 flex-col-reverse gap-2">
+          <div className="flex flex-1 flex-col-reverse gap-1">
             <div className="flex flex-row items-center justify-between">
-              <div>
+              <div className="flex flex-col gap-1">
                 <span className="sr-only">{srSeasonStart}</span>
-                {startLabel}
+                <div className="text-sm">{startLabel}</div>
+                {footer && <div className="text-sm">{footer}</div>}
               </div>
               {action}
             </div>
-            <div className="mt-2 flex-1 md:mb-1 md:mt-4">{timer}</div>
+            <div className="mb-1 mb-2 mt-2 flex-1 md:mt-4">{timer}</div>
           </div>
         ) : (
           <div>
             <span className="sr-only">{srSeasonStart}</span>
-            {startLabel}
+            <div className="text-sm">{startLabel}</div>
+            {footer && <div className="text-sm">{footer}</div>}
           </div>
         )}
       </div>

@@ -13,4 +13,5 @@ export type CurrentSeasonWidgetProps = React.HTMLAttributes<HTMLDivElement> & {
   readonly srCurrentSeason: string;
   readonly srSeasonStart: string;
   readonly srSeasonEnd: string;
+  readonly footer?: ReactNode | undefined;
 };

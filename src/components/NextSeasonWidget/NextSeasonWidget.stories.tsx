@@ -4,7 +4,7 @@ import { NextSeasonWidget } from "@/components/NextSeasonWidget/NextSeasonWidget
 import { CalendarMenu } from "@/components/CalendarMenu";
 import LocalDate from "@/components/LocalDate";
 import { Countdown } from "@/components/Countdown";
-import { TimerReset } from "lucide-react";
+import { InfoIcon, TimerReset } from "lucide-react";
 
 const meta: Meta<typeof NextSeasonWidget> = {
   args: {
@@ -62,6 +62,18 @@ export const KnownDate: Story = {
     action: (
       <div className="flex flex-row gap-2">
         <CalendarMenu startDate={new Date().toUTCString()} title="title" />
+      </div>
+    ),
+  },
+};
+
+export const KnownDateWithFooter: Story = {
+  args: {
+    ...KnownDate.args,
+    footer: (
+      <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
+        <InfoIcon className="h-4 w-4" />
+        Starts at 5 p.m. PDT/CET/KST
       </div>
     ),
   },
