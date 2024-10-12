@@ -12,8 +12,8 @@ import NextSeasonWidgetStory, {
   ToBeAnnounced,
   ToBeAnnouncedEstimated,
 } from "@/components/NextSeasonWidget/NextSeasonWidget.stories";
-import { CurrentSeasonWidgetProps } from "../CurrentSeasonWidget";
-import { NextSeasonWidgetProps } from "../NextSeasonWidget";
+import { CurrentSeasonWidgetProps } from "@/components/CurrentSeasonWidget";
+import { NextSeasonWidgetProps } from "@/components/NextSeasonWidget";
 
 const meta = {
   title: "Components/Game Card",
