@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
+import CurrentSeasonWidgetStory, {
+  Over,
+} from "../CurrentSeasonWidget/CurrentSeasonWidget.stories";
+import NextSeasonWidgetStory, {
+  KnownDate,
+} from "../NextSeasonWidget/NextSeasonWidget.stories";
 
 const meta = {
   title: "Components/Game Card",
@@ -33,7 +39,7 @@ export const Default: Story = {
           getImage({
             images: {
               fallback: {
-                src: "https://placehold.co/200x140/svg?text=game-logo",
+                src: "https://web.poecdn.com/protected/image/layout/settlerslogo.png?v=1723154629762&key=Jjw7LpciEpGJCD-I8P_Y2A",
                 srcSet: "",
                 sizes: "",
               },
@@ -48,28 +54,7 @@ export const Default: Story = {
         className="my-auto"
       />
     ),
-    currentSeason: {
-      startDate: "2024-03-21",
-      endDate: "2024-06-20",
-      title: "Season 2024",
-      url: "/",
-      startDateNotice: "March 21, 2024",
-      endDateNotice: "June 20, 2024",
-      justStarted: false,
-    },
-    nextSeason: {
-      startDate: "2024-06-21",
-      endDate: "2024-09-22",
-      title: "Next 2024",
-      url: "/",
-      startDateNotice: "June 21, 2024",
-      endDateNotice: "September 22, 2024",
-      showCountdown: true,
-    },
-    seasonKeyword: "Season",
-    testProps: {
-      now: new Date(2024, 4, 1),
-      timeLeft: 59 * 55 * 1000 * 22 * 11,
-    },
+    currentSeason: { ...CurrentSeasonWidgetStory.args, ...Over.args },
+    nextSeason: { ...NextSeasonWidgetStory.args, ...KnownDate.args },
   },
 };

@@ -8,9 +8,9 @@ import {
 } from "@/components/CurrentSeasonWidget/CurrentSeasonWidget.types";
 
 const ChipColorMap: Record<CurrentSeasonChip, string> = {
-  live: "bg-teal-700 ",
-  over: "bg-slate-700",
-  now: "bg-sky-700",
+  live: "bg-teal-800 ",
+  over: "bg-slate-800",
+  now: "bg-sky-800",
 };
 
 const ChipColorText: Record<CurrentSeasonChip, string> = {
@@ -38,11 +38,11 @@ export const CurrentSeasonWidget = ({
       {...divProps}
       className={cn(divProps.className, "flex flex-col gap-1")}
     >
-      <div className="flex flex-col items-stretch gap-2">
+      <div className="flex flex-col items-stretch gap-1 md:gap-2">
         <div className="flex flex-1 flex-row justify-between gap-2">
           <span className="sr-only">{srCurrentSeason}</span>
           <h4
-            className="flex-1 text-balance text-left font-heading text-lg text-white md:line-clamp-1 md:text-left"
+            className="flex-1 text-balance text-left font-heading font-bold text-white md:line-clamp-1 md:text-left md:text-lg"
             title={name}
           >
             <MaybeLinkWrapper
@@ -67,16 +67,16 @@ export const CurrentSeasonWidget = ({
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex flex-row justify-between">
-            <div className="text-sm">
+            <div className="text-xs md:text-sm">
               <span className="sr-only">{srSeasonStart}</span>
               {progressStart}
             </div>
-            <div className="text-sm">
+            <div className="text-xs md:text-sm">
               <span className="sr-only">{srSeasonEnd}</span>
               {progressEnd}
             </div>
           </div>
-          {footer && <div className="mt-1 text-sm">{footer}</div>}
+          {footer && <div className="mt-1 text-xs md:text-sm">{footer}</div>}
         </div>
       </div>
     </div>

@@ -60,7 +60,7 @@ export const KnownDate: Story = {
     ),
     timer: <Countdown date={new Date()} testProps={{ timeLeft: 9845734895 }} />,
     action: (
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-1 flex-row gap-2">
         <CalendarMenu startDate={new Date().toUTCString()} title="title" />
       </div>
     ),

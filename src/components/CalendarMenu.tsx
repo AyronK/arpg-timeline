@@ -25,8 +25,13 @@ export const CalendarMenu = ({
 }) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button variant={"outline"} size={"icon"} title="Add to calendar">
-        <CalendarPlus className="h-5 w-5" />
+      <Button
+        variant={"outlineCard"}
+        className="!h-8 !w-8 flex-1 !px-0"
+        size={"icon"}
+        title="Add to calendar"
+      >
+        <CalendarPlus className="h-4 w-4" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
