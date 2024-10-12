@@ -1,9 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { CurrentSeasonWidget } from "@/components/CurrentSeasonWidget/CurrentSeasonWidget";
-import LocalDate from "../LocalDate";
+import LocalDate from "@/components/LocalDate";
+import { CalendarOff, Timer, TimerOff, TimerReset } from "lucide-react";
 
 const meta: Meta<typeof CurrentSeasonWidget> = {
+  args: {
+    "aria-label": `Current leauge`,
+    srCurrentSeason: `What is the current Path of Exile league?`,
+    srSeasonStart: `When did the current Path of Exile league start?`,
+    srSeasonEnd: `When is the current Path of Exile league ending?`,
+    srGameSeason: `poe league, Path of Exile league`,
+  },
   title: "Components/Current Season Widget",
   component: CurrentSeasonWidget,
   decorators: [
@@ -23,11 +31,18 @@ type Story = StoryObj<typeof CurrentSeasonWidget>;
 export const Over: Story = {
   args: {
     chip: "over",
-    gameName: "Test game",
-    gameShortName: "tg",
+    labelStart: (
+      <div className="flex flex-row items-center gap-1" title="Lasted 35 days">
+        <TimerOff className="h-4 w-4" />
+        <span className="hidden md:flex">Lasted</span>
+        35 days
+      </div>
+    ),
     labelEnd: (
-      <div>
-        Ended <LocalDate utcDate={new Date().toUTCString()} />
+      <div className="flex flex-row flex-nowrap items-center gap-1">
+        <span className="hidden md:flex">Ended</span>
+        <LocalDate dateOnly utcDate={new Date().toUTCString()} />
+        <CalendarOff className="h-4 w-4" />
       </div>
     ),
     progress: 100,
@@ -38,10 +53,21 @@ export const Over: Story = {
 export const Current: Story = {
   args: {
     chip: "now",
-    gameName: "Test game",
-    gameShortName: "tg",
-    labelStart: <div>Running for 35 days</div>,
-    labelEnd: <div>130 days left</div>,
+    labelStart: (
+      <div
+        className="flex flex-row items-center gap-1"
+        title="Running for 35 days"
+      >
+        <Timer className="h-4 w-4" />
+        <span className="hidden md:flex">Lasts </span>35 days
+      </div>
+    ),
+    labelEnd: (
+      <div className="flex flex-row flex-nowrap items-center gap-1">
+        130 days left
+        <CalendarOff className="h-4 w-4" />
+      </div>
+    ),
     progress: 33,
     name: "Season 40: Shades of the Nephalem",
   },
@@ -50,10 +76,21 @@ export const Current: Story = {
 export const CurrentEndUnkown: Story = {
   args: {
     chip: "now",
-    gameName: "Test game",
-    gameShortName: "tg",
-    labelStart: <div>Running for 90 days</div>,
-    labelEnd: <div>~ est. December</div>,
+    labelStart: (
+      <div
+        className="flex flex-row items-center gap-1"
+        title="Running for 90 days"
+      >
+        <Timer className="h-4 w-4" />
+        <span className="hidden md:flex">Lasts </span>90 days
+      </div>
+    ),
+    labelEnd: (
+      <div className="flex flex-row flex-nowrap items-center gap-1">
+        ~est. December
+        <CalendarOff className="h-4 w-4" />
+      </div>
+    ),
     progress: 66,
     name: "Season 40: Shades of the Nephalem",
   },
@@ -62,12 +99,22 @@ export const CurrentEndUnkown: Story = {
 export const JustStarted: Story = {
   args: {
     chip: "live",
-    gameName: "Test game",
-    gameShortName: "tg",
-    labelStart: <div>Just started</div>,
-    labelEnd: <div>~ est. December</div>,
+    labelStart: (
+      <div
+        className="flex flex-row items-center gap-1"
+        title="Running for 35 days"
+      >
+        <TimerReset className="h-4 w-4" />
+        Just started
+      </div>
+    ),
+    labelEnd: (
+      <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
+        ~est. December
+        <CalendarOff className="h-4 w-4" />
+      </div>
+    ),
     progress: 0,
     name: "Season 40: Shades of the Nephalem",
   },
 };
-

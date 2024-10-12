@@ -6,21 +6,22 @@ import { cn } from "@/lib/utils";
 
 export type CurrentSeasonChip = "over" | "now" | "live";
 
-export type SeasonCardProps = {
+export type SeasonCardProps = React.HTMLAttributes<HTMLDivElement> & {
   readonly chip: CurrentSeasonChip;
   readonly labelStart?: ReactNode | undefined;
   readonly labelEnd?: ReactNode | undefined;
   readonly progress: number;
   readonly url?: string | null;
   readonly name: string;
-  readonly seasonKeyword: string | null;
-  readonly gameName: string;
-  readonly gameShortName: string;
+  readonly srGameSeason: string;
+  readonly srCurrentSeason: string;
+  readonly srSeasonStart: string;
+  readonly srSeasonEnd: string;
 };
 
 const ChipColorMap: Record<CurrentSeasonChip, string> = {
-  live: "bg-teal-800 ",
-  over: "bg-slate-500",
+  live: "bg-teal-700 ",
+  over: "bg-slate-700",
   now: "bg-sky-700",
 };
 
@@ -32,26 +33,30 @@ const ChipColorText: Record<CurrentSeasonChip, string> = {
 
 export const CurrentSeasonWidget = ({
   name,
-  seasonKeyword,
-  gameName,
-  gameShortName,
   chip,
   url,
   progress,
   labelEnd,
   labelStart,
+  srCurrentSeason,
+  srSeasonStart,
+  srSeasonEnd,
+  srGameSeason,
+  ...divProps
 }: SeasonCardProps) => {
   return (
     <div
-      aria-label={`Current ${seasonKeyword}`}
-      className="flex flex-col gap-1"
+      {...divProps}
+      className={cn(divProps.className, "flex flex-col gap-1")}
     >
-      <div className="flex gap-4 max-sm:items-end sm:flex-col sm:gap-1">
-        <div className="flex flex-1 flex-row gap-2">
-          <span className="sr-only">{`What is the current ${gameName} ${seasonKeyword}?`}</span>
-          <div className="flex min-w-0 flex-col md:flex-row md:gap-2">
-            <div className="flex justify-center">
-              <Chip className={cn(ChipColorMap[chip], "m-auto")}>
+      <div className="flex flex-col items-stretch md:gap-2">
+        <div className="order-1 flex flex-1 flex-row gap-2">
+          <span className="sr-only">{srCurrentSeason}</span>
+          <div className="mb-2 flex min-w-0 flex-row-reverse gap-2 font-heading text-lg md:mb-0 md:flex-row">
+            <div className="flex h-[1.5em] justify-center md:mb-0">
+              <Chip
+                className={cn(ChipColorMap[chip], "m-auto w-14 text-center")}
+              >
                 {ChipColorText[chip]}
               </Chip>
             </div>
@@ -66,27 +71,23 @@ export const CurrentSeasonWidget = ({
               >
                 {name}
               </MaybeLinkWrapper>
+              <span className="sr-only">{srGameSeason}</span>
             </h4>
-            {gameShortName && (
-              <span className="sr-only">{`${gameShortName} ${name} ${seasonKeyword}`}</span>
-            )}
           </div>
         </div>
-        <div className="flex w-full items-center gap-1">
+        <div className="order-2 mb-1 flex flex-row justify-between md:order-3">
+          <div className="text-sm">
+            <span className="sr-only">{srSeasonStart}</span>
+            {labelStart}
+          </div>
+          <div className="text-sm">
+            <span className="sr-only">{srSeasonEnd}</span>
+            {labelEnd}
+          </div>
+        </div>
+        <div className="order-3 flex w-full items-center gap-3 md:order-2">
           <div className="flex-1">
             <ProgressBar progress={progress} />
-          </div>
-        </div>
-        <div className="flex flex-row justify-end sm:justify-between">
-          <div className="col-span-4 hidden flex-col gap-1 sm:flex">
-            <span className="sr-only">{`When did the current ${gameName} ${seasonKeyword} start?`}</span>
-            <div className="flex flex-row gap-2 text-sm">{labelStart}</div>
-          </div>
-          <div>
-            <span className="sr-only">{`When is the current ${gameName} ${seasonKeyword} ending?`}</span>
-            <div className="flex flex-row-reverse gap-2 text-sm max-sm:leading-6">
-              {labelEnd}
-            </div>
           </div>
         </div>
       </div>
