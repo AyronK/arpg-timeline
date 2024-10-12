@@ -18,6 +18,7 @@ const meta: Meta<typeof CurrentSeasonWidget> = {
     srSeasonEnd: `When is the current Path of Exile league ending?`,
     srGameSeason: `poe league, Path of Exile league`,
   },
+  tags: ["autodocs"],
   title: "Components/Current Season Widget",
   component: CurrentSeasonWidget,
   decorators: [
@@ -37,14 +38,14 @@ type Story = StoryObj<typeof CurrentSeasonWidget>;
 export const Over: Story = {
   args: {
     chip: "over",
-    labelStart: (
+    progressStart: (
       <div className="flex flex-row items-center gap-1" title="Lasted 35 days">
         <TimerOff className="h-4 w-4" />
         <span className="hidden md:flex">Lasted</span>
         35 days
       </div>
     ),
-    labelEnd: (
+    progressEnd: (
       <div className="flex flex-row flex-nowrap items-center gap-1">
         <span className="hidden md:flex">Ended</span>
         <LocalDate dateOnly utcDate={new Date().toUTCString()} />
@@ -59,7 +60,7 @@ export const Over: Story = {
 export const Current: Story = {
   args: {
     chip: "now",
-    labelStart: (
+    progressStart: (
       <div
         className="flex flex-row items-center gap-1"
         title="Running for 35 days"
@@ -68,7 +69,7 @@ export const Current: Story = {
         <span className="hidden md:flex">Lasts </span>35 days
       </div>
     ),
-    labelEnd: (
+    progressEnd: (
       <div className="flex flex-row flex-nowrap items-center gap-1">
         130 days left
         <CalendarClock className="h-4 w-4" />
@@ -82,7 +83,7 @@ export const Current: Story = {
 export const CurrentEndUnkown: Story = {
   args: {
     chip: "now",
-    labelStart: (
+    progressStart: (
       <div
         className="flex flex-row items-center gap-1"
         title="Running for 90 days"
@@ -91,7 +92,7 @@ export const CurrentEndUnkown: Story = {
         <span className="hidden md:flex">Lasts </span>90 days
       </div>
     ),
-    labelEnd: (
+    progressEnd: (
       <div className="flex flex-row flex-nowrap items-center gap-1">
         ~est. December
         <CalendarClock className="h-4 w-4" />
@@ -105,7 +106,7 @@ export const CurrentEndUnkown: Story = {
 export const JustStarted: Story = {
   args: {
     chip: "live",
-    labelStart: (
+    progressStart: (
       <div
         className="flex flex-row items-center gap-1"
         title="Running for 35 days"
@@ -114,7 +115,7 @@ export const JustStarted: Story = {
         Just started
       </div>
     ),
-    labelEnd: (
+    progressEnd: (
       <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
         ~est. December
         <CalendarClock className="h-4 w-4" />

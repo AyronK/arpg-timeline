@@ -1,23 +1,11 @@
 import { ProgressBar } from "@/components/ProgressBar";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { Chip } from "@/ui/Chip";
-import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-
-export type CurrentSeasonChip = "over" | "now" | "live";
-
-export type SeasonCardProps = React.HTMLAttributes<HTMLDivElement> & {
-  readonly chip: CurrentSeasonChip;
-  readonly labelStart?: ReactNode | undefined;
-  readonly labelEnd?: ReactNode | undefined;
-  readonly progress: number;
-  readonly url?: string | null;
-  readonly name: string;
-  readonly srGameSeason: string;
-  readonly srCurrentSeason: string;
-  readonly srSeasonStart: string;
-  readonly srSeasonEnd: string;
-};
+import {
+  CurrentSeasonChip,
+  CurrentSeasonWidgetProps,
+} from "@/components/CurrentSeasonWidget/CurrentSeasonWidget.types";
 
 const ChipColorMap: Record<CurrentSeasonChip, string> = {
   live: "bg-teal-700 ",
@@ -36,14 +24,14 @@ export const CurrentSeasonWidget = ({
   chip,
   url,
   progress,
-  labelEnd,
-  labelStart,
+  progressEnd,
+  progressStart,
   srCurrentSeason,
   srSeasonStart,
   srSeasonEnd,
   srGameSeason,
   ...divProps
-}: SeasonCardProps) => {
+}: CurrentSeasonWidgetProps) => {
   return (
     <div
       {...divProps}
@@ -78,11 +66,11 @@ export const CurrentSeasonWidget = ({
         <div className="order-2 mb-1 flex flex-row justify-between md:order-3">
           <div className="text-sm">
             <span className="sr-only">{srSeasonStart}</span>
-            {labelStart}
+            {progressStart}
           </div>
           <div className="text-sm">
             <span className="sr-only">{srSeasonEnd}</span>
-            {labelEnd}
+            {progressEnd}
           </div>
         </div>
         <div className="order-3 flex w-full items-center gap-3 md:order-2">

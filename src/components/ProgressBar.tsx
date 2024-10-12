@@ -5,7 +5,7 @@ export const ProgressBar = ({ progress }: { progress: number }) => {
       style={{ width: "100%" }}
     >
       <div
-        className="h-full rounded-bl-full rounded-tr-full bg-gray-200 subpixel-antialiased"
+        className="h-full rounded-bl-full rounded-tr-full bg-slate-300 subpixel-antialiased"
         style={{ width: `${progress}%` }}
       />
     </div>
