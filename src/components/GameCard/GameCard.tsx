@@ -1,11 +1,10 @@
-import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { CurrentSeasonWidget } from "@/components/CurrentSeasonWidget/CurrentSeasonWidget";
-import { SeasonCardProps } from "@/components/SeasonCard/SeasonCard.types";
 import { NextSearsonWidget } from "@/components/SeasonCard/NextSeasonWidget";
 import { UnofficialLabel } from "@/components/UnofficialLabel";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
+import { GameCardProps } from "@/components/GameCard/GameCard.types";
 
-export const SeasonCard = ({
+export const GameCard = ({
   name,
   shortName,
   logo,
@@ -15,7 +14,7 @@ export const SeasonCard = ({
   seasonKeyword,
   official,
   testProps,
-}: SeasonCardProps) => {
+}: GameCardProps) => {
   return (
     <section className="relative flex flex-1 flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:gap-4 md:p-6">
       <div className="relative flex h-auto max-h-[80px] min-h-[60px] w-[100px] flex-row justify-center place-self-center md:h-[140px] md:max-h-[140px] md:w-[200px]">
@@ -25,11 +24,7 @@ export const SeasonCard = ({
           className="relative flex flex-col gap-2"
           target="_blank"
         >
-          <GatsbyImage
-            image={getImage(logo!)!}
-            alt={`${name} logo`}
-            className="my-auto"
-          />
+          <div>{logo}</div>
         </MaybeLinkWrapper>
       </div>
       <h3 className="sr-only">{name}</h3>

@@ -30,7 +30,7 @@ export default {
       fontFamily: {
         heading: ["Cinzel", "serif"],
         body: ["Merriweather", "serif"],
-        ui: ["Montserrat", "sans-serif"],
+        ui: ["Merriweather", "sans-serif"],
       },
       colors: {
         nextSeason: "hsl(var(--nextSeason))",
