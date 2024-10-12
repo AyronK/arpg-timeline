@@ -7,6 +7,6 @@ export const Time = ({
 }) => (
   <span>
     {component}
-    <span className="text-emerald-500">{char}</span>
+    <span className="text-sm opacity-85">{char}</span>
   </span>
 );

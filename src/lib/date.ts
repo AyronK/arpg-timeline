@@ -6,6 +6,14 @@ const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
   minute: "numeric",
 };
 
+const longDateTimeFormatOptions: Intl.DateTimeFormatOptions = {
+  month: "long",
+  day: "numeric",
+  hourCycle: "h24",
+  hour: "numeric",
+  minute: "numeric",
+};
+
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
   month: "long",
   day: "numeric",
@@ -16,6 +24,11 @@ const locale = "en-US";
 export const INTL_LOCAL_DATETIME = new Intl.DateTimeFormat(
   locale,
   dateTimeFormatOptions,
+);
+
+export const INTL_LOCAL_DATETIME_LONG = new Intl.DateTimeFormat(
+  locale,
+  longDateTimeFormatOptions,
 );
 
 export const INTL_LOCAL_DATE = new Intl.DateTimeFormat(

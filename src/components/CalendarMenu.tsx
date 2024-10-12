@@ -14,6 +14,7 @@ import {
   addToTickTick,
 } from "@/lib/calendar";
 import { cn } from "@/lib/utils";
+import { Button } from "@/ui/Button";
 
 export const CalendarMenu = ({
   title,
@@ -23,10 +24,10 @@ export const CalendarMenu = ({
   startDate: string;
 }) => (
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <span title="Add to calendar">
+    <DropdownMenuTrigger asChild>
+      <Button variant={"outline"} size={"icon"} title="Add to calendar">
         <CalendarPlus className="h-5 w-5" />
-      </span>
+      </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuItem

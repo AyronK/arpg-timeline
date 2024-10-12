@@ -12,6 +12,7 @@ import {
 
 const meta: Meta<typeof CurrentSeasonWidget> = {
   args: {
+    name: "Season 40: Shades of the Nephalem",
     "aria-label": `Current leauge`,
     srCurrentSeason: `What is the current Path of Exile league?`,
     srSeasonStart: `When did the current Path of Exile league start?`,
@@ -53,7 +54,6 @@ export const Over: Story = {
       </div>
     ),
     progress: 100,
-    name: "Season 40: Shades of the Nephalem",
   },
 };
 
@@ -76,7 +76,6 @@ export const Current: Story = {
       </div>
     ),
     progress: 33,
-    name: "Season 40: Shades of the Nephalem",
   },
 };
 
@@ -99,7 +98,6 @@ export const CurrentEndUnkown: Story = {
       </div>
     ),
     progress: 66,
-    name: "Season 40: Shades of the Nephalem",
   },
 };
 
@@ -122,6 +120,5 @@ export const JustStarted: Story = {
       </div>
     ),
     progress: 0,
-    name: "Season 40: Shades of the Nephalem",
   },
 };
