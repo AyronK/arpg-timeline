@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Time } from "@/components/Time";
 import { cn } from "@/lib/utils";
+import { TrailingBorder } from "./TrailingBorder";
 
 const getTimeComponents = (distance: number) => {
   const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
@@ -61,32 +62,34 @@ export const Countdown = ({
   }, [date, testProps?.timeLeft]);
 
   return (
-    <div className="flex select-none flex-row items-center justify-center gap-1 px-5 pt-0.5 font-heading text-lg font-bold text-foreground md:text-2xl">
-      <Time
-        className={cn({ "opacity-60": timeComponents.weeks <= 0 })}
-        component={timeComponents.weeks}
-        char="W"
-      />
-      <Time
-        className={cn({ "opacity-60": timeComponents.days <= 0 })}
-        component={timeComponents.days}
-        char="D"
-      />
-      <Time
-        className={cn({ "opacity-60": timeComponents.hours <= 0 })}
-        component={timeComponents.hours}
-        char="H"
-      />
-      <Time
-        className={cn({ "opacity-60": timeComponents.minutes <= 0 })}
-        component={timeComponents.minutes}
-        char="M"
-      />
-      <Time
-        className={cn({ "opacity-60": timeComponents.seconds <= 0 })}
-        component={timeComponents.seconds}
-        char="S"
-      />
-    </div>
+    <TrailingBorder>
+      <div className="flex select-none flex-row items-center justify-center gap-1 pt-0.5 font-heading text-lg font-bold text-emerald-100 md:text-2xl">
+        <Time
+          className={cn({ "opacity-60": timeComponents.weeks <= 0 })}
+          component={timeComponents.weeks}
+          char="W"
+        />
+        <Time
+          className={cn({ "opacity-60": timeComponents.days <= 0 })}
+          component={timeComponents.days}
+          char="D"
+        />
+        <Time
+          className={cn({ "opacity-60": timeComponents.hours <= 0 })}
+          component={timeComponents.hours}
+          char="H"
+        />
+        <Time
+          className={cn({ "opacity-60": timeComponents.minutes <= 0 })}
+          component={timeComponents.minutes}
+          char="M"
+        />
+        <Time
+          className={cn({ "opacity-60": timeComponents.seconds <= 0 })}
+          component={timeComponents.seconds}
+          char="S"
+        />
+      </div>
+    </TrailingBorder>
   );
 };
