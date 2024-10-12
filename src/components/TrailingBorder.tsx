@@ -7,4 +7,3 @@ export const TrailingBorder = ({ children }: PropsWithChildren) => {
     </div>
   );
 };
-

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Time } from "@/components/Time";
-import { TrailingBorder } from "./TrailingBorder";
+import { TrailingBorder } from "@/components/TrailingBorder";
 
 const getTimeComponents = (distance: number) => {
   const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));

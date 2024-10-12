@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { NextSeasonWidget } from "@/components/NextSeasonWidget/NextSeasonWidget";
-import { CalendarMenu } from "../CalendarMenu";
-import LocalDate from "../LocalDate";
-import { Countdown } from "../Countdown";
-import { TrailingBorder } from "../TrailingBorder";
+import { CalendarMenu } from "@/components/CalendarMenu";
+import LocalDate from "@/components/LocalDate";
+import { Countdown } from "@/components/Countdown";
 import { TimerReset } from "lucide-react";
 
 const meta: Meta<typeof NextSeasonWidget> = {
