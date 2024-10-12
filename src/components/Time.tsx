@@ -7,6 +7,8 @@ export const Time = ({
 }) => (
   <span>
     {component}
-    <span className="text-sm opacity-85">{char}</span>
+    <span className="text-sm text-emerald-300 opacity-75 md:text-base">
+      {char}
+    </span>
   </span>
 );

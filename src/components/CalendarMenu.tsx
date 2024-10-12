@@ -26,12 +26,12 @@ export const CalendarMenu = ({
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <Button
-        variant={"outlineCard"}
-        className="!h-8 !w-8 flex-1 !px-0"
+        variant={"ghost"}
+        className="!h-[32px] !w-[32px] flex-1 !rounded-bl-none !rounded-tl-none !border !border-emerald-900 !bg-emerald-900 md:!h-[40px] md:!w-[40px]"
         size={"icon"}
         title="Add to calendar"
       >
-        <CalendarPlus className="h-4 w-4" />
+        <CalendarPlus className="h-4 w-4 md:h-5 md:w-5" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent>

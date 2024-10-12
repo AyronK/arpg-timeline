@@ -24,7 +24,7 @@ export const NextSeasonWidget = ({
         <span className="sr-only">{srNextSeason}</span>
         <div className="flex w-full min-w-0 flex-row items-start justify-between gap-1 md:mb-0 md:items-center md:gap-2">
           <h4
-            className="flex-1 text-balance font-heading font-bold text-white md:line-clamp-1 md:text-left md:text-lg"
+            className="flex-1 text-balance font-heading font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
             title={name}
           >
             <MaybeLinkWrapper
@@ -43,7 +43,7 @@ export const NextSeasonWidget = ({
       </div>
       <div className="flex flex-1 items-center md:min-h-[28px]">
         {timer ? (
-          <div className="relative flex flex-1 flex-col gap-1">
+          <div className="flex flex-1 flex-col gap-1">
             <div className="flex flex-row items-center justify-between">
               <div className="flex flex-col gap-1">
                 <span className="sr-only">{srSeasonStart}</span>
@@ -51,9 +51,9 @@ export const NextSeasonWidget = ({
                 {footer && <div className="text-xs md:text-sm">{footer}</div>}
               </div>
             </div>
-            <div className="mt-2 flex-1">
-              {timer}
-              <div className="absolute right-0 top-0">{action}</div>
+            <div className="relative mt-2 flex flex-row overflow-hidden rounded-md before:absolute before:inset-0 before:rounded-md before:border before:border-emerald-600">
+              <div className="flex-1">{timer}</div>
+              {action}
             </div>
           </div>
         ) : (

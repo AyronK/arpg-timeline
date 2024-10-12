@@ -3,10 +3,17 @@ import { GameCard } from "@/components/GameCard/GameCard";
 import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image";
 import CurrentSeasonWidgetStory, {
   Over,
-} from "../CurrentSeasonWidget/CurrentSeasonWidget.stories";
+  Current,
+  CurrentEndUnkown,
+  JustStarted,
+} from "@/components/CurrentSeasonWidget/CurrentSeasonWidget.stories";
 import NextSeasonWidgetStory, {
   KnownDate,
-} from "../NextSeasonWidget/NextSeasonWidget.stories";
+  ToBeAnnounced,
+  ToBeAnnouncedEstimated,
+} from "@/components/NextSeasonWidget/NextSeasonWidget.stories";
+import { CurrentSeasonWidgetProps } from "../CurrentSeasonWidget";
+import { NextSeasonWidgetProps } from "../NextSeasonWidget";
 
 const meta = {
   title: "Components/Game Card",
@@ -25,13 +32,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const CurrentNextAnnounced: Story = {
   args: {
     name: "New Season",
-    group: null,
     official: true,
     shortName: "sn",
-    slug: "slug",
     url: null,
     logo: (
       <GatsbyImage
@@ -54,7 +59,235 @@ export const Default: Story = {
         className="my-auto"
       />
     ),
-    currentSeason: { ...CurrentSeasonWidgetStory.args, ...Over.args },
-    nextSeason: { ...NextSeasonWidgetStory.args, ...KnownDate.args },
+    currentSeason: {
+      ...CurrentSeasonWidgetStory.args,
+      ...Current.args,
+    } as CurrentSeasonWidgetProps,
+    nextSeason: {
+      ...NextSeasonWidgetStory.args,
+      ...KnownDate.args,
+    } as NextSeasonWidgetProps,
+  },
+};
+
+export const CurrentOverNextAnnounced: Story = {
+  args: {
+    name: "New Season",
+    official: true,
+    shortName: "sn",
+    url: null,
+    logo: (
+      <GatsbyImage
+        image={
+          getImage({
+            images: {
+              fallback: {
+                src: "https://web.poecdn.com/protected/image/layout/settlerslogo.png?v=1723154629762&key=Jjw7LpciEpGJCD-I8P_Y2A",
+                srcSet: "",
+                sizes: "",
+              },
+              sources: [],
+            },
+            layout: "fixed",
+            width: 200,
+            height: 140,
+          } as ImageDataLike)!
+        }
+        alt={`logo`}
+        className="my-auto"
+      />
+    ),
+    currentSeason: {
+      ...CurrentSeasonWidgetStory.args,
+      ...Over.args,
+    } as CurrentSeasonWidgetProps,
+    nextSeason: {
+      ...NextSeasonWidgetStory.args,
+      ...KnownDate.args,
+    } as NextSeasonWidgetProps,
+  },
+};
+
+export const CurrentNextToBeAnnounced: Story = {
+  args: {
+    name: "New Season",
+    official: true,
+    shortName: "sn",
+    url: null,
+    logo: (
+      <GatsbyImage
+        image={
+          getImage({
+            images: {
+              fallback: {
+                src: "https://web.poecdn.com/protected/image/layout/settlerslogo.png?v=1723154629762&key=Jjw7LpciEpGJCD-I8P_Y2A",
+                srcSet: "",
+                sizes: "",
+              },
+              sources: [],
+            },
+            layout: "fixed",
+            width: 200,
+            height: 140,
+          } as ImageDataLike)!
+        }
+        alt={`logo`}
+        className="my-auto"
+      />
+    ),
+    currentSeason: {
+      ...CurrentSeasonWidgetStory.args,
+      ...Current.args,
+    } as CurrentSeasonWidgetProps,
+    nextSeason: {
+      ...NextSeasonWidgetStory.args,
+      ...ToBeAnnounced.args,
+    } as NextSeasonWidgetProps,
+  },
+};
+
+export const CurrentNextToBeAnnouncedEstimated: Story = {
+  args: {
+    name: "New Season",
+    official: true,
+    shortName: "sn",
+    url: null,
+    logo: (
+      <GatsbyImage
+        image={
+          getImage({
+            images: {
+              fallback: {
+                src: "https://web.poecdn.com/protected/image/layout/settlerslogo.png?v=1723154629762&key=Jjw7LpciEpGJCD-I8P_Y2A",
+                srcSet: "",
+                sizes: "",
+              },
+              sources: [],
+            },
+            layout: "fixed",
+            width: 200,
+            height: 140,
+          } as ImageDataLike)!
+        }
+        alt={`logo`}
+        className="my-auto"
+      />
+    ),
+    currentSeason: {
+      ...CurrentSeasonWidgetStory.args,
+      ...CurrentEndUnkown.args,
+    } as CurrentSeasonWidgetProps,
+    nextSeason: {
+      ...NextSeasonWidgetStory.args,
+      ...ToBeAnnouncedEstimated.args,
+    } as NextSeasonWidgetProps,
+  },
+};
+
+export const JustStartedNextToBeAnnounced: Story = {
+  args: {
+    name: "New Season",
+    official: true,
+    shortName: "sn",
+    url: null,
+    logo: (
+      <GatsbyImage
+        image={
+          getImage({
+            images: {
+              fallback: {
+                src: "https://web.poecdn.com/protected/image/layout/settlerslogo.png?v=1723154629762&key=Jjw7LpciEpGJCD-I8P_Y2A",
+                srcSet: "",
+                sizes: "",
+              },
+              sources: [],
+            },
+            layout: "fixed",
+            width: 200,
+            height: 140,
+          } as ImageDataLike)!
+        }
+        alt={`logo`}
+        className="my-auto"
+      />
+    ),
+    currentSeason: {
+      ...CurrentSeasonWidgetStory.args,
+      ...JustStarted.args,
+    } as CurrentSeasonWidgetProps,
+    nextSeason: {
+      ...NextSeasonWidgetStory.args,
+      ...ToBeAnnounced.args,
+    } as NextSeasonWidgetProps,
+  },
+};
+
+export const JustStartedNoNext: Story = {
+  args: {
+    name: "New Season",
+    official: true,
+    shortName: "sn",
+    url: null,
+    logo: (
+      <GatsbyImage
+        image={
+          getImage({
+            images: {
+              fallback: {
+                src: "https://web.poecdn.com/protected/image/layout/settlerslogo.png?v=1723154629762&key=Jjw7LpciEpGJCD-I8P_Y2A",
+                srcSet: "",
+                sizes: "",
+              },
+              sources: [],
+            },
+            layout: "fixed",
+            width: 200,
+            height: 140,
+          } as ImageDataLike)!
+        }
+        alt={`logo`}
+        className="my-auto"
+      />
+    ),
+    currentSeason: {
+      ...CurrentSeasonWidgetStory.args,
+      ...JustStarted.args,
+    } as CurrentSeasonWidgetProps,
+    nextSeason: null,
+  },
+};
+
+export const NoCurrentOverNextAnnounced: Story = {
+  args: {
+    name: "New Season",
+    official: true,
+    shortName: "sn",
+    url: null,
+    logo: (
+      <GatsbyImage
+        image={
+          getImage({
+            images: {
+              fallback: {
+                src: "https://web.poecdn.com/protected/image/layout/settlerslogo.png?v=1723154629762&key=Jjw7LpciEpGJCD-I8P_Y2A",
+                srcSet: "",
+                sizes: "",
+              },
+              sources: [],
+            },
+            layout: "fixed",
+            width: 200,
+            height: 140,
+          } as ImageDataLike)!
+        }
+        alt={`logo`}
+        className="my-auto"
+      />
+    ),
+    currentSeason: null,
+    nextSeason: {
+      ...NextSeasonWidgetStory.args,
+      ...KnownDate.args,
+    } as NextSeasonWidgetProps,
   },
 };

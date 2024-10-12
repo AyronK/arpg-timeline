@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Time } from "@/components/Time";
-import { TrailingBorder } from "@/components/TrailingBorder";
 
 const getTimeComponents = (distance: number) => {
   const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
@@ -61,45 +60,43 @@ export const Countdown = ({
   }, [date, testProps?.timeLeft]);
 
   return (
-    <TrailingBorder>
-      <div className="flex flex-row gap-1 font-heading text-lg font-bold text-amber-400 md:text-2xl">
-        {timeComponents.weeks > 0 && (
-          <Time component={timeComponents.weeks} char="W" />
-        )}
-        {(timeComponents.days > 0 || timeComponents.weeks > 0) && (
-          <Time
-            component={String(timeComponents.days).padStart(2, "0")}
-            char="D"
-          />
-        )}
-        {(timeComponents.hours > 0 ||
-          timeComponents.days > 0 ||
-          timeComponents.weeks > 0) && (
-          <Time
-            component={String(timeComponents.hours).padStart(2, "0")}
-            char="H"
-          />
-        )}
-        {(timeComponents.minutes > 0 ||
-          timeComponents.hours > 0 ||
-          timeComponents.days > 0 ||
-          timeComponents.weeks > 0) && (
-          <Time
-            component={String(timeComponents.minutes).padStart(2, "0")}
-            char="M"
-          />
-        )}
-        {(timeComponents.seconds > 0 ||
-          timeComponents.minutes > 0 ||
-          timeComponents.hours > 0 ||
-          timeComponents.days > 0 ||
-          timeComponents.weeks > 0) && (
-          <Time
-            component={String(timeComponents.seconds).padStart(2, "0")}
-            char="S"
-          />
-        )}
-      </div>
-    </TrailingBorder>
+    <div className="flex h-[32px] flex-row items-center justify-center gap-1 bg-background px-5 pt-0.5 font-heading text-lg font-bold text-foreground md:h-[40px] md:text-2xl">
+      {timeComponents.weeks > 0 && (
+        <Time component={timeComponents.weeks} char="W" />
+      )}
+      {(timeComponents.days > 0 || timeComponents.weeks > 0) && (
+        <Time
+          component={String(timeComponents.days).padStart(2, "0")}
+          char="D"
+        />
+      )}
+      {(timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <Time
+          component={String(timeComponents.hours).padStart(2, "0")}
+          char="H"
+        />
+      )}
+      {(timeComponents.minutes > 0 ||
+        timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <Time
+          component={String(timeComponents.minutes).padStart(2, "0")}
+          char="M"
+        />
+      )}
+      {(timeComponents.seconds > 0 ||
+        timeComponents.minutes > 0 ||
+        timeComponents.hours > 0 ||
+        timeComponents.days > 0 ||
+        timeComponents.weeks > 0) && (
+        <Time
+          component={String(timeComponents.seconds).padStart(2, "0")}
+          char="S"
+        />
+      )}
+    </div>
   );
 };

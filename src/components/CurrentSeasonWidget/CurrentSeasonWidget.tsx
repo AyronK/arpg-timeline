@@ -8,8 +8,8 @@ import {
 } from "@/components/CurrentSeasonWidget/CurrentSeasonWidget.types";
 
 const ChipColorMap: Record<CurrentSeasonChip, string> = {
-  live: "bg-teal-800 ",
-  over: "bg-slate-800",
+  live: "bg-sky-800 ",
+  over: "bg-amber-800",
   now: "bg-sky-800",
 };
 
@@ -42,7 +42,7 @@ export const CurrentSeasonWidget = ({
         <div className="flex flex-1 flex-row justify-between gap-2">
           <span className="sr-only">{srCurrentSeason}</span>
           <h4
-            className="flex-1 text-balance text-left font-heading font-bold text-white md:line-clamp-1 md:text-left md:text-lg"
+            className="flex-1 text-balance text-left font-heading font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
             title={name}
           >
             <MaybeLinkWrapper
