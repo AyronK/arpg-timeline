@@ -13,7 +13,16 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
               rel="self"
               className="relative z-20 mx-auto my-4 mb-2 text-2xl font-semibold tracking-[0.3rem] md:my-8 md:text-4xl"
             >
-              <h1>aRPG ⚔️ Time</h1>
+              <h1 className="flex flex-row gap-4">
+                aRPG ⚔️
+                <span className="-mt-1 flex flex-col text-xl tracking-[1rem]">
+                  Time
+                  <span className="relative -mt-3 ml-[0.1rem] scale-y-[-1] transform text-xl tracking-[1.05rem]">
+                    <hr className="absolute -left-[2px] bottom-[6px] right-[12px] border-t border-foreground" />
+                    line
+                  </span>
+                </span>
+              </h1>
               <hr className="mx-6 mt-2 border-foreground" />
             </a>
           </div>
