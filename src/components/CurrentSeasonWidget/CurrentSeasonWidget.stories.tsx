@@ -2,7 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { CurrentSeasonWidget } from "@/components/CurrentSeasonWidget/CurrentSeasonWidget";
 import LocalDate from "@/components/LocalDate";
-import { CalendarOff, Timer, TimerOff, TimerReset } from "lucide-react";
+import {
+  CalendarClock,
+  CalendarOff,
+  Timer,
+  TimerOff,
+  TimerReset,
+} from "lucide-react";
 
 const meta: Meta<typeof CurrentSeasonWidget> = {
   args: {
@@ -65,7 +71,7 @@ export const Current: Story = {
     labelEnd: (
       <div className="flex flex-row flex-nowrap items-center gap-1">
         130 days left
-        <CalendarOff className="h-4 w-4" />
+        <CalendarClock className="h-4 w-4" />
       </div>
     ),
     progress: 33,
@@ -88,7 +94,7 @@ export const CurrentEndUnkown: Story = {
     labelEnd: (
       <div className="flex flex-row flex-nowrap items-center gap-1">
         ~est. December
-        <CalendarOff className="h-4 w-4" />
+        <CalendarClock className="h-4 w-4" />
       </div>
     ),
     progress: 66,
@@ -111,7 +117,7 @@ export const JustStarted: Story = {
     labelEnd: (
       <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
         ~est. December
-        <CalendarOff className="h-4 w-4" />
+        <CalendarClock className="h-4 w-4" />
       </div>
     ),
     progress: 0,

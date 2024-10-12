@@ -61,7 +61,7 @@ export const CurrentSeasonWidget = ({
               </Chip>
             </div>
             <h4
-              className="flex-1 font-heading text-lg md:line-clamp-1"
+              className="flex-1 font-heading text-lg text-white md:line-clamp-1"
               title={name}
             >
               <MaybeLinkWrapper
