@@ -11,14 +11,8 @@ import {
   HTMLAttributes,
 } from "react";
 
-const Drawer = ({
-  shouldScaleBackground = true,
-  ...props
-}: ComponentProps<typeof DrawerPrimitive.Root>) => (
-  <DrawerPrimitive.Root
-    shouldScaleBackground={shouldScaleBackground}
-    {...props}
-  />
+const Drawer = ({ ...props }: ComponentProps<typeof DrawerPrimitive.Root>) => (
+  <DrawerPrimitive.Root shouldScaleBackground={false} {...props} />
 );
 Drawer.displayName = "Drawer";
 
@@ -59,18 +53,6 @@ const DrawerContent = forwardRef<
   </DrawerPortal>
 ));
 DrawerContent.displayName = "DrawerContent";
-
-const DrawerHandle = forwardRef<
-  ElementRef<typeof DrawerPrimitive.Handle>,
-  ComponentPropsWithoutRef<typeof DrawerPrimitive.Handle>
->(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Handle
-    ref={ref}
-    className={cn("top-0 w-[33vw] bg-foreground md:!hidden", className)}
-    {...props}
-  />
-));
-DrawerHandle.displayName = "DrawerHandle";
 
 const DrawerHeader = ({
   className,
@@ -125,7 +107,6 @@ export {
   DrawerTrigger,
   DrawerClose,
   DrawerContent,
-  DrawerHandle,
   DrawerHeader,
   DrawerFooter,
   DrawerTitle,

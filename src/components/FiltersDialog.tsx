@@ -4,7 +4,6 @@ import {
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
-  DrawerHandle,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -68,12 +67,11 @@ export const FiltersDialog = ({
   }
 
   return (
-    <Drawer direction={isMd ? "right" : "bottom"} handleOnly>
+    <Drawer direction={isMd ? "right" : "bottom"}>
       <DrawerTrigger asChild>
         <Trigger checked={checked} filters={filters} />
       </DrawerTrigger>
       <DrawerContent className={!isMd ? "left-0" : undefined}>
-        <DrawerHandle />
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription asChild>

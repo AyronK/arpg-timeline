@@ -1,22 +1,22 @@
-import { lazy, Suspense } from "react";
+//import { lazy, Suspense } from "react";
 import { graphql, PageProps } from "gatsby";
-import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
+//import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
 import { UsersRound } from "lucide-react";
-import { cn } from "@/lib/utils";
+//import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
-import { useTimelineEvents } from "@/hooks/useTimelineEvents";
+// import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 
-const Timeline = lazy(() =>
-  import("@/components/Timeline/Timeline").then((module) => ({
-    default: module.Timeline,
-  })),
-);
+// const Timeline = lazy(() =>
+//   import("@/components/Timeline/Timeline").then((module) => ({
+//     default: module.Timeline,
+//   })),
+// );
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const games = useGamesFromMarkdown(data);
@@ -24,10 +24,10 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     gameFilters,
     toggleGameFilter,
     toggleGroupFilter,
-    filteredGames,
+    //filteredGames,
     activeFilters,
   } = useGameFilters(games as Game[]);
-  const events = useTimelineEvents(filteredGames);
+  //const events = useTimelineEvents(filteredGames);
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
@@ -57,7 +57,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               </a>
             </Button>
           </div>
-          <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
+          {/* <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
             {filteredGames.map((game, idx) => (
               <div
@@ -84,7 +84,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                 </Suspense>
               </div>
             </div>
-          </article>
+          </article> */}
         </div>
       </div>
       <Faq />

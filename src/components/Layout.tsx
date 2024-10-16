@@ -7,17 +7,17 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
     <>
       <header>
         <div className="relative">
-          <div className="flex justify-center">
+          <div className="flex flex-row items-center justify-center gap-2">
             <a
               href="/"
               rel="self"
-              className="relative z-20 mx-auto my-4 mb-2 text-2xl font-semibold tracking-[0.3rem] md:mb-4 md:mt-8 md:text-4xl"
+              className="relative z-20 my-4 mb-2 mr-auto text-2xl font-semibold tracking-[0.3rem] md:mb-4 md:ml-auto md:mt-8 md:text-4xl"
             >
-              <h1 className="flex flex-row items-center gap-2">
+              <h1 className="flex flex-row items-center md:gap-2">
                 <svg
                   width="56"
                   height="56"
-                  className="mx-auto"
+                  className="mx-auto scale-75 md:scale-100"
                   viewBox="0 0 135.5 135.5"
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
@@ -34,11 +34,9 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                     <path d="m 67.796379,2.7610718 c -3.525274,-10e-8 -6.383073,2.857799 -6.383073,6.3830729 0.0036,2.5426753 1.247081,4.7237603 3.580954,5.7328423 l -0.29485,2.630988 6.230111,-1.558561 v -1.261938 c 2.002206,-1.128016 3.243489,-3.245244 3.24993,-5.5433313 0,-3.5252735 -2.857799,-6.3830724 -6.383072,-6.3830729 z" />
                   </g>
                 </svg>
-                aRPG Timeline
+                <span className="hidden md:flex">aRPG Timeline</span>
               </h1>
             </a>
-          </div>
-          <div className="container absolute left-0 right-0 top-16 z-10 flex flex-row justify-end gap-2 md:top-8">
             <Button variant={"outline"} asChild className="px-2 md:px-4">
               <a
                 href="https://www.buymeacoffee.com/ayron"
