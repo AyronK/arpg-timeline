@@ -28,9 +28,7 @@ export const GameCard = ({
       </div>
       <h3 className="sr-only">{name}</h3>
       {currentSeason && <CurrentSeasonWidget {...currentSeason} />}
-      <div className="mt-auto">
-        {nextSeason && <NextSeasonWidget {...nextSeason} />}
-      </div>
+      {nextSeason && <NextSeasonWidget {...nextSeason} />}
       {!official && <UnofficialLabel />}
     </section>
   );
