@@ -143,7 +143,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                             <div>
                               <CalendarMenu
                                 startDate={game.nextSeason.start.startDate}
-                                title="title"
+                                title={`${game.name} ${game.seasonKeyword} start`}
                               />
                             </div>
                           ),

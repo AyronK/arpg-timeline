@@ -66,27 +66,49 @@ export const Countdown = ({
     <TrailingBorder>
       <div className="flex select-none flex-row items-center justify-center gap-1 pt-0.5 font-heading text-lg font-bold text-emerald-100 md:text-2xl">
         <Time
-          className={cn({ "opacity-60": timeComponents.weeks <= 0 })}
+          className={cn({
+            "opacity-60": timeComponents.weeks <= 0,
+          })}
           component={timeComponents.weeks}
           char="W"
         />
         <Time
-          className={cn({ "opacity-60": timeComponents.days <= 0 })}
+          className={cn({
+            "opacity-60": timeComponents.days <= 0 && timeComponents.weeks <= 0,
+          })}
           component={timeComponents.days}
           char="D"
         />
         <Time
-          className={cn({ "opacity-60": timeComponents.hours <= 0 })}
+          className={cn({
+            "opacity-60":
+              timeComponents.hours <= 0 &&
+              timeComponents.days <= 0 &&
+              timeComponents.weeks <= 0,
+          })}
           component={timeComponents.hours}
           char="H"
         />
         <Time
-          className={cn({ "opacity-60": timeComponents.minutes <= 0 })}
+          className={cn({
+            "opacity-60":
+              timeComponents.minutes <= 0 &&
+              timeComponents.hours <= 0 &&
+              timeComponents.days <= 0 &&
+              timeComponents.weeks <= 0,
+          })}
           component={timeComponents.minutes}
           char="M"
         />
         <Time
-          className={cn({ "opacity-60": timeComponents.seconds <= 0 })}
+          className={cn({
+            "opacity-60":
+              timeComponents.seconds <= 0 &&
+              timeComponents.minutes <= 0 &&
+              timeComponents.hours <= 0 &&
+              timeComponents.days <= 0 &&
+              timeComponents.weeks <= 0,
+          })}
           component={timeComponents.seconds}
           char="S"
         />
