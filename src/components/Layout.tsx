@@ -5,13 +5,13 @@ import { Button } from "@/ui/Button";
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
-      <header>
+      <header className="container relative my-4 mb-2 md:mb-4 md:mt-8">
         <div className="relative">
-          <div className="flex flex-row items-center justify-center gap-2">
+          <div className="flex flex-row items-center justify-between gap-2 md:justify-center">
             <a
               href="/"
               rel="self"
-              className="relative z-20 my-4 mb-2 mr-auto text-2xl font-semibold tracking-[0.3rem] md:mb-4 md:ml-auto md:mt-8 md:text-4xl"
+              className="relative z-20 text-base font-semibold tracking-[0.3rem] sm:text-lg md:ml-auto md:mr-auto md:text-4xl"
             >
               <h1 className="flex flex-row items-center md:gap-2">
                 <svg
@@ -34,43 +34,44 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                     <path d="m 67.796379,2.7610718 c -3.525274,-10e-8 -6.383073,2.857799 -6.383073,6.3830729 0.0036,2.5426753 1.247081,4.7237603 3.580954,5.7328423 l -0.29485,2.630988 6.230111,-1.558561 v -1.261938 c 2.002206,-1.128016 3.243489,-3.245244 3.24993,-5.5433313 0,-3.5252735 -2.857799,-6.3830724 -6.383072,-6.3830729 z" />
                   </g>
                 </svg>
-                <span className="hidden md:flex">aRPG Timeline</span>
+                <span className="text-nowrap">aRPG Timeline</span>
               </h1>
             </a>
-            <Button variant={"outline"} asChild className="px-2 md:px-4">
-              <a
-                href="https://www.buymeacoffee.com/ayron"
-                rel="external nofollow noreferrer"
-                target="_blank"
-              >
-                <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-2">
-                  <img
-                    src="/assets/bmc-logo-no-background.png"
-                    className="m-auto h-[1rem] w-[1rem]"
-                    alt="Buy me a coffee logo"
-                  />
-                </div>
-                <span className="hidden 2xl:block">Support me</span>
-              </a>
-            </Button>
-            <Button variant={"outline"} asChild className="px-2 2xl:px-4">
-              <a
-                href="https://github.com/AyronK/arpg-timeline/issues"
-                rel="external nofollow noreferrer"
-                target="_blank"
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 16 16"
-                  version="1.1"
-                  data-view-component="true"
-                  className="h-[1.2rem] w-[1.2rem] fill-current 2xl:mr-2"
+            <div className="relative right-0 flex flex-row items-center justify-center gap-2 md:absolute md:top-1/2 md:-translate-y-1/2">
+              <Button variant={"outline"} asChild className="px-2 md:px-4">
+                <a
+                  href="https://www.buymeacoffee.com/ayron"
+                  rel="external nofollow noreferrer"
+                  target="_blank"
                 >
-                  <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
-                </svg>
-                <span className="hidden 2xl:block">Request a feature</span>
-              </a>
-            </Button>
+                  <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-2">
+                    <img
+                      src="/assets/bmc-logo-no-background.png"
+                      className="m-auto h-[1rem] w-[1rem]"
+                      alt="Buy me a coffee logo"
+                    />
+                  </div>
+                  <span className="hidden 2xl:block">Support me</span>
+                </a>
+              </Button>
+              <Button variant={"outline"} asChild className="px-2 2xl:px-4">
+                <a
+                  href="https://github.com/AyronK/arpg-timeline/issues"
+                  rel="external nofollow noreferrer"
+                  target="_blank"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 16 16"
+                    version="1.1"
+                    className="h-[1.2rem] w-[1.2rem] fill-current 2xl:mr-2"
+                  >
+                    <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+                  </svg>
+                  <span className="hidden 2xl:block">Request a feature</span>
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
