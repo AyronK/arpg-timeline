@@ -84,7 +84,7 @@ export const FiltersDialog = ({
           onCheckedChange={onCheckedChange}
           onGroupCheckedChange={onGroupCheckedChange}
         />
-        <DrawerFooter >
+        <DrawerFooter>
           <div className="ml-auto md:ml-0 md:mr-auto">
             <DrawerClose asChild>
               <Button variant="outline">Close</Button>
