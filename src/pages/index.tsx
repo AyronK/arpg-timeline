@@ -79,6 +79,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   "4xl:order-first": idx <= 4,
                 })}
               >
+                {/* TODO: refactor game card props mapping */}
                 <GameCard
                   name={game.name}
                   logo={
