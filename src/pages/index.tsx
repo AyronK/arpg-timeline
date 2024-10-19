@@ -1,15 +1,23 @@
 //import { lazy, Suspense } from "react";
 import { graphql, PageProps } from "gatsby";
-//import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
-import { UsersRound } from "lucide-react";
+import { InfoIcon, UsersRound } from "lucide-react";
 //import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
+import { cn } from "@/lib/utils";
+import { GameCard } from "@/components/GameCard/GameCard";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import {
+  getCurrentSeasonChip,
+  getProgress,
+  getProgressEndContent,
+  getProgressStartContent,
+} from "@/lib/getProgress";
 // import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 
 // const Timeline = lazy(() =>
@@ -24,7 +32,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     gameFilters,
     toggleGameFilter,
     toggleGroupFilter,
-    //filteredGames,
+    filteredGames,
     activeFilters,
   } = useGameFilters(games as Game[]);
   //const events = useTimelineEvents(filteredGames);
@@ -57,7 +65,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               </a>
             </Button>
           </div>
-          {/* <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
+          <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
             {filteredGames.map((game, idx) => (
               <div
@@ -69,10 +77,57 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   "4xl:order-first": idx <= 4,
                 })}
               >
-                <SeasonCard {...game} />
+                <GameCard
+                  name={game.name}
+                  logo={
+                    <GatsbyImage
+                      image={getImage(game.logo!)!}
+                      alt={`${game.name} logo`}
+                      className="my-auto"
+                    />
+                  }
+                  shortName={game.shortName}
+                  url={game.url}
+                  currentSeason={
+                    game.currentSeason && {
+                      name: game.currentSeason.name,
+                      progress: getProgress(
+                        game.currentSeason.start.startDate,
+                        game.currentSeason.end.endDate,
+                      ),
+                      chip: getCurrentSeasonChip(
+                        game.currentSeason.start?.startDate,
+                        game.currentSeason.end?.endDate,
+                      ),
+                      progressStart: getProgressStartContent(
+                        game.currentSeason.start?.startDate,
+                        game.currentSeason.end?.endDate,
+                      ),
+                      progressEnd: getProgressEndContent(
+                        game.currentSeason.end?.additionalText,
+                        game.currentSeason.end?.confirmed
+                          ? game.currentSeason.end?.endDate
+                          : null,
+                      ),
+                    }
+                  }
+                  footer={
+                    (game.currentSeason?.start?.additionalText ||
+                      game.currentSeason?.end?.additionalText) && (
+                      <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
+                        <InfoIcon className="h-4 w-4" />
+                        <div>
+                          {game.currentSeason?.start?.additionalText}
+                          {game.currentSeason?.end?.additionalText}
+                        </div>
+                      </div>
+                    )
+                  }
+                  official={game.official}
+                />
               </div>
             ))}
-            <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
+            {/* <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
               <div>
                 <h3 className="mb-1.5 font-semibold sm:text-lg">Timeline</h3>
                 <Suspense
@@ -83,8 +138,8 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   <Timeline events={events} />
                 </Suspense>
               </div>
-            </div>
-          </article> */}
+            </div> */}
+          </article>
         </div>
       </div>
       <Faq />

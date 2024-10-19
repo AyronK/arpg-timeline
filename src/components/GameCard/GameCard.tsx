@@ -21,7 +21,9 @@ export const GameCard = ({
           className="relative flex flex-col gap-2"
           target="_blank"
         >
-          <div className="overflow-hidden">{logo}</div>
+          <div className="grid min-h-[60px] overflow-hidden md:min-h-[140px]">
+            {logo}
+          </div>
         </MaybeLinkWrapper>
       </div>
       <h3 className="sr-only">{name}</h3>
