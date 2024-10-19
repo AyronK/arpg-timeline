@@ -23,6 +23,7 @@ import { Switch } from "@/ui/Switch";
 import { cn } from "@/lib/utils";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { forwardRef } from "react";
+import { sa_event } from "@/lib/sa_event";
 
 export type FiltersDialogProps = {
   filters: { value: string; label: string; group?: string | undefined }[];
@@ -115,6 +116,9 @@ const Trigger = forwardRef<
     {...rest}
     ref={ref}
     variant="outline"
+    onMouseDown={() => {
+      sa_event("filters_opened");
+    }}
     className={cn("relative z-10", {
       "animate-pulse":
         checked?.length === filters?.length && filters?.length > 0,

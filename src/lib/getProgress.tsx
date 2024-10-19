@@ -86,7 +86,7 @@ export const getProgressStartContent = (
       className="flex flex-row items-center gap-1"
       title="Running for 35 days"
     >
-      <Timer className="h-4 w-4" />
+      <TimerReset className="h-4 w-4" />
       <span className="hidden md:flex">Lasts </span>
       {elapsedTime} days
     </div>

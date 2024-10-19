@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
-import { InfoIcon, TimerReset, UsersRound } from "lucide-react";
+import { InfoIcon, Timer, TimerReset, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
@@ -121,7 +121,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                           name: game.nextSeason.name,
                           startLabel: game.nextSeason.start?.confirmed ? (
                             <div className="flex flex-row items-center gap-1">
-                              <TimerReset className="h-4 w-4" />
+                              <Timer className="h-4 w-4" />
                               Starts
                               <LocalDate
                                 longDate
@@ -130,7 +130,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                             </div>
                           ) : (
                             <div className="flex flex-row items-center gap-1">
-                              <TimerReset className="h-4 w-4" />
+                              <Timer className="h-4 w-4" />
                               {game.nextSeason.start?.additionalText?.trim()
                                 ? game.nextSeason.start?.additionalText
                                 : "To be announced"}
