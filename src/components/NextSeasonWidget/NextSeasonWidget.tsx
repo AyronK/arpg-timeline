@@ -42,7 +42,7 @@ export const NextSeasonWidget = ({
           </h4>
         </div>
       </div>
-      <div className="flex flex-1 items-center md:min-h-[28px]">
+      <div className="flex flex-1 items-center">
         {timer ? (
           <div className="flex flex-1 flex-col gap-1">
             <div className="flex flex-row items-center justify-between">
