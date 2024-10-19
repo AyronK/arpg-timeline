@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
-import { InfoIcon, Timer, TimerReset, UsersRound } from "lucide-react";
+import { InfoIcon, Timer, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";

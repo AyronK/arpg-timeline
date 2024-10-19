@@ -1,13 +1,7 @@
 import { CurrentSeasonChip } from "@/components/CurrentSeasonWidget";
 import LocalDate from "@/components/LocalDate";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
-import {
-  CalendarClock,
-  CalendarOff,
-  Timer,
-  TimerOff,
-  TimerReset,
-} from "lucide-react";
+import { CalendarClock, CalendarOff, TimerOff, TimerReset } from "lucide-react";
 
 export const getProgress = (
   startDate: string | null,

@@ -9,6 +9,7 @@ declare global {
 }
 
 export const sa_event = (...args: any[]) => {
+  console.log(args);
   if (typeof window !== "undefined") {
     window.sa_event =
       window.sa_event ||
