@@ -1,7 +1,7 @@
 ---
 type: season
 game: Diablo III
-name: "Season 33: Shades of the Nephalem"
+name: "S33: Shades of the Nephalem"
 url: https://news.blizzard.com/en-us/diablo3/24137819/season-33-shades-of-the-nephalem-preview
 start:
   confirmed: true

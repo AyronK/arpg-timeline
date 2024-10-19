@@ -42,7 +42,7 @@ export const CurrentSeasonWidget = ({
         <div className="flex flex-1 flex-row justify-between gap-2">
           <span className="sr-only">{srCurrentSeason}</span>
           <h4
-            className="flex-1 text-balance text-left font-heading font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
+            className="flex-1 text-balance text-left font-heading text-sm font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
             title={name}
           >
             <MaybeLinkWrapper
@@ -55,15 +55,16 @@ export const CurrentSeasonWidget = ({
             <span className="sr-only">{srGameSeason}</span>
           </h4>
           <Chip
-            className={cn(ChipColorMap[chip], "mb-auto mt-1 w-14 text-center")}
+            className={cn(
+              ChipColorMap[chip],
+              "mb-auto w-14 text-center md:mt-1",
+            )}
           >
             {ChipColorText[chip]}
           </Chip>
         </div>
-        <div className="flex w-full items-center gap-3">
-          <div className="flex-1">
-            <ProgressBar progress={progress} />
-          </div>
+        <div className="flex-1">
+          <ProgressBar progress={progress} />
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex flex-row justify-between">

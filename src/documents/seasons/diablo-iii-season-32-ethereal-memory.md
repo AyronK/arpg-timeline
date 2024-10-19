@@ -1,7 +1,7 @@
 ---
 type: season
 game: Diablo III
-name: "Season 32: Ethereal Memory"
+name: "S32: Ethereal Memory"
 url: https://news.blizzard.com/en-us/diablo3/24104599/season-32-ethereal-memory-preview
 start:
   confirmed: true

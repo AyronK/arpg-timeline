@@ -25,7 +25,7 @@ export const NextSeasonWidget = ({
         <span className="sr-only">{srNextSeason}</span>
         <div className="flex w-full min-w-0 flex-row items-start justify-between gap-1 md:mb-0 md:items-center md:gap-2">
           <h4
-            className="flex-1 text-balance font-heading font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
+            className="flex-1 text-balance font-heading text-sm font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
             title={name}
           >
             <MaybeLinkWrapper
@@ -37,7 +37,7 @@ export const NextSeasonWidget = ({
             </MaybeLinkWrapper>
             <span className="sr-only">{srGameSeason}</span>
           </h4>
-          <Chip className={"mb-auto mt-1 w-14 bg-emerald-800 text-center"}>
+          <Chip className={"mb-auto w-14 bg-emerald-800 text-center md:mt-1"}>
             Next
           </Chip>
         </div>

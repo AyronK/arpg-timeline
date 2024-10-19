@@ -1,7 +1,7 @@
 ---
 type: season
 game: "Torchlight: Infinite"
-name: SS6 Expansion - Frozen Canvas
+name: SS6 Frozen Canvas
 start:
   confirmed: true
   overrideText: ""

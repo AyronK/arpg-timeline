@@ -1,15 +1,14 @@
-//import { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { graphql, PageProps } from "gatsby";
 import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
 import { InfoIcon, TimerReset, UsersRound } from "lucide-react";
-//import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
-import { cn } from "@/lib/utils";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import {
@@ -21,13 +20,13 @@ import {
 import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
 import LocalDate from "@/components/LocalDate";
-// import { useTimelineEvents } from "@/hooks/useTimelineEvents";
+import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 
-// const Timeline = lazy(() =>
-//   import("@/components/Timeline/Timeline").then((module) => ({
-//     default: module.Timeline,
-//   })),
-// );
+const Timeline = lazy(() =>
+  import("@/components/Timeline/Timeline").then((module) => ({
+    default: module.Timeline,
+  })),
+);
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const games = useGamesFromMarkdown(data);
@@ -38,11 +37,11 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     filteredGames,
     activeFilters,
   } = useGameFilters(games as Game[]);
-  //const events = useTimelineEvents(filteredGames);
+  const events = useTimelineEvents(filteredGames);
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
-        <p className="mx-auto hidden max-w-prose text-center font-heading text-lg md:block md:text-xl">
+        <p className="mx-auto mb-2 hidden max-w-prose text-center font-heading text-lg md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
@@ -56,15 +55,15 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               onGroupCheckedChange={toggleGroupFilter}
             />
           </div>
-          <div className="relative z-0 flex text-xs xl:container xl:absolute xl:left-0 xl:right-0 xl:top-14 xl:w-full">
+          <div className="container absolute right-0 top-0 z-0 flex w-full text-xs md:top-16">
             <Button
               variant={"default"}
               asChild
-              className="w-full px-2 font-ui font-semibold opacity-80 transition-all hover:opacity-100 lg:ml-auto lg:px-4 xl:w-auto"
+              className="ml-auto w-auto font-ui font-semibold opacity-80 transition-all hover:opacity-100"
             >
               <a href="/looking-for-moderators" rel="self">
                 <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
-                Looking for moderators! (fixed Discord)
+                Looking for mods
               </a>
             </Button>
           </div>
@@ -167,7 +166,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                 />
               </div>
             ))}
-            {/* <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
+            <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
               <div>
                 <h3 className="mb-1.5 font-semibold sm:text-lg">Timeline</h3>
                 <Suspense
@@ -178,7 +177,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   <Timeline events={events} />
                 </Suspense>
               </div>
-            </div> */}
+            </div>
           </article>
         </div>
       </div>

@@ -4,8 +4,10 @@ export interface TimelineEvent {
   name: string;
   game: string;
   startDate: Date;
+  startDateConfirmed: boolean;
   startDateNotice?: string | null;
   endDate: Date;
+  endDateConfirmed: boolean;
   endDateNotice?: string | null;
 }
 
@@ -16,7 +18,7 @@ export const TIMELINE_OPTIONS: ChartWrapperOptions["options"] = {
   },
   avoidOverlappingGridLines: false,
   backgroundColor: "#17171c",
-  colors: ["#64748b", "#005410"],
+  colors: ["#64748b", "#065f46"],
   allowHtml: true,
   alternatingRowStyle: false,
 };

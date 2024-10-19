@@ -1,7 +1,7 @@
 ---
 type: season
 game: "Torchlight: Infinite"
-name: Season 7th Clockwork Ballet (SS5)
+name: SS5 Clockwork Ballet
 start:
   confirmed: true
   startDate: 2024-07-05T02:00:00.000Z

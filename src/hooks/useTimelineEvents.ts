@@ -13,6 +13,8 @@ export const useTimelineEvents = (games: Game[]) => {
         startDateNotice: g.currentSeason.start.overrideText,
         endDate: new Date(g.currentSeason.end?.endDate ?? "Invalid Date"),
         endDateNotice: g?.currentSeason?.end?.overrideText,
+        startDateConfirmed: g.currentSeason.start.confirmed ?? false,
+        endDateConfirmed: g.currentSeason.end?.confirmed ?? false,
       } satisfies TimelineEvent);
     } else if (g.nextSeason?.start?.startDate) {
       next.push({
@@ -22,6 +24,8 @@ export const useTimelineEvents = (games: Game[]) => {
         startDateNotice: g?.nextSeason.start.overrideText,
         endDate: new Date(g.nextSeason.start.startDate),
         endDateNotice: "n/a",
+        startDateConfirmed: g.nextSeason.start.confirmed ?? false,
+        endDateConfirmed: false,
       } satisfies TimelineEvent);
     } else {
       next.push({
@@ -30,7 +34,8 @@ export const useTimelineEvents = (games: Game[]) => {
         startDate: new Date(),
         startDateNotice: "n/a",
         endDate: new Date(),
-        endDateNotice: "n/a",
+        startDateConfirmed: false,
+        endDateConfirmed: false,
       } satisfies TimelineEvent);
     }
 
@@ -45,6 +50,8 @@ export const useTimelineEvents = (games: Game[]) => {
             120 * 24 * 50 * 60 * 1000,
         ),
         endDateNotice: g?.nextSeason?.end?.overrideText ?? "",
+        startDateConfirmed: g.nextSeason.start.confirmed ?? false,
+        endDateConfirmed: g.nextSeason.end?.confirmed ?? false,
       } satisfies TimelineEvent);
     } else if (g.currentSeason?.end?.endDate) {
       next.push({
@@ -57,6 +64,8 @@ export const useTimelineEvents = (games: Game[]) => {
             120 * 24 * 50 * 60 * 1000,
         ),
         endDateNotice: g.nextSeason?.end?.overrideText ?? "",
+        startDateConfirmed: false,
+        endDateConfirmed: false,
       } satisfies TimelineEvent);
     } else {
       next.push({
@@ -66,6 +75,8 @@ export const useTimelineEvents = (games: Game[]) => {
         startDateNotice: "n/a",
         endDate: new Date(),
         endDateNotice: "n/a",
+        startDateConfirmed: false,
+        endDateConfirmed: false,
       } satisfies TimelineEvent);
     }
     return next;

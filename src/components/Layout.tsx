@@ -108,7 +108,7 @@ export const Head = () => {
         property="og:description"
         content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile and Path of Exile 2 leagues, Diablo IV seasons, and Last Epoch cycles. Never miss a release again!"
       />
-      <meta property="og:image" content="/assets/seoimage.jpeg" />
+      <meta property="og:image" content="/assets/seoimage.png" />
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={siteUrl} />
       <meta property="twitter:title" content={title} />
@@ -116,7 +116,7 @@ export const Head = () => {
         property="twitter:description"
         content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile and Path of Exile 2 leagues, Diablo IV seasons, and Last Epoch cycles. Never miss a release again!"
       />
-      <meta property="twitter:image" content="/assets/seoimage.jpeg" />
+      <meta property="twitter:image" content="/assets/seoimage.png" />
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
     </>

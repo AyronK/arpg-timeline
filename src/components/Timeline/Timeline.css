@@ -15,8 +15,8 @@
   @apply text-popover-foreground;
 }
 
-.chart g:not(:last-of-type) rect:last-of-type[fill="#303a50"],
-.chart g:not(:last-of-type) rect:last-of-type[fill="#cbd5e1"] {
+.chart g:not(:last-of-type) rect:last-of-type[fill="#64748b"],
+.chart g:not(:last-of-type) rect:last-of-type[fill="#065f46"] {
   height: 2000px;
   fill: hsl(var(--destructive)) !important;
   transform: translateY(-1969px);

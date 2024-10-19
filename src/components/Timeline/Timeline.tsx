@@ -59,14 +59,19 @@ const timelinePopover = (event: TimelineEvent) => {
     return `
       <div class="${popoverClass}">
         ${titleWrapper}
-        <div class="${labelsWrapperClass}">
+        ${
+          event.startDateConfirmed
+            ? `
+          <div class="${labelsWrapperClass}"> 
             <div class="grid grid-cols-3 items-center gap-2">
                 <span class="font-bold">Start date</span><span class="col-span-2">${INTL_LOCAL_DATETIME.format(new Date(event.startDate))}</span>
             </div>
-          <div class="grid grid-cols-3 items-center gap-2">
-              <span class="font-bold">Launches in</span><span class="col-span-2">${launchesIn} day(s)</span>
-          </div>
-        </div>
+            <div class="grid grid-cols-3 items-center gap-2">
+                <span class="font-bold">Launches in</span><span class="col-span-2">${launchesIn} day(s)</span>
+            </div>
+          </div>`
+            : (event.startDateNotice ?? "To be announced")
+        }
       </div>
     `;
   }
@@ -75,6 +80,9 @@ const timelinePopover = (event: TimelineEvent) => {
     <div class="${popoverClass}">
       ${titleWrapper}
       <div class="${labelsWrapperClass}">
+        ${
+          event.endDateConfirmed
+            ? `
           <div class="grid grid-cols-3 items-center gap-2">
               <span class="font-bold">End date</span><span class="col-span-2">${INTL_LOCAL_DATETIME.format(new Date(event.endDate))}</span>
           </div>
@@ -84,12 +92,18 @@ const timelinePopover = (event: TimelineEvent) => {
           <div class="grid grid-cols-3 items-center gap-2">
               <span class="font-bold">Remaining</span><span class="col-span-2">${Math.max(left, 0)} day(s)</span>
           </div>
+          `
+            : `
+          <div class="grid grid-cols-3 items-center gap-2">
+              <span class="font-bold">${left > 0 ? "Running" : "Lasted"}</span><span class="col-span-2">${left > 0 ? running : lasts} day(s)</span>
+          </div>`
+        }
       </div>
     </div>
   `;
 };
 
-const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#303a50"]`;
+const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#64748b"]`;
 const ROW_HEIGHT = 40;
 const CARD_OFFSET = 96;
 const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
@@ -123,10 +137,6 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
                 TODAYS_ENTRY_SELECTOR,
               );
               if (parentRef.current && todaysElement) {
-                console.log(
-                  todaysElement.getBoundingClientRect().left -
-                    parentRef.current.getBoundingClientRect().left,
-                );
                 parentRef.current.scroll({
                   left:
                     todaysElement.getBoundingClientRect().left -
