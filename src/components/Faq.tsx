@@ -132,8 +132,8 @@ export const Faq = () => (
               target="_blank"
             >
               GitHub page
-            </a> or contact me on Dicourd or email,
-            .
+            </a>{" "}
+            or contact me on Dicourd or email, .
           </p>
         </div>
 
