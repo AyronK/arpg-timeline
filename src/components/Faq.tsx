@@ -107,11 +107,14 @@ export const Faq = () => (
         </div>
 
         <div>
-          <h3 className="mb-2 text-xl">Do you update the site manually?</h3>
+          <h3 className="mb-2 text-xl">How is the website updated?</h3>
           <p className="ml-2">
-            Partialy, although as the sites grows it becomes inevitable. We are
-            working hard to maintain the website updated without too much manual
-            labour.
+            We monitor a range of channels, including official websites, wikis,
+            Reddit threads, Steam news, and other carefully selected sources.
+            Moderators are notified on Discord of anything relevant to current
+            or upcoming seasons. To streamline the process, notifications are
+            first reviewed by an AI model, reducing manual effort. However, a
+            human always performs the final verification.
           </p>
         </div>
 
@@ -120,7 +123,8 @@ export const Faq = () => (
             Could you add a new game to the list?
           </h3>
           <p className="ml-2">
-            Absolutely! Please submit an issue on our{" "}
+            Absolutely! As long as it is an aRPG with a seasonal game cycle.
+            Please submit your suggestions as an issue on our{" "}
             <a
               className="font-semibold hover:opacity-75"
               href="https://github.com/AyronK/arpg-timeline/issues"
@@ -128,7 +132,7 @@ export const Faq = () => (
               target="_blank"
             >
               GitHub page
-            </a>
+            </a> or contact me on Dicourd or email,
             .
           </p>
         </div>
