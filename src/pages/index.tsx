@@ -93,7 +93,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   url={game.url}
                   currentSeason={
                     game.currentSeason && {
-                      //todo map SR texts
+                      //TODO: map SR texts
                       name: game.currentSeason.name,
                       progress: getProgress(
                         game.currentSeason.start.startDate,
@@ -116,7 +116,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                     }
                   }
                   nextSeason={
-                    //todo map SR texts
+                    //TODO: map SR texts
                     game.nextSeason
                       ? {
                           name: game.nextSeason.name,
