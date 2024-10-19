@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
-import { InfoIcon, UsersRound } from "lucide-react";
+import { InfoIcon, TimerReset, UsersRound } from "lucide-react";
 //import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
@@ -18,6 +18,9 @@ import {
   getProgressEndContent,
   getProgressStartContent,
 } from "@/lib/getProgress";
+import { CalendarMenu } from "@/components/CalendarMenu";
+import { Countdown } from "@/components/Countdown";
+import LocalDate from "@/components/LocalDate";
 // import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 
 // const Timeline = lazy(() =>
@@ -90,6 +93,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   url={game.url}
                   currentSeason={
                     game.currentSeason && {
+                      //todo map SR texts
                       name: game.currentSeason.name,
                       progress: getProgress(
                         game.currentSeason.start.startDate,
@@ -110,6 +114,42 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                           : null,
                       ),
                     }
+                  }
+                  nextSeason={
+                    //todo map SR texts
+                    game.nextSeason
+                      ? {
+                          name: game.nextSeason.name,
+                          startLabel: game.nextSeason.start?.confirmed ? (
+                            <div className="flex flex-row items-center gap-1">
+                              <TimerReset className="h-4 w-4" />
+                              Starts
+                              <LocalDate
+                                longDate
+                                utcDate={game.nextSeason.start.startDate}
+                              />
+                            </div>
+                          ) : (
+                            <div className="flex flex-row items-center gap-1">
+                              <TimerReset className="h-4 w-4" />
+                              {game.nextSeason.start?.additionalText?.trim()
+                                ? game.nextSeason.start?.additionalText
+                                : "To be announced"}
+                            </div>
+                          ),
+                          timer: game.nextSeason.start?.confirmed && (
+                            <Countdown date={game.nextSeason.start.startDate} />
+                          ),
+                          action: game.nextSeason.start?.confirmed && (
+                            <div>
+                              <CalendarMenu
+                                startDate={game.nextSeason.start.startDate}
+                                title="title"
+                              />
+                            </div>
+                          ),
+                        }
+                      : { name: "Next season to be announced" }
                   }
                   footer={
                     (game.currentSeason?.start?.additionalText ||
