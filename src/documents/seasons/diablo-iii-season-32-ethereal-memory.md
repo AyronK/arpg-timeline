@@ -9,7 +9,7 @@ start:
   overrideText: ""
   additionalText: ""
 end:
-  endDate: 2024-10-25T00:00:00.000Z
+  endDate: 2024-10-20T00:00:00.000Z
   confirmed: true
   overrideText: ""
   additionalText: ""
