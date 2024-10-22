@@ -13,7 +13,11 @@ export const GameCard = ({
   official,
 }: GameCardProps) => {
   return (
-    <section className="relative flex flex-1 flex-col gap-2 rounded-md border bg-card px-3 pb-3 pt-2 text-card-foreground md:gap-4 md:p-4">
+    <section className="relative flex flex-1 flex-col gap-3 rounded-md border bg-card p-4 text-card-foreground md:gap-4">
+      <div className="flex flex-row items-center justify-between">
+        <h3 className="font-heading text-xs md:text-sm">{name}</h3>
+        {!official && <UnofficialLabel />}
+      </div>
       <div className="relative flex h-auto max-h-[80px] min-h-[60px] w-[100px] flex-row justify-center place-self-center md:h-[140px] md:max-h-[140px] md:w-[200px]">
         <MaybeLinkWrapper
           href={url}
@@ -26,10 +30,10 @@ export const GameCard = ({
           </div>
         </MaybeLinkWrapper>
       </div>
-      <h3 className="sr-only">{name}</h3>
-      {currentSeason && <CurrentSeasonWidget {...currentSeason} />}
+      <div className="md:min-h-[64px]">
+        {currentSeason && <CurrentSeasonWidget {...currentSeason} />}
+      </div>
       {nextSeason && <NextSeasonWidget {...nextSeason} />}
-      {!official && <UnofficialLabel />}
     </section>
   );
 };

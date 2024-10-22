@@ -38,18 +38,13 @@ export const CurrentSeasonWidget = ({
       {...divProps}
       className={cn(divProps.className, "flex flex-col gap-1")}
     >
-      <div className="flex flex-col items-stretch gap-1 md:gap-2">
+      <div className="flex flex-col items-stretch gap-2 md:gap-1">
         <div className="flex flex-1 flex-row items-center justify-between gap-2">
-          <Chip
-            className={cn(
-              ChipColorMap[chip],
-              "mb-auto w-14 text-center md:mt-1",
-            )}
-          >
+          <Chip className={cn(ChipColorMap[chip], "my-auto w-14 text-center")}>
             {ChipColorText[chip]}
           </Chip>
           <h4
-            className="flex-1 text-balance text-left font-heading text-sm font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
+            className="flex-1 text-balance text-left font-heading text-sm text-white md:line-clamp-2 md:text-left md:text-lg"
             title={name}
           >
             <span className="sr-only">{srCurrentSeason}</span>
@@ -63,21 +58,25 @@ export const CurrentSeasonWidget = ({
             <span className="sr-only">{srGameSeason}</span>
           </h4>
         </div>
-        <div className="flex-1">
-          <ProgressBar progress={progress} />
-        </div>
         <div className="flex flex-col gap-1">
-          <div className="flex flex-row justify-between">
-            <div className="text-xs md:text-sm">
-              <span className="sr-only">{srSeasonStart}</span>
-              {progressStart}
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-row justify-between">
+              <div className="text-xs md:text-sm">
+                <span className="sr-only">{srSeasonStart}</span>
+                {progressStart}
+              </div>
+              <div className="text-xs md:text-sm">
+                <span className="sr-only">{srSeasonEnd}</span>
+                {progressEnd}
+              </div>
             </div>
-            <div className="text-xs md:text-sm">
-              <span className="sr-only">{srSeasonEnd}</span>
-              {progressEnd}
-            </div>
+            {footer && <div className="mt-1 text-xs md:text-sm">{footer}</div>}
           </div>
-          {footer && <div className="mt-1 text-xs md:text-sm">{footer}</div>}
+          {progress < 100 && (
+            <div className="flex-1">
+              <ProgressBar progress={progress} />
+            </div>
+          )}
         </div>
       </div>
     </div>

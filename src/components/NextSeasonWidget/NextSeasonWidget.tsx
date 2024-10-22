@@ -19,7 +19,7 @@ export const NextSeasonWidget = ({
   return (
     <div
       {...divProps}
-      className={cn(divProps.className, "flex flex-col gap-1")}
+      className={cn(divProps.className, "flex flex-col gap-2 md:gap-1")}
     >
       <div className="flex flex-1 flex-row items-start gap-4">
         <span className="sr-only">{srNextSeason}</span>
@@ -28,7 +28,7 @@ export const NextSeasonWidget = ({
             Next
           </Chip>
           <h4
-            className="flex-1 text-balance font-heading text-sm font-bold text-white md:line-clamp-2 md:text-left md:text-lg"
+            className="flex-1 text-balance font-heading text-sm text-white md:line-clamp-2 md:text-left md:text-lg"
             title={name}
           >
             <MaybeLinkWrapper
@@ -44,13 +44,11 @@ export const NextSeasonWidget = ({
       </div>
       <div className="flex flex-1 items-center">
         {timer ? (
-          <div className="flex flex-1 flex-col gap-1">
-            <div className="flex flex-row items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <span className="sr-only">{srSeasonStart}</span>
-                <div className="text-xs md:text-sm">{startLabel}</div>
-                {footer && <div className="text-xs md:text-sm">{footer}</div>}
-              </div>
+          <div className="flex flex-1 flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <span className="sr-only">{srSeasonStart}</span>
+              <div className="text-xs md:text-sm">{startLabel}</div>
+              {footer && <div className="text-xs md:text-sm">{footer}</div>}
             </div>
             <FramedAction action={action}>{timer}</FramedAction>
           </div>
