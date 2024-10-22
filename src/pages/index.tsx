@@ -46,20 +46,20 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="mt-2 flex flex-col gap-4 md:mt-0">
-          <div className="max-w-[1200px]">
-            <FiltersDialog
-              checked={activeFilters}
-              filters={gameFilters}
-              onCheckedChange={toggleGameFilter}
-              onGroupCheckedChange={toggleGroupFilter}
-            />
-          </div>
-          <div className="container absolute right-0 top-0 z-0 flex w-full text-xs md:top-16">
+        <div className="mt-6 flex flex-col-reverse gap-4 md:mt-12 md:flex-col">
+          <div className="relative bottom-0 z-50 flex justify-between max-sm:fixed max-sm:right-0 max-sm:w-screen">
+            <div className="max-w-[1200px] max-sm:mx-auto">
+              <FiltersDialog
+                checked={activeFilters}
+                filters={gameFilters}
+                onCheckedChange={toggleGameFilter}
+                onGroupCheckedChange={toggleGroupFilter}
+              />
+            </div>
             <Button
               variant={"default"}
               asChild
-              className="ml-auto w-auto font-ui font-semibold opacity-80 transition-all hover:opacity-100"
+              className="ml-auto w-auto font-ui font-semibold opacity-80 transition-all hover:opacity-100 max-sm:hidden"
             >
               <a href="/looking-for-moderators" rel="self">
                 <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
@@ -67,7 +67,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               </a>
             </Button>
           </div>
-          <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
+          <article className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
             {filteredGames.map((game, idx) => (
               <div
@@ -87,6 +87,8 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                       image={getImage(game.logo!)!}
                       alt={`${game.name} logo`}
                       className="my-auto"
+                      objectFit="contain"
+                      objectPosition="center"
                     />
                   }
                   shortName={game.shortName}
@@ -169,7 +171,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
             ))}
             <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
               <div>
-                <h3 className="mb-1.5 font-semibold sm:text-lg">Timeline</h3>
+                <h3 className="mb-1.5 text-xs">Timeline</h3>
                 <Suspense
                   fallback={
                     <div className="h-[255px] md:h-[296px]">Loading</div>

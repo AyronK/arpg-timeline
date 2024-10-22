@@ -1,4 +1,4 @@
-import { UnofficialLabel } from "@/components/UnofficialLabel";
+import { CommunityLabel } from "@/components/CommunityLabel";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { GameCardProps } from "@/components/GameCard/GameCard.types";
 import { CurrentSeasonWidget } from "@/components/CurrentSeasonWidget";
@@ -13,27 +13,31 @@ export const GameCard = ({
   official,
 }: GameCardProps) => {
   return (
-    <section className="relative flex flex-1 flex-col gap-3 rounded-md border bg-card p-4 text-card-foreground md:gap-4">
-      <div className="flex flex-row items-center justify-between">
-        <h3 className="font-heading text-xs md:text-sm">{name}</h3>
-        {!official && <UnofficialLabel />}
+    <section className="relative flex flex-1 flex-col gap-1 rounded-md border bg-card p-4 text-card-foreground">
+      <div className="flex flex-col">
+        <div className="flex flex-row items-center justify-between">
+          <h3 className="font-heading text-xs">{name}</h3>
+          {!official && <CommunityLabel />}
+        </div>
+        <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[200px]">
+          <MaybeLinkWrapper
+            href={url}
+            rel="nofollow noreferrer"
+            className="relative flex flex-col gap-2"
+            target="_blank"
+          >
+            <div className="grid min-h-[72px] w-[120px] md:h-[140px]">
+              {logo}
+            </div>
+          </MaybeLinkWrapper>
+        </div>
       </div>
-      <div className="relative flex h-auto max-h-[80px] min-h-[60px] w-[100px] flex-row justify-center place-self-center md:h-[140px] md:max-h-[140px] md:w-[200px]">
-        <MaybeLinkWrapper
-          href={url}
-          rel="nofollow noreferrer"
-          className="relative flex flex-col gap-2"
-          target="_blank"
-        >
-          <div className="grid min-h-[60px] overflow-hidden md:min-h-[140px]">
-            {logo}
-          </div>
-        </MaybeLinkWrapper>
+      <div className="flex flex-col gap-3 md:gap-4">
+        <div className="md:min-h-[64px]">
+          {currentSeason && <CurrentSeasonWidget {...currentSeason} />}
+        </div>
+        {nextSeason && <NextSeasonWidget {...nextSeason} />}
       </div>
-      <div className="md:min-h-[64px]">
-        {currentSeason && <CurrentSeasonWidget {...currentSeason} />}
-      </div>
-      {nextSeason && <NextSeasonWidget {...nextSeason} />}
     </section>
   );
 };

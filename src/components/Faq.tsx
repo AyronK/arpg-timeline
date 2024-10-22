@@ -92,17 +92,16 @@ export const Faq = () => (
 
         <div>
           <h3 className="mb-2 text-xl">
-            What does the &quot;UNOFFICIAL&quot; tag mean?
+            What does the &quot;MOD&quot; tag mean?
           </h3>
           <p className="ml-2">
-            The &quot;UNOFFICIAL*&quot; tag indicates that a game or cycle is
-            not officially recognized or supported by its original publishers.
-            This means it is created by fans or third parties without the
-            endorsement or active support of the official game developers or
-            publishers. As a result, the original publishers do not provide
-            support for &quot;UNOFFICIAL*&quot; content, and any issues or
-            questions should be directed to the creators or the community that
-            developed it.
+            The &quot;COMMUNITY&quot; tag indicates that a game or cycle is not
+            officially recognized or supported by its original publishers. This
+            means it is created by fans or third parties without the endorsement
+            or active support of the official game developers or publishers. As
+            a result, the original publishers do not provide support for
+            &quot;COMMUNITY&quot; content, and any issues or questions should be
+            directed to the creators or the community that developed it.
           </p>
         </div>
 

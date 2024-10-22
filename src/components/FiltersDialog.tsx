@@ -120,7 +120,7 @@ const Trigger = forwardRef<
       sa_event("filters_opened");
     }}
     className={cn("relative z-10", {
-      "animate-pulse":
+      "md:motion-safe:animate-pulse":
         checked?.length === filters?.length && filters?.length > 0,
     })}
   >

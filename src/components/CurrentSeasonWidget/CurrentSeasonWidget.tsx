@@ -8,7 +8,7 @@ import {
 } from "@/components/CurrentSeasonWidget/CurrentSeasonWidget.types";
 
 const ChipColorMap: Record<CurrentSeasonChip, string> = {
-  live: "bg-sky-800 ",
+  live: "bg-sky-800",
   over: "bg-amber-800",
   now: "bg-sky-800",
 };
@@ -40,11 +40,11 @@ export const CurrentSeasonWidget = ({
     >
       <div className="flex flex-col items-stretch gap-2 md:gap-1">
         <div className="flex flex-1 flex-row items-center justify-between gap-2">
-          <Chip className={cn(ChipColorMap[chip], "my-auto w-14 text-center")}>
+          <Chip className={cn(ChipColorMap[chip], "my-auto w-12 text-center")}>
             {ChipColorText[chip]}
           </Chip>
           <h4
-            className="flex-1 text-balance text-left font-heading text-sm text-white md:line-clamp-2 md:text-left md:text-lg"
+            className="flex-1 text-left font-heading text-sm text-foreground md:line-clamp-2 md:text-left md:text-base"
             title={name}
           >
             <span className="sr-only">{srCurrentSeason}</span>
