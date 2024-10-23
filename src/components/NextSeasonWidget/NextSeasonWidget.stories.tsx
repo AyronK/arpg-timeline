@@ -5,6 +5,8 @@ import { CalendarMenu } from "@/components/CalendarMenu";
 import LocalDate from "@/components/LocalDate";
 import { Countdown } from "@/components/Countdown";
 import { InfoIcon, TimerReset } from "lucide-react";
+import { FramedAction } from "../FramedAction/FramedAction";
+import { IconLabel } from "../IconLabel/IconLabel";
 
 const meta: Meta<typeof NextSeasonWidget> = {
   args: {
@@ -39,41 +41,63 @@ export const ToBeAnnounced: Story = {
 
 export const ToBeAnnouncedEstimated: Story = {
   args: {
-    startLabel: (
-      <div className="flex flex-row items-center gap-1">
-        <TimerReset className="h-4 w-4" />
-        est. November/December
-      </div>
-    ),
     name: "Next season to be announced",
+    children: <IconLabel icon={TimerReset}>est. November/December</IconLabel>,
   },
 };
 
 export const KnownDate: Story = {
   args: {
-    startLabel: (
-      <div className="flex flex-row items-center gap-1">
-        <TimerReset className="h-4 w-4" />
-        Starts
-        <LocalDate longDate utcDate={new Date().toUTCString()} />
-      </div>
-    ),
-    timer: <Countdown date={new Date()} testProps={{ timeLeft: 45734895 }} />,
-    action: (
-      <div>
-        <CalendarMenu startDate={new Date().toUTCString()} title="title" />
+    children: (
+      <div className="flex flex-1 items-center">
+        <div className="flex flex-1 flex-col gap-4">
+          <IconLabel icon={TimerReset}>
+            Starts
+            <LocalDate longDate utcDate={new Date().toUTCString()} />
+          </IconLabel>
+          <FramedAction
+            action={
+              <CalendarMenu
+                startDate={new Date().toUTCString()}
+                title="title"
+              />
+            }
+          >
+            <Countdown date={new Date()} testProps={{ timeLeft: 45734895 }} />
+          </FramedAction>
+        </div>
       </div>
     ),
   },
 };
 
-export const KnownDateWithFooter: Story = {
+export const KnownDateWithWarning: Story = {
   args: {
     ...KnownDate.args,
-    footer: (
-      <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
-        <InfoIcon className="h-4 w-4" />
-        Starts at 5 p.m. PDT/CET/KST
+
+    children: (
+      <div className="flex flex-1 items-center">
+        <div className="flex flex-1 flex-col gap-4">
+          <div className="flex flex-row justify-between">
+            <IconLabel icon={TimerReset}>
+              Starts
+              <LocalDate longDate utcDate={new Date().toUTCString()} />
+            </IconLabel>
+            <IconLabel icon={InfoIcon} iconPosition="end">
+              Starts at 5 p.m. PDT/CET/KST
+            </IconLabel>
+          </div>
+          <FramedAction
+            action={
+              <CalendarMenu
+                startDate={new Date().toUTCString()}
+                title="title"
+              />
+            }
+          >
+            <Countdown date={new Date()} testProps={{ timeLeft: 45734895 }} />
+          </FramedAction>
+        </div>
       </div>
     ),
   },

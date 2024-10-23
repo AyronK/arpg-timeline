@@ -7,7 +7,7 @@ const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
 };
 
 const longDateTimeFormatOptions: Intl.DateTimeFormatOptions = {
-  month: "short",
+  month: "long",
   day: "2-digit",
   hourCycle: "h24",
   hour: "numeric",

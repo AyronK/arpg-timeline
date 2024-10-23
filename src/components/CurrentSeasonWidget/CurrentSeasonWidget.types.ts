@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 
-export type CurrentSeasonChip = "over" | "now" | "live";
+export type SeasonChip = "over" | "next" | "now" | "live";
 
 export type CurrentSeasonWidgetProps = React.HTMLAttributes<HTMLDivElement> & {
-  readonly chip: CurrentSeasonChip;
+  readonly chip: SeasonChip;
   readonly progressStart?: ReactNode | undefined;
   readonly progress: number;
   readonly progressEnd?: ReactNode | undefined;

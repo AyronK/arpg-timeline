@@ -3,20 +3,22 @@ import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { Chip } from "@/ui/Chip";
 import { cn } from "@/lib/utils";
 import {
-  CurrentSeasonChip,
+  SeasonChip,
   CurrentSeasonWidgetProps,
 } from "@/components/CurrentSeasonWidget/CurrentSeasonWidget.types";
 
-const ChipColorMap: Record<CurrentSeasonChip, string> = {
+const ChipColorMap: Record<SeasonChip, string> = {
   live: "bg-sky-800",
   over: "bg-amber-800",
   now: "bg-sky-800",
+  next: "bg-emerald-800",
 };
 
-const ChipColorText: Record<CurrentSeasonChip, string> = {
+const ChipColorText: Record<SeasonChip, string> = {
   live: "LIVE!",
   over: "Over",
   now: "Now",
+  next: "Next",
 };
 
 export const CurrentSeasonWidget = ({

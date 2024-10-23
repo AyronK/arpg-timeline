@@ -1,4 +1,4 @@
-import { CurrentSeasonChip } from "@/components/CurrentSeasonWidget";
+import { SeasonChip } from "@/components/CurrentSeasonWidget";
 import LocalDate from "@/components/LocalDate";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { CalendarClock, CalendarOff, TimerOff, TimerReset } from "lucide-react";
@@ -28,7 +28,7 @@ export const getCurrentSeasonChip = (
   startDate: string | null,
   endDate: string | null,
   currentTime?: Date | null,
-): CurrentSeasonChip | null => {
+): SeasonChip | null => {
   if (!startDate || !endDate) {
     return null;
   }

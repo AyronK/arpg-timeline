@@ -2,18 +2,13 @@ import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { Chip } from "@/ui/Chip";
 import { cn } from "@/lib/utils";
 import { NextSeasonWidgetProps } from "@/components/NextSeasonWidget/NextSeasonWidget.types";
-import { FramedAction } from "@/components/FramedAction/FramedAction";
 
 export const NextSeasonWidget = ({
   name,
   url,
   srNextSeason,
   srGameSeason,
-  srSeasonStart,
-  action,
-  timer,
-  startLabel,
-  footer,
+  children,
   ...divProps
 }: NextSeasonWidgetProps) => {
   return (
@@ -42,24 +37,7 @@ export const NextSeasonWidget = ({
           </h4>
         </div>
       </div>
-      <div className="flex flex-1 items-center">
-        {timer ? (
-          <div className="flex flex-1 flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <span className="sr-only">{srSeasonStart}</span>
-              <div className="text-xs md:text-sm">{startLabel}</div>
-              {footer && <div className="text-xs md:text-sm">{footer}</div>}
-            </div>
-            <FramedAction action={action}>{timer}</FramedAction>
-          </div>
-        ) : (
-          <div>
-            <span className="sr-only">{srSeasonStart}</span>
-            <div className="text-xs md:text-sm">{startLabel}</div>
-            {footer && <div className="text-xs md:text-sm">{footer}</div>}
-          </div>
-        )}
-      </div>
+      {children}
     </div>
   );
 };
