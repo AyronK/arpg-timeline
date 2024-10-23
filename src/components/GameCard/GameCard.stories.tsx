@@ -1,18 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { GameCard } from "@/components/GameCard/GameCard";
-import CurrentSeasonWidgetStory, {
-  Over,
+import SeasonWidgetStories, {
   Current,
-  CurrentEndUnkown,
+  Over,
+  NextKnownDate,
+  NextToBeAnnounced,
   JustStarted,
-} from "@/components/CurrentSeasonWidget/CurrentSeasonWidget.stories";
-import NextSeasonWidgetStory, {
-  KnownDate,
-  ToBeAnnounced,
-  ToBeAnnouncedEstimated,
-} from "@/components/NextSeasonWidget/NextSeasonWidget.stories";
-import { CurrentSeasonWidgetProps } from "@/components/CurrentSeasonWidget";
-import { NextSeasonWidgetProps } from "@/components/NextSeasonWidget";
+  CurrentEndUnknown,
+  NextToBeAnnouncedEstimated,
+} from "@/components/SeasonWidget/SeasonWidget.stories";
+import { SeasonWidget, SeasonWidgetProps } from "@/components/SeasonWidget";
 
 const meta = {
   args: {
@@ -28,14 +25,13 @@ const meta = {
       />
     ),
   },
+  tags: ["autodocs"],
   title: "Components/Game Card",
   component: GameCard,
   decorators: [
     (Story) => (
-      <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
-        <div>
-          <Story />
-        </div>
+      <div className="max-w-96">
+        <Story />
       </div>
     ),
   ],
@@ -46,85 +42,141 @@ type Story = StoryObj<typeof meta>;
 
 export const CurrentNextAnnounced: Story = {
   args: {
-    currentSeason: {
-      ...CurrentSeasonWidgetStory.args,
-      ...Current.args,
-    } as CurrentSeasonWidgetProps,
-    nextSeason: {
-      ...NextSeasonWidgetStory.args,
-      ...KnownDate.args,
-    } as NextSeasonWidgetProps,
+    children: (
+      <>
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...Current.args,
+          } as SeasonWidgetProps)}
+        />
+
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...NextKnownDate.args,
+          } as SeasonWidgetProps)}
+        />
+      </>
+    ),
+  },
+};
+
+export const NoCurrentNextAnnounced: Story = {
+  args: {
+    children: (
+      <>
+        <div className="min-h-[64px]" />
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...NextKnownDate.args,
+          } as SeasonWidgetProps)}
+        />
+      </>
+    ),
   },
 };
 
 export const CurrentOverNextAnnounced: Story = {
   args: {
-    currentSeason: {
-      ...CurrentSeasonWidgetStory.args,
-      ...Over.args,
-    } as CurrentSeasonWidgetProps,
-    nextSeason: {
-      ...NextSeasonWidgetStory.args,
-      ...KnownDate.args,
-    } as NextSeasonWidgetProps,
+    children: (
+      <>
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...Over.args,
+          } as SeasonWidgetProps)}
+        />
+
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...NextKnownDate.args,
+          } as SeasonWidgetProps)}
+        />
+      </>
+    ),
   },
 };
 
 export const CurrentNextToBeAnnounced: Story = {
   args: {
-    currentSeason: {
-      ...CurrentSeasonWidgetStory.args,
-      ...Current.args,
-    } as CurrentSeasonWidgetProps,
-    nextSeason: {
-      ...NextSeasonWidgetStory.args,
-      ...ToBeAnnounced.args,
-    } as NextSeasonWidgetProps,
+    children: (
+      <>
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...Current.args,
+          } as SeasonWidgetProps)}
+        />
+
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...NextToBeAnnounced.args,
+          } as SeasonWidgetProps)}
+        />
+      </>
+    ),
   },
 };
 
 export const CurrentNextToBeAnnouncedEstimated: Story = {
   args: {
-    currentSeason: {
-      ...CurrentSeasonWidgetStory.args,
-      ...CurrentEndUnkown.args,
-    } as CurrentSeasonWidgetProps,
-    nextSeason: {
-      ...NextSeasonWidgetStory.args,
-      ...ToBeAnnouncedEstimated.args,
-    } as NextSeasonWidgetProps,
+    children: (
+      <>
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...CurrentEndUnknown.args,
+          } as SeasonWidgetProps)}
+        />
+
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...NextToBeAnnouncedEstimated.args,
+          } as SeasonWidgetProps)}
+        />
+      </>
+    ),
   },
 };
 
 export const JustStartedNextToBeAnnounced: Story = {
   args: {
-    currentSeason: {
-      ...CurrentSeasonWidgetStory.args,
-      ...JustStarted.args,
-    } as CurrentSeasonWidgetProps,
-    nextSeason: {
-      ...NextSeasonWidgetStory.args,
-      ...ToBeAnnounced.args,
-    } as NextSeasonWidgetProps,
+    children: (
+      <>
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...JustStarted.args,
+          } as SeasonWidgetProps)}
+        />
+
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...NextToBeAnnounced.args,
+          } as SeasonWidgetProps)}
+        />
+      </>
+    ),
   },
 };
 
 export const JustStartedNoNext: Story = {
   args: {
-    currentSeason: {
-      ...CurrentSeasonWidgetStory.args,
-      ...JustStarted.args,
-    } as CurrentSeasonWidgetProps,
-    nextSeason: null,
-  },
-};
-
-export const NoCurrentOverNextAnnounced: Story = {
-  args: {
-    currentSeason: null,
-    nextSeason: {
-      ...NextSeasonWidgetStory.args,
-      ...KnownDate.args,
-    } as NextSeasonWidgetProps,
+    children: (
+      <>
+        <SeasonWidget
+          {...({
+            ...SeasonWidgetStories.args,
+            ...JustStarted.args,
+          } as SeasonWidgetProps)}
+        />
+      </>
+    ),
   },
 };

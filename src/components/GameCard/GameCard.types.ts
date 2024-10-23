@@ -1,6 +1,4 @@
-import { ReactNode } from "react";
-import { CurrentSeasonWidgetProps } from "@/components/CurrentSeasonWidget";
-import { NextSeasonWidgetProps } from "@/components/NextSeasonWidget";
+import { PropsWithChildren, ReactNode } from "react";
 
 export type Game = {
   readonly name: string;
@@ -8,8 +6,6 @@ export type Game = {
   readonly official: boolean;
   readonly url: string | null;
   readonly logo: ReactNode;
-  readonly currentSeason: CurrentSeasonWidgetProps | null;
-  readonly nextSeason: NextSeasonWidgetProps | null;
 };
 
 export type GameCardTestProps = TestProps<{
@@ -17,4 +13,4 @@ export type GameCardTestProps = TestProps<{
   timeLeft?: number;
 }>;
 
-export type GameCardProps = GameCardTestProps & Game;
+export type GameCardProps = PropsWithChildren & GameCardTestProps & Game;

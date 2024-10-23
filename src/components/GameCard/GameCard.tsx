@@ -1,15 +1,12 @@
 import { CommunityLabel } from "@/components/CommunityLabel";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { GameCardProps } from "@/components/GameCard/GameCard.types";
-import { CurrentSeasonWidget } from "@/components/CurrentSeasonWidget";
-import { NextSeasonWidget } from "@/components/NextSeasonWidget";
 
 export const GameCard = ({
   name,
   logo,
   url,
-  currentSeason,
-  nextSeason,
+  children,
   official,
 }: GameCardProps) => {
   return (
@@ -32,12 +29,7 @@ export const GameCard = ({
           </MaybeLinkWrapper>
         </div>
       </div>
-      <div className="flex flex-col gap-3 md:gap-4">
-        <div className="md:min-h-[64px]">
-          {currentSeason && <CurrentSeasonWidget {...currentSeason} />}
-        </div>
-        {nextSeason && <NextSeasonWidget {...nextSeason} />}
-      </div>
+      <div className="flex flex-col gap-3 md:gap-4">{children}</div>
     </section>
   );
 };
