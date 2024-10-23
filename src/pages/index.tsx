@@ -4,22 +4,13 @@ import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
 import { Button } from "@/ui/Button";
-import { InfoIcon, Timer, UsersRound } from "lucide-react";
+import { UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
-import {
-  getCurrentSeasonChip,
-  getProgress,
-  getProgressEndContent,
-  getProgressStartContent,
-} from "@/lib/getProgress";
-import { CalendarMenu } from "@/components/CalendarMenu";
-import { Countdown } from "@/components/Countdown";
-import LocalDate from "@/components/LocalDate";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget";
 
