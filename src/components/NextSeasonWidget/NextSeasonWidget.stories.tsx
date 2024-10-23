@@ -5,8 +5,8 @@ import { CalendarMenu } from "@/components/CalendarMenu";
 import LocalDate from "@/components/LocalDate";
 import { Countdown } from "@/components/Countdown";
 import { InfoIcon, TimerReset } from "lucide-react";
-import { FramedAction } from "../FramedAction/FramedAction";
-import { IconLabel } from "../IconLabel/IconLabel";
+import { FramedAction } from "@/components/FramedAction/FramedAction";
+import { IconLabel } from "@/components/IconLabel/IconLabel";
 
 const meta: Meta<typeof NextSeasonWidget> = {
   args: {
