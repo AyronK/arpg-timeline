@@ -21,6 +21,7 @@ import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
 import LocalDate from "@/components/LocalDate";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
+import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -79,7 +80,6 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   "4xl:order-first": idx <= 4,
                 })}
               >
-                {/* TODO: refactor game card props mapping */}
                 <GameCard
                   name={game.name}
                   logo={
@@ -93,80 +93,13 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   }
                   shortName={game.shortName}
                   url={game.url}
-                  currentSeason={
-                    game.currentSeason && {
-                      //TODO: map SR texts
-                      name: game.currentSeason.name,
-                      progress: getProgress(
-                        game.currentSeason.start.startDate,
-                        game.currentSeason.end.endDate,
-                      ),
-                      chip: getCurrentSeasonChip(
-                        game.currentSeason.start?.startDate,
-                        game.currentSeason.end?.endDate,
-                      ),
-                      progressStart: getProgressStartContent(
-                        game.currentSeason.start?.startDate,
-                        game.currentSeason.end?.endDate,
-                      ),
-                      progressEnd: getProgressEndContent(
-                        game.currentSeason.end?.additionalText,
-                        game.currentSeason.end?.confirmed
-                          ? game.currentSeason.end?.endDate
-                          : null,
-                      ),
-                    }
-                  }
-                  nextSeason={
-                    //TODO: map SR texts
-                    game.nextSeason
-                      ? {
-                          name: game.nextSeason.name,
-                          startLabel: game.nextSeason.start?.confirmed ? (
-                            <div className="flex flex-row items-center gap-1">
-                              <Timer className="h-4 w-4" />
-                              Starts
-                              <LocalDate
-                                longDate
-                                utcDate={game.nextSeason.start.startDate}
-                              />
-                            </div>
-                          ) : (
-                            <div className="flex flex-row items-center gap-1">
-                              <Timer className="h-4 w-4" />
-                              {game.nextSeason.start?.additionalText?.trim()
-                                ? game.nextSeason.start?.additionalText
-                                : "To be announced"}
-                            </div>
-                          ),
-                          timer: game.nextSeason.start?.confirmed && (
-                            <Countdown date={game.nextSeason.start.startDate} />
-                          ),
-                          action: game.nextSeason.start?.confirmed && (
-                            <div>
-                              <CalendarMenu
-                                startDate={game.nextSeason.start.startDate}
-                                title={`${game.name} ${game.seasonKeyword} start`}
-                              />
-                            </div>
-                          ),
-                        }
-                      : { name: "Next season to be announced" }
-                  }
-                  footer={
-                    (game.currentSeason?.start?.additionalText ||
-                      game.currentSeason?.end?.additionalText) && (
-                      <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
-                        <InfoIcon className="h-4 w-4" />
-                        <div>
-                          {game.currentSeason?.start?.additionalText}
-                          {game.currentSeason?.end?.additionalText}
-                        </div>
-                      </div>
-                    )
-                  }
                   official={game.official}
-                />
+                >
+                  <div className="min-h-[64px]">
+                    <GameToSeasonWidget game={game} selector="current" />
+                  </div>
+                  <GameToSeasonWidget game={game} selector="next" />
+                </GameCard>
               </div>
             ))}
             <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">

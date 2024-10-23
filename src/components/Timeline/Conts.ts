@@ -18,7 +18,8 @@ export const TIMELINE_OPTIONS: ChartWrapperOptions["options"] = {
   },
   avoidOverlappingGridLines: false,
   backgroundColor: "#17171c",
-  colors: ["#64748b", "#065f46"],
+  colors: ["#054161", "#054735"],
   allowHtml: true,
   alternatingRowStyle: false,
+  fontFamily: "Times New Roman",
 };

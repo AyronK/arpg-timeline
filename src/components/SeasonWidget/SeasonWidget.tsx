@@ -30,7 +30,7 @@ export const SeasonWidget = ({
   return (
     <div
       {...divProps}
-      className={cn(divProps.className, "flex flex-col gap-2")}
+      className={cn(divProps.className, "flex flex-1 flex-col gap-2")}
     >
       <div className="flex w-full flex-row items-center justify-between gap-2 text-xs">
         <Chip
@@ -51,7 +51,7 @@ export const SeasonWidget = ({
           </MaybeLinkWrapper>
         </h4>
       </div>
-      {children}
+      <div className="flex flex-1 flex-col gap-2">{children}</div>
     </div>
   );
 };

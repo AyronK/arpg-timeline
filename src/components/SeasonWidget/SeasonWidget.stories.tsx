@@ -79,7 +79,7 @@ export const NextKnownDateWithWarning: Story = {
   args: {
     chip: "next",
     children: (
-      <div className="flex flex-1 flex-col gap-1">
+      <>
         <IconLabel icon={TimerReset}>
           Starts
           <span className="font-semibold">
@@ -96,7 +96,7 @@ export const NextKnownDateWithWarning: Story = {
         <IconLabel icon={InfoIcon} className="text-xs" iconPosition="end">
           Starts at 5 p.m. PDT/CET/KST
         </IconLabel>
-      </div>
+      </>
     ),
   },
 };

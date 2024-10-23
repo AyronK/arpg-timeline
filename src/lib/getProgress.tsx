@@ -1,4 +1,5 @@
 import { SeasonChip } from "@/components/CurrentSeasonWidget";
+import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { CalendarClock, CalendarOff, TimerOff, TimerReset } from "lucide-react";
@@ -54,35 +55,14 @@ export const getProgressStartContent = (
   const elapsedTime = Math.ceil((now - startTimeMs) / 1000 / 60 / 60 / 24);
 
   if (inGracePeriod(startDate)) {
-    return (
-      <div
-        className="flex flex-row items-center gap-1"
-        title="Running for 35 days"
-      >
-        <TimerReset className="h-4 w-4" />
-        Just started
-      </div>
-    );
+    return <IconLabel icon={TimerReset}>Just started</IconLabel>;
   }
 
   if (endTimeMs <= now) {
-    return (
-      <div className="flex flex-row items-center gap-1" title="Lasted 35 days">
-        <TimerOff className="h-4 w-4" />
-        Lasted {elapsedTime} days
-      </div>
-    );
+    return <IconLabel icon={TimerOff}>Lasted {elapsedTime} days</IconLabel>;
   }
 
-  return (
-    <div
-      className="flex flex-row items-center gap-1"
-      title="Running for 35 days"
-    >
-      <TimerReset className="h-4 w-4" />
-      Lasts {elapsedTime} days
-    </div>
-  );
+  return <IconLabel icon={TimerReset}>Lasts {elapsedTime} days</IconLabel>;
 };
 
 export const getProgressEndContent = (
@@ -96,10 +76,9 @@ export const getProgressEndContent = (
 
   if (text) {
     return (
-      <div className="flex flex-row flex-nowrap items-center gap-1 md:flex">
-        {text}
-        <CalendarClock className="h-4 w-4" />
-      </div>
+      <IconLabel iconPosition="end" icon={CalendarClock}>
+        <span>{text}</span>
+      </IconLabel>
     );
   }
 
@@ -113,18 +92,17 @@ export const getProgressEndContent = (
 
   if (endTimeMs <= now) {
     return (
-      <div className="flex flex-row flex-nowrap items-center gap-1">
-        <span className="hidden md:flex">Ended</span>
-        <LocalDate dateOnly utcDate={endDate} />
-        <CalendarOff className="h-4 w-4" />
-      </div>
+      <IconLabel iconPosition="end" icon={CalendarOff}>
+        <span>
+          Ended <LocalDate dateOnly utcDate={endDate} />
+        </span>
+      </IconLabel>
     );
   }
 
   return (
-    <div className="flex flex-row flex-nowrap items-center gap-1">
-      {timeLeft} days left
-      <CalendarClock className="h-4 w-4" />
-    </div>
+    <IconLabel iconPosition="end" icon={CalendarClock}>
+      <span>{timeLeft} days left</span>
+    </IconLabel>
   );
 };

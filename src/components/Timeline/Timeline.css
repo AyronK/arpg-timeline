@@ -15,8 +15,8 @@
   @apply text-popover-foreground;
 }
 
-.chart g:not(:last-of-type) rect:last-of-type[fill="#64748b"],
-.chart g:not(:last-of-type) rect:last-of-type[fill="#065f46"] {
+.chart g:not(:last-of-type) rect:last-of-type[fill="#054735"],
+.chart g:not(:last-of-type) rect:last-of-type[fill="#054161"] {
   height: 2000px;
   fill: hsl(var(--destructive)) !important;
   transform: translateY(-1969px);
@@ -24,9 +24,14 @@
   pointer-events: none;
 }
 
-.chart g rect:last-of-type[fill="#303a50"] + text,
-.chart g rect:last-of-type[fill="#cbd5e1"] + text {
+.chart g rect:last-of-type[fill="#054735"] + text,
+.chart g rect:last-of-type[fill="#054161"] + text {
   pointer-events: none;
+}
+
+.chart text {
+  font-family: "Cinzel" !important;
+  font-size: 0.75rem !important;
 }
 
 .chart .today {

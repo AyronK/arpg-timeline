@@ -64,7 +64,7 @@ export const Countdown = ({
   // TODO fix 0 when not last time segment
   return (
     <TrailingBorder>
-      <div className="flex select-none flex-row items-center justify-center gap-1 pt-0.5 font-heading text-lg font-bold text-emerald-100 md:text-2xl">
+      <div className="flex select-none flex-row items-center justify-center gap-1 pt-0.5 font-heading text-lg font-bold text-emerald-100 md:text-xl">
         <Time
           className={cn({
             "opacity-60": timeComponents.weeks <= 0,

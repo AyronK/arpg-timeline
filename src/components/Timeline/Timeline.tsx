@@ -103,7 +103,7 @@ const timelinePopover = (event: TimelineEvent) => {
   `;
 };
 
-const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#64748b"]`;
+const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#054161"]`;
 const ROW_HEIGHT = 40;
 const CARD_OFFSET = 96;
 const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
@@ -155,7 +155,7 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
           ...events.map((e) => {
             return [
               e.game,
-              e.name ? `${e.game} - ${e.name}` : "",
+              e.game ? `${e.game} - ${e.name}` : "",
               timelinePopover(e),
               new Date(e.startDate),
               new Date(e.endDate),

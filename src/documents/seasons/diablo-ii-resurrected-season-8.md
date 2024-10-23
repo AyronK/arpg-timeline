@@ -10,5 +10,5 @@ start:
 end:
   endDate: 2024-11-24T00:00:00.000Z
   confirmed: false
-  overrideText: Est. November
+  overrideText: est. November
 ---

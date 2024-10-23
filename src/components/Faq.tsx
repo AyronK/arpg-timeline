@@ -92,7 +92,7 @@ export const Faq = () => (
 
         <div>
           <h3 className="mb-2 text-xl">
-            What does the &quot;MOD&quot; tag mean?
+            What does the &quot;COMMUNITY&quot; tag mean?
           </h3>
           <p className="ml-2">
             The &quot;COMMUNITY&quot; tag indicates that a game or cycle is not

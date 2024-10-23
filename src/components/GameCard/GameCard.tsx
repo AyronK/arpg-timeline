@@ -29,7 +29,7 @@ export const GameCard = ({
           </MaybeLinkWrapper>
         </div>
       </div>
-      <div className="flex flex-col gap-3 md:gap-4">{children}</div>
+      <div className="flex flex-1 flex-col gap-3 md:gap-4">{children}</div>
     </section>
   );
 };
