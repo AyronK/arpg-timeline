@@ -1,5 +1,5 @@
 const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
-  month: "long",
+  month: "short",
   day: "2-digit",
   hourCycle: "h24",
   hour: "numeric",
@@ -7,7 +7,7 @@ const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
 };
 
 const longDateTimeFormatOptions: Intl.DateTimeFormatOptions = {
-  month: "long",
+  month: "short",
   day: "2-digit",
   hourCycle: "h24",
   hour: "numeric",
@@ -15,7 +15,7 @@ const longDateTimeFormatOptions: Intl.DateTimeFormatOptions = {
 };
 
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
-  month: "long",
+  month: "short",
   day: "2-digit",
 };
 
