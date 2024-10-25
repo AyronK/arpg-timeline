@@ -9,5 +9,5 @@ start:
 end:
   endDate: 2024-12-01T09:00:00.000Z
   confirmed: false
-  overrideText: est. November/December
+  overrideText: est. end of 2024
 ---

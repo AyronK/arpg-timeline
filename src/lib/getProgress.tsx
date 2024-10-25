@@ -53,7 +53,7 @@ export const getProgressStartContent = (
   const startTimeMs = new Date(startDate).getTime();
   const endTimeMs = new Date(endDate).getTime();
 
-  const elapsedTime = Math.ceil((now - startTimeMs) / 1000 / 60 / 60 / 24);
+  const elapsedTime = Math.ceil((now - startTimeMs) / 1000 / 60 / 60);
   const elapsedDays = Math.ceil(elapsedTime / 24);
 
   if (inGracePeriod(startDate)) {

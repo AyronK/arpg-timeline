@@ -1,4 +1,4 @@
-export const CurrentSeasonStartedSeoText = ({
+export const PreviousSeasonStartedSeoText = ({
   gameName,
   seasonName,
   seasonKeyword,
@@ -16,9 +16,9 @@ export const CurrentSeasonStartedSeoText = ({
   return (
     <>
       <h4>
-        When has the current {gameName} {seasonKeyword} started?
+        When has the previous {gameName} {seasonKeyword} started?
       </h4>
-      <p>{`The current ${gameName} ${seasonSegment} has started ${new Date(startDate).toUTCString()}`}</p>
+      <p>{`The previous ${gameName} ${seasonSegment} has started ${new Date(startDate).toUTCString()}`}</p>
     </>
   );
 };

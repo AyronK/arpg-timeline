@@ -41,7 +41,7 @@ export const SeasonWidget = ({
         >
           {ChipColorText[chip]}
         </Chip>
-        <h4 className="flex-1 font-heading text-foreground" title={name}>
+        <h4 className="flex-1 font-heading text-foreground">
           <MaybeLinkWrapper
             href={url}
             target="_blank"

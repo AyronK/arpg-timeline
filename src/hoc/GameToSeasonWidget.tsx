@@ -15,8 +15,8 @@ import {
 } from "@/lib/getProgress";
 import { InfoIcon, TimerReset } from "lucide-react";
 import { ReactNode } from "react";
-import { CurrentSeasonStartedSeoText } from "@/hoc/CurrentSeasonStartedSeoText";
-import { CurrentSeasonEndingSeoText } from "@/hoc/CurrentSeasonEndingSeoText";
+import { PreviousSeasonStartedSeoText } from "@/hoc/PreviousSeasonStartedSeoText";
+import { PreviousSeasonEndingSeoText } from "@/hoc/PreviousSeasonEndingSeoText";
 import { NextSeasonStartSeoText } from "@/hoc/NextSeasonStartSeoText";
 
 type Selector = "current" | "next";
@@ -130,25 +130,25 @@ export const GameToSeasonWidget = ({
     );
     seoText = season.start?.startDate && (
       <>
-        <CurrentSeasonStartedSeoText
+        <PreviousSeasonStartedSeoText
           gameName={game.name}
           seasonName={season.name}
           startDate={season.start.startDate}
           seasonKeyword={game.seasonKeyword}
         />
-        <CurrentSeasonStartedSeoText
+        <PreviousSeasonStartedSeoText
           gameName={game.shortName}
           seasonName={season.name}
           startDate={season.start.startDate}
           seasonKeyword={game.seasonKeyword}
         />
-        <CurrentSeasonEndingSeoText
+        <PreviousSeasonEndingSeoText
           gameName={game.name}
           seasonName={season.name}
           end={season.end}
           seasonKeyword={game.seasonKeyword}
         />
-        <CurrentSeasonEndingSeoText
+        <PreviousSeasonEndingSeoText
           gameName={game.shortName}
           seasonName={season.name}
           end={season.end}
