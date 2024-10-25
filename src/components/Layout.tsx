@@ -5,8 +5,8 @@ import { Button } from "@/ui/Button";
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
-      <header className="container relative mt-4 md:mt-8">
-        <div className="relative">
+      <header className="relative py-1 max-sm:bg-card max-sm:shadow md:pb-0 md:pt-6">
+        <div className="container relative">
           <div className="flex flex-row items-center justify-between gap-2 md:justify-center">
             <a
               href="/"
