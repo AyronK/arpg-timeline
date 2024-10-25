@@ -302,3 +302,16 @@ collections:
             widget: "string"
             default: ""
             required: false
+
+  - label: "Faq"
+    name: "faq"
+    editor:
+      preview: false
+    folder: "src/documents/faq"
+    create: true
+    slug: "{{fields.title}}"
+
+    fields:
+      - label: "Title"
+        name: "string"
+        required: true

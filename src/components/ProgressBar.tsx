@@ -9,9 +9,12 @@ export const ProgressBar = ({
     <div
       className="absolute bottom-0 right-0 top-0 rounded-tl-full bg-sky-800"
       style={{
-        left: clamp
-          ? `${Math.min(Math.max(progress, 3), 95)}%`
-          : `${progress}%`,
+        left:
+          progress >= 100
+            ? "100%"
+            : clamp
+              ? `${Math.min(Math.max(progress, 3), 95)}%`
+              : `${progress}%`,
       }}
     />
   </div>

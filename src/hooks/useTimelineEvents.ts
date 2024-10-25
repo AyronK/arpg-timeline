@@ -6,12 +6,24 @@ export const useTimelineEvents = (games: Game[]) => {
     const next = [...prev];
 
     if (g.currentSeason?.start?.startDate) {
+      const startDate = new Date(g.currentSeason.start.startDate);
+      let endDate = g.currentSeason.end?.endDate
+        ? new Date(g.currentSeason.end.endDate)
+        : undefined;
+
+      if (!endDate || endDate < startDate) {
+        endDate = new Date(
+          new Date(g.currentSeason.start.startDate).getTime() +
+            120 * 24 * 50 * 60 * 1000,
+        );
+      }
+
       next.push({
         name: g.currentSeason.name ?? "",
         game: g.name,
-        startDate: new Date(g.currentSeason.start.startDate),
+        startDate: startDate,
         startDateNotice: g.currentSeason.start.overrideText,
-        endDate: new Date(g.currentSeason.end?.endDate ?? "Invalid Date"),
+        endDate: endDate,
         endDateNotice: g?.currentSeason?.end?.overrideText,
         startDateConfirmed: g.currentSeason.start.confirmed ?? false,
         endDateConfirmed: g.currentSeason.end?.confirmed ?? false,
@@ -43,7 +55,9 @@ export const useTimelineEvents = (games: Game[]) => {
       next.push({
         name: g.nextSeason.name ?? "",
         game: g.name,
-        startDate: new Date(g?.nextSeason?.start.startDate ?? "Invalid Date"),
+        startDate: new Date(
+          g?.nextSeason?.start.startDate ?? g.currentSeason?.end?.endDate,
+        ),
         startDateNotice: g?.nextSeason?.start.overrideText,
         endDate: new Date(
           new Date(g.nextSeason.start.startDate).getTime() +
