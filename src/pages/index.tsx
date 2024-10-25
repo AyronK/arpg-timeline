@@ -3,8 +3,6 @@ import { graphql, PageProps } from "gatsby";
 import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
-import { Button } from "@/ui/Button";
-import { UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
@@ -33,14 +31,14 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
-        <p className="mx-auto mb-2 hidden max-w-prose text-center font-heading text-lg md:block md:text-xl">
+        <p className="mx-auto hidden max-w-prose text-center font-heading text-lg md:mt-8 md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="mt-6 flex flex-col-reverse gap-4 md:mt-12 md:flex-col">
+        <div className="mt-4 flex flex-col-reverse gap-4 md:mt-8 md:flex-col">
           <div className="relative bottom-0 z-50 flex justify-between max-sm:fixed max-sm:right-0 max-sm:w-screen">
-            <div className="max-w-[1200px] max-sm:mx-auto">
+            <div className="fixed bottom-4 right-4 max-w-[1200px] shadow-lg max-sm:mx-auto">
               <FiltersDialog
                 checked={activeFilters}
                 filters={gameFilters}
@@ -48,16 +46,6 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                 onGroupCheckedChange={toggleGroupFilter}
               />
             </div>
-            <Button
-              variant={"default"}
-              asChild
-              className="ml-auto w-auto font-ui font-semibold opacity-80 transition-all hover:opacity-100 max-sm:hidden"
-            >
-              <a href="/looking-for-moderators" rel="self">
-                <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
-                Looking for mods
-              </a>
-            </Button>
           </div>
           <article className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
@@ -71,6 +59,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   "4xl:order-first": idx <= 4,
                 })}
               >
+                {/* TODO Error boundaries - resurrect in town button */}
                 <GameCard
                   name={game.name}
                   logo={

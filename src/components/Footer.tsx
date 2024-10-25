@@ -1,7 +1,7 @@
 export const Footer = () => (
-  <footer className="mb-8 mt-12 px-4">
-    <div>
-      <div className="mt-4 flex flex-row justify-end gap-1">
+  <footer className="mt-12 border-t border-foreground bg-card px-4 py-4">
+    <div className="flex flex-col justify-evenly gap-6 pb-12 pt-6 md:flex-row md:py-0">
+      <div className="flex flex-row gap-1">
         <a
           title="RSS Feed"
           target="_blank"
@@ -13,7 +13,7 @@ export const Footer = () => (
         </a>
       </div>
 
-      <div className="mt-4 flex flex-row justify-end gap-1">
+      <div className="flex flex-row gap-1">
         <a
           className="font-semibold hover:opacity-75"
           href="/privacy"
@@ -23,7 +23,17 @@ export const Footer = () => (
         </a>
       </div>
 
-      <div className="mt-4 flex flex-row justify-end gap-1">
+      <div className="flex flex-row gap-1">
+        <a
+          className="font-semibold hover:opacity-75"
+          href="https://discord.gg/39mTbjkePg"
+          rel="noopener noreferrer"
+        >
+          Discord
+        </a>
+      </div>
+
+      <div className="flex flex-row gap-1">
         <a
           className="font-semibold hover:opacity-75"
           href="mailto:arpgtimeline@ayronk.com"
@@ -33,7 +43,7 @@ export const Footer = () => (
         </a>
       </div>
 
-      <div className="mt-4 flex flex-row justify-end gap-1">
+      <div className="flex flex-row gap-1">
         &copy; <span id="currentYear">{new Date().getFullYear()}</span>-
         <a
           className="font-semibold hover:opacity-75"

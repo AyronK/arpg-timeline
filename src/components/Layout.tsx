@@ -5,7 +5,7 @@ import { Button } from "@/ui/Button";
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
-      <header className="container relative my-4 mb-2 md:mb-4 md:mt-8">
+      <header className="container relative mt-4 md:mt-8">
         <div className="relative">
           <div className="flex flex-row items-center justify-between gap-2 md:justify-center">
             <a
@@ -38,7 +38,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
               </h1>
             </a>
             <div className="relative right-0 flex flex-row items-center justify-center gap-2 md:absolute md:top-1/2 md:-translate-y-1/2">
-              <Button variant={"outline"} asChild className="px-2 md:px-4">
+              <Button variant={"ghost"} asChild className="px-2 md:px-4">
                 <a
                   href="https://www.buymeacoffee.com/ayron"
                   rel="external nofollow noreferrer"
@@ -54,7 +54,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                   <span className="hidden 2xl:block">Support me</span>
                 </a>
               </Button>
-              <Button variant={"outline"} asChild className="px-2 2xl:px-4">
+              <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
                 <a
                   href="https://github.com/AyronK/arpg-timeline/issues"
                   rel="external nofollow noreferrer"

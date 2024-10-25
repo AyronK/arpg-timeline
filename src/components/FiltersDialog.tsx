@@ -111,27 +111,22 @@ const Trigger = forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<typeof Button> &
     Pick<FiltersDialogProps, "checked" | "filters">
->(({ filters, checked, ...rest }, ref) => (
+>(({ checked, ...rest }, ref) => (
   <Button
     {...rest}
     ref={ref}
-    variant="outline"
+    variant="default"
     onMouseDown={() => {
       sa_event("filters_opened");
     }}
-    className={cn("relative z-10", {
-      "md:motion-safe:animate-pulse":
-        checked?.length === filters?.length && filters?.length > 0,
-    })}
+    className={"relative z-10"}
   >
     <Filter className="mr-2 h-4 w-4" /> Filter games
-    {checked?.length !== filters?.length && filters?.length > 0 && (
-      <span className="absolute -right-3 -top-3 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-        <span className="relative grid h-6 w-6 place-content-center rounded-full bg-slate-500 text-white">
-          {checked.length}
-        </span>
+    <span className="absolute -right-2 -top-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
+      <span className="relative grid h-6 w-6 place-content-center rounded-lg bg-secondary font-ui font-semibold text-primary-foreground shadow-sm">
+        {checked.length}
       </span>
-    )}
+    </span>
   </Button>
 ));
 
@@ -160,7 +155,7 @@ const Filters = ({
           const anyChecked = !!groups[g].find((f) => checked.includes(f.value));
           return (
             <div className="flex flex-col gap-3" key={g}>
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center gap-2">
                 <h3 className="font-lg font-semibold">
                   {g !== "" ? g : "Uncategorized"}
                 </h3>

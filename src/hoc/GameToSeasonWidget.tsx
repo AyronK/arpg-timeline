@@ -1,6 +1,6 @@
 import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
-import { SeasonChip } from "@/components/CurrentSeasonWidget";
+import { SeasonChip } from "@/components/SeasonWidget";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
@@ -15,12 +15,15 @@ import {
 } from "@/lib/getProgress";
 import { InfoIcon, TimerReset } from "lucide-react";
 import { ReactNode } from "react";
+import { CurrentSeasonStartedSeoText } from "@/hoc/CurrentSeasonStartedSeoText";
+import { CurrentSeasonEndingSeoText } from "@/hoc/CurrentSeasonEndingSeoText";
+import { NextSeasonStartSeoText } from "@/hoc/NextSeasonStartSeoText";
 
 type Selector = "current" | "next";
 
 const SelectorLabels: Record<Selector, string> = {
   current: "Current",
-  next: "Next",
+  next: "The next",
 };
 
 export const GameToSeasonWidget = ({
@@ -59,8 +62,25 @@ export const GameToSeasonWidget = ({
   );
 
   let children: ReactNode;
+  let seoText: ReactNode;
 
   if (selector === "next") {
+    seoText = (
+      <>
+        <NextSeasonStartSeoText
+          gameName={game.name}
+          seasonName={season.name}
+          start={season.start}
+          seasonKeyword={game.seasonKeyword}
+        />
+        <NextSeasonStartSeoText
+          gameName={game.shortName}
+          seasonName={season.name}
+          start={season.start}
+          seasonKeyword={game.seasonKeyword}
+        />
+      </>
+    );
     if (season.start?.confirmed && season.start.startDate) {
       children = (
         <div className="flex flex-1 flex-col gap-1">
@@ -103,17 +123,48 @@ export const GameToSeasonWidget = ({
         </>
       );
     }
-  } else {
-    const progress = getProgress(season.start?.startDate, season.end?.endDate);
+  } else if (season.start?.startDate) {
+    const progress = getProgress(
+      season.start?.startDate,
+      season.end?.endDate ?? null,
+    );
+    seoText = season.start?.startDate && (
+      <>
+        <CurrentSeasonStartedSeoText
+          gameName={game.name}
+          seasonName={season.name}
+          startDate={season.start.startDate}
+          seasonKeyword={game.seasonKeyword}
+        />
+        <CurrentSeasonStartedSeoText
+          gameName={game.shortName}
+          seasonName={season.name}
+          startDate={season.start.startDate}
+          seasonKeyword={game.seasonKeyword}
+        />
+        <CurrentSeasonEndingSeoText
+          gameName={game.name}
+          seasonName={season.name}
+          end={season.end}
+          seasonKeyword={game.seasonKeyword}
+        />
+        <CurrentSeasonEndingSeoText
+          gameName={game.shortName}
+          seasonName={season.name}
+          end={season.end}
+          seasonKeyword={game.seasonKeyword}
+        />
+      </>
+    );
     children = (
       <>
         <div className="flex flex-row justify-between">
           {getProgressStartContent(
             season.start?.startDate,
-            season.end?.endDate,
+            season.end?.endDate ?? null,
           )}
           {getProgressEndContent(
-            season.end?.overrideText,
+            season.end?.overrideText ?? null,
             season.end?.confirmed ? season.end.endDate : null,
           )}
         </div>
@@ -122,13 +173,14 @@ export const GameToSeasonWidget = ({
     );
   }
 
-  //TODO SEO text and aria label
   return (
     <SeasonWidget
+      aria-label={`${selector} ${game.name} ${game.seasonKeyword} - ${season.name}`}
       chip={chip}
       name={season.name ?? `${SelectorLabels[selector]} ${game.seasonKeyword}`}
       url={season.url ?? undefined}
     >
+      <div className="sr-only">{seoText}</div>
       {children}
     </SeasonWidget>
   );

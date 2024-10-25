@@ -1,11 +1,12 @@
 import { Button } from "@/ui/Button";
+import { UsersRound } from "lucide-react";
 
 export const Faq = () => (
-  <section className="container my-8 flex flex-col gap-4">
+  <section className="container my-16 flex flex-col gap-4">
     <div>
       <h2 className="sr-only">Support</h2>
-      <div className="mx-auto flex max-w-prose flex-col justify-between gap-2 md:flex-row md:gap-8">
-        <Button variant={"outline"} size="lg" asChild>
+      <div className="mx-auto flex max-w-prose flex-col-reverse justify-between gap-2 md:flex-row md:gap-8">
+        <Button variant={"link"} size="lg" asChild>
           <a
             href="https://www.buymeacoffee.com/ayron"
             rel="external nofollow noreferrer"
@@ -21,7 +22,18 @@ export const Faq = () => (
             Support me
           </a>
         </Button>
-        <Button variant={"outline"} size="lg" asChild>
+        <Button
+          variant={"default"}
+          asChild
+          size="lg"
+          className="font-ui font-semibold opacity-80 transition-all hover:opacity-100 max-sm:order-3"
+        >
+          <a href="/looking-for-moderators" rel="self">
+            <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
+            Looking for mods
+          </a>
+        </Button>
+        <Button variant={"link"} size="lg" asChild>
           <a
             href="https://github.com/AyronK/arpg-timeline/issues"
             rel="external nofollow noreferrer"
@@ -132,7 +144,7 @@ export const Faq = () => (
             >
               GitHub page
             </a>{" "}
-            or contact me on Dicourd or email, .
+            or contact me on Discord or email, .
           </p>
         </div>
 
