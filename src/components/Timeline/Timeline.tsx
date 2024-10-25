@@ -137,12 +137,15 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
                 TODAYS_ENTRY_SELECTOR,
               );
               if (parentRef.current && todaysElement) {
-                parentRef.current.scroll({
-                  left:
-                    todaysElement.getBoundingClientRect().left -
-                    parentRef.current.getBoundingClientRect().left -
-                    parentRef.current.clientWidth / 2,
-                });
+                const left =
+                  todaysElement.getBoundingClientRect().left -
+                  parentRef.current.getBoundingClientRect().left -
+                  parentRef.current.clientWidth / 2;
+                if (left > 0) {
+                  parentRef.current.scroll({
+                    left,
+                  });
+                }
               }
             },
           },
