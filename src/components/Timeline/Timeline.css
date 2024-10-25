@@ -17,6 +17,7 @@
 
 .chart g:not(:last-of-type) rect:last-of-type[fill="#054735"],
 .chart g:not(:last-of-type) rect:last-of-type[fill="#054161"] {
+  width: 1px;
   height: 2000px;
   fill: hsl(var(--destructive)) !important;
   transform: translateY(-1969px);
