@@ -52,17 +52,19 @@ export const getProgressStartContent = (
   const now = currentTime?.getTime() ?? Date.now();
   const startTimeMs = new Date(startDate).getTime();
   const endTimeMs = new Date(endDate).getTime();
+
   const elapsedTime = Math.ceil((now - startTimeMs) / 1000 / 60 / 60 / 24);
+  const elapsedDays = Math.ceil(elapsedTime / 24);
 
   if (inGracePeriod(startDate)) {
-    return <IconLabel icon={TimerReset}>Just started</IconLabel>;
+    return <IconLabel icon={TimerReset}>Started {elapsedTime}h ago</IconLabel>;
   }
 
   if (endTimeMs <= now) {
-    return <IconLabel icon={TimerOff}>Lasted {elapsedTime} days</IconLabel>;
+    return <IconLabel icon={TimerOff}>Lasted {elapsedDays} days</IconLabel>;
   }
 
-  return <IconLabel icon={TimerReset}>Lasts {elapsedTime} days</IconLabel>;
+  return <IconLabel icon={TimerReset}>Lasts {elapsedDays} days</IconLabel>;
 };
 
 export const getProgressEndContent = (

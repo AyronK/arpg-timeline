@@ -36,6 +36,13 @@ export const GameToSeasonWidget = ({
     return null;
   }
 
+  if (
+    selector === "next" &&
+    inGracePeriod(game.currentSeason?.start?.startDate)
+  ) {
+    return null;
+  }
+
   const chip: SeasonChip =
     selector === "next"
       ? "next"

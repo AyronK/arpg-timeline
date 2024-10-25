@@ -86,7 +86,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   url={game.url}
                   official={game.official}
                 >
-                  <div className="min-h-[64px]">
+                  <div className="md:min-h-[64px]">
                     <GameToSeasonWidget game={game} selector="current" />
                   </div>
                   <GameToSeasonWidget game={game} selector="next" />
