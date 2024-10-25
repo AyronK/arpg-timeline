@@ -38,7 +38,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
               </h1>
             </a>
             <div className="relative right-0 flex flex-row items-center justify-center gap-2 md:absolute md:top-1/2 md:-translate-y-1/2">
-              <Button variant={"ghost"} asChild className="px-2 md:px-4">
+              <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
                 <a
                   href="https://www.buymeacoffee.com/ayron"
                   rel="external nofollow noreferrer"
