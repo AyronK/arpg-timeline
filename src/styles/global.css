@@ -122,4 +122,8 @@
       @apply rounded-full;
     }
   }
+
+  .rich-text a {
+    @apply underline transition-all hover:brightness-150;
+  }
 }

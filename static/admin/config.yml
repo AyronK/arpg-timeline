@@ -310,8 +310,26 @@ collections:
     folder: "src/documents/faq"
     create: true
     slug: "{{fields.title}}"
+    sortable_fields: ["order"]
 
     fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "faq"
+
       - label: "Title"
-        name: "string"
+        name: "title"
+        widget: "string"
         required: true
+
+      - label: "Content"
+        name: "content"
+        widget: "markdown"
+        required: true
+
+      - label: "Order"
+        name: "order"
+        widget: "number"
+        required: true
+        default: 100

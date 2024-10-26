@@ -104,7 +104,13 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           </article>
         </div>
       </div>
-      <Faq />
+      <Faq
+        faq={data.faq.edges
+          .map((e) => e.node.frontmatter)
+          .filter((q) => q?.content && q.title)
+          .sort((a, b) => a.order - b.order)
+          .map((q) => ({ title: q?.title ?? "", content: q?.content ?? "" }))}
+      />
     </Layout>
   );
 };
@@ -161,6 +167,17 @@ export const query = graphql`
               overrideText
               additionalText
             }
+          }
+        }
+      }
+    }
+    faq: allMarkdownRemark(filter: { frontmatter: { type: { eq: "faq" } } }) {
+      edges {
+        node {
+          frontmatter {
+            title
+            content
+            order
           }
         }
       }
