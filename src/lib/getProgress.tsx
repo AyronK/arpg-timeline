@@ -79,7 +79,7 @@ export const getProgressEndContent = (
   if (text) {
     return (
       <IconLabel iconPosition="end" icon={CalendarClock}>
-        <span>{text}</span>
+        <i>{text}</i>
       </IconLabel>
     );
   }

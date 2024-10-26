@@ -10,6 +10,6 @@ start:
 end:
   endDate: 2025-02-12T00:00:00.000Z
   confirmed: false
-  overrideText: est. start of 2025
+  overrideText: January/February
   additionalText: ""
 ---
