@@ -116,11 +116,12 @@ const Trigger = forwardRef<
     {...rest}
     ref={ref}
     variant="default"
+    size={"lg"}
     onMouseDown={() => {
       sa_event("filters_opened");
     }}
     className={
-      "group relative z-0 rounded-full px-3 shadow-md shadow-black transition-all ease-in-out"
+      "group relative z-0 h-12 rounded-full px-4 shadow-md shadow-black transition-all ease-in-out"
     }
   >
     <Filter className="h-4 w-4" />

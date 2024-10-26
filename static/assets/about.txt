@@ -1,9 +1,14 @@
-This favicon was generated using the following graphics from Twitter Twemoji:
+Font - Cinzel
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+https://fonts.google.com/specimen/Cinzel/license
 
-- Graphics Title: 2694.svg
-- Graphics Author: Copyright 2020 Twitter, Inc and other contributors (https://github.com/twitter/twemoji)
-- Graphics Source: https://github.com/twitter/twemoji/blob/master/assets/svg/2694.svg
-- Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+Font - Montserrat
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+https://fonts.google.com/specimen/Montserrat/license
+
+Google Charts
+Apache License 2.0
+https://github.com/GoogleWebComponents/google-chart/blob/main/LICENSE
 
 More information on licenses for third party tools and libraries can be found here:
 https://github.com/AyronK/arpg-timeline/blob/main/README.md#License

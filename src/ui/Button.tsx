@@ -9,16 +9,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-foreground text-primary-foreground hover:bg-primary/90",
+        default: "bg-foreground text-primary-foreground hover:brightness-125",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        warning: "bg-warning text-warning-foreground hover:bg-warning/90",
+          "bg-destructive text-destructive-foreground hover:brightness-125",
+        warning: "bg-warning text-warning-foreground hover:brightness-125",
         outline:
           "border border-foreground bg-background hover:bg-accent hover:text-accent-foreground",
         outlineCard:
           "border border-background bg-card hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground hover:brightness-125",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-foreground underline-offset-4 hover:underline",
       },

@@ -39,8 +39,8 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           Never miss a season start or end again!
         </p>
         <div className="relative mt-4 flex flex-col-reverse gap-4 md:mt-8 md:flex-col">
-          <div className="fixed z-50 max-sm:bottom-4 max-sm:right-4 md:sticky md:top-0 md:h-0 md:translate-x-full md:translate-y-[16px]">
-            <div className="md:ml-4">
+          <div className="fixed z-50 max-sm:bottom-8 max-sm:right-8 md:sticky md:left-0 md:right-0 md:top-0 md:h-0">
+            <div className="md:absolute md:-right-4 md:ml-auto md:translate-x-full md:translate-y-[16px]">
               <ErrorBoundary fallback={<WidgetDiedFallback />}>
                 <FiltersDialog
                   checked={activeFilters}
