@@ -18,6 +18,21 @@ export const isOver = (endDate: string | null | undefined) => {
 };
 
 export const sortBySeasons = (a: Game, b: Game) => {
+  const aIsCurrentSeasonOver =
+    a.nextSeason?.start?.startDate === a.nextSeason?.end?.endDate &&
+    a.currentSeason?.end?.endDate &&
+    isOver(a.currentSeason.end?.endDate);
+  const bIsCurrentSeasonOver =
+    b.nextSeason?.start?.startDate === b.nextSeason?.end?.endDate &&
+    b.currentSeason?.end?.endDate &&
+    isOver(b.currentSeason.end?.endDate);
+
+  if (!aIsCurrentSeasonOver && bIsCurrentSeasonOver) {
+    return -1;
+  }
+  if (aIsCurrentSeasonOver && !bIsCurrentSeasonOver) {
+    return 1;
+  }
   if (
     a.currentSeason?.start?.startDate &&
     inGracePeriod(a.currentSeason.start?.startDate)
