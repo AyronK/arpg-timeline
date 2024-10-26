@@ -14,14 +14,11 @@ const TIMELINE_COLUMNS = [
 ];
 
 const getEventPeriods = (event: TimelineEvent) => {
-  const running = Math.max(
-    event.startDate
-      ? Math.floor(
-          (new Date().getTime() - new Date(event.startDate).getTime()) / DAY,
-        )
-      : 1,
-    1,
-  );
+  const running = event.startDate
+    ? Math.floor(
+        (new Date().getTime() - new Date(event.startDate).getTime()) / DAY,
+      )
+    : 0;
 
   const left = Math.max(
     Math.floor(
@@ -92,13 +89,18 @@ const timelinePopover = (event: TimelineEvent) => {
           <div class="grid grid-cols-3 items-center gap-2">
               <span class="font-bold">${left > 0 ? "Running" : "Lasted"}</span><span class="col-span-2">${left > 0 ? running : lasts} day(s)</span>
           </div>
+          ${
+            left > 0
+              ? `          
           <div class="grid grid-cols-3 items-center gap-2">
               <span class="font-bold">Remaining</span><span class="col-span-2">${Math.max(left, 0)} day(s)</span>
-          </div>
+          </div>`
+              : ""
+          }
           `
             : `
           <div class="grid grid-cols-3 items-center gap-2">
-              <span class="font-bold">${left > 0 ? "Running" : "Lasted"}</span><span class="col-span-2">${left > 0 ? running : lasts} day(s)</span>
+              <span class="font-bold">${left > 0 ? "Running" : "Lasted"}</span><span class="col-span-2">${left > 0 ? Math.max(running, 1) : lasts} day(s)</span>
           </div>`
         }
       </div>
