@@ -117,9 +117,11 @@ export const GameToSeasonWidget = ({
       children = (
         <>
           <IconLabel icon={TimerReset}>
-            {season.start?.overrideText ??
-              game.currentSeason?.end?.overrideText ??
-              "To be announced"}
+            <i>
+              {season.start?.overrideText ??
+                game.currentSeason?.end?.overrideText ??
+                "To be announced"}
+            </i>
           </IconLabel>
           {info}
         </>
