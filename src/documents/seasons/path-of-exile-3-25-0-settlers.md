@@ -8,6 +8,6 @@ start:
   startDate: 2024-07-26T18:00:00.000Z
   additionalText: ""
 end:
-  endDate: null
+  endDate: 2024-12-12T00:00:00.000Z
   confirmed: false
 ---
