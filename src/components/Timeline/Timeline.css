@@ -25,7 +25,7 @@
   pointer-events: none;
 }
 
-.chart g rect:last-of-type[fill="#054735"] + text,
+.chart g rect:last-of-type[fill="#054735"] + text, 
 .chart g rect:last-of-type[fill="#054161"] + text {
   pointer-events: none;
 }
@@ -33,6 +33,10 @@
 .chart text {
   font-family: "Cinzel" !important;
   font-size: 0.75rem !important;
+}
+ 
+.chart [width="3"][fill="#054735"], .chart [width="3"][fill="#054161"] {
+  display: none;
 }
 
 .chart .today {

@@ -22,24 +22,32 @@ export const useGamesFromMarkdown = (data: Queries.IndexPageQuery): Game[] => {
       game.currentSeason = hasLatestSeasonStarted
         ? gameSeasons[0]
         : gameSeasons[1];
+        
+        if(game.currentSeason && !game.currentSeason.end?.endDate){ 
+          game.currentSeason.end ??= {};
+          game.currentSeason!.end!.endDate = new Date(
+            new Date(game.currentSeason?.start?.startDate).getTime() +
+              120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
+          ).toISOString()
+        }
 
       game.nextSeason = hasLatestSeasonStarted
         ? {
             name: `Next ${g.seasonKeyword}`,
             start: {
               confirmed: false,
-              startDate: new Date(
-                new Date(gameSeasons[0]?.start?.startDate ?? "").getTime() +
+              startDate: game.currentSeason?.end?.endDate ??new Date(
+                new Date(game.currentSeason?.start?.startDate ?? "").getTime() +
                   120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
-              ).toString(),
+              ).toISOString(),
               overrideText: "To be announced",
             },
             end: {
               confirmed: false,
-              endDate: new Date(
-                new Date(gameSeasons[0]?.start?.startDate ?? "").getTime() +
-                  240 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
-              ).toString(),
+              endDate:  game.currentSeason?.end?.endDate ?? new Date(
+                new Date(game.currentSeason?.start?.startDate ?? "").getTime() +
+                  120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
+              ).toISOString(), 
             },
           }
         : gameSeasons[0];
@@ -50,15 +58,15 @@ export const useGamesFromMarkdown = (data: Queries.IndexPageQuery): Game[] => {
           endDate: new Date(
             new Date(game.currentSeason.start?.startDate ?? "").getTime() +
               120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
-          ).toString(),
+          ).toISOString(),
         };
       }
 
       if (game.currentSeason && !game.currentSeason.end?.endDate) {
         game.currentSeason!.end!.endDate = new Date(
           new Date(game.currentSeason.start?.startDate ?? "").getTime() +
-            120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
-        ).toString();
+            120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration 
+        ).toISOString(); 
       }
 
       if (game.nextSeason && !game.nextSeason.end) {
@@ -67,15 +75,15 @@ export const useGamesFromMarkdown = (data: Queries.IndexPageQuery): Game[] => {
           endDate: new Date(
             new Date(game.nextSeason.start?.startDate ?? "").getTime() +
               120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
-          ).toString(),
+          ).toISOString(),
         };
       }
 
       if (game.nextSeason && !game.nextSeason.end?.endDate) {
         game.nextSeason!.end!.endDate = new Date(
-          new Date(game.nextSeason.start?.startDate ?? "").getTime() +
-            120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
-        ).toString();
+          new Date(game.nextSeason.start?.startDate ?? game.currentSeason?.end?.endDate).getTime() +
+            120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration 
+        ).toISOString(); 
       }
 
       return game;

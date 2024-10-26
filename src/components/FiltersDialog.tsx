@@ -47,7 +47,7 @@ export const FiltersDialog = ({
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Trigger checked={checked} filters={filters} />
+          <Trigger checked={checked} />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -70,7 +70,7 @@ export const FiltersDialog = ({
   return (
     <Drawer direction={isMd ? "right" : "bottom"}>
       <DrawerTrigger asChild>
-        <Trigger checked={checked} filters={filters} />
+        <Trigger checked={checked} />
       </DrawerTrigger>
       <DrawerContent className={!isMd ? "left-0" : undefined}>
         <DrawerHeader>
@@ -110,7 +110,7 @@ const Description = () => (
 const Trigger = forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<typeof Button> &
-    Pick<FiltersDialogProps, "checked" | "filters">
+    Pick<FiltersDialogProps, "checked">
 >(({ checked, ...rest }, ref) => (
   <Button
     {...rest}
@@ -119,11 +119,16 @@ const Trigger = forwardRef<
     onMouseDown={() => {
       sa_event("filters_opened");
     }}
-    className={"relative z-10"}
+    className={
+      "group relative z-0 rounded-full px-3 shadow-md shadow-black transition-all ease-in-out"
+    }
   >
-    <Filter className="mr-2 h-4 w-4" /> Filter games
+    <Filter className="h-4 w-4" />
+    <span className="max-w-0 overflow-hidden transition-all ease-in-out group-hover:ml-2 group-hover:max-w-20">
+      Filter games
+    </span>
     <span className="absolute -right-2 -top-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-      <span className="relative grid h-6 w-6 place-content-center rounded-lg bg-secondary font-ui font-semibold text-primary-foreground shadow-sm">
+      <span className="relative grid h-6 w-6 place-content-center rounded-full bg-secondary font-ui font-semibold text-primary-foreground shadow-sm shadow-black">
         {checked.length}
       </span>
     </span>

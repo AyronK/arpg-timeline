@@ -36,9 +36,9 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="mt-4 flex flex-col-reverse gap-4 md:mt-8 md:flex-col">
-          <div className="relative bottom-0 z-50 flex justify-between max-sm:fixed max-sm:right-0 max-sm:w-screen">
-            <div className="fixed bottom-4 right-4 max-w-[1200px] shadow-lg max-sm:mx-auto">
+        <div className="relative mt-4 flex flex-col-reverse gap-4 md:flex-col">
+          <div className="fixed z-50 max-sm:bottom-4 max-sm:right-4 md:sticky md:top-0 md:h-0 md:translate-x-full md:translate-y-[16px]">
+            <div className="md:ml-4">
               <FiltersDialog
                 checked={activeFilters}
                 filters={gameFilters}
@@ -47,7 +47,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               />
             </div>
           </div>
-          <article className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
+          <article className="relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
             {filteredGames.map((game, idx) => (
               <div
