@@ -44,8 +44,9 @@ export const useGamesFromMarkdown = (data: Queries.IndexPageQuery): Game[] => {
                   ).getTime() +
                     120 * 24 * 50 * 60 * 1000, // TODO replace with avg of previous events duration
                 ).toISOString(),
-              overrideText:
-                game.currentSeason?.end?.overrideText ?? "To be announced",
+              overrideText: game.currentSeason?.end?.overrideText?.length
+                ? game.currentSeason?.end?.overrideText
+                : "To be announced",
             },
             end: {
               confirmed: false,
