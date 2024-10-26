@@ -61,7 +61,6 @@ export const Countdown = ({
     return () => clearInterval(timerInterval);
   }, [date, testProps?.timeLeft]);
 
-  // TODO fix 0 when not last time segment
   return (
     <TrailingBorder>
       <div className="flex select-none flex-row items-center justify-center gap-1 pt-0.5 font-heading text-lg font-bold text-emerald-100 md:text-xl">

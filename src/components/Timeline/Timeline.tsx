@@ -12,13 +12,16 @@ const TIMELINE_COLUMNS = [
   { type: "date", id: "Start" },
   { type: "date", id: "End" },
 ];
- 
+
 const getEventPeriods = (event: TimelineEvent) => {
-  const running = Math.max(event.startDate
-    ? Math.floor(
-        (new Date().getTime() - new Date(event.startDate).getTime()) / DAY,
-      )
-    : 1, 1); 
+  const running = Math.max(
+    event.startDate
+      ? Math.floor(
+          (new Date().getTime() - new Date(event.startDate).getTime()) / DAY,
+        )
+      : 1,
+    1,
+  );
 
   const left = Math.max(
     Math.floor(
@@ -151,14 +154,18 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
           },
         ]}
         className="chart w-[300%] md:w-full"
-        options={options} 
+        options={options}
         chartType="Timeline"
         data={[
           TIMELINE_COLUMNS,
           ...events.map((e) => {
             return [
               e.game,
-              e.startDate === e.endDate ? "" : e.game ? `${e.game} - ${e.name}` : "",
+              e.startDate === e.endDate
+                ? ""
+                : e.game
+                  ? `${e.game} - ${e.name}`
+                  : "",
               timelinePopover(e),
               new Date(e.startDate),
               new Date(e.endDate),
