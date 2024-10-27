@@ -10,7 +10,7 @@ group: Diablo Mods
 url: https://www.median-xl.com/
 crawlerSettings:
   keywords:
-    - season 38
+    - season 39
     - patch 3.0
-    - patch 2.10
+    - 2.11
 ---

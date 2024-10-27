@@ -2,8 +2,10 @@ import "@/components/Timeline/Timeline.css";
 
 import { DAY, INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { TimelineEvent, TIMELINE_OPTIONS } from "@/components/Timeline/Conts";
+import { Button } from "@/ui/Button";
+import { Expand, Shrink } from "lucide-react";
 
 const TIMELINE_COLUMNS = [
   { type: "string", id: "Game" },
@@ -115,6 +117,7 @@ const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
 
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
+  const [expanded, setIsExpanded] = useState(false);
   const options = TIMELINE_OPTIONS;
   const containerHeight = Math.min(
     (events.length / 2) * ROW_HEIGHT + CARD_OFFSET,
@@ -126,57 +129,74 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   }
 
   return (
-    <div
-      ref={parentRef}
-      className="relative overflow-x-auto overflow-y-hidden"
-      style={{
-        height: `${containerHeight}px`,
-      }}
-    >
-      <Chart
-        chartEvents={[
-          {
-            eventName: "ready",
-            callback: () => {
-              const todaysElement = document.querySelector(
-                TODAYS_ENTRY_SELECTOR,
-              );
-              if (parentRef.current && todaysElement) {
-                const left =
-                  todaysElement.getBoundingClientRect().left -
-                  parentRef.current.getBoundingClientRect().left -
-                  parentRef.current.clientWidth / 2;
-                if (left > 0) {
-                  parentRef.current.scroll({
-                    left,
-                  });
+    <>
+      <Button
+        variant={"ghost"}
+        size="icon"
+        aria-label="Expand"
+        className="absolute right-1 top-1"
+        onClick={() => setIsExpanded((v) => !v)}
+      >
+        {expanded ? (
+          <Shrink className="h-4 w-4" />
+        ) : (
+          <Expand className="h-4 w-4" />
+        )}
+      </Button>
+      <div
+        ref={parentRef}
+        className="relative overflow-x-auto overflow-y-hidden"
+        style={{
+          height: expanded
+            ? `${(events.length / 2) * ROW_HEIGHT + 3 * ROW_HEIGHT}px`
+            : `${containerHeight}px`,
+        }}
+      >
+        <Chart
+          chartEvents={[
+            {
+              eventName: "ready",
+              callback: () => {
+                const todaysElement = document.querySelector(
+                  TODAYS_ENTRY_SELECTOR,
+                );
+                if (parentRef.current && todaysElement) {
+                  const left =
+                    todaysElement.getBoundingClientRect().left -
+                    parentRef.current.getBoundingClientRect().left -
+                    parentRef.current.clientWidth / 2;
+                  if (left > 0) {
+                    parentRef.current.scroll({
+                      left,
+                    });
+                  }
                 }
-              }
+              },
             },
-          },
-        ]}
-        className="chart w-[300%] md:w-full"
-        options={options}
-        chartType="Timeline"
-        data={[
-          TIMELINE_COLUMNS,
-          ...events.map((e) => {
-            return [
-              e.game,
-              e.startDate === e.endDate
-                ? ""
-                : e.game
-                  ? `${e.game} - ${e.name}`
-                  : "",
-              timelinePopover(e),
-              new Date(e.startDate),
-              new Date(e.endDate),
-            ];
-          }),
-          ["⁠", "Today", todaysPopover(), new Date(), new Date()],
-        ]}
-        height={`${CHART_MAX_HEIGHT}px`}
-      />
-    </div>
+          ]}
+          className="chart w-[300%] md:w-full"
+          options={options}
+          chartType="Timeline"
+          data={[
+            TIMELINE_COLUMNS,
+            ...events.map((e) => {
+              return [
+                e.game,
+                e.startDate === e.endDate
+                  ? ""
+                  : e.game
+                    ? `${e.game} - ${e.name}`
+                    : "",
+                timelinePopover(e),
+                new Date(e.startDate),
+                new Date(e.endDate),
+              ];
+            }),
+            ["⁠", "Today", todaysPopover(), new Date(), new Date()],
+          ]}
+          height={"100%"}
+        />
+      </div>
+    </>
   );
 };

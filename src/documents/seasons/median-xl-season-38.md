@@ -3,12 +3,11 @@ type: season
 game: Median XL
 name: Season 38
 start:
-  confirmed: false
-  overrideText: est. end of 2024
+  confirmed: true
   additionalText: ""
-  startDate: 2024-12-15T02:00:00.000Z
+  startDate: 2024-11-01T02:00:00.000Z
 end:
-  endDate: ""
+  endDate: 2025-03-01T09:00:00.000Z
   confirmed: false
   overrideText: ""
   additionalText: ""

@@ -29,7 +29,7 @@ export const CalendarMenu = ({
         variant={"link"}
         className="!h-[32px] !w-[32px] flex-1 md:!h-[40px] md:!w-[40px]"
         size={"icon"}
-        title="Add to calendar"
+        aria-label="Add to calendar"
       >
         <CalendarPlus className="h-4 w-4" />
       </Button>
