@@ -3,7 +3,7 @@
 
 # arpg-timeline
 
-[ARPG Timeline Website](https://arpg-timeline.ayronk.com/)
+[ARPG Timeline Website](https://arpg-timeline.com/)
 
 Stay ahead in your favorite ARPGs with the season tracker.
 Never miss a season start or end again!
@@ -74,7 +74,7 @@ If you'd like to help maintaining the list with up-to-date information about new
 
 ## Tracking
 
-[Simple Analytics](https://dashboard.simpleanalytics.com/arpg-timeline.ayronk.com)
+[Simple Analytics](https://dashboard.simpleanalytics.com/arpg-timeline.com)
 
 ## License
 
