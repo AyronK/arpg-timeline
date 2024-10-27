@@ -9,6 +9,6 @@ description: >-
 
   3. You can do it by clicking the filter button.
 withLogo: true
-duration: 15000
+duration: 5000
 order: 100
 ---
