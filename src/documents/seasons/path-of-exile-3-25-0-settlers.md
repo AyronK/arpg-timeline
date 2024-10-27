@@ -9,5 +9,6 @@ start:
   additionalText: ""
 end:
   endDate: 2024-12-12T00:00:00.000Z
+  overrideText: est. December
   confirmed: false
 ---

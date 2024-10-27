@@ -4,33 +4,22 @@ export interface TimelineEvent {
   name: string;
   game: string;
   startDate: Date;
+  startDateConfirmed: boolean;
   startDateNotice?: string | null;
   endDate: Date;
+  endDateConfirmed: boolean;
   endDateNotice?: string | null;
 }
 
-export const TIMELINE_OPTIONS: Record<string, ChartWrapperOptions["options"]> =
-  {
-    light: {
-      timeline: {
-        groupByRowLabel: true,
-        showRowLabels: true,
-      },
-      avoidOverlappingGridLines: false,
-      backgroundColor: "#ffffff",
-      colors: ["#cbd5e1", "#6ee7b7"],
-      allowHtml: true,
-      alternatingRowStyle: false,
-    },
-    dark: {
-      timeline: {
-        groupByRowLabel: true,
-        showRowLabels: true,
-      },
-      avoidOverlappingGridLines: false,
-      backgroundColor: "#181f2f",
-      colors: ["#303a50", "#065f46"],
-      allowHtml: true,
-      alternatingRowStyle: false,
-    },
-  };
+export const TIMELINE_OPTIONS: ChartWrapperOptions["options"] = {
+  timeline: {
+    groupByRowLabel: true,
+    showRowLabels: true,
+  },
+  avoidOverlappingGridLines: false,
+  backgroundColor: "#17171c",
+  colors: ["#054161", "#054735"],
+  allowHtml: true,
+  alternatingRowStyle: false,
+  fontFamily: "Times New Roman",
+};

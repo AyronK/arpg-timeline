@@ -3,11 +3,36 @@ import { DAY } from "@/lib/date";
 
 const GRACE_PERIOD = DAY * 2;
 
-export const inGracePeriod = (startDate: string) => {
+export const inGracePeriod = (startDate: string | null | undefined) => {
+  if (!startDate) {
+    return false;
+  }
   return new Date().getTime() - new Date(startDate).getTime() < GRACE_PERIOD;
 };
 
+export const isOver = (endDate: string | null | undefined) => {
+  if (!endDate) {
+    return false;
+  }
+  return new Date().getTime() - new Date(endDate).getTime() > 0;
+};
+
 export const sortBySeasons = (a: Game, b: Game) => {
+  const aIsCurrentSeasonOver =
+    a.nextSeason?.start?.startDate === a.nextSeason?.end?.endDate &&
+    a.currentSeason?.end?.endDate &&
+    isOver(a.currentSeason.end?.endDate);
+  const bIsCurrentSeasonOver =
+    b.nextSeason?.start?.startDate === b.nextSeason?.end?.endDate &&
+    b.currentSeason?.end?.endDate &&
+    isOver(b.currentSeason.end?.endDate);
+
+  if (!aIsCurrentSeasonOver && bIsCurrentSeasonOver) {
+    return -1;
+  }
+  if (aIsCurrentSeasonOver && !bIsCurrentSeasonOver) {
+    return 1;
+  }
   if (
     a.currentSeason?.start?.startDate &&
     inGracePeriod(a.currentSeason.start?.startDate)

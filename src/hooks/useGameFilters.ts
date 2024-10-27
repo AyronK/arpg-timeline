@@ -1,5 +1,7 @@
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { Game } from "@/lib/cms/games.types";
+import { sa_event } from "@/lib/sa_event";
+import { useEffect } from "react";
 
 export const useGameFilters = (games: Game[]) => {
   const [, setSearchParam, getSearchParam] = useSearchParams();
@@ -55,6 +57,15 @@ export const useGameFilters = (games: Game[]) => {
   };
 
   const filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
+
+  useEffect(() => {
+    for (const i in excludedSlugs) {
+      if (Object.prototype.hasOwnProperty.call(filteredGames, i)) {
+        const element = excludedSlugs[i];
+        sa_event(`game-hidden--${element}`);
+      }
+    }
+  }, [searchParam]);
 
   const activeFilters = games
     .map((g) => g!.slug!)
