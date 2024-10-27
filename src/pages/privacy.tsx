@@ -9,9 +9,9 @@ const IndexPage = () => {
           Privacy
         </h2>
         <p>
-          At <i>arpg-timeline.ayronk.com</i>, your privacy is important. I want
-          to be transparent about how the website collects and uses information
-          when you visit our website.
+          At <i>arpg-timeline.com</i>, your privacy is important. I want to be
+          transparent about how the website collects and uses information when
+          you visit our website.
           <br />
           <br />
           We do not use cookies nor do we process any personal data.

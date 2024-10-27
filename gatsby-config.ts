@@ -4,7 +4,7 @@ import adapter from "gatsby-adapter-netlify";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `aRPG Timeline`,
-    siteUrl: `https://arpg-timeline.ayronk.com`,
+    siteUrl: `https://arpg-timeline.com`,
   },
   graphqlTypegen: true,
   plugins: [
@@ -49,8 +49,8 @@ const config: GatsbyConfig = {
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
-        host: "https://arpg-timeline.ayronk.com/",
-        sitemap: "https://arpg-timeline.ayronk.com/sitemap-index.xml",
+        host: "https://arpg-timeline.com/",
+        sitemap: "https://arpg-timeline.com/sitemap-index.xml",
         policy: [
           {
             userAgent: "*",
