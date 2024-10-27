@@ -148,7 +148,7 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
         className="relative overflow-x-auto overflow-y-hidden"
         style={{
           height: expanded
-            ? `${(events.length / 2) * ROW_HEIGHT + CARD_OFFSET + ROW_HEIGHT}px`
+            ? `${(events.length / 2) * ROW_HEIGHT + 3 * ROW_HEIGHT}px`
             : `${containerHeight}px`,
         }}
       >
