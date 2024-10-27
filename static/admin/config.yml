@@ -302,3 +302,67 @@ collections:
             widget: "string"
             default: ""
             required: false
+
+  - label: "Faq"
+    name: "faq"
+    editor:
+      preview: false
+    folder: "src/documents/faq"
+    create: true
+    slug: "{{fields.title}}"
+    sortable_fields: ["order"]
+
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "faq"
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+
+      - label: "Content"
+        name: "content"
+        widget: "markdown"
+        required: true
+
+      - label: "Order"
+        name: "order"
+        widget: "number"
+        required: true
+        default: 100
+
+  - label: "Toasts"
+    name: "toasts"
+    label_singular: "Toast"
+    editor:
+      preview: false
+    folder: "src/documents/toasts"
+    create: true
+    slug: "{{fields.title}}"
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "toast"
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+
+      - label: "Description"
+        name: "description"
+        widget: "markdown"
+        required: true
+
+      - label: "With Logo"
+        name: "withLogo"
+        widget: "boolean"
+        default: true
+
+      - label: "Duration"
+        name: "duration"
+        widget: "number"

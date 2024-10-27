@@ -6,7 +6,6 @@ export default {
     "./src/components/**/*.{ts,tsx}",
     "./src/ui/**/*.{ts,tsx}",
   ],
-  darkMode: ["class"],
   theme: {
     screens: {
       sm: "640px",
@@ -21,14 +20,20 @@ export default {
       center: true,
       padding: {
         DEFAULT: "1rem",
-        md: "2rem",
+        md: "1rem",
         lg: "4rem",
         xl: "5rem",
         "2xl": "6rem",
       },
     },
     extend: {
+      fontFamily: {
+        heading: ["Cinzel", "serif"],
+        body: ["Merriweather", "serif"],
+        ui: ["Merriweather", "sans-serif"],
+      },
       colors: {
+        nextSeason: "hsl(var(--nextSeason))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -67,8 +72,8 @@ export default {
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "calc(var(--radius) / 2)",
+        sm: "calc(var(--radius) / 4)",
       },
       keyframes: {
         "accordion-down": {

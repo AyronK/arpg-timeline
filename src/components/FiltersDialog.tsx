@@ -4,7 +4,6 @@ import {
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
-  DrawerHandle,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -24,6 +23,7 @@ import { Switch } from "@/ui/Switch";
 import { cn } from "@/lib/utils";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { forwardRef } from "react";
+import { sa_event } from "@/lib/sa_event";
 
 export type FiltersDialogProps = {
   filters: { value: string; label: string; group?: string | undefined }[];
@@ -47,7 +47,7 @@ export const FiltersDialog = ({
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Trigger checked={checked} filters={filters} />
+          <Trigger checked={checked} />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -68,12 +68,11 @@ export const FiltersDialog = ({
   }
 
   return (
-    <Drawer direction={isMd ? "right" : "bottom"} handleOnly>
+    <Drawer direction={isMd ? "right" : "bottom"}>
       <DrawerTrigger asChild>
-        <Trigger checked={checked} filters={filters} />
+        <Trigger checked={checked} />
       </DrawerTrigger>
       <DrawerContent className={!isMd ? "left-0" : undefined}>
-        <DrawerHandle />
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription asChild>
@@ -111,25 +110,29 @@ const Description = () => (
 const Trigger = forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<typeof Button> &
-    Pick<FiltersDialogProps, "checked" | "filters">
->(({ filters, checked, ...rest }, ref) => (
+    Pick<FiltersDialogProps, "checked">
+>(({ checked, ...rest }, ref) => (
   <Button
     {...rest}
     ref={ref}
-    variant="outline"
-    className={cn("relative z-10", {
-      "animate-pulse":
-        checked?.length === filters?.length && filters?.length > 0,
-    })}
+    variant="default"
+    size={"lg"}
+    onMouseDown={() => {
+      sa_event("filters_opened");
+    }}
+    className={
+      "group relative z-0 h-12 rounded-full px-4 shadow-md shadow-black transition-all ease-in-out"
+    }
   >
-    <Filter className="mr-2 h-4 w-4" /> Filter games
-    {checked?.length !== filters?.length && filters?.length > 0 && (
-      <span className="absolute -right-3 -top-3 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-        <span className="relative grid h-6 w-6 place-content-center rounded-full bg-slate-500 text-white">
-          {checked.length}
-        </span>
+    <Filter className="h-4 w-4" />
+    <span className="max-w-0 overflow-hidden transition-all ease-in-out group-hover:ml-2 group-hover:max-w-20">
+      Filter games
+    </span>
+    <span className="absolute -right-2 -top-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
+      <span className="relative grid h-6 w-6 place-content-center rounded-full bg-secondary font-ui font-semibold text-primary-foreground shadow-sm shadow-black">
+        {checked.length}
       </span>
-    )}
+    </span>
   </Button>
 ));
 
@@ -158,7 +161,7 @@ const Filters = ({
           const anyChecked = !!groups[g].find((f) => checked.includes(f.value));
           return (
             <div className="flex flex-col gap-3" key={g}>
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center gap-2">
                 <h3 className="font-lg font-semibold">
                   {g !== "" ? g : "Uncategorized"}
                 </h3>

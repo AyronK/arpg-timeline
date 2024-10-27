@@ -1,6 +1,5 @@
 import "@/components/Timeline/Timeline.css";
 
-import { useTheme } from "@/components/ThemeProvider";
 import { DAY, INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
 import { useRef } from "react";
@@ -54,20 +53,25 @@ const timelinePopover = (event: TimelineEvent) => {
   const popoverClass =
     "z-50 grid gap-4 overflow-hidden rounded-md border bg-popover p-2 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2";
   const labelsWrapperClass = "grid gap-1";
-  const titleWrapper = `<div class="space-y-2"><p class="font-medium text-base leading-none">${event.game}</p><p class="text-sm text-muted-foreground">${event.name}</p></div>`;
+  const titleWrapper = `<div class="space-y-1"><p class="font-medium text-base md:text-xl leading-none font-heading">${event.game}</p><p class="text-xs md:text-sm font-heading">${event.name}</p></div>`;
 
   if (running < 0) {
     return `
       <div class="${popoverClass}">
         ${titleWrapper}
-        <div class="${labelsWrapperClass}">
+        ${
+          event.startDateConfirmed
+            ? `
+          <div class="${labelsWrapperClass}"> 
             <div class="grid grid-cols-3 items-center gap-2">
                 <span class="font-bold">Start date</span><span class="col-span-2">${INTL_LOCAL_DATETIME.format(new Date(event.startDate))}</span>
             </div>
-          <div class="grid grid-cols-3 items-center gap-2">
-              <span class="font-bold">Launches in</span><span class="col-span-2">${launchesIn} day(s)</span>
-          </div>
-        </div>
+            <div class="grid grid-cols-3 items-center gap-2">
+                <span class="font-bold">Launches in</span><span class="col-span-2">${launchesIn} day(s)</span>
+            </div>
+          </div>`
+            : (event.startDateNotice ?? "To be announced")
+        }
       </div>
     `;
   }
@@ -76,30 +80,42 @@ const timelinePopover = (event: TimelineEvent) => {
     <div class="${popoverClass}">
       ${titleWrapper}
       <div class="${labelsWrapperClass}">
+        ${
+          event.endDateConfirmed
+            ? `
           <div class="grid grid-cols-3 items-center gap-2">
               <span class="font-bold">End date</span><span class="col-span-2">${INTL_LOCAL_DATETIME.format(new Date(event.endDate))}</span>
           </div>
           <div class="grid grid-cols-3 items-center gap-2">
               <span class="font-bold">${left > 0 ? "Running" : "Lasted"}</span><span class="col-span-2">${left > 0 ? running : lasts} day(s)</span>
           </div>
+          ${
+            left > 0
+              ? `          
           <div class="grid grid-cols-3 items-center gap-2">
               <span class="font-bold">Remaining</span><span class="col-span-2">${Math.max(left, 0)} day(s)</span>
-          </div>
+          </div>`
+              : ""
+          }
+          `
+            : `
+          <div class="grid grid-cols-3 items-center gap-2">
+              <span class="font-bold">${left > 0 ? "Running" : "Lasted"}</span><span class="col-span-2">${left > 0 ? Math.max(running, 1) : lasts} day(s)</span>
+          </div>`
+        }
       </div>
     </div>
   `;
 };
 
-const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#303a50"]`;
+const TODAYS_ENTRY_SELECTOR = `.chart g rect:last-of-type[fill="#054161"]`;
 const ROW_HEIGHT = 40;
 const CARD_OFFSET = 96;
 const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
 
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
-  const { theme, getPreference } = useTheme();
-  const chartTheme = theme === "system" ? getPreference() : theme;
-  const options = TIMELINE_OPTIONS[chartTheme];
+  const options = TIMELINE_OPTIONS;
   const containerHeight = Math.min(
     (events.length / 2) * ROW_HEIGHT + CARD_OFFSET,
     CHART_MAX_HEIGHT,
@@ -126,16 +142,15 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
                 TODAYS_ENTRY_SELECTOR,
               );
               if (parentRef.current && todaysElement) {
-                console.log(
+                const left =
                   todaysElement.getBoundingClientRect().left -
-                    parentRef.current.getBoundingClientRect().left,
-                );
-                parentRef.current.scroll({
-                  left:
-                    todaysElement.getBoundingClientRect().left -
-                    parentRef.current.getBoundingClientRect().left -
-                    parentRef.current.clientWidth / 2,
-                });
+                  parentRef.current.getBoundingClientRect().left -
+                  parentRef.current.clientWidth / 2;
+                if (left > 0) {
+                  parentRef.current.scroll({
+                    left,
+                  });
+                }
               }
             },
           },
@@ -148,7 +163,11 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
           ...events.map((e) => {
             return [
               e.game,
-              e.name ? `${e.game} - ${e.name}` : "",
+              e.startDate === e.endDate
+                ? ""
+                : e.game
+                  ? `${e.game} - ${e.name}`
+                  : "",
               timelinePopover(e),
               new Date(e.startDate),
               new Date(e.endDate),

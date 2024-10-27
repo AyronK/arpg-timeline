@@ -1,16 +1,23 @@
 import { lazy, Suspense } from "react";
 import { graphql, PageProps } from "gatsby";
-import { SeasonCard } from "@/components/SeasonCard/SeasonCard";
 import { Layout } from "@/components/Layout";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { Faq } from "@/components/Faq";
-import { Button } from "@/ui/Button";
-import { UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Game } from "@/lib/cms/games.types";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
+import { GameCard } from "@/components/GameCard/GameCard";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
+import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
+import { useToast } from "@/ui/hooks/useToast";
+import { Toaster } from "@/ui/Toaster";
+import { useEffect } from "react";
+import { remark } from "remark";
+import html from "remark-html";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -19,6 +26,31 @@ const Timeline = lazy(() =>
 );
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
+  const { toast } = useToast();
+  const renderMarkdown = (markdownContent: string) =>
+    remark().use(html).processSync(markdownContent).toString();
+
+  useEffect(() => {
+    const toastData = data.toasts.edges[0]?.node.frontmatter;
+    if (!toastData) {
+      return;
+    }
+
+    toast({
+      title: toastData.title!,
+      description: toastData.description && (
+        <div
+          className="rich-text"
+          dangerouslySetInnerHTML={{
+            __html: renderMarkdown(toastData.description),
+          }}
+        />
+      ),
+      withLogo: toastData.withLogo ?? false,
+      duration: toastData.duration ?? undefined,
+    });
+  }, []);
+
   const games = useGamesFromMarkdown(data);
   const {
     gameFilters,
@@ -28,37 +60,28 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
     activeFilters,
   } = useGameFilters(games as Game[]);
   const events = useTimelineEvents(filteredGames);
-  console.log(games, events);
   return (
     <Layout>
       <div className="container relative mx-auto mb-8">
-        <p className="mx-auto hidden max-w-prose text-center text-lg md:block md:text-xl">
+        <p className="mx-auto hidden max-w-prose text-center font-heading text-lg md:mt-8 md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="mt-2 flex flex-col gap-4 md:mt-0">
-          <div className="max-w-[1200px]">
-            <FiltersDialog
-              checked={activeFilters}
-              filters={gameFilters}
-              onCheckedChange={toggleGameFilter}
-              onGroupCheckedChange={toggleGroupFilter}
-            />
+        <div className="relative mt-4 flex flex-col-reverse gap-4 md:mt-8 md:flex-col">
+          <div className="fixed z-50 max-sm:bottom-8 max-sm:right-8 md:sticky md:left-0 md:right-0 md:top-0 md:h-0">
+            <div className="md:absolute md:-right-4 md:ml-auto md:translate-x-full md:translate-y-[16px]">
+              <ErrorBoundary fallback={<WidgetDiedFallback />}>
+                <FiltersDialog
+                  checked={activeFilters}
+                  filters={gameFilters}
+                  onCheckedChange={toggleGameFilter}
+                  onGroupCheckedChange={toggleGroupFilter}
+                />
+              </ErrorBoundary>
+            </div>
           </div>
-          <div className="relative z-0 flex text-xs xl:container xl:absolute xl:left-0 xl:right-0 xl:top-14 xl:w-full">
-            <Button
-              variant={"warning"}
-              asChild
-              className="w-full px-2 lg:ml-auto lg:px-4 xl:w-auto"
-            >
-              <a href="/looking-for-moderators" rel="self">
-                <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
-                Looking for moderators! (fixed Discord)
-              </a>
-            </Button>
-          </div>
-          <article className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
+          <article className="relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
             <h2 className="sr-only">Game seasons</h2>
             {filteredGames.map((game, idx) => (
               <div
@@ -70,25 +93,55 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                   "4xl:order-first": idx <= 4,
                 })}
               >
-                <SeasonCard {...game} />
+                <ErrorBoundary fallback={<WidgetDiedFallback />}>
+                  <GameCard
+                    name={game.name}
+                    logo={
+                      <GatsbyImage
+                        image={getImage(game.logo!)!}
+                        alt={`${game.name} logo`}
+                        className="my-auto"
+                        objectFit="contain"
+                        objectPosition="center"
+                      />
+                    }
+                    shortName={game.shortName}
+                    url={game.url}
+                    official={game.official}
+                  >
+                    <div className="md:min-h-[64px]">
+                      <GameToSeasonWidget game={game} selector="current" />
+                    </div>
+                    <GameToSeasonWidget game={game} selector="next" />
+                  </GameCard>
+                </ErrorBoundary>
               </div>
             ))}
             <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
               <div>
-                <h3 className="mb-1.5 font-semibold sm:text-lg">Timeline</h3>
+                <h3 className="mb-1.5 text-xs">Timeline</h3>
                 <Suspense
                   fallback={
                     <div className="h-[255px] md:h-[296px]">Loading</div>
                   }
                 >
-                  <Timeline events={events} />
+                  <ErrorBoundary fallback={<WidgetDiedFallback />}>
+                    <Timeline events={events} />
+                  </ErrorBoundary>
                 </Suspense>
               </div>
             </div>
           </article>
         </div>
       </div>
-      <Faq />
+      <Faq
+        faq={data.faq.edges
+          .map((e) => e.node.frontmatter)
+          .filter((q) => q?.content && q.title)
+          .sort((a, b) => a.order - b.order)
+          .map((q) => ({ title: q?.title ?? "", content: q?.content ?? "" }))}
+      />
+      <Toaster />
     </Layout>
   );
 };
@@ -145,6 +198,32 @@ export const query = graphql`
               overrideText
               additionalText
             }
+          }
+        }
+      }
+    }
+    faq: allMarkdownRemark(filter: { frontmatter: { type: { eq: "faq" } } }) {
+      edges {
+        node {
+          frontmatter {
+            title
+            content
+            order
+          }
+        }
+      }
+    }
+    toasts: allMarkdownRemark(
+      filter: { frontmatter: { type: { eq: "toast" } } }
+    ) {
+      edges {
+        node {
+          frontmatter {
+            title
+            description
+            withLogo
+            duration
+            order
           }
         }
       }

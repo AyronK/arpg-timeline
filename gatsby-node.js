@@ -32,3 +32,20 @@ exports.onCreateBabelConfig = ({ actions }) => {
     },
   });
 };
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  createTypes(`
+    type MarkdownRemarkFrontmatter {
+      title: String
+      description: String
+      withLogo: Boolean
+      duration: Int
+      order: Int
+    }
+    
+    type MarkdownRemark implements Node {
+      frontmatter: MarkdownRemarkFrontmatter
+    }
+  `);
+};
