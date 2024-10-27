@@ -2,7 +2,7 @@
 type: game
 name: Slash Diablo
 slug: slash-diablo
-seasonKeyword: season
+seasonKeyword: ladder reset
 official: false
 group: Diablo Mods
 logo: /img/slashdiablo-logo.png
