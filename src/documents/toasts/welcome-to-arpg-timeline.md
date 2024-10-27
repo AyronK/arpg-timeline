@@ -7,4 +7,3 @@ description: >-
 withLogo: true
 duration: 15000
 ---
-
