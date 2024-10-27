@@ -333,3 +333,36 @@ collections:
         widget: "number"
         required: true
         default: 100
+
+  - label: "Toasts"
+    name: "toasts"
+    label_singular: "Toast"
+    editor:
+      preview: false
+    folder: "src/documents/toasts"
+    create: true
+    slug: "{{fields.title}}"
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "toast"
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+
+      - label: "Description"
+        name: "description"
+        widget: "markdown"
+        required: true
+
+      - label: "With Logo"
+        name: "withLogo"
+        widget: "boolean"
+        default: true
+
+      - label: "Duration"
+        name: "duration"
+        widget: "number"

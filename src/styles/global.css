@@ -126,4 +126,8 @@
   .rich-text a {
     @apply underline transition-all hover:brightness-150;
   }
+
+  .rich-text ol {
+    @apply list-inside list-decimal;
+  }
 }

@@ -13,6 +13,11 @@ import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
+import { useToast } from "@/ui/hooks/useToast";
+import { Toaster } from "@/ui/Toaster";
+import { useEffect } from "react";
+import { remark } from "remark";
+import html from "remark-html";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -21,6 +26,31 @@ const Timeline = lazy(() =>
 );
 
 const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
+  const { toast } = useToast();
+  const renderMarkdown = (markdownContent: string) =>
+    remark().use(html).processSync(markdownContent).toString();
+
+  useEffect(() => {
+    const toastData = data.toasts.edges[0]?.node.frontmatter;
+    if (!toastData) {
+      return;
+    }
+
+    toast({
+      title: toastData.title!,
+      description: toastData.description && (
+        <div
+          className="rich-text"
+          dangerouslySetInnerHTML={{
+            __html: renderMarkdown(toastData.description),
+          }}
+        />
+      ),
+      withLogo: toastData.withLogo ?? false,
+      duration: toastData.duration ?? undefined,
+    });
+  }, []);
+
   const games = useGamesFromMarkdown(data);
   const {
     gameFilters,
@@ -111,6 +141,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           .sort((a, b) => a.order - b.order)
           .map((q) => ({ title: q?.title ?? "", content: q?.content ?? "" }))}
       />
+      <Toaster />
     </Layout>
   );
 };
@@ -177,6 +208,21 @@ export const query = graphql`
           frontmatter {
             title
             content
+            order
+          }
+        }
+      }
+    }
+    toasts: allMarkdownRemark(
+      filter: { frontmatter: { type: { eq: "toast" } } }
+    ) {
+      edges {
+        node {
+          frontmatter {
+            title
+            description
+            withLogo
+            duration
             order
           }
         }

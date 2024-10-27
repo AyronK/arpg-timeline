@@ -23,7 +23,7 @@ export const GameCard = ({
             className="relative flex flex-col gap-2"
             target="_blank"
           >
-            <div className="grid min-h-[72px] w-[120px] md:h-[140px] md:w-[160px]"> 
+            <div className="grid min-h-[72px] w-[120px] md:h-[140px] md:w-[160px]">
               {logo}
             </div>
           </MaybeLinkWrapper>

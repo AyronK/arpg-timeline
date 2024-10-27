@@ -2,7 +2,6 @@ import { TimelineEvent } from "@/components/Timeline/Conts";
 import { Game } from "@/lib/cms/games.types";
 
 export const useTimelineEvents = (games: Game[]) => {
-  console.log(games);
   return games.reduce((prev: TimelineEvent[], g: Game) => {
     const next = [...prev];
 

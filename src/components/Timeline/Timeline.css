@@ -31,7 +31,7 @@
 .chart [width="3"][fill="#054161"] + text {
   display: none;
 }
-
+ 
 .chart g:not(:last-of-type) rect:last-of-type[fill="#054735"],
 .chart g:not(:last-of-type) rect:last-of-type[fill="#054161"] {
   width: 1px;
