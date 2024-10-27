@@ -1,7 +1,7 @@
 ---
 type: game
-name: Grim League (Grim Dawn)
-slug: grim-league
+name: Grim Dawn Community League
+slug: grim-dawn-community-league
 seasonKeyword: season
 official: true
 group: Grim Dawn Community
