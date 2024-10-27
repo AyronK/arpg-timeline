@@ -103,7 +103,7 @@ export const GameToSeasonWidget = ({
                 action={
                   <CalendarMenu
                     startDate={season.start.startDate}
-                    title="title"
+                    title={`${game.name} ${season.name} launch`}
                   />
                 }
               >
