@@ -16,14 +16,14 @@ export const GameCard = ({
           <h3 className="font-heading text-xs">{name}</h3>
           {!official && <CommunityLabel />}
         </div>
-        <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[200px]">
+        <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
           <MaybeLinkWrapper
             href={url}
             rel="nofollow noreferrer"
             className="relative flex flex-col gap-2"
             target="_blank"
           >
-            <div className="grid min-h-[72px] w-[120px] md:h-[140px]">
+            <div className="grid min-h-[72px] w-[120px] md:h-[140px] md:w-[160px]"> 
               {logo}
             </div>
           </MaybeLinkWrapper>
