@@ -1,15 +1,15 @@
 ---
 type: season
 game: Grim Dawn Community League
-name: Season 8
+name: Season 7
 start:
-  confirmed: false
-  overrideText: "2025"
+  confirmed: true
   additionalText: ""
-  startDate: 2025-01-19T15:00:00.000Z
+  startDate: 2024-10-19T15:00:00.000Z
 end:
-  endDate: ""
-  confirmed: false
+  endDate: 2025-01-19T15:00:00.000Z
+  confirmed: true
   overrideText: ""
   additionalText: ""
 ---
+
