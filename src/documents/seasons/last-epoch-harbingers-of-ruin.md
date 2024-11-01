@@ -1,7 +1,7 @@
 ---
 type: season
 game: Last Epoch
-name: "Harbingers of Ruin"
+name: Season 1 - Harbingers of Ruin
 start:
   confirmed: true
   overrideText: ""
