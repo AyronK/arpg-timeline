@@ -1,17 +1,17 @@
 ---
-slug: path-of-diablo
 type: game
-seasonKeyword: season
 name: Path of Diablo
 shortName: PoD
+slug: path-of-diablo
+seasonKeyword: season
 official: false
 group: Diablo Mods
 logo: /img/pathofdiablo-logo.png
 url: https://pathofdiablo.com/
 crawlerSettings:
   keywords:
-    - news=44
     - news=45
-    - s13
-    - season 13
+    - news=46
+    - s14
+    - season 14
 ---
