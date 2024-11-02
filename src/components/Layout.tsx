@@ -71,12 +71,12 @@ export const Head = () => {
       <link rel="canonical" href={siteUrl} />
       <meta
         name="keywords"
-        content="path of exile, diablo, last epoch, torchlight infinite, hero siege, new league release date, new season release date, diablo alternative, poe alternative, best arpgs, season start, league start, new cycle release date, diablo 2, diablo 3, diablo 4, diablo iv, action rpg, arpg, arpg-timeline, arpg tracker, season, seasons, arpg seasons, cycle, league, poe, poe2"
+        content="path of exile, diablo, last epoch, torchlight infinite, hero siege, new league release date, new season release date, diablo alternative, poe alternative, best arpgs, season start, league start, new season release date, diablo 2, diablo 3, diablo 4, diablo iv, action rpg, arpg, arpg-timeline, arpg tracker, season, seasons, arpg seasons, league, poe, poe2, path of diablo, median xl, project diablo, grim dawn, undecember, dwarven realms, slash diablo"
       />
       <meta name="title" content={title} />
       <meta
         name="description"
-        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile leagues, Diablo and Torchlight seasons, and Last Epoch cycles. Never miss a release again!"
+        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile leagues, Diablo and Torchlight seasons, and Last Epoch seasons. Never miss a release again!"
       />
       <meta name="author" content="Ayron, https://github.com/AyronK" />
       <meta
@@ -88,7 +88,7 @@ export const Head = () => {
       <meta property="og:title" content={title} />
       <meta
         property="og:description"
-        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile and Path of Exile 2 leagues, Diablo IV seasons, and Last Epoch cycles. Never miss a release again!"
+        content="Stay ahead in your favorite ARPGs with the season tracker. Never miss a season start or end again!"
       />
       <meta property="og:image" content="/assets/seoimage.png" />
       <meta property="twitter:card" content="summary_large_image" />
@@ -96,7 +96,7 @@ export const Head = () => {
       <meta property="twitter:title" content={title} />
       <meta
         property="twitter:description"
-        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile and Path of Exile 2 leagues, Diablo IV seasons, and Last Epoch cycles. Never miss a release again!"
+        content="Stay ahead in your favorite ARPGs with the season tracker. Never miss a season start or end again!"
       />
       <meta property="twitter:image" content="/assets/seoimage.png" />
       <meta charSet="UTF-8" />
