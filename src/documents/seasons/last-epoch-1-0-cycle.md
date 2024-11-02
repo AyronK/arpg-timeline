@@ -1,7 +1,7 @@
 ---
 type: season
 game: Last Epoch
-name: 1.0 - Cycle
+name: Launch season
 start:
   startDate: 2024-02-21T16:00:00.000Z
   confirmed: true
