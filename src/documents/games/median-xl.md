@@ -12,5 +12,5 @@ crawlerSettings:
   keywords:
     - season 39
     - patch 3.0
-    - 2.11
+    - '2.11'
 ---
