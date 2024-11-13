@@ -1,3 +1,6 @@
+import fetch from "node-fetch";
+import { Notification } from "./types";
+
 const formatNotification = (notification: Notification, idx: number): string => 
   `*🔹 Notification #${idx + 1}*\n${notification.text}`;
 
