@@ -1,6 +1,8 @@
 import fetch from "node-fetch";
 import { Notification } from "./types";
 
+const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL as string;
+
 const formatNotification = (notification: Notification, idx: number): string => 
   `*🔹 Notification #${idx + 1}*\n${notification.text}`;
 
