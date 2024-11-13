@@ -24,7 +24,7 @@ export const sendDiscordNotification = async (
   const content = formatNotifications(notifications);
 
   try {
-    await fetch(discordWebhookUrl, {
+    const response = await fetch(discordWebhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -32,7 +32,12 @@ export const sendDiscordNotification = async (
         content,
       }),
     });
-    console.log("✅ Posted message to Discord!");
+    if(response.ok) {
+      console.log("✅ Posted message to Discord!");
+    } else {
+      const errorText = await response.text();
+      console.error("❌ Failed to send a message to Discord:", errorText);
+    }
   } catch (e) {
     console.error("❌ Failed to send a message to Discord", e);
     throw e;
