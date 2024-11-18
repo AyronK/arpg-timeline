@@ -1,15 +1,15 @@
 ---
 type: season
 game: Undecember
-name: Next season
+name: Re Season
 start:
-  confirmed: false
-  overrideText: est. end of 2024
-  additionalText: ""
-  startDate: 2024-12-12T05:00:00.000Z
-end:
-  endDate: ""
-  confirmed: false
+  confirmed: true
   overrideText: ""
+  additionalText: ""
+  startDate: 2024-11-07T03:30:00.000Z
+end:
+  endDate: 2025-01-08T15:00:00.000Z
+  confirmed: false
+  overrideText: est. January
   additionalText: ""
 ---
