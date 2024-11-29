@@ -1,13 +1,14 @@
 ---
-slug: diablo-ii-resurected
 type: game
-seasonKeyword: season
 name: "Diablo II: Resurrected"
-shortName: "D2"
+shortName: D2
+slug: diablo-ii-resurected
+seasonKeyword: season
 official: true
+group: Diablo Official
 logo: /img/diablo2-logo-lg.avif
 url: https://diablo2.blizzard.com/
-group: Diablo Official
 crawlerSettings:
-  keywords: ["season 9"]
+  keywords:
+    - season 10
 ---
