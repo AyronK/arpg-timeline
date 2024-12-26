@@ -10,6 +10,6 @@ start:
 end:
   endDate: 2025-03-09T15:00:00.000Z
   confirmed: false
-  overrideText: ""
-  additionalText: est. March/April
+  overrideText: est. March/April
+  additionalText: ""
 ---
