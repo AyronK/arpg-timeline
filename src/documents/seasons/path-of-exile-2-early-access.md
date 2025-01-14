@@ -11,4 +11,5 @@ end:
   endDate: 2025-12-06T00:00:00.000Z
   confirmed: false
   overrideText: 6-12 months long
+  additionalText: Expected economy reset in Q1
 ---
