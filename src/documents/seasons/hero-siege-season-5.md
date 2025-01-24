@@ -10,6 +10,6 @@ start:
   overrideText: ""
 end:
   overrideText: ""
-  endDate: 2025-04-13T11:00:00.000Z
+  endDate: 2025-03-13T11:00:00.000Z
   confirmed: false
 ---
