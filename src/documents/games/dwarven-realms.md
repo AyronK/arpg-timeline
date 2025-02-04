@@ -9,5 +9,5 @@ logo: /img/dwarven-realms-logo.webp
 url: https://www.dwarvenrealms.com/
 crawlerSettings:
   keywords:
-    - season 3
+    - season 4
 ---

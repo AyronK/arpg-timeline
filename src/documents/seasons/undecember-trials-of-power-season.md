@@ -1,7 +1,7 @@
 ---
 type: season
 game: Undecember
-name: Trials of Power Season
+name: "Season 7: Trials of Power"
 start:
   confirmed: true
   overrideText: ""

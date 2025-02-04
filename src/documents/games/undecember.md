@@ -1,13 +1,13 @@
 ---
-slug: undecember
 type: game
-seasonKeyword: season
 name: Undecember
 shortName: UD
+slug: undecember
+seasonKeyword: season
 official: true
 logo: /img/undecember-logo.png
 url: https://undecember.line.games/
 crawlerSettings:
   keywords:
-    - season 6
+    - season 8
 ---
