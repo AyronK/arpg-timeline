@@ -1,15 +1,15 @@
 ---
 type: season
 game: Path of Exile 2
-name: Early Access
+name: Early Access - Launch
 url: https://pathofexile2.com/
 start:
   confirmed: true
   startDate: 2024-12-06T19:00:00.000Z
   additionalText: ""
 end:
-  endDate: 2025-12-06T00:00:00.000Z
+  endDate: 2025-04-10T00:00:00.000Z
   confirmed: false
-  overrideText: 6-12 months long
-  additionalText: Expected economy reset in Q1
+  overrideText: March/April
+  additionalText: ""
 ---
