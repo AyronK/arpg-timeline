@@ -9,8 +9,8 @@ start:
   additionalText: ""
   startDate: 2025-02-20T20:00:00.000Z
 end:
-  endDate: 2025-03-23T20:00:00.000Z
+  endDate: 2025-04-23T20:00:00.000Z
   confirmed: true
   overrideText: ""
-  additionalText: ""
+  additionalText: Prolonged for 1 month
 ---
