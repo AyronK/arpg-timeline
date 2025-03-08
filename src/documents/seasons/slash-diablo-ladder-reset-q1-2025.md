@@ -3,8 +3,8 @@ type: season
 game: Slash Diablo
 name: "Ladder Reset: Q1 2025"
 start:
-  confirmed: false
-  overrideText: End of March
+  confirmed: true
+  overrideText: ""
   additionalText: ""
   startDate: 2025-03-22T00:00:00.000Z
 end:
