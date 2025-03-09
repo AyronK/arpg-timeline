@@ -5,7 +5,7 @@ name: Early Access - 0.2.0
 url: ""
 start:
   confirmed: false
-  startDate: 2025-04-10T19:00:00.000Z
+  startDate: 2025-03-28T19:00:00.000Z
   additionalText: ""
   overrideText: March/April
 end:
