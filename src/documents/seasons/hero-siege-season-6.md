@@ -3,12 +3,12 @@ type: season
 game: Hero Siege
 name: Season 6
 start:
-  confirmed: false
-  overrideText: March/April
+  confirmed: true
+  overrideText: ""
   additionalText: ""
-  startDate: 2025-03-30T12:00:00.000Z
+  startDate: 2025-03-14T00:00:00.000Z
 end:
-  endDate: ""
+  endDate: 2025-06-30T23:59:00.000Z
   confirmed: false
   overrideText: ""
   additionalText: ""
