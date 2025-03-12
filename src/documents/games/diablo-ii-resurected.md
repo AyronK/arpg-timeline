@@ -10,5 +10,5 @@ logo: /img/diablo2-logo-lg.avif
 url: https://diablo2.blizzard.com/
 crawlerSettings:
   keywords:
-    - season 10
+    - season 11
 ---
