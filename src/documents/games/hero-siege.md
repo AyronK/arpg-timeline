@@ -9,7 +9,7 @@ logo: /img/site-logo.png
 url: https://panicartstudios.com/hsportal/
 crawlerSettings:
   keywords:
-    - season 6 patch notes
-    - season 6
-    - season 5.5
+    - season 7 patch notes
+    - season 7
+    - season 6.5
 ---

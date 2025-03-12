@@ -9,5 +9,5 @@ logo: /img/lastepoch.png
 url: https://lastepoch.com
 crawlerSettings:
   keywords:
-    - "season 2"
+    - season 3
 ---
