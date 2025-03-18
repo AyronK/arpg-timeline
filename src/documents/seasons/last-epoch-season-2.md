@@ -7,7 +7,7 @@ start:
   confirmed: true
   overrideText: ""
   additionalText: ""
-  startDate: 2025-04-02T16:00:00.000Z
+  startDate: 2025-04-17T16:00:00.000Z
 end:
   endDate: 2025-08-02T00:00:00.000Z
   confirmed: false
