@@ -8,8 +8,8 @@ start:
   additionalText: ""
   startDate: 2025-01-09T02:00:00.000Z
 end:
-  endDate: 2025-04-09T02:00:00.000Z
+  endDate: ""
   confirmed: false
-  overrideText: est. March / April
+  overrideText: est. April / May
   additionalText: ""
 ---
