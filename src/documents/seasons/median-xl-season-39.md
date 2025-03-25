@@ -6,7 +6,7 @@ start:
   confirmed: false
   additionalText: ""
   startDate: 2025-05-01T09:00:00.000Z
-  overrideText: ""
+  overrideText: Q2 2025
 end:
   endDate: ""
   confirmed: false
