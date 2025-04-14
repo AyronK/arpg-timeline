@@ -18,6 +18,7 @@ import { ReactNode } from "react";
 import { PreviousSeasonStartedSeoText } from "@/hoc/PreviousSeasonStartedSeoText";
 import { PreviousSeasonEndingSeoText } from "@/hoc/PreviousSeasonEndingSeoText";
 import { NextSeasonStartSeoText } from "@/hoc/NextSeasonStartSeoText";
+import { ShareMenu } from "@/components/ShareMenu";
 
 type Selector = "current" | "next";
 
@@ -100,7 +101,13 @@ export const GameToSeasonWidget = ({
           {season.start.startDate && (
             <div className="mt-auto">
               <FramedAction
-                action={
+                prepend={
+                  <ShareMenu
+                    startDate={season.start.startDate}
+                    title={`Hey, ${game.name} ${season.name} launch is happening`}
+                  />
+                }
+                append={
                   <CalendarMenu
                     startDate={season.start.startDate}
                     title={`${game.name} ${season.name} launch`}

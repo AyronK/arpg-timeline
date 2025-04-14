@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { CalendarMenu } from "@/components/CalendarMenu";
+import { ShareMenu } from "@/components/ShareMenu";
 
 const meta: Meta<typeof FramedAction> = {
   title: "Components/Framed Action",
@@ -22,7 +23,28 @@ type Story = StoryObj<typeof FramedAction>;
 
 export const Default: Story = {
   args: {
-    action: <CalendarMenu startDate={new Date().toISOString()} title="cal" />,
+    append: <CalendarMenu startDate={new Date().toISOString()} title="cal" />,
     children: "Content",
-  },
+  }, 
+};
+export const Prepend: Story = {
+  args: {
+    prepend: <ShareMenu startDate={new Date().toISOString()} title="share"/>,
+    children: "Content",
+  }, 
+};
+
+export const Append: Story = {
+  args: {
+    append: <CalendarMenu startDate={new Date().toISOString()} title="cal" />,
+    children: "Content",
+  }, 
+}; 
+
+export const PrependAndAppend: Story = {
+  args: {
+    prepend: <ShareMenu startDate={new Date().toISOString()} title="share"/>, 
+    append: <CalendarMenu startDate={new Date().toISOString()} title="cal" />,
+    children: "Content",
+  }, 
 };

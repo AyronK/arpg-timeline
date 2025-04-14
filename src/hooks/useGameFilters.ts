@@ -64,6 +64,10 @@ export const useGameFilters = (games: Game[]) => {
         const element = excludedSlugs[i];
         sa_event(`game-hidden--${element}`);
       }
+    }  
+  
+    if (filteredGames.length > 0) {
+      sa_event(`games-visible--${filteredGames.map(g=>g.name).join('-')}`);
     }
   }, [searchParam]);
 
