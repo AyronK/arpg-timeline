@@ -4,7 +4,7 @@ import adapter from "gatsby-adapter-netlify";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `aRPG Timeline | Seasons tracker`,
-    siteUrl: `https://arpg-timeline.com`    
+    siteUrl: `https://arpg-timeline.com`,
   },
   graphqlTypegen: true,
   plugins: [

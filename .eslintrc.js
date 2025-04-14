@@ -9,7 +9,7 @@ module.exports = {
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
-    "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended",
       ],
       env: {
         es6: true,
@@ -25,7 +25,7 @@ module.exports = {
           { allowSameFolder: false, rootDir: "src", prefix: "@" },
         ],
       },
-      plugins: [ "@typescript-eslint","react", "no-relative-import-paths"],
+      plugins: ["@typescript-eslint", "react", "no-relative-import-paths"],
     },
     {
       files: ["*.graphql"],
