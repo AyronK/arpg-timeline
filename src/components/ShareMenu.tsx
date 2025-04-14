@@ -2,7 +2,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem, 
+  DropdownMenuItem,
 } from "@/ui/DropdownMenu";
 import { Share2 } from "lucide-react";
 
@@ -18,7 +18,7 @@ export const ShareMenu = ({
 }) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button 
+      <Button
         variant={"link"}
         className="!h-[32px] !w-[32px] flex-1 md:!h-[40px] md:!w-[40px]"
         size={"icon"}
@@ -41,6 +41,6 @@ export const ShareMenu = ({
         />
         <span>Discord</span>
       </DropdownMenuItem>
-      </DropdownMenuContent>
+    </DropdownMenuContent>
   </DropdownMenu>
 );

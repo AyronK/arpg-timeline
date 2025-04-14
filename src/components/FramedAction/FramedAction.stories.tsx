@@ -25,26 +25,26 @@ export const Default: Story = {
   args: {
     append: <CalendarMenu startDate={new Date().toISOString()} title="cal" />,
     children: "Content",
-  }, 
+  },
 };
 export const Prepend: Story = {
   args: {
-    prepend: <ShareMenu startDate={new Date().toISOString()} title="share"/>,
+    prepend: <ShareMenu startDate={new Date().toISOString()} title="share" />,
     children: "Content",
-  }, 
+  },
 };
 
 export const Append: Story = {
   args: {
     append: <CalendarMenu startDate={new Date().toISOString()} title="cal" />,
     children: "Content",
-  }, 
-}; 
+  },
+};
 
 export const PrependAndAppend: Story = {
   args: {
-    prepend: <ShareMenu startDate={new Date().toISOString()} title="share"/>, 
+    prepend: <ShareMenu startDate={new Date().toISOString()} title="share" />,
     append: <CalendarMenu startDate={new Date().toISOString()} title="cal" />,
     children: "Content",
-  }, 
+  },
 };
