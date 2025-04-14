@@ -6,7 +6,7 @@ export const FramedAction = ({
   prepend,
 }: PropsWithChildren<{ append?: ReactNode; prepend?: ReactNode }>) => {
   return (
-    <div className="relative flex flex-row overflow-hidden rounded-md border border-slate-300 border-opacity-35">
+    <div className="relative flex flex-row overflow-hidden rounded-md border border-slate-300 border-opacity-25">
       {prepend && (
         <div className="bg-sky-800 transition-all hover:brightness-110">
           {prepend}

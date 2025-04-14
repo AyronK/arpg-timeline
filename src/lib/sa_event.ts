@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
   interface Window {
-    sa_event?: {
-      (...args: any[]): void;
-      q?: any[];
-    };
+    sa_event?: { (...args: any[]): void; q?: any[] };
   }
 }
 

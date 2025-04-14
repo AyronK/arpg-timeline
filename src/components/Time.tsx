@@ -9,7 +9,7 @@ export const Time = ({
   char: string;
   className?: string | undefined;
 }) => (
-  <div className={cn(className, "flex flex-row items-end gap-1")}>
+  <div className={cn(className, "flex flex-row items-end gap-[3px]")}>
     <div className="ml-auto w-[12px] min-w-[12px] max-w-[12px] text-center">
       {String(component).padStart(2, "0")[0]}
     </div>
