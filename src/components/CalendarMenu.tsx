@@ -3,15 +3,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/DropdownMenu";
+} from "@/ui/DropdownMenu";
 import { Calendar, CalendarPlus } from "lucide-react";
-import React from "react";
+
 import {
   downloadICSFile,
   addToGoogleCalendar,
   addToICloudCalendar,
   addToOutlookCalendar,
+  addToTickTick,
 } from "@/lib/calendar";
+import { cn } from "@/lib/utils";
+import { Button } from "@/ui/Button";
 
 export const CalendarMenu = ({
   title,
@@ -21,10 +24,15 @@ export const CalendarMenu = ({
   startDate: string;
 }) => (
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <span title="Add to calendar">
-        <CalendarPlus className="h-5 w-5" />
-      </span>
+    <DropdownMenuTrigger asChild>
+      <Button
+        variant={"link"}
+        className="!h-[32px] !w-[32px] flex-1 md:!h-[40px] md:!w-[40px]"
+        size={"icon"}
+        aria-label="Add to calendar"
+      >
+        <CalendarPlus className="h-4 w-4" />
+      </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuItem
@@ -36,7 +44,7 @@ export const CalendarMenu = ({
           width="24"
           height="24"
           src="/assets/google-calendar-logo.png"
-          alt="Add to Google calendar"
+          aria-hidden
         />
         <span>Gmail</span>
       </DropdownMenuItem>
@@ -49,7 +57,7 @@ export const CalendarMenu = ({
           width="24"
           height="24"
           src="/assets/apple-logo.svg"
-          alt="Add to iCloud calendar"
+          aria-hidden
         />
         <span>iCloud</span>
       </DropdownMenuItem>
@@ -62,9 +70,25 @@ export const CalendarMenu = ({
           width="24"
           height="24"
           src="/assets/outlook-logo.png"
-          alt="Add to Outlook"
+          aria-hidden
         />
         <span>Outlook</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        className={cn({
+          hidden: typeof window === "undefined" || !navigator?.clipboard,
+        })}
+        onClick={() => addToTickTick(title, new Date(startDate))}
+        aria-label="Add to TickTick Calendar"
+      >
+        <img
+          className="mr-2 h-4 w-4"
+          width="24"
+          height="24"
+          src="/assets/tick-tick-logo.png"
+          aria-hidden
+        />
+        <span>TickTick</span>
       </DropdownMenuItem>
       <DropdownMenuItem
         onClick={() => downloadICSFile(title, new Date(startDate))}

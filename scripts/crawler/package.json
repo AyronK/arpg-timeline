@@ -1,19 +1,37 @@
 {
   "name": "arpg-timeline-crawler",
+  "author": {
+    "name": "Marcin Kotlicki",
+    "email": "contact@arpg-timeline.com"
+  },
   "version": "1.0.0",
   "description": "A script to check for season updates and notify a Discord server.",
-  "main": "crawler.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist/lib/**"
+  ],
+  "type": "module",
   "scripts": {
-    "crawl": "node crawler.js",
-    "crawl:develop": "node --env-file=.env crawler.js"
+    "build": "tsc && tsc-alias",
+    "crawl": "tsc  && tsc-alias && node dist/index.js",
+    "crawl:develop": "tsc && tsc-alias && node --env-file=.env dist/index.js"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@types/he": "^1.2.3",
+    "@types/node": "^20.4.2",
+    "fast-xml-parser": "^4.4.0",
     "node-fetch": "^3.3.2",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "to-vfile": "^8.0.0",
+    "typescript": "^5.5.3",
     "unified": "^11.0.5",
     "vfile-matter": "^5.0.0"
+  },
+  "dependencies": {
+    "he": "^1.2.0",
+    "openai": "^4.61.0",
+    "tsc-alias": "^1.8.10"
   }
 }

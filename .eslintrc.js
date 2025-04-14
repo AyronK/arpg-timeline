@@ -4,12 +4,28 @@ module.exports = {
   overrides: [
     {
       files: ["*.ts", "*.tsx"],
-      processor: "@graphql-eslint/graphql",
       parser: "@typescript-eslint/parser",
-      extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+      extends: [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:@typescript-eslint/recommended",
+      ],
       env: {
         es6: true,
       },
+      rules: {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error"],
+        "react/prop-types": "off",
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off",
+        "no-relative-import-paths/no-relative-import-paths": [
+          "warn",
+          { allowSameFolder: false, rootDir: "src", prefix: "@" },
+        ],
+      },
+      plugins: ["@typescript-eslint", "react", "no-relative-import-paths"],
     },
     {
       files: ["*.graphql"],
@@ -30,6 +46,9 @@ module.exports = {
       },
     },
   ],
-
   extends: ["plugin:storybook/recommended"],
+  settings: {
+    react: { version: "detect" },
+    propWrapperFunctions: ["forbidExtraProps"],
+  },
 };

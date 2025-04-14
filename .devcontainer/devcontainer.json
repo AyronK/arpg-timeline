@@ -6,6 +6,20 @@
   "image": "mcr.microsoft.com/devcontainers/typescript-node:22-bullseye",
   "features": {
     "ghcr.io/devcontainers-contrib/features/jshint:2": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint"
+      ]
+    }
   }
 
   // Features to add to the dev container. More info: https://containers.dev/features.
@@ -16,9 +30,6 @@
 
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "yarn install",
-
-  // Configure tool-specific properties.
-  // "customizations": {},
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"

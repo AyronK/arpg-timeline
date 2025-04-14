@@ -3,31 +3,22 @@ import adapter from "gatsby-adapter-netlify";
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `aRPG Timeline`,
-    siteUrl: `https://arpg-timeline.ayronk.com`,
+    title: `aRPG Timeline | Path of Exile, Diablo, Last Epoch & more`,
+    siteUrl: `https://arpg-timeline.com`,
   },
   graphqlTypegen: true,
   plugins: [
     {
       resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/static/img`,
-        name: "img",
-      },
+      options: { path: `${__dirname}/static/img`, name: "img" },
     },
     {
       resolve: "gatsby-source-filesystem",
-      options: {
-        path: `${__dirname}/src/pages`,
-        name: "pages",
-      },
+      options: { path: `${__dirname}/src/documents`, name: "documents" },
     },
     {
       resolve: "gatsby-source-filesystem",
-      options: {
-        path: `${__dirname}/static/assets`,
-        name: "assets",
-      },
+      options: { path: `${__dirname}/static/assets`, name: "assets" },
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
@@ -36,29 +27,19 @@ const config: GatsbyConfig = {
       options: {
         plugins: [
           `gatsby-remark-relative-images`,
-          {
-            resolve: `gatsby-remark-images`,
-            options: {},
-          },
+          { resolve: `gatsby-remark-images`, options: {} },
         ],
       },
     },
     `gatsby-plugin-image`,
     "gatsby-plugin-sharp",
     "gatsby-plugin-sitemap",
-    "gatsby-plugin-decap-cms",
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
-        host: "https://arpg-timeline.ayronk.com/",
-        sitemap: "https://arpg-timeline.ayronk.com/sitemap-index.xml",
-        policy: [
-          {
-            userAgent: "*",
-            allow: ["/"],
-            disallow: [],
-          },
-        ],
+        host: "https://arpg-timeline.com/",
+        sitemap: "https://arpg-timeline.com/sitemap-index.xml",
+        policy: [{ userAgent: "*", allow: ["/"], disallow: [] }],
       },
     },
     {
@@ -77,25 +58,22 @@ const config: GatsbyConfig = {
     "gatsby-plugin-postcss",
     {
       resolve: "gatsby-plugin-simple-analytics",
-      options: {
-        trackPageViews: true,
-        events: true,
-        eventsGlobal: "sa_event",
-      },
+      options: { trackPageViews: true, events: true, eventsGlobal: "sa_event" },
     },
     {
       resolve: `gatsby-plugin-alias-imports`,
+      options: { alias: { "@": "./src" }, extensions: [] },
+    },
+    {
+      resolve: `gatsby-plugin-decap-cms`,
       options: {
-        alias: {
-          "@": "./src",
-        },
-        extensions: [],
+        manualInit: true,
+        enableIdentityWidget: false,
+        modulePath: `${__dirname}/src/cms.ts`,
       },
     },
   ],
-  adapter: adapter({
-    excludeDatastoreFromEngineFunction: false,
-  }),
+  adapter: adapter({ excludeDatastoreFromEngineFunction: false }),
 };
 
 export default config;

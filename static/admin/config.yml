@@ -1,7 +1,7 @@
 backend:
   name: github
   repo: AyronK/arpg-timeline
-  branch: main
+  branch: decap
   commit_messages:
     create: "Create {{collection}} “{{slug}}”"
     update: "Update {{collection}} “{{slug}}”"
@@ -12,15 +12,153 @@ media_folder: static/img
 public_folder: /img
 
 collections:
+  - label: "Crawler | HTTP"
+    slug: "{{fields.game}}-{{fields.source}}"
+    name: "crawlerSources_http"
+    label_singular: "Crawler HTTP source"
+    editor:
+      preview: false
+    folder: "src/documents/crawlerSources"
+    summary: "HTTP source | {{game}} | {{source}}"
+    filter: { field: "type", value: "crawlerSources_http" }
+    create: true
+    view_groups:
+      - label: Game
+        field: game
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "crawlerSources_http"
+
+      - label: "Game"
+        name: "game"
+        widget: "relation"
+        collection: "games"
+        search_fields: ["name", "slug", "shortName"]
+        value_field: "name"
+        display_fields: ["name"]
+
+      - label: "Source URL"
+        name: "source"
+        widget: "string"
+        allow_add: true
+        required: true
+        max: 3
+
+  - label: "Crawler | Steam"
+    name: "crawlerSources_steam"
+    slug: "{{fields.game}}-steam"
+    label_singular: "Crawler Steam source"
+    editor:
+      preview: false
+    folder: "src/documents/crawlerSources"
+    create: true
+    summary: "Steam source | {{game}}"
+    view_groups:
+      - label: Game
+        field: game
+    filter: { field: "type", value: "crawlerSources_steam" }
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "crawlerSources_steam"
+
+      - label: "Game"
+        name: "game"
+        widget: "relation"
+        collection: "games"
+        search_fields: ["name", "shortName"]
+        value_field: "name"
+        display_fields: ["name"]
+
+      - label: "Steam ID"
+        name: "steamId"
+        widget: "string"
+        required: true
+
+      - label: "Crawl RSS Descriptions"
+        name: "crawlDescriptions"
+        widget: "boolean"
+        required: false
+        default: false
+
+      - label: "Notify about new RSS messages"
+        name: "notifyAboutNews"
+        widget: "boolean"
+        required: false
+        default: false
+
+  - label: "Crawler | Reddit"
+    name: "crawlerSources_reddit"
+    slug: "{{fields.game}}-reddit"
+    label_singular: "Crawler Reddit source"
+    editor:
+      preview: false
+    folder: "src/documents/crawlerSources"
+    create: true
+    summary: "Reddit source | {{game}}"
+    view_groups:
+      - label: Game
+        field: game
+    filter: { field: "type", value: "crawlerSources_reddit" }
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "crawlerSources_reddit"
+
+      - label: "Game"
+        name: "game"
+        widget: "relation"
+        collection: "games"
+        search_fields: ["name", "shortName"]
+        value_field: "name"
+        display_fields: ["name"]
+
+      - label: "Subreddit"
+        name: "subreddit"
+        widget: "string"
+        required: true
+
+      - label: "Crawl RSS Descriptions"
+        name: "crawlDescriptions"
+        widget: "boolean"
+        required: false
+        default: false
+
+      - label: "Notify about new RSS messages"
+        name: "notifyAboutNews"
+        widget: "boolean"
+        required: false
+        default: false
+
   - label: "Games"
     name: "games"
+    summary: "{{name}}"
     label_singular: "Game"
     editor:
       preview: false
-    folder: "src/pages/games"
+    folder: "src/documents/games"
     create: true
     slug: "{{fields.slug}}"
     fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "game"
+
+      - label: "Name"
+        name: "name"
+        widget: "string"
+        required: true
+
+      - label: "Short name"
+        name: "shortName"
+        widget: "string"
+        required: false
+
       - label: "Slug"
         name: "slug"
         widget: "string"
@@ -31,13 +169,14 @@ collections:
         widget: "string"
         required: true
 
-      - label: "Title"
-        name: "title"
-        widget: "string"
+      - label: "Is this an official game/ladder?"
+        name: "official"
+        widget: "boolean"
         required: true
+        default: true
 
-      - label: "Short name"
-        name: "shortName"
+      - label: "Group"
+        name: "group"
         widget: "string"
         required: false
 
@@ -54,135 +193,176 @@ collections:
         widget: "string"
         required: false
 
-      - label: "Current season"
-        name: "currentSeason"
-        widget: "object"
-        required: false
-        collapsed: false
-        fields:
-          - label: "Title"
-            name: "title"
-            widget: "string"
-            required: false
-
-          - label: "Url"
-            name: "url"
-            widget: "string"
-            required: false
-
-          - label: "Start date (UTC)"
-            name: "startDate"
-            default: ""
-            widget: "datetime"
-            picker_utc: true
-            required: true
-
-          - label: "Start date notice"
-            name: "startDateNotice"
-            widget: "string"
-            required: false
-
-          - label: "End date (UTC)"
-            name: "endDate"
-            default: ""
-            widget: "datetime"
-            picker_utc: true
-            required: true
-
-          - label: "End date notice"
-            name: "endDateNotice"
-            widget: "string"
-            required: false
-
-      - label: "Next season"
-        name: "nextSeason"
-        widget: "object"
-        collapsed: false
-        required: false
-        fields:
-          - label: "Title"
-            name: "title"
-            widget: "string"
-            required: false
-
-          - label: "Url"
-            name: "url"
-            widget: "string"
-            required: false
-
-          - label: "Start date (UTC)"
-            name: "startDate"
-            default: ""
-            widget: "datetime"
-            picker_utc: true
-            required: true
-
-          - label: "Start date notice"
-            name: "startDateNotice"
-            widget: "string"
-            required: false
-
-          - label: "Show countdown"
-            name: "showCountdown"
-            widget: "boolean"
-            required: false
-
       - label: "Crawler settings"
         name: "crawlerSettings"
         widget: "object"
-        collapsed: true
         required: false
+        collapsed: false
         fields:
-          - label: "Crawler keywords"
+          - label: "Keywords"
             name: "keywords"
             widget: "list"
             allow_add: true
             max: 10
 
-          - label: "Sources"
-            name: "sources"
-            widget: "list"
-            allow_add: true
-            max: 3
-
-  - label: "RSS Messages"
-    label_singular: "RSS Message"
-    name: "rss_messages"
-    folder: "src/pages/rss"
+  - label: "Seasons"
+    name: "seasons"
+    sortable_fields: ["name", "start.startDate"]
+    label_singular: "Season"
+    editor:
+      preview: false
+    folder: "src/documents/seasons"
     create: true
+    slug: "{{fields.game}}-{{fields.name}}"
+    summary: "{{game}} | {{name}}"
+    view_groups:
+      - label: Game
+        field: game
     fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "season"
+
+      - label: "Game"
+        name: "game"
+        widget: "relation"
+        collection: "games"
+        search_fields: ["name", "slug", "shortName"]
+        value_field: "name"
+        display_fields: ["name"]
+
+      - label: "Name"
+        name: "name"
+        widget: "string"
+        required: true
+
+      - label: "Url"
+        name: "url"
+        widget: "string"
+        required: false
+
+      - label: "Start"
+        name: "start"
+        widget: "object"
+        required: false
+        collapsed: false
+        fields:
+          - label: "Start Date UTC"
+            name: "startDate"
+            widget: "datetime"
+            picker_utc: true
+            required: false
+
+          - label: "Confirmed"
+            name: "confirmed"
+            widget: "boolean"
+            required: false
+            default: false
+
+          - label: "Override text"
+            name: "overrideText"
+            widget: "string"
+            default: ""
+            required: false
+
+          - label: "Additional text"
+            name: "additionalText"
+            widget: "string"
+            default: ""
+            required: false
+
+      - label: "End"
+        name: "end"
+        widget: "object"
+        required: false
+        collapsed: false
+        fields:
+          - label: "End Date UTC"
+            name: "endDate"
+            default: ""
+            widget: "datetime"
+            picker_utc: true
+            required: false
+
+          - label: "Confirmed"
+            name: "confirmed"
+            widget: "boolean"
+            required: false
+            default: false
+
+          - label: "Override text"
+            name: "overrideText"
+            widget: "string"
+            default: ""
+            required: false
+
+          - label: "Additional text"
+            name: "additionalText"
+            widget: "string"
+            default: ""
+            required: false
+
+  - label: "Faq"
+    name: "faq"
+    editor:
+      preview: false
+    folder: "src/documents/faq"
+    create: true
+    slug: "{{fields.title}}"
+    sortable_fields: ["order"]
+
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "faq"
+
       - label: "Title"
         name: "title"
         widget: "string"
-
-      - label: "Date"
-        name: "date"
-        widget: "datetime"
-        picker_utc: true
-
-      - label: "Author"
-        name: "author"
-        widget: "string"
-
-      - label: "Link"
-        name: "link"
-        widget: "string"
-        required: false
+        required: true
 
       - label: "Content"
         name: "content"
         widget: "markdown"
-        required: false
+        required: true
 
-      - label: "Image"
-        name: "image"
-        widget: "image"
-        required: false
-        media_library:
-          config:
-            max_file_size: 512000
+      - label: "Order"
+        name: "order"
+        widget: "number"
+        required: true
+        default: 100
 
-      - label: "Image Link"
-        name: "imageLink"
+  - label: "Toasts"
+    name: "toasts"
+    label_singular: "Toast"
+    editor:
+      preview: false
+    folder: "src/documents/toasts"
+    create: true
+    slug: "{{fields.title}}"
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "toast"
+
+      - label: "Title"
+        name: "title"
         widget: "string"
-        required: false
+        required: true
+
+      - label: "Description"
+        name: "description"
+        widget: "markdown"
+        required: true
+
+      - label: "With Logo"
+        name: "withLogo"
+        widget: "boolean"
+        default: true
+
+      - label: "Duration"
+        name: "duration"
+        widget: "number"

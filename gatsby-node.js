@@ -23,3 +23,29 @@ exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions;
   createNodeHandler(createNodeField, node);
 };
+
+exports.onCreateBabelConfig = ({ actions }) => {
+  actions.setBabelPlugin({
+    name: "@babel/plugin-transform-react-jsx",
+    options: {
+      runtime: "automatic",
+    },
+  });
+};
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  createTypes(`
+    type MarkdownRemarkFrontmatter {
+      title: String
+      description: String
+      withLogo: Boolean
+      duration: Int
+      order: Int
+    }
+    
+    type MarkdownRemark implements Node {
+      frontmatter: MarkdownRemarkFrontmatter
+    }
+  `);
+};

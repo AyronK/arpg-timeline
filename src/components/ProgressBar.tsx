@@ -1,15 +1,21 @@
-import React from "react";
-
-export const ProgressBar = ({ progress }: { progress: number }) => {
-  return (
+export const ProgressBar = ({
+  progress,
+  clamp,
+}: {
+  progress: number;
+  clamp?: boolean | undefined;
+}) => (
+  <div className="relative h-2 w-full overflow-hidden rounded-br-full rounded-tl-full bg-sky-200 bg-opacity-15">
     <div
-      className="h-3 bg-gray-500 rounded-bl-full rounded-tr-full overflow-hidden relative subpixel-antialiased"
-      style={{ width: "100%" }}
-    >
-      <div
-        className="h-full bg-gray-200 rounded-bl-full rounded-tr-full subpixel-antialiased"
-        style={{ width: `${progress}%` }}
-      />
-    </div>
-  );
-};
+      className="absolute bottom-0 right-0 top-0 rounded-tl-full bg-sky-800"
+      style={{
+        left:
+          progress >= 100
+            ? "100%"
+            : clamp
+              ? `${Math.min(Math.max(progress, 3), 95)}%`
+              : `${progress}%`,
+      }}
+    />
+  </div>
+);
