@@ -3,13 +3,15 @@ import { Notification } from "./types";
 
 const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL as string;
 
-const formatNotification = (notification: Notification, idx: number): string => 
+const formatNotification = (notification: Notification, idx: number): string =>
   `*🔹 Notification #${idx + 1}*\n${notification.text}`;
 
 export const sendDiscordNotification = async (
   notifications: Notification[],
 ): Promise<void> => {
-  const importantNotifications = notifications.filter((n) => n.type !== "trace");
+  const importantNotifications = notifications.filter(
+    (n) => n.type !== "trace",
+  );
 
   if (importantNotifications.length === 0) {
     try {
@@ -50,7 +52,10 @@ export const sendDiscordNotification = async (
         console.log(`✅ Posted Notification #${idx + 1} to Discord!`);
       } else {
         const errorText = await response.text();
-        console.error(`❌ Failed to send Notification #${idx + 1} to Discord:`, errorText);
+        console.error(
+          `❌ Failed to send Notification #${idx + 1} to Discord:`,
+          errorText,
+        );
       }
     } catch (e) {
       console.error(`❌ Failed to send Notification #${idx + 1} to Discord`, e);

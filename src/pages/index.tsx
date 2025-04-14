@@ -18,6 +18,7 @@ import { Toaster } from "@/ui/Toaster";
 import { useEffect } from "react";
 import { remark } from "remark";
 import html from "remark-html";
+import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -52,6 +53,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   }, []);
 
   const games = useGamesFromMarkdown(data);
+
   const {
     gameFilters,
     toggleGameFilter,
@@ -142,6 +144,14 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           .map((q) => ({ title: q?.title ?? "", content: q?.content ?? "" }))}
       />
       <Toaster />
+      {games.map((game, index) => {
+        const structuredData = getStructuredDataForGame(game);
+        return structuredData ? (
+          <script key={index} type="application/ld+json">
+            {JSON.stringify(structuredData, null, 2)}
+          </script>
+        ) : null;
+      })}
     </Layout>
   );
 };

@@ -65,6 +65,10 @@ export const useGameFilters = (games: Game[]) => {
         sa_event(`game-hidden--${element}`);
       }
     }
+
+    if (filteredGames.length > 0) {
+      sa_event(`games-visible--${filteredGames.map((g) => g.slug).join("--")}`);
+    }
   }, [searchParam]);
 
   const activeFilters = games
@@ -72,11 +76,7 @@ export const useGameFilters = (games: Game[]) => {
     .filter((s) => !excludedSlugs.includes(s!));
 
   const gameFilters = games
-    .map((g) => ({
-      label: g!.name!,
-      value: g!.slug!,
-      group: g!.group!,
-    }))
+    .map((g) => ({ label: g!.name!, value: g!.slug!, group: g!.group! }))
     .sort((a, b) => (a.label > b.label ? 1 : -1));
 
   return {
