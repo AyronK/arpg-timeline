@@ -1,6 +1,8 @@
+@reference "../../styles/global.css";
+
 .chart g text {
-  @apply !fill-foreground;
-  @apply !font-normal;
+  @apply fill-foreground!;
+  @apply font-normal!;
 }
 
 .chart g text {

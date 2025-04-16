@@ -99,7 +99,7 @@ export const FiltersDialog = ({
 
 const Description = () => (
   <div className="mt-2 flex flex-row gap-2 rounded-md border p-2">
-    <Lightbulb className="mt-1 h-4 w-4 flex-shrink-0" />
+    <Lightbulb className="mt-1 h-4 w-4 shrink-0" />
     <span className="md:max-w-80">
       You can add this website to your bookmarks so you&apos;ll always have the
       same setup!
@@ -129,7 +129,7 @@ const Trigger = forwardRef<
       Filter games
     </span>
     <span className="absolute -right-2 -top-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-      <span className="relative grid h-6 w-6 place-content-center rounded-full bg-secondary font-ui font-semibold text-primary-foreground shadow-sm shadow-black">
+      <span className="relative grid h-6 w-6 place-content-center rounded-full bg-secondary font-ui font-semibold text-primary-foreground shadow-xs shadow-black">
         {checked.length}
       </span>
     </span>
