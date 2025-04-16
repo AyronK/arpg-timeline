@@ -70,7 +70,8 @@ export const useGameFilters = (games: Game[]) => {
       sa_event("games-visible", {
         games: filteredGames
           .sort((a, b) => a.slug.localeCompare(b.slug))
-          .map((g) => g.slug),
+          .map((g) => g.slug)
+          .join(","),
       });
     }
   }, [searchParam]);
