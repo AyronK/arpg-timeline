@@ -20,8 +20,9 @@ export const GameCard = ({
           <MaybeLinkWrapper
             href={url}
             rel="nofollow noreferrer"
-            className="relative flex flex-col gap-2"
+            className="select-none hover:scale-105"
             target="_blank"
+            noIcon
           >
             <div className="grid min-h-[72px] w-[120px] md:h-[140px] md:w-[160px]">
               {logo}
