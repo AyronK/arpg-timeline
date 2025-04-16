@@ -64,14 +64,14 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
   const events = useTimelineEvents(filteredGames);
   return (
     <Layout>
-      <div className="container relative mx-auto mb-8">
-        <p className="mx-auto hidden max-w-prose text-center font-heading text-lg md:mt-8 md:block md:text-xl">
+      <div className="relative container mx-auto mb-8">
+        <p className="font-heading mx-auto hidden max-w-prose text-center text-lg md:mt-8 md:block md:text-xl">
           Stay ahead in your favorite ARPGs with the season tracker.
           <br />
           Never miss a season start or end again!
         </p>
         <div className="relative mt-4 flex flex-col-reverse gap-4 md:mt-8 md:flex-col">
-          <div className="fixed z-50 max-sm:bottom-8 max-sm:right-8 md:sticky md:left-0 md:right-0 md:top-0 md:h-0">
+          <div className="fixed z-50 max-sm:right-8 max-sm:bottom-8 md:sticky md:top-0 md:right-0 md:left-0 md:h-0">
             <div className="md:absolute md:-right-4 md:ml-auto md:translate-x-full md:translate-y-[16px]">
               <ErrorBoundary fallback={<WidgetDiedFallback />}>
                 <FiltersDialog
@@ -83,7 +83,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               </ErrorBoundary>
             </div>
           </div>
-          <article className="relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
+          <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3">
             <h2 className="sr-only">Game seasons</h2>
             {filteredGames.map((game, idx) => (
               <div
@@ -119,7 +119,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                 </ErrorBoundary>
               </div>
             ))}
-            <div className="relative order-3 col-span-1 flex flex-col gap-2 rounded-md border bg-card p-4 text-card-foreground md:col-span-2 md:gap-4 md:p-6 xl:col-span-3 3xl:col-span-4 4xl:col-span-5">
+            <div className="bg-card text-card-foreground 3xl:col-span-4 4xl:col-span-5 relative order-3 col-span-1 flex flex-col gap-2 rounded-md border p-4 md:col-span-2 md:gap-4 md:p-6 xl:col-span-3">
               <div>
                 <h3 className="mb-1.5 text-xs">Timeline</h3>
                 <Suspense

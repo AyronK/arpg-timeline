@@ -86,7 +86,7 @@ export const FiltersDialog = ({
           onGroupCheckedChange={onGroupCheckedChange}
         />
         <DrawerFooter>
-          <div className="ml-auto md:ml-0 md:mr-auto">
+          <div className="ml-auto md:mr-auto md:ml-0">
             <DrawerClose asChild>
               <Button variant="outline">Close</Button>
             </DrawerClose>
@@ -128,8 +128,8 @@ const Trigger = forwardRef<
     <span className="max-w-0 overflow-hidden transition-all ease-in-out group-hover:ml-2 group-hover:max-w-20">
       Filter games
     </span>
-    <span className="absolute -right-2 -top-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-      <span className="relative grid h-6 w-6 place-content-center rounded-full bg-secondary font-ui font-semibold text-primary-foreground shadow-xs shadow-black">
+    <span className="absolute -top-2 -right-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
+      <span className="bg-secondary font-ui text-primary-foreground relative grid h-6 w-6 place-content-center rounded-full font-semibold shadow-xs shadow-black">
         {checked.length}
       </span>
     </span>
