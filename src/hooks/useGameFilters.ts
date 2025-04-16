@@ -67,7 +67,11 @@ export const useGameFilters = (games: Game[]) => {
     }
 
     if (filteredGames.length > 0) {
-      sa_event(`games-visible--${filteredGames.map((g) => g.slug).join("--")}`);
+      sa_event("games-visible", {
+        games: filteredGames
+          .sort((a, b) => a.slug.localeCompare(b.slug))
+          .map((g) => g.slug),
+      });
     }
   }, [searchParam]);
 
