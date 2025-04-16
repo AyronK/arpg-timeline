@@ -70,9 +70,9 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           <br />
           Never miss a season start or end again!
         </p>
-        <div className="relative mt-4 flex flex-col-reverse gap-4 md:mt-8 md:flex-col">
-          <div className="fixed z-50 max-sm:right-8 max-sm:bottom-8 md:sticky md:top-0 md:right-0 md:left-0 md:h-0">
-            <div className="md:absolute md:-right-4 md:ml-auto md:translate-x-full md:translate-y-[16px]">
+        <div className="relative mt-4 flex flex-col-reverse gap-4 xl:mt-8 xl:flex-col">
+          <div className="fixed right-8 bottom-8 z-50 xl:sticky xl:top-0 xl:right-0 xl:left-0 xl:h-0">
+            <div className="xl:absolute xl:-right-4 xl:ml-auto xl:translate-x-full xl:translate-y-[16px]">
               <ErrorBoundary fallback={<WidgetDiedFallback />}>
                 <FiltersDialog
                   checked={activeFilters}
@@ -83,7 +83,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
               </ErrorBoundary>
             </div>
           </div>
-          <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3">
+          <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
             <h2 className="sr-only">Game seasons</h2>
             {filteredGames.map((game, idx) => (
               <div
@@ -119,7 +119,7 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
                 </ErrorBoundary>
               </div>
             ))}
-            <div className="bg-card text-card-foreground 3xl:col-span-4 4xl:col-span-5 relative order-3 col-span-1 flex flex-col gap-2 rounded-md border p-4 md:col-span-2 md:gap-4 md:p-6 xl:col-span-3">
+            <div className="bg-card text-card-foreground 3xl:col-span-4 4xl:col-span-5 lg-col-span-2 relative order-3 col-span-1 flex flex-col gap-2 rounded-md border p-4 md:col-span-2 md:gap-4 md:p-6 xl:col-span-3">
               <div>
                 <h3 className="mb-1.5 text-xs">Timeline</h3>
                 <Suspense
