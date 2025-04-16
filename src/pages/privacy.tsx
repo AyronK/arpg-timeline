@@ -5,7 +5,7 @@ const IndexPage = () => {
   return (
     <Layout>
       <div className="container mx-auto mb-20 max-w-prose px-4">
-        <h2 className="pb-4 pt-2 text-center text-2xl font-semibold">
+        <h2 className="pt-2 pb-4 text-center text-2xl font-semibold">
           Privacy
         </h2>
         <p>
@@ -52,7 +52,7 @@ const IndexPage = () => {
           </Button>
           .
         </p>
-        <h2 className="pb-4 pt-2 text-center text-2xl font-semibold">
+        <h2 className="pt-2 pb-4 text-center text-2xl font-semibold">
           What we do and do not collect
         </h2>
         <p>

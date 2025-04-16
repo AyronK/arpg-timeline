@@ -7,13 +7,13 @@ import { sa_event } from "@/lib/sa_event";
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
-      <header className="relative py-1 max-sm:bg-card max-sm:shadow md:pb-0 md:pt-6">
-        <div className="container relative">
+      <header className="max-sm:bg-card relative py-1 max-sm:shadow-sm md:pt-6 md:pb-0">
+        <div className="relative container">
           <div className="flex flex-row items-center justify-between gap-2 md:justify-center">
             <a
               href="/"
               rel="self"
-              className="relative z-20 text-base font-semibold tracking-[0.3rem] sm:text-lg md:ml-auto md:mr-auto md:text-4xl"
+              className="relative z-20 text-base font-semibold tracking-[0.3rem] sm:text-lg md:mr-auto md:ml-auto md:text-4xl"
             >
               <h1 className="flex flex-row items-center md:gap-2">
                 <Logo />

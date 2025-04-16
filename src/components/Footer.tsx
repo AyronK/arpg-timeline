@@ -1,5 +1,5 @@
 export const Footer = () => (
-  <footer className="mt-12 border-t border-foreground bg-card px-4 py-4">
+  <footer className="border-foreground bg-card mt-12 border-t px-4 py-4">
     <div className="flex flex-col justify-evenly gap-6 md:flex-row">
       <div className="flex flex-row gap-1">
         <a

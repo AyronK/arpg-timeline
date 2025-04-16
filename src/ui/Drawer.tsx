@@ -43,7 +43,7 @@ const DrawerContent = forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed bottom-0 right-0 top-16 z-50 flex h-auto flex-col rounded-t-[10px] border bg-background pt-6 md:top-0",
+        "bg-background fixed top-16 right-0 bottom-0 z-50 flex h-auto flex-col rounded-t-[10px] border pt-6 md:top-0",
         className,
       )}
       {...props}
@@ -80,7 +80,7 @@ const DrawerTitle = forwardRef<
   <DrawerPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
+      "text-lg leading-none font-semibold tracking-tight",
       className,
     )}
     {...props}
@@ -94,7 +94,7 @@ const DrawerDescription = forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-muted-foreground text-sm", className)}
     {...props}
   />
 ));

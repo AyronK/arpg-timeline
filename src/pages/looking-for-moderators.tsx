@@ -4,7 +4,7 @@ const Page = () => {
   return (
     <Layout>
       <div className="container mx-auto mb-20 min-h-[60vh] max-w-prose px-4">
-        <h2 className="mb-6 mt-12 pb-4 pt-2 text-center text-2xl font-semibold">
+        <h2 className="mt-12 mb-6 pt-2 pb-4 text-center text-2xl font-semibold">
           Looking for Moderators
         </h2>
         <p className="mb-4">

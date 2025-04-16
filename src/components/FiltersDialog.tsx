@@ -86,7 +86,7 @@ export const FiltersDialog = ({
           onGroupCheckedChange={onGroupCheckedChange}
         />
         <DrawerFooter>
-          <div className="ml-auto md:ml-0 md:mr-auto">
+          <div className="ml-auto md:mr-auto md:ml-0">
             <DrawerClose asChild>
               <Button variant="outline">Close</Button>
             </DrawerClose>
@@ -99,7 +99,7 @@ export const FiltersDialog = ({
 
 const Description = () => (
   <div className="mt-2 flex flex-row gap-2 rounded-md border p-2">
-    <Lightbulb className="mt-1 h-4 w-4 flex-shrink-0" />
+    <Lightbulb className="mt-1 h-4 w-4 shrink-0" />
     <span className="md:max-w-80">
       You can add this website to your bookmarks so you&apos;ll always have the
       same setup!
@@ -128,8 +128,8 @@ const Trigger = forwardRef<
     <span className="max-w-0 overflow-hidden transition-all ease-in-out group-hover:ml-2 group-hover:max-w-20">
       Filter games
     </span>
-    <span className="absolute -right-2 -top-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-      <span className="relative grid h-6 w-6 place-content-center rounded-full bg-secondary font-ui font-semibold text-primary-foreground shadow-sm shadow-black">
+    <span className="absolute -top-2 -right-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
+      <span className="bg-secondary font-ui text-primary-foreground relative grid h-6 w-6 place-content-center rounded-full font-semibold shadow-xs shadow-black">
         {checked.length}
       </span>
     </span>

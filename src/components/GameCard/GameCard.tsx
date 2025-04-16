@@ -10,7 +10,7 @@ export const GameCard = ({
   official,
 }: GameCardProps) => {
   return (
-    <section className="relative flex flex-1 flex-col gap-1 rounded-md border bg-card p-4 text-card-foreground">
+    <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
       <div className="flex flex-col">
         <div className="flex flex-row items-center justify-between">
           <h3 className="font-heading text-xs">{name}</h3>
