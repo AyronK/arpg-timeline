@@ -27,7 +27,7 @@ export const CalendarMenu = ({
     <DropdownMenuTrigger asChild>
       <Button
         variant={"link"}
-        className="!h-[32px] !w-[32px] flex-1 md:!h-[40px] md:!w-[40px]"
+        className="h-[32px]! w-[32px]! flex-1 md:h-[40px]! md:w-[40px]!"
         size={"icon"}
         aria-label="Add to calendar"
       >

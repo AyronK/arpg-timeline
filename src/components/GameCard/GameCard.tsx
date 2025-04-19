@@ -10,7 +10,7 @@ export const GameCard = ({
   official,
 }: GameCardProps) => {
   return (
-    <section className="relative flex flex-1 flex-col gap-1 rounded-md border bg-card p-4 text-card-foreground">
+    <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
       <div className="flex flex-col">
         <div className="flex flex-row items-center justify-between">
           <h3 className="font-heading text-xs">{name}</h3>
@@ -20,8 +20,9 @@ export const GameCard = ({
           <MaybeLinkWrapper
             href={url}
             rel="nofollow noreferrer"
-            className="relative flex flex-col gap-2"
+            className="select-none hover:scale-105"
             target="_blank"
+            noIcon
           >
             <div className="grid min-h-[72px] w-[120px] md:h-[140px] md:w-[160px]">
               {logo}

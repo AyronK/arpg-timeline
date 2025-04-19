@@ -2,17 +2,18 @@ import { Footer } from "@/components/Footer";
 import useSiteMetadata from "@/hooks/useSiteMetadata";
 import { Button } from "@/ui/Button";
 import { Logo } from "@/components/Logo";
+import { sa_event } from "@/lib/sa_event";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
-      <header className="relative py-1 max-sm:bg-card max-sm:shadow md:pb-0 md:pt-6">
-        <div className="container relative">
+      <header className="max-sm:bg-card relative py-1 max-sm:shadow-sm md:pt-6 md:pb-0">
+        <div className="relative container">
           <div className="flex flex-row items-center justify-between gap-2 md:justify-center">
             <a
               href="/"
               rel="self"
-              className="relative z-20 text-base font-semibold tracking-[0.3rem] sm:text-lg md:ml-auto md:mr-auto md:text-4xl"
+              className="relative z-20 text-base font-semibold tracking-[0.3rem] sm:text-lg md:mr-auto md:ml-auto md:text-4xl"
             >
               <h1 className="flex flex-row items-center md:gap-2">
                 <Logo />
@@ -25,6 +26,9 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                   href="https://www.buymeacoffee.com/ayron"
                   rel="external nofollow noreferrer"
                   target="_blank"
+                  onPointerOver={() => sa_event("support-hover")}
+                  onTouchStart={() => sa_event("support-touch")}
+                  onClick={() => sa_event("support-click")}
                 >
                   <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-2">
                     <img
@@ -71,12 +75,12 @@ export const Head = () => {
       <link rel="canonical" href={siteUrl} />
       <meta
         name="keywords"
-        content="path of exile, diablo, last epoch, torchlight infinite, hero siege, new league release date, new season release date, diablo alternative, poe alternative, best arpgs, season start, league start, new season release date, diablo 2, diablo 3, diablo 4, diablo iv, action rpg, arpg, arpg-timeline, arpg tracker, season, seasons, arpg seasons, league, poe, poe2, path of diablo, median xl, project diablo, grim dawn, undecember, dwarven realms, slash diablo"
+        content="path of exile, diablo 4, diablo iii, last epoch, torchlight infinite, project diablo, median xl, arpg seasons, arpg tracker, action rpg, new season release date, league start, poe, poe2, no rest for the wicked, diablo ii, hero siege, dwarven realms, undecember, grim dawn, titan quest, titan quest 2, slash diablo, path of diablo, arpg, best arpgs, diablo alternative, poe alternative"
       />
       <meta name="title" content={title} />
       <meta
         name="description"
-        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile leagues, Diablo and Torchlight seasons, and Last Epoch seasons. Never miss a release again!"
+        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile, Diablo, Torchlight, Last Epoch, and more. Never miss a release again!"
       />
       <meta name="author" content="Ayron, https://github.com/AyronK" />
       <meta
@@ -88,7 +92,7 @@ export const Head = () => {
       <meta property="og:title" content={title} />
       <meta
         property="og:description"
-        content="Stay ahead in your favorite ARPGs with the season tracker. Never miss a season start or end again!"
+        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile, Diablo, Torchlight, Last Epoch, and more. Never miss a release again!"
       />
       <meta property="og:image" content="/assets/seoimage.png" />
       <meta property="twitter:card" content="summary_large_image" />
@@ -96,7 +100,7 @@ export const Head = () => {
       <meta property="twitter:title" content={title} />
       <meta
         property="twitter:description"
-        content="Stay ahead in your favorite ARPGs with the season tracker. Never miss a season start or end again!"
+        content="Stay ahead in your favorite ARPGs with our season tracker for Path of Exile, Diablo, Torchlight, Last Epoch, and more. Never miss a release again!"
       />
       <meta property="twitter:image" content="/assets/seoimage.png" />
       <meta charSet="UTF-8" />

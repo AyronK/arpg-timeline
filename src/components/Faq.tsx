@@ -1,3 +1,4 @@
+import { sa_event } from "@/lib/sa_event";
 import { Button } from "@/ui/Button";
 import { UsersRound } from "lucide-react";
 import { remark } from "remark";
@@ -16,6 +17,9 @@ export const Faq = ({ faq }: { faq: { title: string; content: string }[] }) => {
               href="https://www.buymeacoffee.com/ayron"
               rel="external nofollow noreferrer"
               target="_blank"
+              onPointerOver={() => sa_event("support-hover")}
+              onTouchStart={() => sa_event("support-touch")}
+              onClick={() => sa_event("support-click")}
             >
               <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current">
                 <img
@@ -35,7 +39,7 @@ export const Faq = ({ faq }: { faq: { title: string; content: string }[] }) => {
           >
             <a href="/looking-for-moderators" rel="self">
               <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
-              Looking for mods
+              Looking for moderators
             </a>
           </Button>
           <Button variant={"link"} size="lg" asChild>
@@ -70,9 +74,7 @@ export const Faq = ({ faq }: { faq: { title: string; content: string }[] }) => {
               <h3 className="mb-2 text-xl">{q.title}</h3>
               <div
                 className="rich-text ml-2"
-                dangerouslySetInnerHTML={{
-                  __html: renderMarkdown(q.content),
-                }}
+                dangerouslySetInnerHTML={{ __html: renderMarkdown(q.content) }}
               />
             </div>
           ))}

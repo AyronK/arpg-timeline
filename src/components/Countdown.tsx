@@ -63,7 +63,7 @@ export const Countdown = ({
 
   return (
     <TrailingBorder>
-      <div className="flex select-none flex-row items-center justify-center gap-1 pt-0.5 font-heading text-lg font-bold text-emerald-100 md:text-xl">
+      <div className="font-heading flex flex-row items-center justify-center gap-1 pt-0.5 text-lg font-bold text-emerald-100 select-none md:text-xl">
         <Time
           className={cn({
             "opacity-60": timeComponents.weeks <= 0,

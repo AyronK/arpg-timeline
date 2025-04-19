@@ -134,7 +134,7 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
         variant={"ghost"}
         size="icon"
         aria-label="Expand"
-        className="absolute right-1 top-1"
+        className="absolute top-1 right-1"
         onClick={() => setIsExpanded((v) => !v)}
       >
         {expanded ? (

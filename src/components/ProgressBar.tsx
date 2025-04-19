@@ -5,9 +5,9 @@ export const ProgressBar = ({
   progress: number;
   clamp?: boolean | undefined;
 }) => (
-  <div className="relative h-2 w-full overflow-hidden rounded-br-full rounded-tl-full bg-sky-200 bg-opacity-15">
+  <div className="relative h-2 w-full overflow-hidden rounded-tl-full rounded-br-full bg-sky-200/15">
     <div
-      className="absolute bottom-0 right-0 top-0 rounded-tl-full bg-sky-800"
+      className="absolute top-0 right-0 bottom-0 rounded-tl-full bg-sky-800"
       style={{
         left:
           progress >= 100
