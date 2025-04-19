@@ -1,14 +1,15 @@
 ---
 type: season
-game: Median XL
-name: Season 39
+game: Diablo III
+name: S35
+url: ""
 start:
   confirmed: false
   additionalText: ""
-  startDate: 2025-06-01T09:00:00.000Z
-  overrideText: Q2 2025
+  startDate: 2025-05-15T01:00:00.000Z
+  overrideText: May
 end:
-  endDate: ""
+  endDate: 2025-08-15T00:00:00.000Z
   confirmed: false
   overrideText: ""
   additionalText: ""

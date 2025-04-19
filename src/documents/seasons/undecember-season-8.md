@@ -1,14 +1,14 @@
 ---
 type: season
-game: Median XL
-name: Season 39
+game: Undecember
+name: Season 8
 start:
   confirmed: false
+  overrideText: May
   additionalText: ""
-  startDate: 2025-06-01T09:00:00.000Z
-  overrideText: Q2 2025
+  startDate: 2025-05-15T02:00:00.000Z
 end:
-  endDate: ""
+  endDate: 2025-09-15T00:00:00.000Z
   confirmed: false
   overrideText: ""
   additionalText: ""
