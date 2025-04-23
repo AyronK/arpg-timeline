@@ -14,4 +14,3 @@ export const TimezoneSelect: React.FC<{
     ))}
   </select>
 );
-

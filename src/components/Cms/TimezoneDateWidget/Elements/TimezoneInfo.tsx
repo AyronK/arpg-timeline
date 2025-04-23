@@ -9,4 +9,3 @@ export const TimezoneInfo: React.FC<{ label: string; value: string }> = ({
     <strong>{label}:</strong> {value}
   </div>
 );
-

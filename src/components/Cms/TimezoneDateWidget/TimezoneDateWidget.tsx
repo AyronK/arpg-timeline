@@ -17,4 +17,3 @@ export const TimezoneDateWidget = {
   controlComponent: TimezoneDateControl,
   previewComponent: TimezoneDatePreview,
 };
-

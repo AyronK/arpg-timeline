@@ -33,4 +33,3 @@ export const styles = {
     flex: 1,
   },
 };
-

@@ -54,4 +54,3 @@ export const calculateLocalDate = (date: Date, timezone: string) => {
   const [hour, minute] = formattedDate.split(", ")[1].split(":");
   return `${year}-${month}-${day}T${hour}:${minute}`;
 };
-

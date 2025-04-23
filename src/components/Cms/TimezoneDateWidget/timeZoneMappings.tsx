@@ -23,4 +23,3 @@ export const timeZoneMappings: {
   { abbr: "CET", iana: "Europe/Paris", description: "Central European Time" },
   { abbr: "CST", iana: "Asia/Shanghai", description: "China Standard Time" },
 ];
-

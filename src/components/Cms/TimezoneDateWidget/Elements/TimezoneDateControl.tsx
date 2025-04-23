@@ -75,4 +75,3 @@ export const TimezoneDateControl: React.FC<WidgetControlProps> = ({
     </div>
   );
 };
-

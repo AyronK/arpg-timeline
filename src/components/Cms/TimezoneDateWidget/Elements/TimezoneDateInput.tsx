@@ -12,4 +12,3 @@ export const TimezoneDateInput: React.FC<{
     style={styles.input}
   />
 );
-
