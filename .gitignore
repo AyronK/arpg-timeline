@@ -4,3 +4,4 @@ public
 src/gatsby-types.d.ts
 
 *storybook.log
+static/styles/global.css
