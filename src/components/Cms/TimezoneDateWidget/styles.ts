@@ -1,0 +1,35 @@
+export const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "6px",
+    width: "100%",
+  },
+  input: {
+    flex: "1",
+    padding: "10px",
+    marginBottom: "15px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    fontSize: "14px",
+    outline: "none",
+    transition: "border-color 0.3s ease",
+  },
+  select: {
+    flex: "1",
+    padding: "10px",
+    marginBottom: "15px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    fontSize: "14px",
+    backgroundColor: "#fff",
+    cursor: "pointer",
+    transition: "border-color 0.3s ease",
+  },
+  info: {
+    marginBottom: "10px",
+    fontSize: "14px",
+    color: "#333",
+    flex: 1,
+  },
+};

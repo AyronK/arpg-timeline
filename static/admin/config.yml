@@ -250,7 +250,7 @@ collections:
         fields:
           - label: "Start Date UTC"
             name: "startDate"
-            widget: "datetime"
+            widget: "timezoneDate"
             picker_utc: true
             required: false
 
@@ -281,7 +281,7 @@ collections:
           - label: "End Date UTC"
             name: "endDate"
             default: ""
-            widget: "datetime"
+            widget: "timezoneDate"
             picker_utc: true
             required: false
 
