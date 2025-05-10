@@ -10,4 +10,5 @@ url: https://playvrising.com
 crawlerSettings:
   keywords:
     - update
+    - trailer
 ---
