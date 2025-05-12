@@ -8,7 +8,7 @@ start:
   additionalText: Launch date depends on server PDT/CET/KST
   startDate: 2025-01-31T01:00:00.000Z
 end:
-  endDate: 2025-05-15T00:00:00.000Z
+  endDate: 2025-05-22T23:59:00.000Z
   confirmed: false
   overrideText: May
   additionalText: ""
