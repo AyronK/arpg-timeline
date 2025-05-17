@@ -6,10 +6,10 @@ url: ""
 start:
   confirmed: false
   additionalText: ""
-  startDate: 2025-05-23T01:00:00.000Z
-  overrideText: May
+  startDate: 2025-05-30T01:00:00.000Z
+  overrideText: May/June
 end:
-  endDate: 2025-08-15T00:00:00.000Z
+  endDate: 2025-08-31T00:00:00.000Z
   confirmed: false
   overrideText: ""
   additionalText: ""
