@@ -5,7 +5,7 @@ name: 3.26 - Secrets of The Atlas
 url: https://www.pathofexile.com/forum/view-thread/3783838
 start:
   confirmed: true
-  startDate: 2025-06-13T18:00:00.000Z
+  startDate: 2025-06-13T20:00:00.000Z
   additionalText: ""
   overrideText: ""
 end:
