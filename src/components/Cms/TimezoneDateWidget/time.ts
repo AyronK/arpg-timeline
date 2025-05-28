@@ -1,7 +1,7 @@
 import { timeZoneMappings } from "@/components/Cms/TimezoneDateWidget/timeZoneMappings";
 import { DateTime } from "luxon";
 
-export const formatDate = (date: Date, timeZone: string): string => {
+export const formatDate = (date: Date, timeZone: string | undefined): string => {
   if (isNaN(date.getTime())) {
     return "Invalid date";
   }

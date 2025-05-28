@@ -17,7 +17,7 @@ export const timeZoneMappings: {
   {
     abbr: "PST",
     iana: "America/Los_Angeles",
-    description: "Pacific Standard Time (North America)",
+    description: "Pacific Standard Time (North America) PST / PDT",
   },
   { abbr: "JST", iana: "Asia/Tokyo", description: "Japan Standard Time" },
   { abbr: "CET", iana: "Europe/Paris", description: "Central European Time" },
