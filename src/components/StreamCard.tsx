@@ -72,14 +72,14 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
     prepend={
       <ShareMenu
         startDate={stream.date ?? ""}
-        title={`Hey, ${stream.gameName} ${stream.name} stream is soon on live Twitch`}
+        title={`Hey, ${stream.gameName} ${stream.name} stream is soon live on Twitch`}
       />
     }
     appendClassName="!rounded-l-none"
     append={
       <CalendarMenu
         startDate={stream.date ?? ""}
-        title={`${stream.gameName} ${stream.name} stream on Twitch`}
+        title={`${stream.gameName} stream on Twitch`}
       />
     }
   >
