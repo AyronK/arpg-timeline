@@ -20,7 +20,7 @@ import { Button } from "@/ui/Button";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
-import { GameFilters, GameFiltersProps } from "@/pages/GameFilters";
+import { GameFilters, GameFiltersProps } from "@/components/GameFilters";
 import { TimelineEvent } from "@/components/Timeline/Const";
 import { sa_event } from "@/lib/sa_event";
 import { StreamCard } from "@/components/StreamCard";
