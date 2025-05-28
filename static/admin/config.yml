@@ -10,6 +10,7 @@ backend:
     deleteMedia: "[skip ci] Delete “{{path}}”"
 media_folder: static/img
 public_folder: /img
+#local_backend: true
 
 collections:
   - label: "Crawler | HTTP"
@@ -368,41 +369,41 @@ collections:
         widget: "number"
 
   - label: "Live stream | Twitch"
-    name: "liveStream_twitch"
+    name: "liveStreams_twitch"
     sortable_fields: ["date", "game", "name"]
     slug: "{{fields.game}}-twitch-{{fields.date}}"
     editor:
       preview: false
-    folder: "src/documents/live-streams/twitch" 
+    folder: "src/documents/live-streams/twitch"
     create: true
     summary: "Twitch stream | {{game}} | {{name}}"
     view_groups:
       - label: Game
         field: game
-    filter: { field: "type", value: "liveStream_twitch" }
+    filter: { field: "type", value: "liveStreams_twitch" }
     fields:
       - label: "Type"
         name: "type"
         widget: "hidden"
-        default: "liveStream_twitch"
+        default: "liveStreams_twitch"
 
       - label: "Game"
         name: "game"
         widget: "relation"
         collection: "games"
         search_fields: ["name", "shortName"]
-        value_field: "slug" 
+        value_field: "slug"
         display_fields: ["name"]
         required: true
 
       - label: "Platform"
-        name: "platform" 
+        name: "platform"
         widget: "relation"
         collection: "liveStreamPlatforms_twitch"
         search_fields: ["game"]
         value_field: "{{slug}}"
         display_fields: ["name", "game"]
-        
+
       - label: "Start Date UTC"
         name: "date"
         widget: "timezoneDate"
@@ -418,7 +419,7 @@ collections:
     slug: "{{fields.game}}-twitch"
     editor:
       preview: false
-    folder: "src/documents/live-streams/platforms" 
+    folder: "src/documents/live-streams/platforms"
     create: true
     summary: "Twitch | {{game}}"
     view_groups:

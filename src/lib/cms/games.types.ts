@@ -11,6 +11,7 @@ export type Game = {
   readonly logo: ImageDataLike;
   readonly currentSeason: Season | null;
   readonly nextSeason: Season | null;
+  twitchCategory: string | null;
 };
 
 export type Season = {

@@ -19,6 +19,10 @@ import { useEffect } from "react";
 import { remark } from "remark";
 import html from "remark-html";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
+import { inGracePeriod } from "@/lib/games/sortBySeasons";
+import { Twitch } from "lucide-react";
+import { Button } from "@/ui/Button";
+import { FramedAction } from "@/components/FramedAction/FramedAction";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((module) => ({
@@ -85,40 +89,75 @@ const IndexPage = ({ data }: PageProps<Queries.IndexPageQuery>) => {
           </div>
           <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
             <h2 className="sr-only">Game seasons</h2>
-            {filteredGames.map((game, idx) => (
-              <div
-                key={game!.slug}
-                className={cn("order-last flex", {
-                  "order-first": idx <= 1,
-                  "xl:order-first": idx <= 2,
-                  "3xl:order-first": idx <= 3,
-                  "4xl:order-first": idx <= 4,
-                })}
-              >
-                <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                  <GameCard
-                    name={game.name}
-                    logo={
-                      <GatsbyImage
-                        image={getImage(game.logo!)!}
-                        alt={`${game.name} logo`}
-                        className="my-auto"
-                        objectFit="contain"
-                        objectPosition="center"
-                      />
-                    }
-                    shortName={game.shortName}
-                    url={game.url}
-                    official={game.official}
-                  >
-                    <div className="md:min-h-[64px]">
+            {filteredGames.map((game, idx) => {
+              const isInGracePeriod = inGracePeriod(
+                game.currentSeason?.start?.startDate,
+              );
+              return (
+                <div
+                  key={game!.slug}
+                  className={cn("order-last flex", {
+                    "order-first": idx <= 1,
+                    "xl:order-first": idx <= 2,
+                    "3xl:order-first": idx <= 3,
+                    "4xl:order-first": idx <= 4,
+                  })}
+                >
+                  <ErrorBoundary fallback={<WidgetDiedFallback />}>
+                    <GameCard
+                      name={game.name}
+                      logo={
+                        <GatsbyImage
+                          image={getImage(game.logo!)!}
+                          alt={`${game.name} logo`}
+                          className="my-auto"
+                          objectFit="contain"
+                          objectPosition="center"
+                        />
+                      }
+                      shortName={game.shortName}
+                      url={game.url}
+                      official={game.official}
+                    >
                       <GameToSeasonWidget game={game} selector="current" />
-                    </div>
-                    <GameToSeasonWidget game={game} selector="next" />
-                  </GameCard>
-                </ErrorBoundary>
-              </div>
-            ))}
+                      {isInGracePeriod ? (
+                        game.twitchCategory ? (
+                          <div className="mt-auto">
+                            <FramedAction
+                              appendClassName="!bg-[#6441a5]"
+                              append={
+                                <Button
+                                  asChild
+                                  size={"icon"}
+                                  className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
+                                  variant={"destructive"}
+                                >
+                                  <a
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    href={`https://www.twitch.tv/directory/category/${game.twitchCategory}`}
+                                  >
+                                    <Twitch className="h-4 w-4" />
+                                  </a>
+                                </Button>
+                              }
+                            >
+                              Play and watch now!
+                            </FramedAction>
+                          </div>
+                        ) : (
+                          <div className="mt-auto">
+                            <FramedAction>Play now!</FramedAction>
+                          </div>
+                        )
+                      ) : (
+                        <GameToSeasonWidget game={game} selector="next" />
+                      )}
+                    </GameCard>
+                  </ErrorBoundary>
+                </div>
+              );
+            })}
             <div className="bg-card text-card-foreground 3xl:col-span-4 4xl:col-span-5 lg-col-span-2 relative order-3 col-span-1 flex flex-col gap-2 rounded-md border p-4 md:col-span-2 md:gap-4 md:p-6 xl:col-span-3">
               <div>
                 <h3 className="mb-1.5 text-xs">Timeline</h3>
@@ -219,6 +258,33 @@ export const query = graphql`
             title
             content
             order
+          }
+        }
+      }
+    }
+    liveStreamsOnTwitch: allMarkdownRemark(
+      filter: { frontmatter: { type: { eq: "liveStreams_twitch" } } }
+    ) {
+      edges {
+        node {
+          frontmatter {
+            game
+            platform
+            date
+            name
+          }
+        }
+      }
+    }
+    twitchChannels: allMarkdownRemark(
+      filter: { frontmatter: { type: { eq: "liveStreamPlatforms_twitch" } } }
+    ) {
+      edges {
+        node {
+          frontmatter {
+            game
+            category
+            channel
           }
         }
       }
