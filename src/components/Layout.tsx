@@ -7,7 +7,7 @@ import { sa_event } from "@/lib/sa_event";
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
-      <header className="max-sm:bg-card relative py-1 max-sm:shadow-sm md:pt-6 md:pb-0">
+      <header className="max-md:bg-card relative py-1 max-sm:shadow-sm md:pt-6 md:pb-0">
         <div className="relative container">
           <div className="flex flex-row items-center justify-between gap-2 md:justify-center">
             <a
