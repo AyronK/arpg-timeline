@@ -5,9 +5,10 @@ import {
   SeasonChip,
   SeasonWidgetProps,
 } from "@/components/SeasonWidget/SeasonWidget.types";
+import { sa_event } from "@/lib/sa_event";
 
 const ChipColorMap: Record<SeasonChip, string> = {
-  live: "bg-sky-800 border border-sky-300",
+  live: "bg-sky-800 border border-sky-300 motion-safe:animate-pulse",
   over: "bg-amber-800 border border-transparent",
   now: "bg-sky-800 border border-transparent",
   next: "bg-emerald-800 border border-transparent",
@@ -47,6 +48,7 @@ export const SeasonWidget = ({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => sa_event(`${name}-link-click`)}
           >
             {name}
           </MaybeLinkWrapper>
