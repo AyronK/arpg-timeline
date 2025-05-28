@@ -26,8 +26,6 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                   href="https://discord.gg/39mTbjkePg"
                   rel="external noopener noreferrer"
                   target="_blank"
-                  onPointerOver={() => sa_event("discord-hover")}
-                  onTouchStart={() => sa_event("discord-touch")}
                   onClick={() => sa_event("discord-click")}
                 >
                   <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-3">
@@ -45,8 +43,6 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                   href="https://www.buymeacoffee.com/ayron"
                   rel="external nofollow noreferrer"
                   target="_blank"
-                  onPointerOver={() => sa_event("support-hover")}
-                  onTouchStart={() => sa_event("support-touch")}
                   onClick={() => sa_event("support-click")}
                 >
                   <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-3">
@@ -68,8 +64,6 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
                   href="https://github.com/AyronK/arpg-timeline/issues"
                   rel="external nofollow noreferrer"
                   target="_blank"
-                  onPointerOver={() => sa_event("github-hover")}
-                  onTouchStart={() => sa_event("github-touch")}
                   onClick={() => sa_event("github-click")}
                 >
                   <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-3">

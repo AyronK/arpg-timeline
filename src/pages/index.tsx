@@ -21,6 +21,7 @@ import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { GameFilters } from "@/pages/GameFilters";
 import { TimelineEvent } from "@/components/Timeline/Const";
+import { sa_event } from "@/lib/sa_event";
 
 const Timeline = lazy(() =>
   import("@/components/Timeline/Timeline").then((m) => ({
@@ -62,6 +63,7 @@ const Games = ({ games }: { games: Game[] }) => {
                   objectPosition="center"
                 />
               }
+              slug={game.slug}
               shortName={game.shortName}
               url={game.url}
               official={game.official}
@@ -82,6 +84,9 @@ const Games = ({ games }: { games: Game[] }) => {
                           <a
                             target="_blank"
                             rel="noreferrer"
+                            onClick={() =>
+                              sa_event(`${game.slug}-twitch-click`)
+                            }
                             href={`https://www.twitch.tv/directory/category/${game.twitchCategory}`}
                           >
                             <Twitch className="h-4 w-4" />

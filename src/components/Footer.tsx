@@ -1,3 +1,5 @@
+import { sa_event } from "@/lib/sa_event";
+
 export const Footer = () => (
   <footer className="border-foreground bg-card mt-12 border-t px-4 py-4">
     <div className="flex flex-col justify-evenly gap-6 md:flex-row">
@@ -28,6 +30,7 @@ export const Footer = () => (
           className="font-semibold hover:opacity-75"
           href="https://discord.gg/39mTbjkePg"
           rel="noopener noreferrer"
+          onClick={() => sa_event("discord-click")}
         >
           Discord
         </a>
