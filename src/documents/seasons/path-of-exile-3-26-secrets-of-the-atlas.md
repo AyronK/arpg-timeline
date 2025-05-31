@@ -9,7 +9,7 @@ start:
   additionalText: ""
   overrideText: ""
 end:
-  endDate: 2025-09-28T00:00:00.000Z
-  overrideText: ""
+  endDate: 2025-10-13T00:00:00.000Z
+  overrideText: est. October
   confirmed: false
 ---
