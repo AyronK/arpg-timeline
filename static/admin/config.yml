@@ -10,6 +10,7 @@ backend:
     deleteMedia: "[skip ci] Delete “{{path}}”"
 media_folder: static/img
 public_folder: /img
+#local_backend: true
 
 collections:
   - label: "Crawler | HTTP"
@@ -366,3 +367,85 @@ collections:
       - label: "Duration"
         name: "duration"
         widget: "number"
+
+  - label: "Live stream | Twitch"
+    name: "liveStreams_twitch"
+    sortable_fields: ["date", "game", "name"]
+    slug: "{{fields.game}}-twitch-{{fields.date}}"
+    editor:
+      preview: false
+    folder: "src/documents/live-streams/twitch"
+    create: true
+    summary: "Twitch stream | {{game}} | {{name}}"
+    view_groups:
+      - label: Game
+        field: game
+    filter: { field: "type", value: "liveStreams_twitch" }
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "liveStreams_twitch"
+
+      - label: "Game"
+        name: "game"
+        widget: "relation"
+        collection: "games"
+        search_fields: ["name", "shortName"]
+        value_field: "slug"
+        display_fields: ["name"]
+        required: true
+
+      - label: "Platform"
+        name: "platform"
+        widget: "relation"
+        collection: "liveStreamPlatforms_twitch"
+        search_fields: ["game"]
+        value_field: "{{slug}}"
+        display_fields: ["name", "game"]
+
+      - label: "Start Date UTC"
+        name: "date"
+        widget: "timezoneDate"
+        picker_utc: true
+        required: true
+
+      - label: "Name"
+        name: "name"
+        required: true
+
+  - label: "Twitch"
+    name: "liveStreamPlatforms_twitch"
+    slug: "{{fields.game}}-twitch"
+    editor:
+      preview: false
+    folder: "src/documents/live-streams/platforms"
+    create: true
+    summary: "Twitch | {{game}}"
+    view_groups:
+      - label: Game
+        field: game
+    filter: { field: "type", value: "liveStreamPlatforms_twitch" }
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "liveStreamPlatforms_twitch"
+
+      - label: "Game"
+        name: "game"
+        widget: "relation"
+        collection: "games"
+        search_fields: ["name", "shortName"]
+        value_field: "slug"
+        display_fields: ["name"]
+        required: true
+
+      - label: "Category slug"
+        name: "category"
+        widget: "string"
+        required: true
+
+      - label: "Official channel"
+        name: "channel"
+        widget: "string"

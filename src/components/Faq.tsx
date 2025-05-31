@@ -17,8 +17,6 @@ export const Faq = ({ faq }: { faq: { title: string; content: string }[] }) => {
               href="https://www.buymeacoffee.com/ayron"
               rel="external nofollow noreferrer"
               target="_blank"
-              onPointerOver={() => sa_event("support-hover")}
-              onTouchStart={() => sa_event("support-touch")}
               onClick={() => sa_event("support-click")}
             >
               <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current">
@@ -47,6 +45,7 @@ export const Faq = ({ faq }: { faq: { title: string; content: string }[] }) => {
               href="https://github.com/AyronK/arpg-timeline/issues"
               rel="external nofollow noreferrer"
               target="_blank"
+              onClick={() => sa_event("github-click")}
             >
               <svg
                 aria-hidden="true"

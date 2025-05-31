@@ -1,5 +1,16 @@
 import { ImageDataLike } from "gatsby-plugin-image";
 
+export type GameStream = {
+  readonly gameSlug: string;
+  readonly gameName: string;
+  readonly platform: string;
+  readonly date: string;
+  readonly name: string;
+  readonly gameLogo: ImageDataLike;
+  readonly slug: string;
+  readonly twitchChannel: string;
+};
+
 export type Game = {
   readonly name: string;
   readonly shortName: string | null;
@@ -11,6 +22,7 @@ export type Game = {
   readonly logo: ImageDataLike;
   readonly currentSeason: Season | null;
   readonly nextSeason: Season | null;
+  twitchCategory: string | null;
 };
 
 export type Season = {

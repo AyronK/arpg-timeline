@@ -41,9 +41,9 @@ export const FiltersDialog = ({
   onGroupCheckedChange,
 }: FiltersDialogProps) => {
   const { isMd } = useBreakpoint("md");
-  const { is3xl } = useBreakpoint("3xl");
+  const { is4xl } = useBreakpoint("4xl");
 
-  if (is3xl) {
+  if (is4xl) {
     return (
       <Dialog>
         <DialogTrigger asChild>

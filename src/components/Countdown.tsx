@@ -70,6 +70,7 @@ export const Countdown = ({
           })}
           component={timeComponents.weeks}
           char="W"
+          pad={false}
         />
         <Time
           className={cn({
@@ -77,6 +78,7 @@ export const Countdown = ({
           })}
           component={timeComponents.days}
           char="D"
+          pad={false}
         />
         <Time
           className={cn({

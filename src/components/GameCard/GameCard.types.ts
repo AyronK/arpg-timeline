@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactNode } from "react";
 
 export type Game = {
+  readonly slug: string;
   readonly name: string;
   readonly shortName: string | null;
   readonly official: boolean;

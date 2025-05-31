@@ -3,7 +3,7 @@ import "@/components/Timeline/Timeline.css";
 import { DAY, INTL_LOCAL_DATETIME } from "@/lib/date";
 import Chart from "react-google-charts";
 import { useRef, useState } from "react";
-import { TimelineEvent, TIMELINE_OPTIONS } from "@/components/Timeline/Conts";
+import { TimelineEvent, TIMELINE_OPTIONS } from "@/components/Timeline/Const";
 import { Button } from "@/ui/Button";
 import { Expand, Shrink } from "lucide-react";
 

@@ -3,7 +3,19 @@ import { Game } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 import { useEffect } from "react";
 
-export const useGameFilters = (games: Game[]) => {
+export const useGameFilters = (
+  games: Game[],
+): {
+  gameFilters: {
+    label: string;
+    value: string;
+    group: string;
+  }[];
+  toggleGameFilter: (slug: string, value: boolean) => void;
+  toggleGroupFilter: (group: string, value: boolean) => void;
+  activeFilters: string[];
+  filteredGames: Game[];
+} => {
   const [, setSearchParam, getSearchParam] = useSearchParams();
   const searchParam = getSearchParam("exclude");
 

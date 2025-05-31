@@ -40,17 +40,11 @@ export const GameToSeasonWidget = ({
     return null;
   }
 
-  if (
-    selector === "next" &&
-    inGracePeriod(game.currentSeason?.start?.startDate)
-  ) {
-    return null;
-  }
-
+  const isInGracePeriod = inGracePeriod(season.start?.startDate);
   const chip: SeasonChip =
     selector === "next"
       ? "next"
-      : inGracePeriod(season.start?.startDate)
+      : isInGracePeriod
         ? "live"
         : season.end?.confirmed && isOver(season.end?.endDate)
           ? "over"
@@ -101,12 +95,14 @@ export const GameToSeasonWidget = ({
           {season.start.startDate && (
             <div className="mt-auto">
               <FramedAction
+                prependClassName="!rounded-r-none"
                 prepend={
                   <ShareMenu
                     startDate={season.start.startDate}
                     title={`Hey, ${game.name} ${season.name} launch is happening`}
                   />
                 }
+                appendClassName="!rounded-l-none"
                 append={
                   <CalendarMenu
                     startDate={season.start.startDate}
@@ -179,7 +175,7 @@ export const GameToSeasonWidget = ({
             season.end?.confirmed ? season.end.endDate : null,
           )}
         </div>
-        <ProgressBar progress={progress} clamp />
+        <ProgressBar progress={progress} clamp pulse={isInGracePeriod} />
       </>
     );
   }

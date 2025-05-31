@@ -43,6 +43,8 @@
     "clsx": "^2.1.1",
     "decap-cms-app": "^3.6.2",
     "decap-cms-core": "^3.6.1",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "gatsby": "^5.14.3",
     "gatsby-plugin-decap-cms": "^4.0.4",
     "ics": "^3.8.1",

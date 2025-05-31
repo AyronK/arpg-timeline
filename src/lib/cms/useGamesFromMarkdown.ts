@@ -6,7 +6,14 @@ export const useGamesFromMarkdown = (data: Queries.IndexPageQuery): Game[] => {
   return data.games.edges
     .map((e) => e.node.frontmatter as Game)
     .map((g) => {
-      const game = { ...g };
+      const game = { ...g } as Game;
+
+      const gameTwitch = data.twitchChannels.edges
+        .map((e) => e.node.frontmatter)
+        .find((e) => e?.game === g.slug);
+
+      game.twitchCategory = gameTwitch?.category ?? null;
+
       const gameSeasons = data.seasons.edges
         .map((e) => e.node.frontmatter)
         .filter((e) => e?.game === g.name)

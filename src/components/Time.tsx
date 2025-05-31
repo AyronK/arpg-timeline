@@ -4,15 +4,19 @@ export const Time = ({
   component,
   char,
   className,
+  pad = true,
 }: {
   component: string | number;
   char: string;
   className?: string | undefined;
+  pad?: boolean | undefined;
 }) => (
   <div className={cn(className, "flex flex-row items-end gap-[3px]")}>
-    <div className="ml-auto w-[12px] max-w-[12px] min-w-[12px] text-center">
-      {String(component).padStart(2, "0")[0]}
-    </div>
+    {pad && (
+      <div className="ml-auto w-[12px] max-w-[12px] min-w-[12px] text-center">
+        {String(component).padStart(2, "0")[0]}
+      </div>
+    )}
     <div className="mr-auto w-[12px] max-w-[12px] min-w-[12px] text-center">
       {String(component).padStart(2, "0")[1]}
     </div>
