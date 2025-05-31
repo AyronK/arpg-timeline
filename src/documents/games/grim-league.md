@@ -2,12 +2,13 @@
 type: game
 name: Grim Dawn Community League
 slug: grim-dawn-community-league
-seasonKeyword: season
-official: false
-group: Grim Dawn Community
-logo: /img/grim-logo.png
+seasonKeyword: expansion
+official: true
+group: ""
+logo: /img/grim-dawn-logo.png
 url: https://www.grimdawnleague.com
 crawlerSettings:
   keywords:
-    - season 8
+    - expansion
+    - Fangs of Asterkarn
 ---
