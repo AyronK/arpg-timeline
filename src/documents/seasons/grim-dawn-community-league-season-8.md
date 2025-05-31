@@ -6,7 +6,7 @@ start:
   confirmed: false
   overrideText: "2025"
   additionalText: ""
-  startDate: 2025-07-23T15:00:00.000Z
+  startDate: 2025-10-23T15:00:00.000Z
 end:
   endDate: ""
   confirmed: false
