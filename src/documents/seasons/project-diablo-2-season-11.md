@@ -11,6 +11,6 @@ start:
 end:
   endDate: 2025-11-30T23:59:00.000Z
   confirmed: false
-  overrideText: ""
+  overrideText: est. December
   additionalText: ""
 ---
