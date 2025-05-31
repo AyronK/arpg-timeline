@@ -2,14 +2,14 @@
 type: season
 game: Grim Dawn
 name: Fangs of Asterkarn
-url: https://www.grimdawn.com/guide/about/Forgotten-Gods/
+url: https://www.grimdawn.com/guide/about/fangs-of-asterkarn/
 start:
-  confirmed: true
-  overrideText: ""
+  confirmed: false
+  overrideText: "2025"
   additionalText: No official ladder or seasons
-  startDate: 2019-03-27T00:00:00.000Z
+  startDate: 2025-10-30T00:00:00.000Z
 end:
-  endDate: 2025-10-30T00:00:00.000Z
+  endDate: null
   confirmed: false
   overrideText: ""
   additionalText: ""
