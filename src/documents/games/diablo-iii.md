@@ -10,5 +10,5 @@ logo: /img/diablo_3_logo.png
 url: https://diablo3.blizzard.com/
 crawlerSettings:
   keywords:
-    - season 35
+    - season 36
 ---

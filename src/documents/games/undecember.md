@@ -9,5 +9,6 @@ logo: /img/undecember-logo.png
 url: https://undecember.line.games/
 crawlerSettings:
   keywords:
-    - season 8
+    - season 9
+    - advance notice
 ---

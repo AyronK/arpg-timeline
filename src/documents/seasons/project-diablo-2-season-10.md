@@ -9,7 +9,7 @@ start:
   startDate: 2024-10-25T17:00:00.000Z
 end:
   endDate: 2025-04-30T23:59:00.000Z
-  confirmed: false
-  overrideText: April/May
+  confirmed: true
+  overrideText: ""
   additionalText: ""
 ---

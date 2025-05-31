@@ -1,14 +1,14 @@
 ---
-slug: path-of-exile
 type: game
-seasonKeyword: league
-shortName: PoE
-logo: /img/poe.png
-official: true
 name: Path of Exile
+shortName: PoE
+slug: path-of-exile
+seasonKeyword: league
+official: true
 group: Path of Exile
+logo: /img/poe.png
 url: https://www.pathofexile.com/
 crawlerSettings:
   keywords:
-    - "3.26"
+    - "3.27"
 ---

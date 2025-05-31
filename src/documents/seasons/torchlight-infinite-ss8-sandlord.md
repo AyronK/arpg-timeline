@@ -10,6 +10,6 @@ start:
 end:
   endDate: 2025-07-30T23:59:00.000Z
   confirmed: false
-  overrideText: July/August
+  overrideText: est. July/August
   additionalText: ""
 ---

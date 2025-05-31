@@ -1,14 +1,19 @@
 ---
-slug: diablo-iv
 type: game
-seasonKeyword: season
 name: Diablo IV
-shortName: "D4"
+shortName: D4
+slug: diablo-iv
+seasonKeyword: season
 official: true
+group: Diablo Official
 logo: /img/d4.avif
 url: https://diablo4.blizzard.com/
-group: Diablo Official
 crawlerSettings:
   keywords:
-    - "season"
+    - season
+    - Campfire Chat
+    - livestream
+    - stream
+    - announcement
+    - trailer
 ---
