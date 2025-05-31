@@ -10,5 +10,5 @@ start:
 end:
   endDate: 2025-06-20T23:59:00.000Z
   confirmed: false
-  overrideText: June
+  overrideText: est. June
 ---
