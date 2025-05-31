@@ -14,6 +14,5 @@ crawlerSettings:
     - Campfire Chat
     - livestream
     - stream
-    - announcement
     - trailer
 ---
