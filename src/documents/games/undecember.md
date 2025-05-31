@@ -10,4 +10,5 @@ url: https://undecember.line.games/
 crawlerSettings:
   keywords:
     - season 9
+    - advance notice
 ---
