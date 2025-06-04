@@ -1,3 +1,5 @@
+// TODO UPDATE NETLIFY AND GATSBY AND REPLACE WITH NEXT AND VERCEL
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/fa2c3ed5-a946-4cc8-9aee-10104c36e385/deploy-status)](https://app.netlify.com/sites/arpg-timeline/deploys)
 [![aRPG Timeline Discord](https://img.shields.io/badge/discord-grey.svg?&logo=discord)](https://discord.gg/39mTbjkePg)
 
