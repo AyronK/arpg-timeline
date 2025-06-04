@@ -96,9 +96,7 @@ export const getProgressEndContent = (
     if (endTimeMs <= now) {
         return (
             <IconLabel iconPosition="end" icon={CalendarOff}>
-                <span>
-                    Ended <LocalDate dateOnly utcDate={endDate} />
-                </span>
+                Ended <LocalDate dateOnly utcDate={endDate} />
             </IconLabel>
         );
     }

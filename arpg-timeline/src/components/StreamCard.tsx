@@ -10,6 +10,8 @@ import { GameStream } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 import { Button } from "@/ui/Button";
 
+import ClientOnlyWrapper from "./ClientOnlyWrapper";
+
 const StreamHeader = ({
     gameName,
     name,
@@ -23,15 +25,17 @@ const StreamHeader = ({
         <h3 className="font-heading mt-auto text-xs text-nowrap">
             {gameName} - {name}
         </h3>
-        <div className="hidden lg:block">
-            {Date.now() < new Date(date).getTime() && (
-                <IconLabel icon={TimerReset}>
-                    <span className="font-semibold">
-                        <LocalDate longDate utcDate={date} />
-                    </span>
-                </IconLabel>
-            )}
-        </div>
+        <ClientOnlyWrapper>
+            <div className="hidden lg:block">
+                {Date.now() < new Date(date).getTime() && (
+                    <IconLabel icon={TimerReset}>
+                        <span className="font-semibold">
+                            <LocalDate longDate utcDate={date} />
+                        </span>
+                    </IconLabel>
+                )}
+            </div>
+        </ClientOnlyWrapper>
     </div>
 );
 
@@ -111,16 +115,18 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
                     name={stream.name}
                     date={stream.date ?? ""}
                 />
-                <div className="bg-card">
-                    {isLiveSoon && stream.twitchChannel ? (
-                        <WatchNowAction
-                            twitchChannel={stream.twitchChannel}
-                            gameSlug={stream.gameSlug}
-                        />
-                    ) : (
-                        <CountdownAction stream={stream} />
-                    )}
-                </div>
+                <ClientOnlyWrapper>
+                    <div className="bg-card">
+                        {isLiveSoon && stream.twitchChannel ? (
+                            <WatchNowAction
+                                twitchChannel={stream.twitchChannel}
+                                gameSlug={stream.gameSlug}
+                            />
+                        ) : (
+                            <CountdownAction stream={stream} />
+                        )}
+                    </div>
+                </ClientOnlyWrapper>
             </div>
         </section>
     );

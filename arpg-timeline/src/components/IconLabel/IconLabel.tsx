@@ -19,7 +19,7 @@ export const IconLabel = ({
     return (
         <div
             className={cn(
-                "flex items-center gap-1 text-sm",
+                "flex flex-nowrap items-center gap-1 overflow-hidden text-sm text-nowrap",
                 {
                     "flex-row": iconPosition === "start",
                     "flex-row-reverse": iconPosition === "end",

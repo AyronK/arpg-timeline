@@ -54,7 +54,3 @@ export const metadata: Metadata = {
         images: ["/assets/seoimage.png"],
     },
 };
-
-export const revalidate = 1; //TODO check how to optimize without flickering
-
-// export const experimental_ppr = true; // TODO optimize ppr

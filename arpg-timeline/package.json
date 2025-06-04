@@ -20,6 +20,7 @@
         "@radix-ui/react-slot": "^1.2.3",
         "@radix-ui/react-switch": "^1.2.5",
         "@radix-ui/react-toast": "^1.2.14",
+        "@react-hooks-library/core": "^0.6.2",
         "class-variance-authority": "^0.7.1",
         "embla-carousel-autoplay": "^8.6.0",
         "embla-carousel-react": "^8.6.0",

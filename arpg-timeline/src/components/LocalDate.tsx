@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { INTL_LOCAL_DATE, INTL_LOCAL_DATETIME, INTL_LOCAL_DATETIME_LONG } from "@/lib/date";
-import { cn } from "@/lib/utils";
+import {
+    INTL_LOCAL_DATE,
+    INTL_LOCAL_DATETIME,
+    INTL_LOCAL_DATETIME_LONG,
+    INTL_UTC_DATETIME,
+    INTL_UTC_DATETIME_LONG,
+} from "@/lib/date";
 
 interface LocalDateProps {
     utcDate: string;
@@ -24,8 +29,10 @@ const LocalDate: React.FC<LocalDateProps> = ({ utcDate, dateOnly, longDate }) =>
     }, [dateOnly, longDate, utcDate]);
 
     return (
-        <span className={cn({ "opacity-0": !localDate })}>
-            {localDate ? localDate : `${new Date(utcDate).toUTCString()} UTC`}
+        <span className="text-nowrap">
+            {localDate
+                ? localDate
+                : `${longDate ? INTL_UTC_DATETIME_LONG.format(new Date(utcDate)) : INTL_UTC_DATETIME.format(new Date(utcDate))} UTC`}
         </span>
     );
 };

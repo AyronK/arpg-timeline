@@ -25,6 +25,10 @@ export const INTL_LOCAL_DATETIME = new Intl.DateTimeFormat(locale, dateTimeForma
 
 export const INTL_LOCAL_DATETIME_LONG = new Intl.DateTimeFormat(locale, longDateTimeFormatOptions);
 
+export const INTL_UTC_DATETIME = new Intl.DateTimeFormat("utc", dateTimeFormatOptions);
+
+export const INTL_UTC_DATETIME_LONG = new Intl.DateTimeFormat("utc", longDateTimeFormatOptions);
+
 export const INTL_LOCAL_DATE = new Intl.DateTimeFormat(locale, dateFormatOptions);
 
 export const HOUR = 1000 * 60 * 60;

@@ -2,6 +2,7 @@ import { InfoIcon, TimerReset } from "lucide-react";
 import { ReactNode } from "react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
+import ClientOnlyWrapper from "@/components/ClientOnlyWrapper";
 import { Countdown } from "@/components/Countdown";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
@@ -73,35 +74,39 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
                     {season.start.overrideText ? (
                         <IconLabel icon={TimerReset}>{season.start?.overrideText}</IconLabel>
                     ) : (
-                        <IconLabel icon={TimerReset}>
-                            Starts
-                            <span className="font-semibold">
-                                <LocalDate longDate utcDate={season.start.startDate} />
-                            </span>
-                        </IconLabel>
+                        <ClientOnlyWrapper>
+                            <IconLabel icon={TimerReset}>
+                                Starts
+                                <span className="font-semibold">
+                                    <LocalDate longDate utcDate={season.start.startDate} />
+                                </span>
+                            </IconLabel>
+                        </ClientOnlyWrapper>
                     )}
                     {info}
                     {season.start.startDate && (
-                        <div className="mt-auto">
-                            <FramedAction
-                                prependClassName="!rounded-r-none"
-                                prepend={
-                                    <ShareMenu
-                                        startDate={season.start.startDate}
-                                        title={`Hey, ${game.name} ${season.name} launch is happening`}
-                                    />
-                                }
-                                appendClassName="!rounded-l-none"
-                                append={
-                                    <CalendarMenu
-                                        startDate={season.start.startDate}
-                                        title={`${game.name} ${season.name} launch`}
-                                    />
-                                }
-                            >
-                                <Countdown date={new Date(season.start.startDate)} />
-                            </FramedAction>
-                        </div>
+                        <ClientOnlyWrapper>
+                            <div className="mt-auto">
+                                <FramedAction
+                                    prependClassName="!rounded-r-none"
+                                    prepend={
+                                        <ShareMenu
+                                            startDate={season.start.startDate}
+                                            title={`Hey, ${game.name} ${season.name} launch is happening`}
+                                        />
+                                    }
+                                    appendClassName="!rounded-l-none"
+                                    append={
+                                        <CalendarMenu
+                                            startDate={season.start.startDate}
+                                            title={`${game.name} ${season.name} launch`}
+                                        />
+                                    }
+                                >
+                                    <Countdown date={new Date(season.start.startDate)} />
+                                </FramedAction>
+                            </div>
+                        </ClientOnlyWrapper>
                     )}
                 </div>
             );
@@ -151,12 +156,19 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
         );
         children = (
             <>
-                <div className="flex flex-row justify-between">
-                    {getProgressStartContent(season.start?.startDate, season.end?.endDate ?? null)}
-                    {getProgressEndContent(
-                        season.end?.overrideText ?? null,
-                        season.end?.confirmed ? season.end.endDate : null,
-                    )}
+                <div className="flex flex-row flex-nowrap justify-between">
+                    <ClientOnlyWrapper>
+                        {getProgressStartContent(
+                            season.start?.startDate,
+                            season.end?.endDate ?? null,
+                        )}
+                    </ClientOnlyWrapper>
+                    <ClientOnlyWrapper>
+                        {getProgressEndContent(
+                            season.end?.overrideText ?? null,
+                            season.end?.confirmed ? season.end.endDate : null,
+                        )}
+                    </ClientOnlyWrapper>
                 </div>
                 <ProgressBar progress={progress} clamp pulse={isInGracePeriod} />
             </>
