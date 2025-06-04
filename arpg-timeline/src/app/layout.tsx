@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
 import { Toaster } from "@/ui/Toaster";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const cinzel = Cinzel({
     subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
             <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col">
                 <SimpleAnalytics />
+                <SpeedInsights />
                 <Toaster />
                 <Header
                     githubUrl={`${process.env.GITHUB_URL!}/${process.env.GITHUB_REPO!}/issues`}
