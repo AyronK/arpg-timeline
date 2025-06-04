@@ -34,6 +34,19 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/icon.png",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=2592000, immutable",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=31536000, immutable",
+                    },
+                ],
+            },
+            {
                 source: "/",
                 headers: [
                     {
