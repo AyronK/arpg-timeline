@@ -20,22 +20,19 @@ export const useGameFilters = (
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
 
-    const handleUpdate = useCallback(
-        (slugs: string[]) => {
-            const params = new URLSearchParams();
+    const handleUpdate = useCallback((slugs: string[]) => {
+        const params = new URLSearchParams();
 
-            if (slugs?.length > 0) {
-                slugs.forEach((val) => {
-                    params.append("exclude", val);
-                });
-            } else {
-                params.delete("exclude");
-            }
+        if (slugs?.length > 0) {
+            slugs.forEach((val) => {
+                params.append("exclude", val);
+            });
+        } else {
+            params.delete("exclude");
+        }
 
-            window.history.pushState({}, "", "?" + params.toString());
-        },
-        [searchParams, searchParam],
-    );
+        window.history.pushState({}, "", "?" + params.toString());
+    }, []);
 
     const excludedSlugs = useMemo(
         () => (typeof searchParam === "string" ? [searchParam] : ((searchParam as string[]) ?? [])),
@@ -106,14 +103,11 @@ export const useGameFilters = (
         .map((g) => ({ label: g!.name!, value: g!.slug!, group: g!.group! }))
         .sort((a, b) => (a.label > b.label ? 1 : -1));
 
-    return useMemo(
-        () => ({
-            gameFilters,
-            toggleGameFilter,
-            toggleGroupFilter,
-            filteredGames,
-            activeFilters,
-        }),
-        [excludedSlugs],
-    );
+    return {
+        gameFilters,
+        toggleGameFilter,
+        toggleGroupFilter,
+        filteredGames,
+        activeFilters,
+    };
 };

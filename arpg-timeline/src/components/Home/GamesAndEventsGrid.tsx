@@ -5,6 +5,7 @@ import { useGameFilters } from "@/hooks/useGameFilters";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game } from "@/lib/cms/games.types";
 
+import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
 import { Events } from "./Events";
 import { Games } from "./Games";
 
@@ -17,5 +18,18 @@ export const GamesAndEventsGrid = ({ games }: { games: Game[] }) => {
             <Games games={filteredGames} />
             <Events events={events} />
         </article>
+    );
+};
+
+// TODO refactor
+export const GamesAndEventsGridFallback = ({ games }: { games: Game[] }) => {
+    const events = useTimelineEvents(games);
+    return (
+        <ClientOnlyVisibleWrapper>
+            <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
+                <Games games={games} />
+                <Events events={events} />
+            </article>
+        </ClientOnlyVisibleWrapper>
     );
 };

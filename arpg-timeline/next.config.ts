@@ -47,6 +47,19 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/index",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=3600",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=3600",
+                    },
+                ],
+            },
+            {
                 source: "/",
                 headers: [
                     {
