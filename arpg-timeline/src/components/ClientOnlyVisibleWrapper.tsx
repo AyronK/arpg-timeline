@@ -3,7 +3,7 @@
 import { useHasMounted } from "@react-hooks-library/core";
 import { Children, cloneElement, isValidElement, PropsWithChildren } from "react";
 
-const ClientOnlyWrapper = ({ children }: PropsWithChildren) => {
+const ClientOnlyVisibleWrapper = ({ children }: PropsWithChildren) => {
     const hasMounted = useHasMounted();
 
     if (!hasMounted) {
@@ -26,4 +26,4 @@ const ClientOnlyWrapper = ({ children }: PropsWithChildren) => {
     return children;
 };
 
-export default ClientOnlyWrapper;
+export default ClientOnlyVisibleWrapper;

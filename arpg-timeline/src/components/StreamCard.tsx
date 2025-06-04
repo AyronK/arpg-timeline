@@ -10,7 +10,7 @@ import { GameStream } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 import { Button } from "@/ui/Button";
 
-import ClientOnlyWrapper from "./ClientOnlyWrapper";
+import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 
 const StreamHeader = ({
     gameName,
@@ -25,7 +25,7 @@ const StreamHeader = ({
         <h3 className="font-heading mt-auto text-xs text-nowrap">
             {gameName} - {name}
         </h3>
-        <ClientOnlyWrapper>
+        <ClientOnlyVisibleWrapper>
             <div className="hidden lg:block">
                 {Date.now() < new Date(date).getTime() && (
                     <IconLabel icon={TimerReset}>
@@ -35,7 +35,7 @@ const StreamHeader = ({
                     </IconLabel>
                 )}
             </div>
-        </ClientOnlyWrapper>
+        </ClientOnlyVisibleWrapper>
     </div>
 );
 
@@ -115,7 +115,7 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
                     name={stream.name}
                     date={stream.date ?? ""}
                 />
-                <ClientOnlyWrapper>
+                <ClientOnlyVisibleWrapper>
                     <div className="bg-card">
                         {isLiveSoon && stream.twitchChannel ? (
                             <WatchNowAction
@@ -126,7 +126,7 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
                             <CountdownAction stream={stream} />
                         )}
                     </div>
-                </ClientOnlyWrapper>
+                </ClientOnlyVisibleWrapper>
             </div>
         </section>
     );

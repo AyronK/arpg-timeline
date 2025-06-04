@@ -2,7 +2,7 @@ import { InfoIcon, TimerReset } from "lucide-react";
 import { ReactNode } from "react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
-import ClientOnlyWrapper from "@/components/ClientOnlyWrapper";
+import ClientOnlyVisibleWrapper from "@/components/ClientOnlyVisibleWrapper";
 import { Countdown } from "@/components/Countdown";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
@@ -74,18 +74,18 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
                     {season.start.overrideText ? (
                         <IconLabel icon={TimerReset}>{season.start?.overrideText}</IconLabel>
                     ) : (
-                        <ClientOnlyWrapper>
+                        <ClientOnlyVisibleWrapper>
                             <IconLabel icon={TimerReset}>
                                 Starts
                                 <span className="font-semibold">
                                     <LocalDate longDate utcDate={season.start.startDate} />
                                 </span>
                             </IconLabel>
-                        </ClientOnlyWrapper>
+                        </ClientOnlyVisibleWrapper>
                     )}
                     {info}
                     {season.start.startDate && (
-                        <ClientOnlyWrapper>
+                        <ClientOnlyVisibleWrapper>
                             <div className="mt-auto">
                                 <FramedAction
                                     prependClassName="!rounded-r-none"
@@ -106,7 +106,7 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
                                     <Countdown date={new Date(season.start.startDate)} />
                                 </FramedAction>
                             </div>
-                        </ClientOnlyWrapper>
+                        </ClientOnlyVisibleWrapper>
                     )}
                 </div>
             );
@@ -157,18 +157,18 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
         children = (
             <>
                 <div className="flex flex-row flex-nowrap justify-between">
-                    <ClientOnlyWrapper>
+                    <ClientOnlyVisibleWrapper>
                         {getProgressStartContent(
                             season.start?.startDate,
                             season.end?.endDate ?? null,
                         )}
-                    </ClientOnlyWrapper>
-                    <ClientOnlyWrapper>
+                    </ClientOnlyVisibleWrapper>
+                    <ClientOnlyVisibleWrapper>
                         {getProgressEndContent(
                             season.end?.overrideText ?? null,
                             season.end?.confirmed ? season.end.endDate : null,
                         )}
-                    </ClientOnlyWrapper>
+                    </ClientOnlyVisibleWrapper>
                 </div>
                 <ProgressBar progress={progress} clamp pulse={isInGracePeriod} />
             </>

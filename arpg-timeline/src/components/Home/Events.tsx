@@ -4,7 +4,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { TimelineEvent } from "@/components/Timeline/Const";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 
-import ClientOnlyWrapper from "../ClientOnlyWrapper";
+import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
 
 const Timeline = lazy(() =>
     import("@/components/Timeline/Timeline").then((m) => ({
@@ -17,7 +17,7 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => (
         <Suspense
             fallback={
                 <div className="h-[255px] md:h-[296px]">
-                    <ClientOnlyWrapper />
+                    <ClientOnlyVisibleWrapper />
                 </div>
             }
         >
