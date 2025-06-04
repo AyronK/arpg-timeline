@@ -8,6 +8,19 @@ const nextConfig: NextConfig = {
     async headers() {
         return [
             {
+                source: "/(.*)\\.(svg|jpg|jpeg|png|gif|webp|ico)",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=2592000, immutable",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=31536000, immutable",
+                    },
+                ],
+            },
+            {
                 source: "/",
                 headers: [
                     {
