@@ -17,6 +17,7 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => (
         <h3 className="mb-1.5 text-xs">Timeline</h3>
         <Suspense
             fallback={
+                // TODO: Improve layout shift handling
                 <div className="h-[255px] md:h-[296px]">
                     <ClientOnlyVisibleWrapper />
                 </div>
