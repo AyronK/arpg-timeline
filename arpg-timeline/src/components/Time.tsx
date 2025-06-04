@@ -11,7 +11,7 @@ export const Time = ({
     className?: string | undefined;
     pad?: boolean | undefined;
 }) => (
-    <div className={cn(className, "flex flex-row items-end gap-[3px]")}>
+    <div suppressHydrationWarning className={cn(className, "flex flex-row items-end gap-[3px]")}>
         {pad && (
             <div className="ml-auto w-[12px] max-w-[12px] min-w-[12px] text-center">
                 {String(component).padStart(2, "0")[0]}
