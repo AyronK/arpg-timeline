@@ -14,7 +14,7 @@ export const GamesAndEventsGrid = ({ games }: { games: Game[] }) => {
     return (
         <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
             <GameFilters {...filtersProps} />
-            <Games games={games} />
+            <Games games={filteredGames} />
             <Events events={events} />
         </article>
     );
