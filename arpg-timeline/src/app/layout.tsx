@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import { Cinzel, Montserrat } from "next/font/google";
 
@@ -7,7 +8,6 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
 import { Toaster } from "@/ui/Toaster";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const cinzel = Cinzel({
     subsets: ["latin"],
