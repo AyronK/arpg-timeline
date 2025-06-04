@@ -10,7 +10,8 @@ export const ProgressBar = ({
     pulse?: boolean | undefined;
 }) => (
     <div className="relative h-2 w-full overflow-hidden rounded-tl-full rounded-br-full bg-sky-200/15">
-        <div suppressHydrationWarning
+        <div
+            suppressHydrationWarning
             className={cn("absolute top-0 right-0 bottom-0 rounded-tl-full bg-sky-800", {
                 ["motion-safe:animate-pulse"]: pulse,
             })}

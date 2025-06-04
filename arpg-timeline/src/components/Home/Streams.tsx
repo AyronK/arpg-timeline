@@ -13,13 +13,14 @@ import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
 export const Streams = ({ games, streams }: { games: Game[]; streams: GameStream[] }) => {
     const { filteredGames } = useGameFilters(games);
-    streams.filter((s) => filteredGames.find((g) => g.slug === s.gameSlug));
+    const filteredStreams = streams.filter((s) => filteredGames.find((g) => g.slug === s.gameSlug));
+
     return (
-        streams?.length > 0 && (
-            <div className={cn({ "flex justify-center": streams.length === 1 })}>
+        filteredStreams?.length > 0 && (
+            <div className={cn({ "flex justify-center": filteredStreams.length === 1 })}>
                 <div
                     className={cn("relative max-w-3xl flex-1", {
-                        "mx-auto": streams.length > 1,
+                        "mx-auto": filteredStreams.length > 1,
                     })}
                 >
                     <h2 className="hidden">Streams</h2>
@@ -36,15 +37,15 @@ export const Streams = ({ games, streams }: { games: Game[]; streams: GameStream
                                 className="w-full max-w-3xl"
                                 opts={{
                                     loop: true,
-                                    active: streams.length > 1,
+                                    active: filteredStreams.length > 1,
                                 }}
                             >
                                 <CarouselContent>
-                                    {streams.map((s) => (
+                                    {filteredStreams.map((s) => (
                                         <CarouselItem
                                             key={s.slug}
                                             className={cn({
-                                                "cursor-all-scroll": streams.length > 1,
+                                                "cursor-all-scroll": filteredStreams.length > 1,
                                             })}
                                         >
                                             <StreamCard stream={s} />
