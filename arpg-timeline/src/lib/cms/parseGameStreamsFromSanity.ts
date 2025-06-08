@@ -5,8 +5,7 @@ import { GameStream } from "@/lib/cms/games.types";
 export const parseGameStreamsFromSanity = (data: any): GameStream[] =>
     data?.liveStreamsOnTwitch
         ?.filter(
-            (s: any) =>
-                s?.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000,
+            (s: any) => s?.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000,
         )
         .sort(
             (a: any, b: any) =>

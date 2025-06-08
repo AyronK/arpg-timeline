@@ -1,22 +1,20 @@
-import { Game } from "@/lib/cms/games.types";
+import { Game, SeasonEnd } from "@/lib/cms/games.types";
 import { HOUR } from "@/lib/date";
 import { inGracePeriod, sortBySeasons } from "@/lib/games/sortBySeasons";
+import { IndexQueryResult } from "@/queries/indexQuery";
 
-export const parseGamesFromSanity = (data: any): Game[] => {
+export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
     return data.games
-        .map((g: any) => {
+        .map((g) => {
             const game = { ...g } as Game;
 
-            const gameTwitch = data.twitchChannels.find((e: any) => e?.game === g.slug);
+            const gameTwitch = data.twitchChannels.find((e) => e?.game === g.slug);
 
             game.twitchCategory = gameTwitch?.category ?? null;
 
             const gameSeasons = data.seasons
-                .filter((e: any) => e?.game === g.slug)
-                .sort(
-                    (a: any, b: any) =>
-                        b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0,
-                );
+                .filter((e) => e?.game === g.slug)
+                .sort((a, b) => b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0);
 
             const hasLatestSeasonStarted =
                 new Date().getTime() > new Date(gameSeasons[0]?.start?.startDate ?? "").getTime();
@@ -24,7 +22,7 @@ export const parseGamesFromSanity = (data: any): Game[] => {
             game.currentSeason = hasLatestSeasonStarted ? gameSeasons[0] : gameSeasons[1];
 
             if (game.currentSeason && !game.currentSeason.end?.endDate) {
-                game.currentSeason.end ??= {} as any;
+                game.currentSeason.end ??= {} as SeasonEnd;
                 game.currentSeason.end.endDate = new Date(
                     new Date(game.currentSeason.start?.startDate).getTime() +
                         120 * 24 * 50 * 60 * 1000,
@@ -69,7 +67,7 @@ export const parseGamesFromSanity = (data: any): Game[] => {
             }
 
             if (game.currentSeason && !game.currentSeason.end?.endDate) {
-                game.currentSeason.end.endDate = new Date(
+                game.currentSeason.end!.endDate = new Date(
                     new Date(game.currentSeason.start?.startDate ?? "").getTime() +
                         120 * 24 * 50 * 60 * 1000,
                 ).toISOString();
@@ -86,10 +84,10 @@ export const parseGamesFromSanity = (data: any): Game[] => {
             }
 
             if (game.nextSeason && !game.nextSeason.end?.endDate) {
-                game.nextSeason.end.endDate = new Date(
+                game.nextSeason.end!.endDate = new Date(
                     new Date(
                         game.nextSeason.start?.startDate ??
-                            (game.currentSeason?.end?.endDate as any),
+                            (game.currentSeason?.end?.endDate as string),
                     ).getTime() +
                         120 * 24 * 50 * 60 * 1000,
                 ).toISOString();
@@ -97,7 +95,7 @@ export const parseGamesFromSanity = (data: any): Game[] => {
 
             return game;
         })
-        .map((g: any) => {
+        .map((g) => {
             if (
                 g?.currentSeason?.start?.startDate &&
                 inGracePeriod(g.currentSeason.start.startDate)

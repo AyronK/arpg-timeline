@@ -1,10 +1,10 @@
 import { UsersRound } from "lucide-react";
 import Image from "next/image";
-import { PortableText } from "next-sanity";
+import { PortableText, PortableTextBlock } from "next-sanity";
 
 import { Button } from "@/ui/Button";
 
-export const Faq = ({ faq }: { faq: { title: string; content: any }[] }) => {
+export const Faq = ({ faq }: { faq: { title: string; content: PortableTextBlock[] }[] }) => {
     return (
         <section className="container my-16 flex flex-col gap-4">
             <div>

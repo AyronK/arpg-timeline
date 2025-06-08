@@ -7,72 +7,16 @@ import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { sanityClient } from "@/lib/sanity/sanityClient";
-
-const query = `{
-  "games": *[_type == "game"]{
-    "slug":slug.current,
-    name,
-    shortName,
-    official,
-    seasonKeyword,
-    url,
-    group,
-    "logo": logo.asset->{
-      _id,
-      url
-    }
-  },
-  "seasons": *[_type == "season"]{
-    name,
-    "game": game->slug.current,
-    url,
-    start {
-      startDate,
-      confirmed,
-      overrideText,
-      additionalText
-    },
-    end {
-      endDate,
-      confirmed,
-      overrideText,
-      additionalText
-    }
-  },
-  "faq": *[_type == "faq"] | order(order asc){
-    title,
-    content,
-    order
-  },
-  "liveStreamsOnTwitch": *[_type == "liveStreamTwitch"]{
-    "game": game->slug.current,
-    "platform": platform->_id,
-    date,
-    name,
-    "slug": slug.current
-  },
-  "twitchChannels": *[_type == "liveStreamPlatformTwitch"]{
-    "game": game->slug.current,
-    category,
-    channel
-  },
-  "toast": *[_type == "toast"] | order(order asc)[0]{
-    title,
-    description,
-    withLogo,
-    duration,
-    order
-  }
-}`;
+import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async () => {
-    const data = await sanityClient.fetch(query, { revalidate: 3600 });
+    const data: IndexQueryResult = await sanityClient.fetch(indexQuery, { revalidate: 3600 });
     const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
 
     return (
         <>
-            <SingleToast data={data.toast} />
+            {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
                 <Kicker />
                 <Main games={games} streams={streams} />
