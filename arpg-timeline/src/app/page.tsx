@@ -13,7 +13,7 @@ const Home = async () => {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
         revalidate: 24 * 60 * 60,
-        tags: ["season", "liveStreamTwitch", "game"],
+        tags: ["season", "liveStreamTwitch", "game", "toast"],
     });
     const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
