@@ -10,7 +10,11 @@ import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
 import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async () => {
-    const data: IndexQueryResult = await sanityFetch({ query: indexQuery, revalidate: 3600 });
+    const data: IndexQueryResult = await sanityFetch({
+        query: indexQuery,
+        revalidate: 3600,
+        tags: ["seasons", "streams", "games"],
+    });
     const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
 
