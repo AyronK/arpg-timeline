@@ -38,7 +38,38 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
-                source: "/icon.png",
+                source: "/robots.txt",
+                headers: [
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/sitemap.xml",
+                headers: [
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/favicon-192.png",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=2592000, immutable",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=31536000, immutable",
+                    },
+                ],
+            },
+            {
+                source: "/favicon.ico",
                 headers: [
                     {
                         key: "Cache-Control",
