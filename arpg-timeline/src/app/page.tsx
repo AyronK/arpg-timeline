@@ -12,8 +12,8 @@ import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 const Home = async () => {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
-        revalidate: 3600,
-        tags: ["seasons", "streams", "games"],
+        revalidate: 24 * 60 * 60,
+        tags: ["season", "liveStreamTwitch", "game"],
     });
     const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
