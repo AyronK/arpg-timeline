@@ -1,4 +1,5 @@
 import type { Rule } from "sanity";
+import { TimezoneDateControl } from "../../components/TimezoneDateWidget/Elements/TimezoneDateControl";
 export default {
     name: "liveStreamTwitch",
     title: "Live Stream (Twitch)",
@@ -22,6 +23,9 @@ export default {
             title: "Start Date UTC",
             type: "datetime",
             validation: (Rule: Rule) => Rule.required(),
+            components: {
+                input: TimezoneDateControl,
+            },
         },
         {
             name: "name",

@@ -1,4 +1,5 @@
-import type { Rule } from "sanity";
+import { defineField, type Rule } from "sanity";
+import { TimezoneDateControl } from "../../components/TimezoneDateWidget/Elements/TimezoneDateControl";
 export default {
     name: "season",
     title: "Season",
@@ -27,11 +28,14 @@ export default {
             title: "Start",
             type: "object",
             fields: [
-                {
+                defineField({
                     name: "startDate",
                     title: "Start Date UTC",
                     type: "datetime",
-                },
+                    components: {
+                        input: TimezoneDateControl,
+                    },
+                }),
                 {
                     name: "confirmed",
                     title: "Confirmed",
@@ -59,6 +63,9 @@ export default {
                     name: "endDate",
                     title: "End Date UTC",
                     type: "datetime",
+                    components: {
+                        input: TimezoneDateControl,
+                    },
                 },
                 {
                     name: "confirmed",
