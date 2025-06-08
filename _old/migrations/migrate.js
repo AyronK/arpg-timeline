@@ -314,19 +314,19 @@ async function migrateToSanity() {
       }
     }
 
-    console.log("Migrating FAQ...");
-    const transformedFaq = faq.map(transformFaq);
-    for (const faqItem of transformedFaq) {
-      await client.createOrReplace(faqItem);
-      console.log(`✓ Migrated FAQ: ${faqItem.title}`);
-    }
+    // console.log("Migrating FAQ...");
+    // const transformedFaq = faq.map(transformFaq);
+    // for (const faqItem of transformedFaq) {
+    //   await client.createOrReplace(faqItem);
+    //   console.log(`✓ Migrated FAQ: ${faqItem.title}`);
+    // }
 
-    console.log("Migrating toasts...");
-    const transformedToasts = toasts.map(transformToast);
-    for (const toast of transformedToasts) {
-      await client.createOrReplace(toast);
-      console.log(`✓ Migrated toast: ${toast.title}`);
-    }
+    // console.log("Migrating toasts...");
+    // const transformedToasts = toasts.map(transformToast);
+    // for (const toast of transformedToasts) {
+    //   await client.createOrReplace(toast);
+    //   console.log(`✓ Migrated toast: ${toast.title}`);
+    // }
 
     console.log("Migrating live streams...");
     const transformedStreams = liveStreams.map((data) =>

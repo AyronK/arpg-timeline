@@ -13,7 +13,8 @@ export default {
         {
             name: "content",
             title: "Content",
-            type: "text",
+            type: "array",
+            of: [{ type: "block" }],
             validation: (Rule: Rule) => Rule.required(),
         },
         {
