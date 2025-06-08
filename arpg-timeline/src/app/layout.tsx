@@ -3,6 +3,7 @@ import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import { Cinzel, Montserrat } from "next/font/google";
+import Script from "next/script";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     discordUrl={process.env.DISCORD_URL!}
                 />
             </body>
+            <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
         </html>
     );
 }

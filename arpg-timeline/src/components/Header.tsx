@@ -12,8 +12,8 @@ export type HeaderProps = {
 };
 
 export const Header = ({ discordUrl, buyMeACoffeeUrl, githubUrl }: HeaderProps) => (
-    <header className="max-md:bg-card relative max-sm:shadow-sm md:pt-6 md:pb-0 h-[56px] md:h-[80px] px-2 md:px-8">
-        <div className="relative w-full h-full">
+    <header className="max-md:bg-card relative h-[56px] px-2 max-sm:shadow-sm md:h-[80px] md:px-8 md:pt-6 md:pb-0">
+        <div className="relative h-full w-full">
             <div className="flex h-full items-center justify-between gap-2">
                 <div className="ml-auto flex items-center">
                     <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
@@ -79,7 +79,7 @@ export const Header = ({ discordUrl, buyMeACoffeeUrl, githubUrl }: HeaderProps) 
             <Link
                 href="/"
                 rel="self"
-                className="absolute top-0 md:left-1/2 z-20 md:-translate-x-1/2 transform text-base font-semibold tracking-[0.3rem] sm:text-lg md:mr-auto md:ml-auto md:text-4xl"
+                className="absolute top-0 z-20 transform text-base font-semibold tracking-[0.3rem] sm:text-lg md:left-1/2 md:mr-auto md:ml-auto md:-translate-x-1/2 md:text-4xl"
             >
                 <h1 className="flex flex-row items-center md:gap-2">
                     <Logo />
