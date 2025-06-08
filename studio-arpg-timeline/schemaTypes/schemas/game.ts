@@ -67,7 +67,6 @@ export default {
                     title: "Keywords",
                     type: "array",
                     of: [{ type: "string" }],
-                    validation: (Rule: Rule) => Rule.max(10),
                 },
             ],
         },

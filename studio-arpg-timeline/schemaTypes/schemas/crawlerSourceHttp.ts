@@ -15,7 +15,7 @@ export default {
             name: "source",
             title: "Source URL",
             type: "string",
-            validation: (Rule: Rule) => Rule.required().max(3),
+            validation: (Rule: Rule) => Rule.required(),
         },
     ],
     preview: {
