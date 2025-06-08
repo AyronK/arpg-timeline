@@ -70,8 +70,8 @@ export const getProgressStartContent = (
 
 export const getProgressEndContent = (
     text: string | null,
-    endDate: string | null,
-    currentTime?: Date | null,
+    endDate: string | null | undefined,
+    currentTime?: Date | null | undefined,
 ) => {
     if (!text && !endDate) {
         return null;

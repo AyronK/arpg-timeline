@@ -56,14 +56,14 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
             <>
                 <NextSeasonStartSeoText
                     gameName={game.name}
-                    seasonName={season.name}
-                    start={season.start}
+                    seasonName={season.name!}
+                    start={season.start!}
                     seasonKeyword={game.seasonKeyword}
                 />
                 <NextSeasonStartSeoText
-                    gameName={game.shortName}
-                    seasonName={season.name}
-                    start={season.start}
+                    gameName={game.shortName!}
+                    seasonName={season.name!}
+                    start={season.start!}
                     seasonKeyword={game.seasonKeyword}
                 />
             </>
@@ -130,26 +130,26 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
             <>
                 <PreviousSeasonStartedSeoText
                     gameName={game.name}
-                    seasonName={season.name}
+                    seasonName={season.name!}
                     startDate={season.start.startDate}
                     seasonKeyword={game.seasonKeyword}
                 />
                 <PreviousSeasonStartedSeoText
-                    gameName={game.shortName}
-                    seasonName={season.name}
+                    gameName={game.shortName!}
+                    seasonName={season.name!}
                     startDate={season.start.startDate}
                     seasonKeyword={game.seasonKeyword}
                 />
                 <PreviousSeasonEndingSeoText
                     gameName={game.name}
-                    seasonName={season.name}
-                    end={season.end}
+                    seasonName={season.name!}
+                    end={season.end!}
                     seasonKeyword={game.seasonKeyword}
                 />
                 <PreviousSeasonEndingSeoText
-                    gameName={game.shortName}
-                    seasonName={season.name}
-                    end={season.end}
+                    gameName={game.shortName!}
+                    seasonName={season.name!}
+                    end={season.end!}
                     seasonKeyword={game.seasonKeyword}
                 />
             </>
@@ -166,7 +166,7 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
                     <ClientOnlyVisibleWrapper>
                         {getProgressEndContent(
                             season.end?.overrideText ?? null,
-                            season.end?.confirmed ? season.end.endDate : null,
+                            season.end?.confirmed ? season.end?.endDate : null,
                         )}
                     </ClientOnlyVisibleWrapper>
                 </div>

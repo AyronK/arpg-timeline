@@ -44,8 +44,8 @@ export const Games = ({ games }: { games: Game[] }) => {
                                 />
                             }
                             slug={game.slug}
-                            shortName={game.shortName}
-                            url={game.url}
+                            shortName={game.shortName!}
+                            url={game.url!}
                             official={game.official}
                         >
                             <GameToSeasonWidget game={game} selector="current" />

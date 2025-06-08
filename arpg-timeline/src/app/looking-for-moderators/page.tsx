@@ -30,15 +30,13 @@ const LookingForModeratorsPage = () => {
             </p>
             <p className="mb-4">
                 <span className="font-semibold">Why we need you:</span>
-                <ul className="ml-4 list-inside list-disc">
-                    <li>
-                        Help verify season launch and end dates based on automatic notifications.
-                    </li>
-                    <li>Contribute to website content.</li>
-                    <li>Suggest new features.</li>
-                    <li>Assist in further automating processes.</li>
-                </ul>
             </p>
+            <ul className="mb-4 ml-4 list-inside list-disc">
+                <li>Help verify season launch and end dates based on automatic notifications.</li>
+                <li>Contribute to website content.</li>
+                <li>Suggest new features.</li>
+                <li>Assist in further automating processes.</li>
+            </ul>
             <p className="mb-4">
                 While we strive to automate as much as possible, the human crosscheck is essential
                 for maintaining the website&apos;s reliability.

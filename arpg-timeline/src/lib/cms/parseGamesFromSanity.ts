@@ -24,7 +24,7 @@ export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
             if (game.currentSeason && !game.currentSeason.end?.endDate) {
                 game.currentSeason.end ??= {} as SeasonEnd;
                 game.currentSeason.end.endDate = new Date(
-                    new Date(game.currentSeason.start?.startDate).getTime() +
+                    new Date(game.currentSeason.start?.startDate ?? "").getTime() +
                         120 * 24 * 50 * 60 * 1000,
                 ).toISOString();
             }
