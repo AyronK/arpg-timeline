@@ -37,26 +37,59 @@ const Kicker = () => (
     </p>
 );
 
-export const metadata: Metadata = {
-    title: "ARPG Timeline | Season Tracker",
-    description: "Stay ahead in your favorite ARPGs with our season tracker",
-    openGraph: {
-        title: "ARPG Timeline",
-        description: "Track ARPG seasons for Path of Exile, Diablo, and more",
-        siteName: "ARPG Timeline",
-        type: "website",
-        url: "https://arpg-timeline.com",
-        images: [
-            {
-                url: "/assets/seoimage.png",
-                width: 1200,
-                height: 630,
-                alt: "ARPG Timeline | Season Tracker",
-            },
+function parseMetadataKeywords(input: string) {
+    return input
+        .toLowerCase()
+        .replace(/[^a-z0-9,\s-]/g, "")
+        .trim();
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+    const data: IndexQueryResult = await sanityClient.fetch(indexQuery, { revalidate: 3600 });
+    const gameNames = data.games.map((g) => parseMetadataKeywords(g.name));
+    const gameShortNames = data.games
+        .filter((f) => !!f.shortName)
+        .map((g) => parseMetadataKeywords(g.shortName!));
+
+    return {
+        title: "aRPG Timeline | Season Tracker",
+        description: "Stay ahead in your favorite aRPGs with our season tracker",
+        openGraph: {
+            title: "aRPG Timeline",
+            description: "Track aRPG seasons for Path of Exile, Diablo, and more",
+            siteName: "aRPG Timeline",
+            type: "website",
+            url: "https://arpg-timeline.com",
+            images: [
+                {
+                    url: "/assets/seoimage.png",
+                    width: 1200,
+                    height: 630,
+                    alt: "aRPG Timeline | Season Tracker",
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            images: ["/assets/seoimage.png"],
+        },
+        keywords: [
+            ...gameNames,
+            "arpg seasons",
+            "arpg tracker",
+            "action rpg",
+            "new season release date",
+            "league start",
+            "arpg, best arpgs",
+            "diablo alternative",
+            "poe alternativ",
+            "upcoming arpg",
+            "countdown",
+            "poe",
+            "d2",
+            "d3",
+            "d4",
         ],
-    },
-    twitter: {
-        card: "summary_large_image",
-        images: ["/assets/seoimage.png"],
-    },
-};
+        alternates: { canonical: "/" },
+    };
+}
