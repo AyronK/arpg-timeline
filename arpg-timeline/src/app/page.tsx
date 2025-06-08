@@ -1,27 +1,89 @@
 import { Metadata } from "next";
 
+import { Faq } from "@/components/Faq";
 import { Main } from "@/components/Home/HomePage";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
-import { useGamesFromMarkdown } from "@/lib/cms/useGamesFromMarkdown";
-import { useGameStreamsFromMarkdown } from "@/lib/cms/useGameStreamsFromMarkdown";
+import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
+import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
+import { sanityClient } from "@/lib/sanity/sanityClient";
 
-import { MOCK_DATA } from "./MOCK_DATA";
+const query = `{
+  "games": *[_type == "game"]{
+    "slug":slug.current,
+    name,
+    shortName,
+    official,
+    seasonKeyword,
+    url,
+    group,
+    "logo": logo.asset->{
+      _id,
+      url
+    }
+  },
+  "seasons": *[_type == "season"]{
+    name,
+    "game": game->slug.current,
+    url,
+    start {
+      startDate,
+      confirmed,
+      overrideText,
+      additionalText
+    },
+    end {
+      endDate,
+      confirmed,
+      overrideText,
+      additionalText
+    }
+  },
+  "faq": *[_type == "faq"] | order(order asc){
+    title,
+    content,
+    order
+  },
+  "liveStreamsOnTwitch": *[_type == "liveStreamTwitch"]{
+    "game": game->slug.current,
+    "platform": platform->_id,
+    date,
+    name,
+    "slug": slug.current
+  },
+  "twitchChannels": *[_type == "liveStreamPlatformTwitch"]{
+    "game": game->slug.current,
+    category,
+    channel
+  },
+  "toast": *[_type == "toast"] | order(order asc)[0]{
+    title,
+    description,
+    withLogo,
+    duration,
+    order
+  }
+}`;
 
-export default function Home() {
-    const games = useGamesFromMarkdown(MOCK_DATA);
-    const streams = useGameStreamsFromMarkdown(MOCK_DATA);
+const Home = async () => {
+    const data = await sanityClient.fetch(query, { revalidate: 3600 });
+    const games = parseGamesFromSanity(data);
+    const streams = parseGameStreamsFromSanity(data);
+
     return (
         <>
-            <SingleToast data={MOCK_DATA.toasts.edges[0]?.node?.frontmatter} />
+            <SingleToast data={data.toast} />
             <div className="relative container mx-auto mb-8">
                 <Kicker />
                 <Main games={games} streams={streams} />
             </div>
             <StructuredDataScripts games={games} />
+            <Faq faq={data.faq} />
         </>
     );
-}
+};
+
+export default Home;
 
 const Kicker = () => (
     <p className="font-heading mx-auto hidden max-w-prose text-center text-lg md:mt-8 md:block md:text-xl">

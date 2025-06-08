@@ -1,4 +1,5 @@
 "use client";
+import { PortableText } from "next-sanity";
 import { useEffect } from "react";
 
 // TODO: FIX RICH TEXT
@@ -11,7 +12,7 @@ export const SingleToast = ({
 }: {
     data: {
         title: string | null;
-        description: string | null;
+        description: any | null;
         withLogo: boolean | null;
         duration: number | null;
         order: number | null;
@@ -26,15 +27,7 @@ export const SingleToast = ({
         if (!data) return;
         toast({
             title: data.title!,
-            description: data.description && (
-                <div
-                    className="rich-text"
-                    // TODO: FIX RICH TEXT
-                    // dangerouslySetInnerHTML={{
-                    //     __html: renderMarkdown(data.description),
-                    // }}
-                />
-            ),
+            description: data.description && <PortableText value={data.description} />,
             withLogo: data.withLogo ?? false,
             duration: data.duration ?? undefined,
         });

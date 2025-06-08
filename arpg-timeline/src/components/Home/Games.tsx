@@ -1,6 +1,7 @@
 "use client";
 
 import { Twitch } from "lucide-react";
+import Link from "next/link";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
@@ -9,9 +10,10 @@ import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget";
 import { Game } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
-import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
+
+import { SanityImage } from "../SanityImage";
 
 export const Games = ({ games }: { games: Game[] }) => {
     return (
@@ -30,18 +32,15 @@ export const Games = ({ games }: { games: Game[] }) => {
                     <ErrorBoundary fallback={<WidgetDiedFallback />}>
                         <GameCard
                             name={game.name}
-                            logo={null}
-                            //logo={
-
-                            // TODO FIX IMAGE
-                            // <GatsbyImage
-                            //   image={getImage(game.logo!)!}
-                            //   alt={`${game.name} logo`}
-                            //   className="my-auto"
-                            //   objectFit="contain"
-                            //   objectPosition="center"
-                            // />
-                            //  }
+                            logo={
+                                <SanityImage
+                                    src={game.logo!}
+                                    alt={`${game.name} logo`}
+                                    className="my-auto"
+                                    fill
+                                    objectFit="contain"
+                                />
+                            }
                             slug={game.slug}
                             shortName={game.shortName}
                             url={game.url}
@@ -60,16 +59,14 @@ export const Games = ({ games }: { games: Game[] }) => {
                                                     className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
                                                     variant="destructive"
                                                 >
-                                                    <a
+                                                    <Link
                                                         target="_blank"
                                                         rel="noreferrer"
-                                                        onClick={() =>
-                                                            sa_event(`${game.slug}-twitch-click`)
-                                                        }
+                                                        data-sa-click={`${game.slug}-twitch`}
                                                         href={`https://www.twitch.tv/directory/category/${game.twitchCategory}`}
                                                     >
                                                         <Twitch className="h-4 w-4" />
-                                                    </a>
+                                                    </Link>
                                                 </Button>
                                             )
                                         }
