@@ -9,11 +9,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const sourcesMarkdownDirectoryPath = path.resolve(
   __dirname,
-  "../../../src/documents/crawlerSources",
+  "../../../_old/migrations/documents/crawlerSources",
 );
 const gamesMarkdownDirectoryPath = path.resolve(
   __dirname,
-  "../../../src/documents/games",
+  "../../../_old/migrations/documents/games",
 );
 
 const getGameNotificationsGroupedByGame = async (
