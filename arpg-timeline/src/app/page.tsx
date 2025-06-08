@@ -6,11 +6,11 @@ import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
-import { sanityClient } from "@/lib/sanity/sanityClient";
+import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
 import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async () => {
-    const data: IndexQueryResult = await sanityClient.fetch(indexQuery, { revalidate: 3600 });
+    const data: IndexQueryResult = await sanityFetch({ query: indexQuery, revalidate: 3600 });
     const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
 
@@ -47,9 +47,6 @@ function parseMetadataKeywords(input: string) {
 export async function generateMetadata(): Promise<Metadata> {
     const data: IndexQueryResult = await sanityClient.fetch(indexQuery, { revalidate: 3600 });
     const gameNames = data.games.map((g) => parseMetadataKeywords(g.name));
-    const gameShortNames = data.games
-        .filter((f) => !!f.shortName)
-        .map((g) => parseMetadataKeywords(g.shortName!));
 
     return {
         title: "aRPG Timeline | Season Tracker",
@@ -93,3 +90,5 @@ export async function generateMetadata(): Promise<Metadata> {
         alternates: { canonical: "/" },
     };
 }
+
+export const experimental_ppr = true;

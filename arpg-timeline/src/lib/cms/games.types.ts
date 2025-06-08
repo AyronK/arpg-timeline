@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// TODO fix images
+import { SanityImageAssetDocument } from "next-sanity";
 
 export type GameStream = {
     gameSlug: string;
@@ -7,7 +6,7 @@ export type GameStream = {
     platform: string;
     date: string;
     name: string;
-    gameLogo: any;
+    gameLogo: SanityImageAssetDocument;
     slug: string;
     twitchChannel: string;
 };
@@ -20,7 +19,7 @@ export type Game = {
     seasonKeyword: string;
     url: string | null | undefined;
     group: string | null | undefined;
-    logo: any;
+    logo: SanityImageAssetDocument;
     currentSeason?: Season | null | undefined;
     nextSeason?: Season | null | undefined;
     twitchCategory: string | null | undefined;

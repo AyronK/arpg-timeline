@@ -23,7 +23,9 @@ export const SanityImage = ({
     quality = 75,
     objectFit = "cover",
     ...remaining
-}: ImageProps & { src: SanityImageAssetDocument } & { objectFit: "cover" | "contain" }) => {
+}: Omit<ImageProps, "src"> & { src: SanityImageAssetDocument } & {
+    objectFit: "cover" | "contain";
+}) => {
     if (!src) {
         return null;
     }
