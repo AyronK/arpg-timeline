@@ -11,6 +11,7 @@ import { sa_event } from "@/lib/sa_event";
 import { Button } from "@/ui/Button";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
+import { SanityImage } from "./SanityImage";
 
 const StreamHeader = ({
     gameName,
@@ -100,14 +101,16 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
             key={stream.slug}
         >
             <div className="hidden h-4 w-4 md:flex md:h-16 md:w-16">
-                {/* TODO FIX IMAGE */}
-                {/* <GatsbyImage
-                    image={getImage(stream.gameLogo!)!}
+                <SanityImage
+                    loading="lazy"
+                    src={stream.gameLogo!}
                     alt={`${stream.gameName} logo`}
                     className="my-auto"
+                    width={64}
+                    height={64}
+                    quality={50}
                     objectFit="contain"
-                    objectPosition="center"
-                /> */}
+                />
             </div>
             <div className="flex flex-1 flex-col gap-1">
                 <StreamHeader

@@ -8,8 +8,6 @@ const nextConfig: NextConfig = {
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
         dangerouslyAllowSVG: true,
-        deviceSizes: [375, 425, 512, 768, 1024, 1440],
-        imageSizes: [32, 48, 64, 96, 128, 156, 256],
         minimumCacheTTL: 30 * 24 * 60 * 60,
     },
     async headers() {

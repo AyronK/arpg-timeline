@@ -11,7 +11,7 @@ export const indexQuery = `{
     group,
     "logo": logo.asset->{
       _id,
-      url
+      url      
     }
   },
   "seasons": *[_type == "season"]{

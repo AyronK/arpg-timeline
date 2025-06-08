@@ -20,6 +20,7 @@ export const urlForImage = (source: SanityImageAssetDocument) => {
 
 export const SanityImage = ({
     src,
+    quality = 75,
     objectFit = "cover",
     ...remaining
 }: ImageProps & { src: SanityImageAssetDocument } & { objectFit: "cover" | "contain" }) => {
@@ -28,8 +29,7 @@ export const SanityImage = ({
     }
 
     const imageUrl = src.url ?? urlForImage(src)?.url();
-    const altText = src.alternativeText;
-    const imageLqip = src.lqip;
+    const imageLqip = src.metadata?.lqip;
 
     if (!imageUrl) {
         return null;
@@ -38,7 +38,7 @@ export const SanityImage = ({
     return (
         <Image
             {...remaining}
-            alt={altText}
+            alt={remaining.alt}
             blurDataURL={imageLqip}
             placeholder={imageLqip ? "blur" : "empty"}
             src={imageUrl}
@@ -48,7 +48,7 @@ export const SanityImage = ({
                 objectFit: objectFit,
                 objectPosition: "center",
             }}
-            quality={75}
+            quality={quality}
         />
     );
 };

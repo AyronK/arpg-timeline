@@ -34,10 +34,12 @@ export const Games = ({ games }: { games: Game[] }) => {
                             name={game.name}
                             logo={
                                 <SanityImage
+                                    loading="lazy"
                                     src={game.logo!}
                                     alt={`${game.name} logo`}
                                     className="my-auto"
-                                    fill
+                                    width={160}
+                                    height={140}
                                     objectFit="contain"
                                 />
                             }

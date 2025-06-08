@@ -14,7 +14,7 @@ export const SingleToast = ({ data }: { data: Toast }) => {
             title: data.title!,
             description: data.description && <PortableText value={data.description} />,
             withLogo: data.withLogo ?? false,
-            duration: data.duration ?? undefined,
+            duration: data.duration ?? 5000,
         });
     }, [data, toast]);
 
