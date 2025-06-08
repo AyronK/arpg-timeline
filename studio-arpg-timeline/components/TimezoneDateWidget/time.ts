@@ -1,12 +1,12 @@
 import { DateTime } from "luxon";
-import { timeZoneMappings } from "./timeZoneMappings";
 
-export const formatDate = (date: Date, timeZone: string | undefined): string => {
+export const formatDate = (date: Date, timeZone?: string): string => {
     if (isNaN(date.getTime())) {
         return "Invalid date";
     }
+
     return new Intl.DateTimeFormat(navigator.language, {
-        timeZone: timeZone,
+        timeZone,
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
@@ -17,38 +17,19 @@ export const formatDate = (date: Date, timeZone: string | undefined): string => 
 };
 
 export const calculateTimezoneDifference = (targetTimeZone: string): number => {
-    const currentDate = new Date();
-    const iana = timeZoneMappings.find((t) => t.abbr === targetTimeZone)?.iana;
-    const localOffset = currentDate.getTimezoneOffset();
-    const targetDate = new Date(currentDate.toLocaleString("en-US", { timeZone: iana }));
-    const targetOffset = targetDate.getTimezoneOffset();
-    return localOffset - targetOffset;
+    const localOffset = new Date().getTimezoneOffset();
+    const targetOffset = DateTime.now().setZone(targetTimeZone).offset; // in minutes
+    return localOffset + targetOffset * -1;
 };
 
-export const convertFromTimeZoneToUtc = (date: string, timeZone: string) => {
-    const tz = timeZoneMappings.find((t) => t.abbr === timeZone);
-    if (!tz || !date) return;
+export const convertFromTimeZoneToUtc = (date: string, timeZone: string): string | undefined => {
+    if (!date || !timeZone) return;
 
-    const dt = DateTime.fromISO(date, { zone: tz.iana });
-
+    const dt = DateTime.fromISO(date, { zone: timeZone });
     return dt.toUTC().toISO();
 };
 
-export const calculateLocalDate = (date: Date, timezone: string) => {
-    const timeZoneDifference = calculateTimezoneDifference(timezone);
-    date.setMinutes(date.getMinutes() + timeZoneDifference);
-    const iana = timeZoneMappings.find((t) => t.abbr === timezone)?.iana;
-    const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: iana,
-    };
-    const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
-    const [month, day, year] = formattedDate.split(", ")[0].split("/");
-    const [hour, minute] = formattedDate.split(", ")[1].split(":");
-    return `${year}-${month}-${day}T${hour}:${minute}`;
+export const calculateLocalDate = (date: Date, timeZone: string): string => {
+    const dt = DateTime.fromJSDate(date).setZone(timeZone);
+    return dt.toFormat("yyyy-MM-dd'T'HH:mm");
 };

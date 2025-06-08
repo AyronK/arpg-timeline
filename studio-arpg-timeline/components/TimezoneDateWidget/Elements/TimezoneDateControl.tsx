@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { calculateLocalDate, convertFromTimeZoneToUtc, formatDate } from "../time";
+import { formatDate } from "../time";
 import { TimezoneInfo } from "./TimezoneInfo";
 import { TimezoneSelect } from "./TimezoneSelect";
 import { DateTimeInputProps, FormSetPatch, set } from "sanity";
 import { Box, Flex, Stack, Grid } from "@sanity/ui";
+import { DateTime } from "luxon";
+import { getAbbrFromIana } from "../timeZoneMappings";
 
 export const TimezoneDateControl: React.FC<DateTimeInputProps> = ({
     value,
@@ -11,62 +13,88 @@ export const TimezoneDateControl: React.FC<DateTimeInputProps> = ({
     renderDefault,
     ...rest
 }) => {
+    const [selectedIana, setSelectedIana] = useState("Etc/UTC");
     const [localDate, setLocalDate] = useState("");
-    const [selectedAbbr, setSelectedAbbr] = useState("UTC");
-    const [utcValue, setUtcValue] = useState<string>(value ?? "");
 
     useEffect(() => {
         if (value) {
-            const date = new Date(value);
-            if (!isNaN(date.getTime())) {
-                setUtcValue(date.toISOString());
-                setLocalDate(calculateLocalDate(date, selectedAbbr));
+            const dt = DateTime.fromISO(value, { zone: "utc" });
+            if (dt.isValid) {
+                setLocalDate(dt.setZone(selectedIana).toFormat("yyyy-LL-dd'T'HH:mm"));
             } else {
-                setUtcValue("");
+                setLocalDate("");
             }
+        } else {
+            setLocalDate("");
         }
-    }, [value, selectedAbbr]);
+    }, [value, selectedIana]);
 
-    const handleDateChange = (v: string) => {
-        const utcIso = convertFromTimeZoneToUtc(v, selectedAbbr);
+    const handleLocalDateChange = (newLocalDate: string) => {
+        setLocalDate(newLocalDate);
 
-        setUtcValue(utcIso);
-        onChange(set(utcIso, []));
+        const dt = DateTime.fromFormat(newLocalDate, "yyyy-LL-dd'T'HH:mm", { zone: selectedIana });
+
+        console.log(dt, dt.toUTC().toISO());
+
+        if (dt.isValid) {
+            const utcIso = dt.toUTC().toISO();
+            onChange(set(utcIso ?? "", []));
+        }
     };
 
     const handleSelectTimezone = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const abbr = e.target.value;
-        setSelectedAbbr(abbr);
-        if (utcValue) {
-            const date = new Date(utcValue);
-            setLocalDate(calculateLocalDate(date, abbr));
+        const iana = e.target.value;
+        setSelectedIana(iana);
+
+        if (value) {
+            const dt = DateTime.fromISO(value, { zone: "utc" });
+            if (dt.isValid) {
+                setLocalDate(dt.setZone(iana).toFormat("yyyy-LL-dd'T'HH:mm"));
+            } else {
+                setLocalDate("");
+            }
         }
     };
 
-    const previewLocalTime = utcValue ? formatDate(new Date(utcValue), undefined) : "";
-    const formattedUtcValue = utcValue ? formatDate(new Date(utcValue), "UTC") : "";
-    const formattedLocalTime = formatDate(new Date(utcValue), selectedAbbr) || "";
+    const previewLocalTime = value ? formatDate(new Date(value), undefined) : "";
+    const formattedUtcValue = value ? formatDate(new Date(value), "UTC") : "";
+    const formattedLocalTime = value
+        ? DateTime.fromISO(value, { zone: "utc" })
+              .setZone(selectedIana)
+              .toFormat("yyyy-LL-dd HH:mm")
+        : "";
 
     return (
         <Stack space={2}>
-            <Grid columns={3} gap={4}>
+            <Grid columns={3} gap={2}>
                 <TimezoneInfo label="UTC time" value={formattedUtcValue} />
                 <TimezoneInfo label="Local time" value={previewLocalTime} />
-                <TimezoneInfo label={`${selectedAbbr} time`} value={formattedLocalTime} />
+                <TimezoneInfo
+                    label={`${getAbbrFromIana(selectedIana)} time`}
+                    value={formattedLocalTime}
+                />
             </Grid>
-            <Flex direction="row" gap={2}>
+            <Flex direction="column" gap={2}>
+                <Box flex={1}>
+                    <TimezoneSelect selectedIana={selectedIana} onChange={handleSelectTimezone} />
+                </Box>
                 <Box>
                     {renderDefault({
                         ...rest,
-                        value: localDate,
                         renderDefault,
+                        value: localDate,
                         onChange: (e) => {
-                            handleDateChange((e as FormSetPatch)?.value?.toString());
+                            const utcIso = (e as FormSetPatch)?.value?.toString();
+
+                            if (!utcIso) return;
+
+                            const localDt = DateTime.fromISO(utcIso, {
+                                zone: "local",
+                            }).toFormat("yyyy-LL-dd'T'HH:mm");
+
+                            handleLocalDateChange(localDt);
                         },
                     })}
-                </Box>
-                <Box flex={1}>
-                    <TimezoneSelect selectedAbbr={selectedAbbr} onChange={handleSelectTimezone} />
                 </Box>
             </Flex>
         </Stack>
