@@ -1,0 +1,16 @@
+{
+  "name": "decap-to-sanity-migration",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "migrate": "node migration/migrate.js",
+    "migrate-images": "node migration/image-migration.js"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.5.0",
+    "dotenv": "^16.5.0",
+    "gray-matter": "^4.0.3",
+    "nanoid": "^5.1.5"
+  }
+}

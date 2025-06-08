@@ -1,0 +1,39 @@
+.vscode
+
+# dependencies
+/node_modules
+.cache/
+/studio/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+/studio/dist
+
+# misc
+.DS_Store
+*.pem
+.vscode
+
+# debug
+npm-debug.log*
+
+# env files
+.env
+
+# vercel
+.vercel
+
+# IntelliJ
+.idea
+*.iml
+
+# typescript
+*.tsbuildinfo
+
+# Env files created by scripts for working locally
+studio/.env.development
+studio/sanity-codegen.d.ts
