@@ -38,19 +38,19 @@ const DrawerContent = forwardRef<
     ElementRef<typeof DrawerPrimitive.Content>,
     ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
-    <DrawerPortal>
+    <>
         <DrawerOverlay />
         <DrawerPrimitive.Content
             ref={ref}
             className={cn(
-                "bg-background fixed top-16 right-0 bottom-0 z-50 flex h-auto flex-col rounded-t-[10px] border pt-6 md:top-0",
+                "bg-background fixed top-16 right-0 bottom-0 z-50 flex h-auto flex-col rounded-t-[10px] border pt-2 md:top-0 md:pt-6",
                 className,
             )}
             {...props}
         >
             {children}
         </DrawerPrimitive.Content>
-    </DrawerPortal>
+    </>
 ));
 DrawerContent.displayName = "DrawerContent";
 

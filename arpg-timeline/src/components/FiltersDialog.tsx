@@ -1,3 +1,5 @@
+"use client";
+import { useHasMounted } from "@react-hooks-library/core";
 import { Eye, EyeOff, Filter, Lightbulb } from "lucide-react";
 import { forwardRef } from "react";
 
@@ -42,6 +44,11 @@ export const FiltersDialog = ({
 }: FiltersDialogProps) => {
     const { isMd } = useBreakpoint("md");
     const { is4xl } = useBreakpoint("4xl");
+    const isMounted = useHasMounted();
+
+    if (!isMounted) {
+        return null;
+    }
 
     if (is4xl) {
         return (
@@ -50,6 +57,7 @@ export const FiltersDialog = ({
                     <Trigger checked={checked} />
                 </DialogTrigger>
                 <DialogContent>
+                    <DialogDescription className="sr-only">Filters dialog</DialogDescription>
                     <DialogHeader>
                         <DialogTitle>{title}</DialogTitle>
                         <DialogDescription asChild>
@@ -73,6 +81,7 @@ export const FiltersDialog = ({
                 <Trigger checked={checked} />
             </DrawerTrigger>
             <DrawerContent className={!isMd ? "left-0" : undefined}>
+                <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
                 <DrawerHeader>
                     <DrawerTitle>{title}</DrawerTitle>
                     <DrawerDescription asChild>
@@ -85,10 +94,15 @@ export const FiltersDialog = ({
                     onCheckedChange={onCheckedChange}
                     onGroupCheckedChange={onGroupCheckedChange}
                 />
-                <DrawerFooter>
+                <DrawerFooter className="absolute right-0 bottom-0 md:relative">
                     <div className="ml-auto md:mr-auto md:ml-0">
                         <DrawerClose asChild>
-                            <Button variant="outline">Close</Button>
+                            <Button
+                                className="shadow-md shadow-black md:shadow-none"
+                                variant="outline"
+                            >
+                                Close
+                            </Button>
                         </DrawerClose>
                     </div>
                 </DrawerFooter>
@@ -98,11 +112,9 @@ export const FiltersDialog = ({
 };
 
 const Description = () => (
-    <div className="mt-2 flex flex-row gap-2 rounded-md border p-2">
+    <div className="bg-muted mt-2 flex flex-row gap-2 rounded-md border p-4">
         <Lightbulb className="mt-1 h-4 w-4 shrink-0" />
-        <span className="md:max-w-80">
-            You can add this website to your bookmarks so you&apos;ll always have the same setup!
-        </span>
+        <span className="md:max-w-80">Bookmark this site to keep your setup!</span>
     </div>
 );
 
@@ -152,7 +164,7 @@ const Filters = ({
     );
 
     return (
-        <div className="flex flex-col gap-6 overflow-auto px-6">
+        <div className="flex flex-col gap-6 overflow-auto px-6 pb-6">
             {Object.keys(groups)
                 .sort()
                 .map((g) => {
