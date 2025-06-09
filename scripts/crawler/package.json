@@ -25,13 +25,13 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "to-vfile": "^8.0.0",
-    "typescript": "^5.5.3",
+    "typescript": "^5.8.3",
     "unified": "^11.0.5",
-    "vfile-matter": "^5.0.0"
+    "vfile-matter": "^5.0.1"
   },
   "dependencies": {
     "he": "^1.2.0",
     "openai": "^4.61.0",
-    "tsc-alias": "^1.8.10"
+    "tsc-alias": "^1.8.16"
   }
 }
