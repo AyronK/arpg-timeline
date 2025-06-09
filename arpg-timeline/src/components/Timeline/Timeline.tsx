@@ -3,12 +3,13 @@
 import "@/components/Timeline/Timeline.css";
 
 import { Expand, Shrink } from "lucide-react";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Chart from "react-google-charts";
 
 import { TIMELINE_OPTIONS, TimelineEvent } from "@/components/Timeline/Const";
 import { DAY, INTL_LOCAL_DATETIME } from "@/lib/date";
 import { Button } from "@/ui/Button";
+import { Slider } from "@/ui/Slider";
 
 const TIMELINE_COLUMNS = [
     { type: "string", id: "Game" },
@@ -113,30 +114,128 @@ const ROW_HEIGHT = 40;
 const CARD_OFFSET = 96;
 const CHART_MAX_HEIGHT = 5 * ROW_HEIGHT + CARD_OFFSET;
 
+function trimEventsToWindow(events: TimelineEvent[], minDate: Date, maxDate: Date) {
+    return events
+        .map((event) => {
+            const startDate =
+                event.startDate < minDate
+                    ? minDate
+                    : event.startDate > maxDate
+                      ? maxDate
+                      : event.startDate;
+            const endDate =
+                event.endDate < minDate
+                    ? minDate
+                    : event.endDate > maxDate
+                      ? maxDate
+                      : event.endDate;
+
+            if (endDate < startDate) return null;
+
+            return { ...event, startDate, endDate };
+        })
+        .filter((e) => e !== null);
+}
+
+function addMonthsWithFraction(date: Date, months: number): Date {
+    const whole = Math.trunc(months);
+    const fraction = months - whole;
+
+    const result = new Date(date);
+    result.setMonth(result.getMonth() + whole);
+
+    if (fraction !== 0) {
+        const daysInMonth = new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate();
+        const addDays = Math.round(daysInMonth * fraction);
+        result.setDate(result.getDate() + addDays);
+    }
+
+    return result;
+}
+
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
     const parentRef = useRef<HTMLDivElement | null>(null);
     const [expanded, setIsExpanded] = useState(false);
-    const options = TIMELINE_OPTIONS;
-    const containerHeight = Math.min(
-        (events.length / 2) * ROW_HEIGHT + CARD_OFFSET,
-        CHART_MAX_HEIGHT,
-    );
+    const [range, setRange] = useState(1);
+    const [ready, setReady] = useState(false);
 
-    if (events.length < 3) {
+    const maxAvailableRange = useMemo(() => {
+        const now = new Date();
+        const latestEnd = events.reduce((latest, e) => {
+            const end = new Date(e.endDate);
+            return end > latest ? end : latest;
+        }, now);
+        const diffMonths =
+            (latestEnd.getFullYear() - now.getFullYear()) * 12 +
+            (latestEnd.getMonth() - now.getMonth()) -
+            1;
+        return Math.max(1, diffMonths);
+    }, [events]);
+    const timelineData = useMemo(() => {
+        const now = new Date();
+        const min = addMonthsWithFraction(now, -range);
+        const max = addMonthsWithFraction(now, range);
+        const options = {
+            ...TIMELINE_OPTIONS,
+        };
+
+        if (events.length < 3) {
+            return null;
+        }
+
+        const trimmed = trimEventsToWindow(events, min, max);
+        const containerHeight = Math.min(
+            (events.length / 2) * ROW_HEIGHT + CARD_OFFSET,
+            CHART_MAX_HEIGHT,
+        );
+
+        const data = [
+            TIMELINE_COLUMNS,
+            ...trimmed.map((e) => {
+                return [
+                    e.game,
+                    e.startDate === e.endDate ? "" : e.game ? `${e.game} - ${e.name}` : "",
+                    timelinePopover(e),
+                    new Date(e.startDate),
+                    new Date(e.endDate),
+                ];
+            }),
+            ["⁠", "Today", todaysPopover(), new Date(), new Date()],
+        ];
+
+        return { data, options, containerHeight };
+    }, [events, range]);
+
+    if (!timelineData) {
         return null;
     }
 
+    const { data, options, containerHeight } = timelineData;
+
     return (
         <>
-            <Button
-                variant={"ghost"}
-                size="icon"
-                aria-label="Expand"
-                className="absolute top-1 right-1"
-                onClick={() => setIsExpanded((v) => !v)}
-            >
-                {expanded ? <Shrink className="h-4 w-4" /> : <Expand className="h-4 w-4" />}
-            </Button>
+            {ready && (
+                <Slider
+                    className="absolute top-4 right-12 h-4 w-xs max-w-1/3"
+                    value={[range]}
+                    max={maxAvailableRange}
+                    min={2}
+                    step={0.5}
+                    onValueChange={([value]) => setRange(value)}
+                    aria-description="Timeline scale"
+                />
+            )}
+            {ready && (
+                <Button
+                    variant={"ghost"}
+                    size="icon"
+                    aria-label="Expand"
+                    className="absolute top-1 right-1"
+                    onClick={() => setIsExpanded((v) => !v)}
+                >
+                    {expanded ? <Shrink className="h-4 w-4" /> : <Expand className="h-4 w-4" />}
+                </Button>
+            )}
             <div
                 ref={parentRef}
                 className="relative overflow-x-auto overflow-y-hidden"
@@ -163,29 +262,14 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
                                         });
                                     }
                                 }
+                                setReady(true);
                             },
                         },
                     ]}
                     className="chart w-[300%] md:w-full"
                     options={options}
                     chartType="Timeline"
-                    data={[
-                        TIMELINE_COLUMNS,
-                        ...events.map((e) => {
-                            return [
-                                e.game,
-                                e.startDate === e.endDate
-                                    ? ""
-                                    : e.game
-                                      ? `${e.game} - ${e.name}`
-                                      : "",
-                                timelinePopover(e),
-                                new Date(e.startDate),
-                                new Date(e.endDate),
-                            ];
-                        }),
-                        ["⁠", "Today", todaysPopover(), new Date(), new Date()],
-                    ]}
+                    data={data}
                     height={"100%"}
                 />
             </div>

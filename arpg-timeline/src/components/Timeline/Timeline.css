@@ -17,6 +17,16 @@
     @apply text-popover-foreground;
 }
 
+.chart g rect {
+    rx: 4px;
+    ry: 4px;
+    opacity: 0.7;
+}
+
+.chart g path[stroke-width="1"][stroke="#151519"] {
+    opacity: 0;
+}
+
 .chart g rect:last-of-type[fill="#054735"] + text,
 .chart g rect:last-of-type[fill="#054161"] + text {
     pointer-events: none;

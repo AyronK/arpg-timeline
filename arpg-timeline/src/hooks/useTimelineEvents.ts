@@ -15,15 +15,6 @@ export const useTimelineEvents = (games: Game[]) => {
                 endDate = new Date(new Date(startDate).getTime() + 120 * 24 * 50 * 60 * 1000);
             }
 
-            const threeMonthsAgo = new Date();
-            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 2);
-            if (startDate < threeMonthsAgo) {
-                startDate.setTime(threeMonthsAgo.getTime());
-                if (endDate < startDate) {
-                    endDate = startDate;
-                }
-            }
-
             next.push({
                 name: g.currentSeason.name ?? "",
                 game: g.name,
