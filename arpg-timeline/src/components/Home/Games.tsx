@@ -84,7 +84,7 @@ export const Games = ({ games }: { games: Game[] }) => {
                                             )
                                         }
                                     >
-                                        Play and watch now!
+                                        {game.twitchCategory ? "Play and watch now!" : "Play now!"}
                                     </FramedAction>
                                 </div>
                             ) : (
