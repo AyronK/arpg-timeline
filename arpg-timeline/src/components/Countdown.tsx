@@ -5,13 +5,12 @@ import { TrailingBorder } from "@/components/TrailingBorder";
 import { cn } from "@/lib/utils";
 
 const getTimeComponents = (distance: number) => {
-    const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
-    const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
+    const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    return { weeks, days, hours, minutes, seconds };
+    return { days: totalDays, hours, minutes, seconds };
 };
 
 export const Countdown = ({
@@ -22,7 +21,6 @@ export const Countdown = ({
     testProps?: { timeLeft?: number };
 }) => {
     const [timeComponents, setTimeComponents] = useState<{
-        weeks: number;
         days: number;
         hours: number;
         minutes: number;
@@ -43,7 +41,6 @@ export const Countdown = ({
             if (distance < 0) {
                 clearInterval(timerInterval);
                 setTimeComponents({
-                    weeks: 0,
                     days: 0,
                     hours: 0,
                     minutes: 0,
@@ -63,26 +60,14 @@ export const Countdown = ({
             <div className="font-heading flex flex-row items-center justify-center gap-1 pt-0.5 text-lg font-bold text-emerald-100 select-none md:text-xl">
                 <Time
                     className={cn({
-                        "opacity-60": timeComponents.weeks <= 0,
-                    })}
-                    component={timeComponents.weeks}
-                    char="W"
-                    pad={false}
-                />
-                <Time
-                    className={cn({
-                        "opacity-60": timeComponents.days <= 0 && timeComponents.weeks <= 0,
+                        "opacity-60": timeComponents.days <= 0,
                     })}
                     component={timeComponents.days}
                     char="D"
-                    pad={false}
                 />
                 <Time
                     className={cn({
-                        "opacity-60":
-                            timeComponents.hours <= 0 &&
-                            timeComponents.days <= 0 &&
-                            timeComponents.weeks <= 0,
+                        "opacity-60": timeComponents.hours <= 0 && timeComponents.days <= 0,
                     })}
                     component={timeComponents.hours}
                     char="H"
@@ -92,8 +77,7 @@ export const Countdown = ({
                         "opacity-60":
                             timeComponents.minutes <= 0 &&
                             timeComponents.hours <= 0 &&
-                            timeComponents.days <= 0 &&
-                            timeComponents.weeks <= 0,
+                            timeComponents.days <= 0,
                     })}
                     component={timeComponents.minutes}
                     char="M"
@@ -104,8 +88,7 @@ export const Countdown = ({
                             timeComponents.seconds <= 0 &&
                             timeComponents.minutes <= 0 &&
                             timeComponents.hours <= 0 &&
-                            timeComponents.days <= 0 &&
-                            timeComponents.weeks <= 0,
+                            timeComponents.days <= 0,
                     })}
                     component={timeComponents.seconds}
                     char="S"

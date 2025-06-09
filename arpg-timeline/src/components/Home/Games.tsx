@@ -19,7 +19,7 @@ import { SanityImage } from "../SanityImage";
 export const Games = ({ games }: { games: Game[] }) => {
     return (
         <>
-            <h2 className="hidden">Seasons</h2>
+            <h2 className="sr-only">Seasons</h2>
             {games.map((game, idx) => (
                 <div
                     key={game.slug}

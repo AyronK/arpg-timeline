@@ -26,6 +26,6 @@ export const Time = ({
         >
             {String(component).padStart(2, "0")[1]}
         </div>
-        <span className="text-sm text-emerald-600 md:text-base">{char}</span>
+        <span className="text-sm text-emerald-600 md:text-base mb-[2px] md:mb-[1px]">{char}</span>
     </div>
 );
