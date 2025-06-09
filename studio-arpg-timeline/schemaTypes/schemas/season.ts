@@ -24,6 +24,11 @@ export default {
             type: "url",
         },
         {
+            name: "patchNotesUrl",
+            title: "Patch Notes URL",
+            type: "url",
+        },
+        {
             name: "start",
             title: "Start",
             type: "object",
