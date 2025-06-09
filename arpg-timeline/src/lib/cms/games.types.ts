@@ -29,6 +29,7 @@ export type Season = {
     start?: SeasonStart | null | undefined;
     end?: SeasonEnd | null | undefined;
     url?: string | null | undefined;
+    patchNotesUrl?: string | null | undefined;
     name: string | null | undefined;
 };
 

@@ -18,6 +18,7 @@ export const indexQuery = `{
     name,
     "game": game->slug.current,
     url,
+    patchNotesUrl,
     start {
       startDate,
       confirmed,
@@ -79,6 +80,7 @@ export interface Season {
     name: string;
     game: string;
     url?: string;
+    patchNotesUrl?: string;
     start?: SeasonDateInfo;
     end?: SeasonDateInfo;
 }

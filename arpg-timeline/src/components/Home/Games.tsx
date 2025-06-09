@@ -13,6 +13,7 @@ import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
+import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
 import { SanityImage } from "../SanityImage";
 
 export const Games = ({ games }: { games: Game[] }) => {
@@ -50,7 +51,17 @@ export const Games = ({ games }: { games: Game[] }) => {
                         >
                             <GameToSeasonWidget game={game} selector="current" />
                             {inGracePeriod(game.currentSeason?.start?.startDate) ? (
-                                <div className="mt-auto">
+                                <div className="mt-auto flex flex-col gap-2">
+                                    {game.currentSeason?.patchNotesUrl && (
+                                        <MaybeLinkWrapper
+                                            href={game.currentSeason.patchNotesUrl}
+                                            target="_blank"
+                                            className="ml-auto text-sm text-nowrap hover:underline"
+                                            data-sm-click={`${game.currentSeason.name}-patch-notes`}
+                                        >
+                                            Patch notes
+                                        </MaybeLinkWrapper>
+                                    )}
                                     <FramedAction
                                         appendClassName="!bg-[#6441a5]"
                                         append={
