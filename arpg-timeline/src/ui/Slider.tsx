@@ -47,6 +47,7 @@ function Slider({
             </SliderPrimitive.Track>
             {Array.from({ length: _values.length }, (_, index) => (
                 <SliderPrimitive.Thumb
+                    aria-label="Value"
                     data-slot="slider-thumb"
                     key={index}
                     className="block size-3.5 rounded-full bg-neutral-100 shadow-md transition-all hover:scale-110 focus-visible:ring-1 focus-visible:outline-none"
