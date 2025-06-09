@@ -33,7 +33,7 @@ export const Faq = ({ faq }: { faq: { title: string; content: PortableTextBlock[
                         variant={"default"}
                         asChild
                         size="lg"
-                        className="font-ui font-semibold opacity-80 transition-all hover:opacity-100 max-sm:order-3"
+                        className="font-ui font-semibold transition-all hover:opacity-100 max-sm:order-3"
                     >
                         <a href="/looking-for-moderators" rel="self">
                             <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />

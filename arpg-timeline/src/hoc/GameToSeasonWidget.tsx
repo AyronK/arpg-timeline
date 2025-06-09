@@ -7,6 +7,7 @@ import { Countdown } from "@/components/Countdown";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
+import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { ProgressBar } from "@/components/ProgressBar";
 import { SeasonChip } from "@/components/SeasonWidget";
 import { SeasonWidget } from "@/components/SeasonWidget";
@@ -71,18 +72,30 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
         if (season.start?.confirmed && season.start.startDate) {
             children = (
                 <div className="flex flex-1 flex-col gap-1">
-                    {season.start.overrideText ? (
-                        <IconLabel icon={TimerReset}>{season.start?.overrideText}</IconLabel>
-                    ) : (
-                        <ClientOnlyVisibleWrapper>
-                            <IconLabel icon={TimerReset}>
-                                Starts
-                                <span className="font-semibold">
-                                    <LocalDate longDate utcDate={season.start.startDate} />
-                                </span>
-                            </IconLabel>
-                        </ClientOnlyVisibleWrapper>
-                    )}
+                    <div className="flex flex-row flex-nowrap justify-between">
+                        {season.start.overrideText ? (
+                            <IconLabel icon={TimerReset}>{season.start?.overrideText}</IconLabel>
+                        ) : (
+                            <ClientOnlyVisibleWrapper>
+                                <IconLabel icon={TimerReset}>
+                                    Starts
+                                    <span className="font-semibold">
+                                        <LocalDate longDate utcDate={season.start.startDate} />
+                                    </span>
+                                </IconLabel>
+                            </ClientOnlyVisibleWrapper>
+                        )}
+                        {season.patchNotesUrl && (
+                            <MaybeLinkWrapper
+                                href={season.patchNotesUrl}
+                                target="_blank"
+                                className="ml-auto text-sm text-nowrap hover:underline"
+                                data-sm-click={`${season.name}-patch-notes`}
+                            >
+                                Patch notes
+                            </MaybeLinkWrapper>
+                        )}
+                    </div>
                     {info}
                     {season.start.startDate && (
                         <ClientOnlyVisibleWrapper>

@@ -6,7 +6,7 @@ import { Chip } from "@/ui/Chip";
 
 const ChipColorMap: Record<SeasonChip, string> = {
     live: "bg-sky-800 border border-sky-300 motion-safe:animate-pulse",
-    over: "bg-amber-800 border border-transparent",
+    over: "bg-amber-900 border border-transparent",
     now: "bg-sky-800 border border-transparent",
     next: "bg-emerald-800 border border-transparent",
 };

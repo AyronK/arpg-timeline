@@ -13,12 +13,13 @@ import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
+import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
 import { SanityImage } from "../SanityImage";
 
 export const Games = ({ games }: { games: Game[] }) => {
     return (
         <>
-            <h2 className="hidden">Seasons</h2>
+            <h2 className="sr-only">Seasons</h2>
             {games.map((game, idx) => (
                 <div
                     key={game.slug}
@@ -50,7 +51,17 @@ export const Games = ({ games }: { games: Game[] }) => {
                         >
                             <GameToSeasonWidget game={game} selector="current" />
                             {inGracePeriod(game.currentSeason?.start?.startDate) ? (
-                                <div className="mt-auto">
+                                <div className="mt-auto flex flex-col gap-2">
+                                    {game.currentSeason?.patchNotesUrl && (
+                                        <MaybeLinkWrapper
+                                            href={game.currentSeason.patchNotesUrl}
+                                            target="_blank"
+                                            className="ml-auto text-sm text-nowrap hover:underline"
+                                            data-sm-click={`${game.currentSeason.name}-patch-notes`}
+                                        >
+                                            Patch notes
+                                        </MaybeLinkWrapper>
+                                    )}
                                     <FramedAction
                                         appendClassName="!bg-[#6441a5]"
                                         append={
@@ -73,7 +84,7 @@ export const Games = ({ games }: { games: Game[] }) => {
                                             )
                                         }
                                     >
-                                        Play and watch now!
+                                        {game.twitchCategory ? "Play and watch now!" : "Play now!"}
                                     </FramedAction>
                                 </div>
                             ) : (
