@@ -8,4 +8,19 @@ updates:
       - "/studio-arpg-timeline"
       - "/scripts/crawler"
     schedule:
-      interval: "weekly"
+      interval: "weekly"    
+    groups:
+      all:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      minor-and-patch:
+        applies-to: security-updates
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+          - "minor"
