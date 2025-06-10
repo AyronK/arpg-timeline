@@ -8,19 +8,15 @@ updates:
       - "/studio-arpg-timeline"
       - "/scripts/crawler"
     schedule:
-      interval: "weekly"    
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      all:
-        applies-to: version-updates
+      all-updates:
+        applies-to: all
         patterns:
           - "*"
         update-types:
           - "minor"
           - "patch"
-      minor-and-patch:
-        applies-to: security-updates
-        patterns:
-          - "*"
-        update-types:
-          - "patch"
-          - "minor"
