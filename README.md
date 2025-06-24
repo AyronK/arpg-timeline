@@ -1,11 +1,15 @@
-[![aRPG Timeline Discord](https://img.shields.io/badge/discord-grey.svg?&logo=discord)](https://discord.gg/39mTbjkePg)
+<div align="center">
+  <a href="https://www.arpg-timeline.com">
+    <picture>
+      <img alt="aRPG Timeline logo" src="https://github.com/AyronK/arpg-timeline/blob/main/arpg-timeline/public/favicon-512.png" height="128">
+    </picture>
+  </a>
+  <h1>aRPG Timeline</h1>
+  <a href="https://discord.gg/39mTbjkePg"><img src="https://img.shields.io/badge/discord-grey.svg?&logo=discord&style=for-the-badge" alt="aRPG Timeline Discord"></a>
+  <a href="https://coff.ee/ayron"><img src="https://img.shields.io/badge/Buy_me_a_coffee-test2?style=for-the-badge&color=grey&logo=buymeacoffee" alt="Buy me a coffee"></a>  
+</div>
 
-# aRPG Timeline
 
-[aRPG Timeline Website](https://www.arpg-timeline.com/)
-
-Stay ahead in your favorite ARPGs with the season tracker.
-Never miss a season start or end again!
 
 ## 🧑‍💻 Become a Code Contributor
 Want to help shape the future of arpg‑timeline?  
