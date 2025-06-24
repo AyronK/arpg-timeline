@@ -34,14 +34,19 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
     }
 
     const isInGracePeriod = inGracePeriod(season.start?.startDate);
-    const chip: SeasonChip =
-        selector === "next"
-            ? "next"
-            : isInGracePeriod
-              ? "live"
-              : season.end?.confirmed && isOver(season.end?.endDate)
-                ? "over"
-                : "now";
+    let chip: SeasonChip;
+
+    if (game.isDormant) {
+        chip = "dormant";
+    } else if (selector === "next") {
+        chip = game.isComingSoon ? "comingSoon" : "next";
+    } else if (isInGracePeriod) {
+        chip = "live";
+    } else if (season.end?.confirmed && isOver(season.end.endDate)) {
+        chip = "over";
+    } else {
+        chip = "now";
+    }
 
     const info = (season.start?.additionalText || season.end?.additionalText) && (
         <IconLabel icon={InfoIcon} className="text-xs" iconPosition="end">
@@ -174,6 +179,8 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
                         {getProgressStartContent(
                             season.start?.startDate,
                             season.end?.endDate ?? null,
+                            null,
+                            game.isDormant,
                         )}
                     </ClientOnlyVisibleWrapper>
                     <ClientOnlyVisibleWrapper>
@@ -183,7 +190,9 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
                         )}
                     </ClientOnlyVisibleWrapper>
                 </div>
-                <ProgressBar progress={progress} clamp pulse={isInGracePeriod} />
+                {!game.isDormant && (
+                    <ProgressBar progress={progress} clamp pulse={isInGracePeriod} />
+                )}
             </>
         );
     }

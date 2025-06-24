@@ -9,6 +9,8 @@ const ChipColorMap: Record<SeasonChip, string> = {
     over: "bg-amber-900 border border-transparent",
     now: "bg-sky-800 border border-transparent",
     next: "bg-emerald-800 border border-transparent",
+    dormant: "bg-slate-600 border border-transparent",
+    comingSoon: "bg-emerald-800 border border-transparent",
 };
 
 const ChipColorText: Record<SeasonChip, string> = {
@@ -16,6 +18,8 @@ const ChipColorText: Record<SeasonChip, string> = {
     over: "Over",
     now: "Now",
     next: "Next",
+    dormant: "Play",
+    comingSoon: "Soon",
 };
 
 export const SeasonWidget = ({ name, url, children, chip, ...divProps }: SeasonWidgetProps) => {

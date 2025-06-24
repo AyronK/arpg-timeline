@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-export type SeasonChip = "over" | "next" | "now" | "live";
+export type SeasonChip = "over" | "next" | "now" | "live" | "dormant" | "comingSoon";
 
 export type SeasonWidgetProps = React.HTMLAttributes<HTMLDivElement> &
     PropsWithChildren & {
