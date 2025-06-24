@@ -2,10 +2,37 @@
 
 # aRPG Timeline
 
-[aRPG Timeline Website](https://arpg-timeline.com/)
+[aRPG Timeline Website](https://www.arpg-timeline.com/)
 
 Stay ahead in your favorite ARPGs with the season tracker.
 Never miss a season start or end again!
+
+## 🧑‍💻 Become a Code Contributor
+Want to help shape the future of arpg‑timeline?  
+Whether you're a skilled developer or just starting out, your code contributions are welcome — and appreciated.
+
+This project exists to serve the aRPG community, and it gets better every time someone like you helps improve it.
+
+### Why Contribute?
+- 🎮 Support the aRPG community by keeping widgets accurate and up-to-date
+- 🧠 Learn and grow by contributing to a real-world project using Next.js, React, TypeScript, Tailwind, and modern tooling
+- 🚀 Make an impact — even small fixes or improvements help thousands of users
+- 🤝 Collaborate with others who share your interest in action RPGs
+
+### How to Get Involved
+
+1. Fork the repository and create a feature branch.
+2. Set up the project locally — check the README for setup instructions or join Discord for help.
+3. Make your changes following existing patterns and clean code practices.
+4. Open a pull request with a clear summary of what you've added or improved.
+
+### What Can You Work On?
+
+- Fix bugs or improve performance
+- Refactor UI components or enhance mobile support
+- Improve date handling or add timezone features
+- Suggest and implement new features
+- Pick up something from the growing backlog! Most of the issues are drafts in refinement, so do not hesistate to ask on Discord!
 
 ## Features
 
@@ -22,51 +49,40 @@ Never miss a season start or end again!
 
 ## Stack
 
-<div style="display: flex; gap: 24px; align-items: center;">
-
-  <div style="text-align: center;">
-    <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg" width="72" height="72" alt="Next.js logo" />
-    </a>
-    <div>Next.js</div>
-  </div>
-
-  <div style="text-align: center;">
-    <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
-      <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/typescript-colored.svg" width="72" height="72" alt="TypeScript" />
-    </a>
-    <div>TypeScript</div>
-  </div>
-
-  <div style="text-align: center;">
-    <a href="https://react.dev/" target="_blank" rel="noreferrer">
-      <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/react-colored.svg" width="72" height="72" alt="React" />
-    </a>
-    <div>React</div>
-  </div>
-
-  <div style="text-align: center;">
-    <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer">
-      <img src="https://avatars.githubusercontent.com/u/67109815?s=200&v=4" width="72" height="72" alt="Tailwind" />
-    </a>
-    <div>Tailwind CSS</div>
-  </div>
-
-  <div style="text-align: center;">
-    <a href="https://vercel.com/" target="_blank" rel="noreferrer">
-      <img src="https://avatars.githubusercontent.com/u/14985020?s=200&v=4" width="72" height="72" alt="Vercel" />
-    </a>
-    <div>Vercel</div>
-  </div>
-
-  <div style="text-align: center;">
-    <a href="https://www.sanity.io/" target="_blank" rel="noreferrer">
-      <img src="https://avatars.githubusercontent.com/u/17177659?s=200&v=4" width="72" height="72" alt="Sanity" />
-    </a>
-    <div>Sanity</div>
-  </div>
-
-</div>
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://nextjs.org/">
+        <img src="https://camo.githubusercontent.com/c3635f27439ecdbf20e3cbf969c156f4040f10a0c8c836cf307d916dd8f806d4/68747470733a2f2f6173736574732e76657263656c2e636f6d2f696d6167652f75706c6f61642f76313636323133303535392f6e6578746a732f49636f6e5f6461726b5f6261636b67726f756e642e706e67" width="72" heigth="72" alt="Next.js" /><br />Next.js
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://www.typescriptlang.org/">
+        <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/typescript-colored.svg" width="72" heigth="72" alt="TypeScript" /><br />TypeScript
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://react.dev/">
+        <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/react-colored.svg" width="72" heigth="72" alt="React" /><br />React
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://tailwindcss.com/">
+        <img src="https://avatars.githubusercontent.com/u/67109815?s=200&v=4" width="72" heigth="72" alt="Tailwind CSS" /><br />Tailwind CSS
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://vercel.com/">
+        <img src="https://avatars.githubusercontent.com/u/14985020?s=200&v=4" width="72" heigth="72" alt="Vercel" /><br />Vercel
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://www.sanity.io/">
+        <img src="https://avatars.githubusercontent.com/u/17177659?s=200&v=4" width="72" heigth="72" alt="Sanity" /><br />Sanity
+      </a>
+    </td>
+  </tr>
+</table>
 
 ## Development
 
