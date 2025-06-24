@@ -17,52 +17,37 @@ export const isOver = (endDate: string | null | undefined) => {
     return new Date().getTime() - new Date(endDate).getTime() > 0;
 };
 
-export const sortBySeasons = (a: Game, b: Game) => {
-    const aIsCurrentSeasonOver =
-        a.nextSeason?.start?.startDate === a.nextSeason?.end?.endDate &&
-        a.currentSeason?.end?.endDate &&
-        isOver(a.currentSeason.end?.endDate);
-    const bIsCurrentSeasonOver =
-        b.nextSeason?.start?.startDate === b.nextSeason?.end?.endDate &&
-        b.currentSeason?.end?.endDate &&
-        isOver(b.currentSeason.end?.endDate);
-
-    if (!aIsCurrentSeasonOver && bIsCurrentSeasonOver) {
-        return -1;
-    }
-    if (aIsCurrentSeasonOver && !bIsCurrentSeasonOver) {
-        return 1;
-    }
-    if (a.currentSeason?.start?.startDate && inGracePeriod(a.currentSeason.start?.startDate)) {
-        return -1;
-    }
-
-    if (b.currentSeason?.start?.startDate && inGracePeriod(b.currentSeason.start?.startDate)) {
-        return 1;
-    }
-
-    const aNextSeasonStart = a.nextSeason?.start?.startDate;
-    const bNextSeasonStart = b.nextSeason?.start?.startDate;
-    const aCurrentSeasonEnd = a.currentSeason?.end?.endDate;
-    const bCurrentSeasonEnd = b.currentSeason?.end?.endDate;
-
-    if (aNextSeasonStart && bNextSeasonStart) {
-        return new Date(aNextSeasonStart).getTime() - new Date(bNextSeasonStart).getTime();
-    }
-    if (aNextSeasonStart) {
-        return -1;
-    }
-    if (bNextSeasonStart) {
-        return 1;
-    }
-    if (aCurrentSeasonEnd && bCurrentSeasonEnd) {
-        return new Date(aCurrentSeasonEnd).getTime() - new Date(bCurrentSeasonEnd).getTime();
-    }
-    if (aCurrentSeasonEnd) {
-        return -1;
-    }
-    if (bCurrentSeasonEnd) {
-        return 1;
-    }
+export const compareDates = (dateA?: string | null, dateB?: string | null) => {
+    if (dateA && dateB) return new Date(dateA).getTime() - new Date(dateB).getTime();
+    if (dateA) return -1;
+    if (dateB) return 1;
     return 0;
+};
+
+export const sortBySeasons = (a: Game, b: Game) => {
+    const isSeasonOver = (game: Game) =>
+        game.nextSeason?.start?.startDate === game.nextSeason?.end?.endDate &&
+        game.currentSeason?.end?.endDate &&
+        isOver(game.currentSeason.end.endDate);
+
+    const isInGracePeriod = (game: Game) =>
+        game.currentSeason?.start?.startDate && inGracePeriod(game.currentSeason.start.startDate);
+
+    const aOver = isSeasonOver(a);
+    const bOver = isSeasonOver(b);
+
+    if (aOver !== bOver) return aOver ? 1 : -1;
+
+    const aGrace = isInGracePeriod(a);
+    const bGrace = isInGracePeriod(b);
+
+    if (aGrace !== bGrace) return aGrace ? -1 : 1;
+
+    const nextStartCompare = compareDates(
+        a.nextSeason?.start?.startDate,
+        b.nextSeason?.start?.startDate,
+    );
+    if (nextStartCompare !== 0) return nextStartCompare;
+
+    return compareDates(a.currentSeason?.end?.endDate, b.currentSeason?.end?.endDate);
 };

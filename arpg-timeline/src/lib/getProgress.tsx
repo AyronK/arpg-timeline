@@ -1,4 +1,4 @@
-import { CalendarClock, CalendarOff, TimerOff, TimerReset } from "lucide-react";
+import { CalendarClock, CalendarOff, Sword, TimerOff, TimerReset } from "lucide-react";
 
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
@@ -45,6 +45,7 @@ export const getProgressStartContent = (
     startDate: string | null,
     endDate: string | null,
     currentTime?: Date | null,
+    isDormant?: boolean,
 ) => {
     if (!startDate || !endDate) {
         return null;
@@ -63,6 +64,10 @@ export const getProgressStartContent = (
 
     if (endTimeMs <= now) {
         return <IconLabel icon={TimerOff}>Lasted {elapsedDays} days</IconLabel>;
+    }
+
+    if (isDormant) {
+        return <IconLabel icon={Sword}>Released {elapsedDays} days ago</IconLabel>;
     }
 
     return <IconLabel icon={TimerReset}>Lasts {elapsedDays} days</IconLabel>;

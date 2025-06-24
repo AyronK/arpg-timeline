@@ -30,7 +30,7 @@ export const Streams = ({ games, streams }: { games: Game[]; streams: GameStream
                             <Carousel
                                 plugins={[
                                     Autoplay({
-                                        delay: 10_000,
+                                        delay: 5_000,
                                         stopOnMouseEnter: true,
                                     }),
                                 ]}

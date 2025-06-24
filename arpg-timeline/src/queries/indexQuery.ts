@@ -6,6 +6,8 @@ export const indexQuery = `{
     name,
     shortName,
     official,
+    isDormant,
+    isComingSoon,
     seasonKeyword,
     url,
     group,
@@ -63,14 +65,22 @@ export interface Game {
     name: string;
     shortName?: string;
     official?: boolean;
+    isDormant?: boolean;
+    isComingSoon?: boolean;
     seasonKeyword?: string;
     url?: string;
     group?: string;
     logo?: SanityImageAssetDocument;
 }
 
-export interface SeasonDateInfo {
+export interface SeasonStartDateInfo {
     startDate?: string;
+    confirmed?: boolean;
+    overrideText?: string;
+    additionalText?: string;
+}
+export interface SeasonEndDateInfo {
+    endDate?: string;
     confirmed?: boolean;
     overrideText?: string;
     additionalText?: string;
@@ -81,8 +91,8 @@ export interface Season {
     game: string;
     url?: string;
     patchNotesUrl?: string;
-    start?: SeasonDateInfo;
-    end?: SeasonDateInfo;
+    start?: SeasonStartDateInfo;
+    end?: SeasonEndDateInfo;
 }
 
 export interface Faq {

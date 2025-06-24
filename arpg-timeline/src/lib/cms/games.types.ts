@@ -15,6 +15,8 @@ export type Game = {
     name: string;
     shortName: string | null | undefined;
     official: boolean;
+    isDormant: boolean;
+    isComingSoon: boolean;
     slug: string;
     seasonKeyword: string;
     url: string | null | undefined;
@@ -23,6 +25,7 @@ export type Game = {
     currentSeason?: Season | null | undefined;
     nextSeason?: Season | null | undefined;
     twitchCategory: string | null | undefined;
+    averageSeasonDuration: number | null;
 };
 
 export type Season = {
