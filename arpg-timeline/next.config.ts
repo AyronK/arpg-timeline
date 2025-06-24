@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     experimental: {
-        ppr: "incremental",
+        //ppr: "incremental",
     },
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
@@ -85,12 +85,8 @@ const nextConfig: NextConfig = {
                 source: "/index",
                 headers: [
                     {
-                        key: "Cache-Control",
-                        value: "public, max-age=3600",
-                    },
-                    {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=3600",
+                        value: "public, max-age=60",
                     },
                 ],
             },
@@ -98,12 +94,8 @@ const nextConfig: NextConfig = {
                 source: "/",
                 headers: [
                     {
-                        key: "Cache-Control",
-                        value: "public, max-age=3600",
-                    },
-                    {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=3600",
+                        value: "public, max-age=60",
                     },
                 ],
             },

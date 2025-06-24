@@ -74,7 +74,7 @@ export const Games = ({ games }: { games: Game[] }) => {
                                                 >
                                                     <Link
                                                         target="_blank"
-                                                        rel="noreferrer"
+                                                        rel="noopener"
                                                         data-sa-click={`${game.slug}-twitch`}
                                                         href={`https://www.twitch.tv/directory/category/${game.twitchCategory}`}
                                                     >

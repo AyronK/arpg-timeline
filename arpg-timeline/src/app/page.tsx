@@ -31,6 +31,8 @@ const Home = async () => {
     );
 };
 
+export const revalidate = 15 * 60;
+
 export default Home;
 
 const Kicker = () => (

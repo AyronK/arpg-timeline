@@ -14,7 +14,7 @@ export const GameCard = ({ name, logo, url, children, official, slug }: GameCard
                 <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
                     <MaybeLinkWrapper
                         href={url}
-                        rel="nofollow noreferrer"
+                        rel="noopener"
                         className="select-none hover:scale-105"
                         target="_blank"
                         noIcon

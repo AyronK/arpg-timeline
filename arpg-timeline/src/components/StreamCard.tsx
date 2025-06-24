@@ -58,7 +58,7 @@ const WatchNowAction = ({
             >
                 <a
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener"
                     onClick={() => sa_event(`${gameSlug}-twitch-channel-click`)}
                     href={`https://www.twitch.tv/${twitchChannel}`}
                 >
