@@ -30,7 +30,7 @@ export const SeasonWidget = ({ name, url, children, chip, ...divProps }: SeasonW
                         className="underline decoration-transparent underline-offset-2 select-none hover:decoration-current/75"
                         href={url}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener"
                         onClick={() => sa_event(`${name}-link-click`)}
                     >
                         {name}
