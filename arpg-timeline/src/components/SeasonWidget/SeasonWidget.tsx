@@ -10,7 +10,7 @@ const ChipColorMap: Record<SeasonChip, string> = {
     now: "bg-sky-800 border border-transparent",
     next: "bg-emerald-800 border border-transparent",
     dormant: "bg-slate-600 border border-transparent",
-    comingSoon: "bg-sky-800 border border-transparent",
+    comingSoon: "bg-emerald-800 border border-transparent",
 };
 
 const ChipColorText: Record<SeasonChip, string> = {
