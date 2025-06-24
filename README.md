@@ -1,7 +1,7 @@
 <div align="center">
   <a href="https://www.arpg-timeline.com">
     <picture>
-      <img alt="aRPG Timeline logo" src="https://github.com/AyronK/arpg-timeline/blob/main/arpg-timeline/public/favicon-512.png" height="128">
+      <img alt="aRPG Timeline logo" src="/arpg-timeline/public/favicon-512.png" height="128">
     </picture>
   </a>
   <h1>aRPG Timeline</h1>
