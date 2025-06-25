@@ -23,11 +23,12 @@ const StreamHeader = ({
     gameName: string;
 }) => (
     <div className="flex flex-row justify-between align-bottom">
-        <h3 className="font-heading mt-auto text-xs text-nowrap">
-            {gameName} - {name}
+        <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis">
+            <span className="sr-only md:not-sr-only">{gameName} - </span>
+            {name}
         </h3>
-        <ClientOnlyVisibleWrapper>
-            <div className="hidden lg:block">
+        <div className="hidden lg:block">
+            <ClientOnlyVisibleWrapper>
                 {Date.now() < new Date(date).getTime() && (
                     <IconLabel icon={TimerReset}>
                         <span className="font-semibold">
@@ -35,8 +36,8 @@ const StreamHeader = ({
                         </span>
                     </IconLabel>
                 )}
-            </div>
-        </ClientOnlyVisibleWrapper>
+            </ClientOnlyVisibleWrapper>
+        </div>
     </div>
 );
 
@@ -77,7 +78,7 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
         prepend={
             <ShareMenu
                 startDate={stream.date ?? ""}
-                title={`Hey, ${stream.gameName} ${stream.name} stream is soon live on Twitch`}
+                title={`Hey, **${stream.gameName} ${stream.name} stream** is soon live on Twitch`}
             />
         }
         appendClassName="!rounded-l-none"
@@ -97,10 +98,10 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
 
     return (
         <section
-            className="text-card-foreground bg-card relative flex flex-row gap-4 rounded-lg border-2 border-[#6441a5]/40 p-4"
+            className="text-card-foreground bg-card relative flex flex-row gap-3 rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
             key={stream.slug}
         >
-            <div className="hidden h-4 w-4 md:flex md:h-16 md:w-16">
+            <div className="flex h-14 w-14 md:h-16 md:w-16">
                 <SanityImage
                     loading="lazy"
                     src={stream.gameLogo!}
@@ -112,7 +113,7 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
                     objectFit="contain"
                 />
             </div>
-            <div className="flex flex-1 flex-col gap-1">
+            <div className="flex w-full flex-1 flex-col gap-1">
                 <StreamHeader
                     gameName={stream.gameName}
                     name={stream.name}

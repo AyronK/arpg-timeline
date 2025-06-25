@@ -19,7 +19,7 @@ export const Streams = ({ games, streams }: { games: Game[]; streams: GameStream
         filteredStreams?.length > 0 && (
             <div className={cn({ "flex justify-center": filteredStreams.length === 1 })}>
                 <div
-                    className={cn("relative max-w-3xl flex-1", {
+                    className={cn("relative max-w-xl flex-1 md:max-w-3xl", {
                         "mx-auto": filteredStreams.length > 1,
                     })}
                 >

@@ -184,7 +184,7 @@ export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
                     defaultSeasonOffset,
                 );
             }
-            
+
             return game;
         })
         .map((g) => {
