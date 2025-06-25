@@ -171,20 +171,20 @@ export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
                     defaultSeasonOffset,
                 );
             }
-            if (game.currentSeason?.end?.endDate) {
+            if (game.currentSeason?.end?.endDate && !game.currentSeason.end.confirmed) {
                 game.currentSeason.end.endDate = adjustDateIfTooSoon(
                     game.currentSeason.end?.endDate,
                     defaultSeasonOffset,
                 );
             }
 
-            if (game.nextSeason?.start?.startDate) {
+            if (game.nextSeason?.start?.startDate && !game.nextSeason.start.confirmed) {
                 game.nextSeason.start.startDate = adjustDateIfTooSoon(
                     game.nextSeason.start?.startDate,
                     defaultSeasonOffset,
                 );
             }
-            
+
             return game;
         })
         .map((g) => {
