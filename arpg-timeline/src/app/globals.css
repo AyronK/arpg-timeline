@@ -126,16 +126,6 @@
     }
 }
 
-@utility rich-text {
-    & a {
-        @apply underline transition-all hover:brightness-150;
-    }
-
-    & ol {
-        @apply list-inside list-decimal;
-    }
-}
-
 @layer base {
     :root {
         --background: 240 10% 10%;

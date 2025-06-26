@@ -1,7 +1,8 @@
 import { UsersRound } from "lucide-react";
 import Image from "next/image";
-import { PortableText, PortableTextBlock } from "next-sanity";
+import { PortableTextBlock } from "next-sanity";
 
+import { RichTextRenderer } from "@/lib/sanity/portableTextComponents";
 import { Button } from "@/ui/Button";
 
 export const Faq = ({ faq }: { faq: { title: string; content: PortableTextBlock[] }[] }) => {
@@ -68,9 +69,9 @@ export const Faq = ({ faq }: { faq: { title: string; content: PortableTextBlock[
                 <div className="flex flex-col gap-4 md:gap-6">
                     {faq.map((q) => (
                         <div key={q.title}>
-                            <h3 className="mb-2 text-xl">{q.title}</h3>
-                            <div className="rich-text ml-2">
-                                <PortableText value={q.content} />
+                            <h3 className="mb-2 text-2xl leading-tight">{q.title}</h3>
+                            <div className="ml-2">
+                                <RichTextRenderer content={q.content} />
                             </div>
                         </div>
                     ))}
