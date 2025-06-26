@@ -15,24 +15,24 @@ export const FramedAction = ({
     prependClassName?: string | undefined;
 }>) => {
     return (
-        <div className="relative flex flex-row overflow-hidden rounded-md border border-slate-300/25">
+        <div className="relative flex flex-row rounded-md shadow-sm transition-all">
             {prepend && (
                 <div
                     className={cn(
-                        "bg-sky-800 transition-all hover:brightness-110",
+                        "z-10 -mr-px rounded-l-md bg-slate-700 text-white transition-colors focus-within:ring-2 focus-within:ring-slate-500/50 hover:bg-slate-600 active:bg-slate-800",
                         prependClassName,
                     )}
                 >
                     {prepend}
                 </div>
             )}
-            <div className="flex h-[32px] flex-1 items-center justify-center bg-slate-300/5 md:h-[40px]">
+            <div className="z-0 flex h-[32px] flex-1 items-center justify-center bg-slate-50/50 px-3 md:h-[40px] dark:bg-slate-800/40">
                 {children}
             </div>
             {append && (
                 <div
                     className={cn(
-                        "bg-emerald-800 transition-all hover:brightness-110",
+                        "z-10 -ml-px rounded-r-md bg-emerald-800 text-white transition-colors focus-within:ring-2 focus-within:ring-emerald-600/50 hover:bg-emerald-700 active:bg-emerald-900",
                         appendClassName,
                     )}
                 >
