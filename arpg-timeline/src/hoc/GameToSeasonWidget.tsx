@@ -76,7 +76,7 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
         );
         if (season.start?.confirmed && season.start.startDate) {
             children = (
-                <div className="flex flex-1 flex-col gap-1">
+                <div className="flex flex-1 flex-col gap-1 md:gap-2">
                     <div className="flex flex-row flex-nowrap justify-between">
                         {season.start.overrideText ? (
                             <IconLabel icon={TimerReset}>{season.start?.overrideText}</IconLabel>

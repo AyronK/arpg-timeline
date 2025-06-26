@@ -126,16 +126,6 @@
     }
 }
 
-@utility rich-text {
-    & a {
-        @apply underline transition-all hover:brightness-150;
-    }
-
-    & ol {
-        @apply list-inside list-decimal;
-    }
-}
-
 @layer base {
     :root {
         --background: 240 10% 10%;
@@ -158,7 +148,7 @@
         --destructive-foreground: 210 40% 98%;
         --warning: 45 100% 66%;
         --warning-foreground: 240 10% 10%;
-        --ring: 0 0% 80%;
+        --ring: 0 0% 60%;
         --radius: 0.5rem;
 
         --nextSeason: 131.43 100% 16.47%;

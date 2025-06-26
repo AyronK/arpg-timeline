@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { Time } from "@/components/Time";
-import { TrailingBorder } from "@/components/TrailingBorder";
 import { cn } from "@/lib/utils";
 
 const getTimeComponents = (distance: number) => {
@@ -56,7 +55,7 @@ export const Countdown = ({
     }, [date, testProps?.timeLeft]);
 
     return (
-        <TrailingBorder>
+        <>
             <div className="font-heading flex flex-row items-center justify-center gap-1 pt-0.5 text-lg font-bold text-emerald-100 select-none md:text-xl">
                 <Time
                     className={cn({
@@ -94,6 +93,6 @@ export const Countdown = ({
                     char="S"
                 />
             </div>
-        </TrailingBorder>
+        </>
     );
 };
