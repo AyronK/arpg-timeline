@@ -26,7 +26,7 @@ export const FramedAction = ({
                     {prepend}
                 </div>
             )}
-            <div className="z-0 flex h-[32px] flex-1 items-center justify-center bg-slate-50/50 px-3 md:h-[40px] dark:bg-slate-800/40">
+            <div className="z-0 flex h-full flex-1 items-center justify-center bg-slate-50/50 px-3 md:h-[40px] dark:bg-slate-800/40">
                 {children}
             </div>
             {append && (
