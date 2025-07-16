@@ -1,61 +1,58 @@
-@reference "../../app/globals.css";
+@import "../../app/globals.css";
 
 .calendar {
 }
 
-:global(.rbc-calendar) {
-    @apply h-full;
-}
+:global {
+    .rbc-calendar {
+        @apply h-full;
+    }
 
-:global(.rbc-month-view) {
-    @apply border-primary;
-}
+    .rbc-month-view {
+        @apply border-primary;
+    }
 
-:global(.rbc-day-bg) {
-    @apply bg-card;
-}
+    .rbc-day-bg {
+        @apply bg-card;
+    }
 
-:global(.rbc-date-cell button) {
-    @apply font-heading;
-}
+    .rbc-date-cell button {
+        @apply font-heading;
+    }
 
-:global(.rbc-header) {
-    @apply font-heading text-card-foreground;
-}
+    .rbc-header {
+        @apply font-heading text-card-foreground;
+    }
 
-:global(.rbc-event) {
-    @apply bg-transparent;
-    @apply rounded-xs;
-    @apply transition-all ease-in-out;
-}
+    .rbc-event {
+        @apply rounded-xs bg-transparent transition-all ease-in-out;
+    }
 
-:global(.rbc-event.rbc-selected) {
-    @apply bg-transparent;
-}
+    .rbc-event.rbc-selected {
+        @apply bg-transparent;
+    }
 
-:global(.rbc-toolbar-label) {
-    @apply text-left!;
-    @apply font-heading;
-    @apply text-xl;
-    @apply mt-2;
-}
+    .rbc-toolbar-label {
+        @apply font-heading mt-2 text-left text-xl;
+    }
 
-:global(.rbc-row-content) {
-    @apply flex-1 items-center justify-center;
-}
+    .rbc-row-content {
+        @apply flex-1 items-center justify-center;
+    }
 
-:global(.rbc-off-range-bg) {
-    @apply bg-card/10;
-}
+    .rbc-off-range-bg {
+        @apply bg-card/10;
+    }
 
-:global(.rbc-btn-group button) {
-    @apply font-heading text-card-foreground font-normal;
-}
+    .rbc-btn-group button {
+        @apply font-heading text-card-foreground font-normal;
+    }
 
-:global(.rbc-btn-group button:hover) {
-    @apply bg-card text-card-foreground underline;
-}
+    .rbc-btn-group button:hover {
+        @apply bg-card text-card-foreground underline;
+    }
 
-:global(.rbc-toolbar) {
-    @apply flex-row-reverse;
+    .rbc-toolbar {
+        @apply flex-row-reverse;
+    }
 }
