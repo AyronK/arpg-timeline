@@ -191,15 +191,17 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
 
         const data = [
             TIMELINE_COLUMNS,
-            ...trimmed.map((e) => {
-                return [
-                    e.game,
-                    e.startDate === e.endDate ? "" : e.game ? `${e.game} - ${e.name}` : "",
-                    timelinePopover(e),
-                    new Date(e.startDate),
-                    new Date(e.endDate),
-                ];
-            }),
+            ...trimmed
+                .filter((e) => !!e)
+                .map((e) => {
+                    return [
+                        e.game,
+                        e.startDate === e.endDate ? "" : e.game ? `${e.game} - ${e.name}` : "",
+                        timelinePopover(e),
+                        new Date(e.startDate),
+                        new Date(e.endDate),
+                    ];
+                }),
             ["⁠", "Today", todaysPopover(), new Date(), new Date()],
         ];
 
