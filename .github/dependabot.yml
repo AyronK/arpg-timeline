@@ -14,7 +14,6 @@ updates:
         update-types: ["version-update:semver-major"]
     groups:
       all-updates:
-        applies-to: all
         patterns:
           - "*"
         update-types:
