@@ -134,7 +134,7 @@ function trimEventsToWindow(events: TimelineEvent[], minDate: Date, maxDate: Dat
 
             return { ...event, startDate, endDate };
         })
-        .filter((e) => e !== null);
+        .filter((e) => e !== null && e.startDate < maxDate);
 }
 
 function addMonthsWithFraction(date: Date, months: number): Date {
