@@ -9,6 +9,8 @@ import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity
 import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
 import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
+import { Kicker } from "../components/Home/Kicker";
+
 const Home = async () => {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
@@ -34,14 +36,6 @@ const Home = async () => {
 export const revalidate = 900;
 
 export default Home;
-
-const Kicker = () => (
-    <p className="font-heading mx-auto hidden max-w-prose text-center text-lg md:mt-8 md:block md:text-xl">
-        Stay ahead in your favorite ARPGs with the season tracker.
-        <br />
-        Never miss a season start or end again!
-    </p>
-);
 
 function parseMetadataKeywords(input: string) {
     return input

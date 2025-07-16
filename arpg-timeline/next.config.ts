@@ -100,6 +100,15 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/calendar",
+                headers: [
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=3600",
+                    },
+                ],
+            },
+            {
                 source: "/privacy",
                 headers: [
                     {
