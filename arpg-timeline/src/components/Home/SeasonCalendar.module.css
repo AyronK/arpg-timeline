@@ -1,58 +1,61 @@
-@import "../../app/globals.css";
+@reference "../../app/globals.css";
 
 .calendar {
 }
 
-:global {
-    .rbc-calendar {
-        @apply h-full;
-    }
+:global(.rbc-calendar) {
+    @apply h-full;
+}
 
-    .rbc-month-view {
-        @apply border-primary;
-    }
+:global(.rbc-month-view) {
+    @apply border-primary;
+}
 
-    .rbc-day-bg {
-        @apply bg-card;
-    }
+:global(.rbc-day-bg) {
+    @apply bg-card;
+}
 
-    .rbc-date-cell button {
-        @apply font-heading;
-    }
+:global(.rbc-date-cell button) {
+    @apply font-heading;
+}
 
-    .rbc-header {
-        @apply font-heading text-card-foreground;
-    }
+:global(.rbc-header) {
+    @apply font-heading text-card-foreground;
+}
 
-    .rbc-event {
-        @apply rounded-xs bg-transparent transition-all ease-in-out;
-    }
+:global(.rbc-event) {
+    @apply bg-transparent;
+    @apply rounded-xs;
+    @apply transition-all ease-in-out;
+}
 
-    .rbc-event.rbc-selected {
-        @apply bg-transparent;
-    }
+:global(.rbc-event.rbc-selected) {
+    @apply bg-transparent;
+}
 
-    .rbc-toolbar-label {
-        @apply font-heading mt-2 text-left text-xl;
-    }
+:global(.rbc-toolbar-label) {
+    @apply text-left!;
+    @apply font-heading;
+    @apply text-xl;
+    @apply mt-2;
+}
 
-    .rbc-row-content {
-        @apply flex-1 items-center justify-center;
-    }
+:global(.rbc-row-content) {
+    @apply flex-1 items-center justify-center;
+}
 
-    .rbc-off-range-bg {
-        @apply bg-card/10;
-    }
+:global(.rbc-off-range-bg) {
+    @apply bg-card/10;
+}
 
-    .rbc-btn-group button {
-        @apply font-heading text-card-foreground font-normal;
-    }
+:global(.rbc-btn-group button) {
+    @apply font-heading text-card-foreground font-normal;
+}
 
-    .rbc-btn-group button:hover {
-        @apply bg-card text-card-foreground underline;
-    }
+:global(.rbc-btn-group button:hover) {
+    @apply bg-card text-card-foreground underline;
+}
 
-    .rbc-toolbar {
-        @apply flex-row-reverse;
-    }
+:global(.rbc-toolbar) {
+    @apply flex-row-reverse;
 }
