@@ -21,11 +21,6 @@ const Home = async () => {
     return (
         <>
             {data.toast && <SingleToast data={data.toast} />}
-            <iframe
-                className="w-screen max-w-[640px]"
-                src="https://arpg-timeline-git-feature-embed-arpg-timeline.vercel.app/embed/season-widget/median-xl"
-                height={304}
-            />
             <div className="relative container mx-auto mb-8">
                 <Kicker />
                 <Main games={games} streams={streams} />
