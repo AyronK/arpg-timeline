@@ -20,7 +20,7 @@ export const EmbedGameToSeasonWidget = ({ game, selector }: { game: Game; select
             chip={chip}
             name={season.name ?? `${SelectorLabels[selector]} ${game.seasonKeyword}`}
         >
-            <Content game={game} selector={selector} />
+            <Content embed game={game} selector={selector} />
         </SeasonWidget>
     );
 };

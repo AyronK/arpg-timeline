@@ -1,18 +1,28 @@
 import { InfoIcon, TimerReset } from "lucide-react";
 
+import { CalendarMenu } from "@/components/CalendarMenu";
 import ClientOnlyVisibleWrapper from "@/components/ClientOnlyVisibleWrapper";
 import { Countdown } from "@/components/Countdown";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
 import { ProgressBar } from "@/components/ProgressBar";
+import { ShareMenu } from "@/components/ShareMenu";
 import { Game } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { getProgress, getProgressEndContent, getProgressStartContent } from "@/lib/getProgress";
 
 import { Selector } from "./types";
 
-export const Content = ({ game, selector }: { game: Game; selector: Selector }) => {
+export const Content = ({
+    game,
+    selector,
+    embed,
+}: {
+    game: Game;
+    selector: Selector;
+    embed?: boolean | undefined;
+}) => {
     const season = selector === "current" ? game.currentSeason : game.nextSeason;
     if (!season) {
         return null;
@@ -46,11 +56,34 @@ export const Content = ({ game, selector }: { game: Game; selector: Selector }) 
                     {info}
                     {season.start.startDate && (
                         <ClientOnlyVisibleWrapper>
-                            <div className="mt-auto rounded-sm ring ring-emerald-200/40">
-                                <FramedAction className="p-1">
-                                    <Countdown date={new Date(season.start.startDate)} />
-                                </FramedAction>
-                            </div>
+                            {embed ? (
+                                <div className="mt-auto rounded-sm ring ring-emerald-200/40">
+                                    <FramedAction className="p-1">
+                                        <Countdown date={new Date(season.start.startDate)} />
+                                    </FramedAction>
+                                </div>
+                            ) : (
+                                <div className="mt-auto">
+                                    <FramedAction
+                                        prependClassName="!rounded-r-none"
+                                        prepend={
+                                            <ShareMenu
+                                                startDate={season.start.startDate}
+                                                title={`Hey, ${game.name} ${season.name} launch is happening`}
+                                            />
+                                        }
+                                        appendClassName="!rounded-l-none"
+                                        append={
+                                            <CalendarMenu
+                                                startDate={season.start.startDate}
+                                                title={`${game.name} ${season.name} launch`}
+                                            />
+                                        }
+                                    >
+                                        <Countdown date={new Date(season.start.startDate)} />
+                                    </FramedAction>
+                                </div>
+                            )}
                         </ClientOnlyVisibleWrapper>
                     )}
                 </div>
