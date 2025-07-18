@@ -5,7 +5,7 @@ import { EmbedGameCard } from "@/components/GameCard/EmbedGameCard";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { SanityImage } from "@/components/SanityImage";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
-import { EmbedGameToSeasonWidget } from "@/hoc/EmbedGameToSeasonWidget";
+import { EmbedGameToSeasonWidget } from "@/hoc/GameToSeasonWidget/EmbedGameToSeasonWidget";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";

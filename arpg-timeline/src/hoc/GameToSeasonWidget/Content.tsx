@@ -1,6 +1,4 @@
-"use client";
 import { InfoIcon, TimerReset } from "lucide-react";
-import { ReactNode } from "react";
 
 import ClientOnlyVisibleWrapper from "@/components/ClientOnlyVisibleWrapper";
 import { Countdown } from "@/components/Countdown";
@@ -8,52 +6,28 @@ import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
 import { ProgressBar } from "@/components/ProgressBar";
-import { SeasonChip } from "@/components/SeasonWidget";
-import { SeasonWidget } from "@/components/SeasonWidget";
 import { Game } from "@/lib/cms/games.types";
-import { inGracePeriod, isOver } from "@/lib/games/sortBySeasons";
+import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { getProgress, getProgressEndContent, getProgressStartContent } from "@/lib/getProgress";
 
-type Selector = "current" | "next";
+import { Selector } from "./types";
 
-const SelectorLabels: Record<Selector, string> = {
-    current: "Current",
-    next: "The next",
-};
-
-export const EmbedGameToSeasonWidget = ({ game, selector }: { game: Game; selector: Selector }) => {
+export const Content = ({ game, selector }: { game: Game; selector: Selector }) => {
     const season = selector === "current" ? game.currentSeason : game.nextSeason;
-
     if (!season) {
         return null;
     }
 
     const isInGracePeriod = inGracePeriod(season.start?.startDate);
-    let chip: SeasonChip;
-
-    if (game.isDormant) {
-        chip = "dormant";
-    } else if (selector === "next") {
-        chip = game.isComingSoon ? "comingSoon" : "next";
-    } else if (isInGracePeriod) {
-        chip = "live";
-    } else if (season.end?.confirmed && isOver(season.end.endDate)) {
-        chip = "over";
-    } else {
-        chip = "now";
-    }
-
     const info = (season.start?.additionalText || season.end?.additionalText) && (
         <IconLabel icon={InfoIcon} className="text-xs" iconPosition="end">
             {season.start?.additionalText || season.end?.additionalText}
         </IconLabel>
     );
 
-    let children: ReactNode;
-
     if (selector === "next") {
         if (season.start?.confirmed && season.start.startDate) {
-            children = (
+            return (
                 <div className="flex flex-1 flex-col gap-1 md:gap-2">
                     <div className="flex flex-row flex-nowrap justify-between">
                         {season.start.overrideText ? (
@@ -82,7 +56,7 @@ export const EmbedGameToSeasonWidget = ({ game, selector }: { game: Game; select
                 </div>
             );
         } else {
-            children = (
+            return (
                 <>
                     <IconLabel icon={TimerReset}>
                         <i>
@@ -97,7 +71,7 @@ export const EmbedGameToSeasonWidget = ({ game, selector }: { game: Game; select
         }
     } else if (season.start?.startDate) {
         const progress = getProgress(season.start?.startDate, season.end?.endDate ?? null);
-        children = (
+        return (
             <>
                 <div className="flex flex-row flex-nowrap justify-between">
                     <ClientOnlyVisibleWrapper>
@@ -121,14 +95,4 @@ export const EmbedGameToSeasonWidget = ({ game, selector }: { game: Game; select
             </>
         );
     }
-
-    return (
-        <SeasonWidget
-            aria-label={`${selector} ${game.name} ${game.seasonKeyword} - ${season.name}`}
-            chip={chip}
-            name={season.name ?? `${SelectorLabels[selector]} ${game.seasonKeyword}`}
-        >
-            {children}
-        </SeasonWidget>
-    );
 };
