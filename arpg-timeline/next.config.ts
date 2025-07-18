@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
     async headers() {
         return [
             {
+                source: "/embed/:path*",
+                headers: [
+                    {
+                        key: "X-Frame-Options",
+                        value: "ALLOWALL",
+                    },
+                ],
+            },
+            {
                 source: "/assets/:path*",
                 headers: [
                     {
