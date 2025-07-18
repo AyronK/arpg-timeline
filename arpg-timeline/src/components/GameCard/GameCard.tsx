@@ -4,7 +4,7 @@ import { GameCardProps } from "@/components/GameCard/GameCard.types";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { sa_event } from "@/lib/sa_event";
 
-export const GameCard = ({ name, logo, url, children, official, slug }: GameCardProps) => {
+export const GameCard = ({ name, gameLogo, url, children, official, slug }: GameCardProps) => {
     return (
         <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
             <div className="flex flex-col">
@@ -22,7 +22,7 @@ export const GameCard = ({ name, logo, url, children, official, slug }: GameCard
                         onClick={() => sa_event(`${slug}-logo-click`)}
                     >
                         <div className="grid h-[72px] min-h-[72px] w-[120px] md:h-[140px] md:w-[160px]">
-                            {logo}
+                            {gameLogo}
                         </div>
                     </MaybeLinkWrapper>
                 </div>

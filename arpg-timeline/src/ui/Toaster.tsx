@@ -21,7 +21,7 @@ export function Toaster() {
                     <Toast key={id} {...props}>
                         {withLogo && (
                             <div className="max-w-14 self-start">
-                                <Logo />
+                                <Logo className="mx-auto scale-75 md:scale-100" />
                             </div>
                         )}
                         <div className="grid flex-1 gap-1">

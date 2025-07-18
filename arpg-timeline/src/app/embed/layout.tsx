@@ -6,7 +6,6 @@ import { Cinzel, Montserrat } from "next/font/google";
 import Script from "next/script";
 
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
-import { Logo } from "@/components/Logo";
 
 const cinzel = Cinzel({
     subsets: ["latin"],
@@ -24,16 +23,10 @@ const montserrat = Montserrat({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
-            <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen max-w-[800px] flex-col">
+            <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col bg-transparent">
                 <div className="relative">
                     <SimpleAnalytics />
                     <SpeedInsights />
-                    <div className="absolute top-8 right-4 z-50 opacity-15">
-                        <h1 className="flex h-[72px] flex-col items-center justify-center md:h-[140px] md:gap-2">
-                            <Logo />
-                            <span className="text-nowrap">arpg-timeline.com</span>
-                        </h1>
-                    </div>
                     {children}
                 </div>
             </body>

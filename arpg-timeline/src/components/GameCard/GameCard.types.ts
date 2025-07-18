@@ -5,8 +5,8 @@ export type Game = {
     readonly name: string;
     readonly shortName: string | null;
     readonly official: boolean;
-    readonly url: string | null;
-    readonly logo: ReactNode;
+    readonly url?: string | null;
+    readonly gameLogo: ReactNode;
 };
 
 export type GameCardTestProps = TestProps<{

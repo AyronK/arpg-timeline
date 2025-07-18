@@ -21,6 +21,11 @@ const Home = async () => {
     return (
         <>
             {data.toast && <SingleToast data={data.toast} />}
+            <iframe
+                className="w-screen max-w-[640px]"
+                src="http://localhost:3000/embed/season-widget/last-epoch"
+                height={304}
+            />
             <div className="relative container mx-auto mb-8">
                 <Kicker />
                 <Main games={games} streams={streams} />

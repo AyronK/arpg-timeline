@@ -38,6 +38,15 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/embed/season-widget/:path*",
+                headers: [
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=43200",
+                    },
+                ],
+            },
+            {
                 source: "/robots.txt",
                 headers: [
                     {

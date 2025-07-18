@@ -20,7 +20,7 @@ export const Header = ({ discordUrl, buyMeACoffeeUrl, githubUrl }: HeaderProps) 
                 className="absolute top-0 z-20 transform text-base font-semibold tracking-[0.3rem] sm:text-lg md:left-1/2 md:mr-auto md:ml-auto md:-translate-x-1/2 md:text-4xl"
             >
                 <h1 className="flex flex-row items-center md:gap-2">
-                    <Logo />
+                    <Logo className="mx-auto scale-75 md:scale-100" />
                     <span className="text-nowrap">aRPG Timeline</span>
                 </h1>
             </Link>

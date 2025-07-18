@@ -8,14 +8,21 @@ export const FramedAction = ({
     appendClassName,
     prepend,
     prependClassName,
+    className,
 }: PropsWithChildren<{
     append?: ReactNode;
     prepend?: ReactNode;
     appendClassName?: string | undefined;
     prependClassName?: string | undefined;
+    className?: string | undefined;
 }>) => {
     return (
-        <div className="relative flex flex-row rounded-md shadow-sm transition-all">
+        <div
+            className={cn(
+                "relative flex flex-row rounded-md shadow-sm transition-all dark:bg-slate-800/40",
+                className,
+            )}
+        >
             {prepend && (
                 <div
                     className={cn(
@@ -26,7 +33,7 @@ export const FramedAction = ({
                     {prepend}
                 </div>
             )}
-            <div className="z-0 flex h-full flex-1 items-center justify-center bg-slate-50/50 px-3 md:h-[40px] dark:bg-slate-800/40">
+            <div className="z-0 flex h-full flex-1 items-center justify-center px-3 md:h-[40px]">
                 {children}
             </div>
             {append && (

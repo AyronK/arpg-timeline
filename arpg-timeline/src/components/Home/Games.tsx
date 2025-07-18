@@ -30,7 +30,7 @@ export const Games = ({ games }: { games: Game[] }) => {
             <ErrorBoundary fallback={<WidgetDiedFallback />}>
                 <GameCard
                     name={game.name}
-                    logo={
+                    gameLogo={
                         <SanityImage
                             loading="lazy"
                             src={game.logo!}
