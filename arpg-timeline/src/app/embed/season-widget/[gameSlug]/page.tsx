@@ -24,12 +24,6 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
         return notFound();
     }
 
-    // TODO: replace with dedicated embed widget
-    // 1. No interactive buttons
-    // 2. Link to arpg-timeline
-    // 3. Embed-targeted tracking
-    // 4. "Like this widget? CTA website/support
-    // 5. Add cache headers and generate static params
     return (
         <ErrorBoundary fallback={<WidgetDiedFallback />}>
             <EmbedGameCard
