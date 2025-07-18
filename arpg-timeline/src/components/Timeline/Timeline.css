@@ -1,4 +1,4 @@
-@reference "../../app/globals.css";
+@reference "../../app/(site)/globals.css";
 
 .chart g text {
     @apply fill-foreground!;

@@ -1,8 +1,8 @@
-export const Logo = () => (
+export const Logo = ({ className }: { className?: string }) => (
     <svg
         width="56"
         height="56"
-        className="mx-auto scale-75 md:scale-100"
+        className={className}
         viewBox="0 0 135.5 135.5"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
     async headers() {
         return [
             {
+                source: "/embed/:path*",
+                headers: [
+                    {
+                        key: "X-Frame-Options",
+                        value: "ALLOWALL",
+                    },
+                ],
+            },
+            {
                 source: "/assets/:path*",
                 headers: [
                     {
@@ -34,6 +43,15 @@ const nextConfig: NextConfig = {
                     {
                         key: "Vercel-CDN-Cache-Control",
                         value: "public, max-age=31536000, immutable",
+                    },
+                ],
+            },
+            {
+                source: "/embed/season-widget/:path*",
+                headers: [
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=43200",
                     },
                 ],
             },

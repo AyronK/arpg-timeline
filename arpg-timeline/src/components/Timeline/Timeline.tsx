@@ -156,7 +156,7 @@ function addMonthsWithFraction(date: Date, months: number): Date {
 export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
     const parentRef = useRef<HTMLDivElement | null>(null);
     const [expanded, setIsExpanded] = useState(false);
-    const [range, setRange] = useState(1);
+    const [range, setRange] = useState(5);
     const [ready, setReady] = useState(false);
 
     const maxAvailableRange = useMemo(() => {
@@ -221,7 +221,7 @@ export const Timeline = ({ events }: { events: TimelineEvent[] }) => {
                     className="absolute top-4 right-12 h-4 w-xs max-w-1/3"
                     value={[range]}
                     max={maxAvailableRange}
-                    min={2}
+                    min={5}
                     step={0.5}
                     onValueChange={([value]) => setRange(value)}
                     aria-description="Timeline scale"

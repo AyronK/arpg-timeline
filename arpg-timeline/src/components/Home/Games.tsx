@@ -7,7 +7,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
-import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget";
+import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
 import { Game } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
@@ -30,7 +30,7 @@ export const Games = ({ games }: { games: Game[] }) => {
             <ErrorBoundary fallback={<WidgetDiedFallback />}>
                 <GameCard
                     name={game.name}
-                    logo={
+                    gameLogo={
                         <SanityImage
                             loading="lazy"
                             src={game.logo!}
