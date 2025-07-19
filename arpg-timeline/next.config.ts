@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
         dangerouslyAllowSVG: true,
         minimumCacheTTL: 30 * 24 * 60 * 60,
+        unoptimized: true,
     },
     async headers() {
         return [
@@ -39,19 +40,6 @@ const nextConfig: NextConfig = {
             },
             {
                 source: "/assets/:path*",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=2592000, immutable",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=31536000, immutable",
-                    },
-                ],
-            },
-            {
-                source: "/_next/image/:path*",
                 headers: [
                     {
                         key: "Cache-Control",
