@@ -29,12 +29,21 @@ const nextConfig: NextConfig = {
                 source: "/embed/:path*",
                 headers: [
                     {
-                        key: "X-Frame-Options",
-                        value: "ALLOWALL",
-                    },
-                    {
                         key: "Content-Security-Policy",
                         value: "frame-ancestors *;",
+                    },
+                ],
+            },
+            {
+                source: "/_next/static/:path*",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=31536000, immutable",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=31536000, immutable",
                     },
                 ],
             },
@@ -44,19 +53,6 @@ const nextConfig: NextConfig = {
                     {
                         key: "Cache-Control",
                         value: "public, max-age=2592000, immutable",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=31536000, immutable",
-                    },
-                ],
-            },
-            {
-                source: "/404",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=31536000, immutable",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
@@ -82,11 +78,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=43200",
+                        value: "public, max-age=2592000",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=43200",
+                        value: "public, max-age=2592000, stale-while-revalidate=2592000",
                     },
                 ],
             },
@@ -113,7 +109,7 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=2592000, immutable",
+                        value: "public, max-age=31536000, immutable",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
@@ -126,7 +122,7 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=2592000, immutable",
+                        value: "public, max-age=31536000, immutable",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
@@ -138,8 +134,12 @@ const nextConfig: NextConfig = {
                 source: "/index",
                 headers: [
                     {
+                        key: "Cache-Control",
+                        value: "public, max-age=60, s-maxage=300",
+                    },
+                    {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=60",
+                        value: "public, max-age=60, stale-while-revalidate=300",
                     },
                 ],
             },
@@ -147,8 +147,12 @@ const nextConfig: NextConfig = {
                 source: "/",
                 headers: [
                     {
+                        key: "Cache-Control",
+                        value: "public, max-age=60, s-maxage=300",
+                    },
+                    {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=60",
+                        value: "public, max-age=60, stale-while-revalidate=300",
                     },
                 ],
             },
@@ -159,6 +163,10 @@ const nextConfig: NextConfig = {
                         key: "Cache-Control",
                         value: "public, s-max-age=31536000",
                     },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, s-max-age=31536000",
+                    },
                 ],
             },
             {
@@ -166,6 +174,10 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
+                        value: "public, s-max-age=31536000",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
                         value: "public, s-max-age=31536000",
                     },
                 ],
