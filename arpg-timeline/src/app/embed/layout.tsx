@@ -1,4 +1,4 @@
-import "../(site)/globals.css";
+import "../globals.css";
 
 import { Metadata } from "next";
 import { Cinzel, Montserrat } from "next/font/google";
