@@ -9,6 +9,17 @@ import { Logo } from "../Logo";
 import { GameCardProps } from "./GameCard.types";
 
 export const EmbedGameCard = ({ slug, gameLogo, children }: GameCardProps) => {
+    function handleClick() {
+        let hostname = "unknown";
+        try {
+            if (document.referrer) {
+                hostname = new URL(document.referrer).hostname;
+            }
+        } finally {
+            sa_event(`${slug}-embed-click`, { hostname });
+        }
+    }
+
     useEffect(() => {
         let hostname = "unknown";
         try {
@@ -27,6 +38,7 @@ export const EmbedGameCard = ({ slug, gameLogo, children }: GameCardProps) => {
                 target="_blank"
                 rel="noopener"
                 className="z-10"
+                onClick={handleClick}
             >
                 <section className="text-card-foreground relative flex max-w-[720px] min-w-[350px] flex-1 flex-col gap-1 rounded-md bg-transparent p-4">
                     <div className="flex flex-col">
