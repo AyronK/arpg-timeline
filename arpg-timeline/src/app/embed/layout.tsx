@@ -1,6 +1,5 @@
 import "../(site)/globals.css";
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import { Cinzel, Montserrat } from "next/font/google";
 import Script from "next/script";
@@ -26,7 +25,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col bg-transparent">
                 <div className="relative">
                     <SimpleAnalytics />
-                    <SpeedInsights />
                     {children}
                 </div>
             </body>
