@@ -2,8 +2,8 @@ name: Crawl sources and notify Discord
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 18 * * *
+  #schedule:
+    #- cron: 0 18 * * *
 
 jobs:
   check-and-notify:
