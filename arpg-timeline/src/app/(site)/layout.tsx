@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Toaster />
                 <Header
                     githubUrl={`${process.env.GITHUB_URL!}/${process.env.GITHUB_REPO!}/issues`}
-                    buyMeACoffeeUrl={process.env.BUY_ME_A_COFFEE_URL!}
+                    patreonUrl={process.env.PATREON_URL!}
                     discordUrl={process.env.DISCORD_URL!}
                 />
                 <main className="flex flex-1 flex-col">{children}</main>
@@ -55,3 +55,4 @@ export const metadata: Metadata = {
         google: process.env.GOOGLE_SITE_VERIFICATION,
     },
 };
+
