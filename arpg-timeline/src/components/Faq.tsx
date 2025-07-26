@@ -1,10 +1,10 @@
 import { UsersRound } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { PortableTextBlock } from "next-sanity";
 
 import { RichTextRenderer } from "@/lib/sanity/portableTextComponents";
 import { Button } from "@/ui/Button";
-import Link from "next/link";
 
 export const Faq = ({
     faq,
