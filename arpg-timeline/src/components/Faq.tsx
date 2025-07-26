@@ -1,34 +1,41 @@
 import { UsersRound } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { PortableTextBlock } from "next-sanity";
 
 import { RichTextRenderer } from "@/lib/sanity/portableTextComponents";
 import { Button } from "@/ui/Button";
 
-export const Faq = ({ faq }: { faq: { title: string; content: PortableTextBlock[] }[] }) => {
+export const Faq = ({
+    faq,
+    patreonUrl,
+}: {
+    faq: { title: string; content: PortableTextBlock[] }[];
+    patreonUrl: string;
+}) => {
     return (
         <section className="container my-16 flex flex-col gap-4">
             <div>
                 <h2 className="sr-only">Support</h2>
                 <div className="mx-auto flex max-w-prose flex-col-reverse justify-between gap-2 md:flex-row md:gap-8">
                     <Button variant={"link"} size="lg" asChild>
-                        <a
-                            href="https://www.buymeacoffee.com/ayron"
+                        <Link
+                            href={patreonUrl}
                             rel="external nofollow noreferrer"
                             target="_blank"
                             data-sa-click="support"
                         >
-                            <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current">
+                            <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-3">
                                 <Image
-                                    src="/assets/bmc-logo-no-background.png"
+                                    src="/assets/patreon-logo.png"
                                     className="m-auto h-[1rem] w-[1rem]"
-                                    alt="Buy me a coffee logo"
+                                    alt="Patreon logo"
                                     width={22}
                                     height={22}
                                 />
                             </div>
-                            Support me
-                        </a>
+                            <span className="hidden 2xl:block">Support me</span>
+                        </Link>
                     </Button>
                     <Button
                         variant={"default"}
@@ -80,3 +87,4 @@ export const Faq = ({ faq }: { faq: { title: string; content: PortableTextBlock[
         </section>
     );
 };
+

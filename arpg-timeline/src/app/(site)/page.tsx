@@ -26,7 +26,7 @@ const Home = async () => {
                 <Main games={games} streams={streams} />
             </div>
             <StructuredDataScripts games={games} />
-            <Faq faq={data.faq} />
+            <Faq patreonUrl={process.env.PATREON_URL!} faq={data.faq} />
         </>
     );
 };
@@ -98,3 +98,4 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const experimental_ppr = true;
+

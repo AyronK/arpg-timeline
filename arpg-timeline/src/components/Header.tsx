@@ -7,11 +7,11 @@ import { Logo } from "./Logo";
 
 export type HeaderProps = {
     discordUrl: string;
-    buyMeACoffeeUrl: string;
+    patreonUrl: string;
     githubUrl: string;
 };
 
-export const Header = ({ discordUrl, buyMeACoffeeUrl, githubUrl }: HeaderProps) => (
+export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
     <header className="max-md:bg-card relative h-[56px] px-2 max-sm:shadow-sm md:h-[80px] md:px-8 md:pt-6 md:pb-0">
         <div className="relative h-full w-full">
             <Link
@@ -37,7 +37,7 @@ export const Header = ({ discordUrl, buyMeACoffeeUrl, githubUrl }: HeaderProps) 
                                 <Image
                                     src="/assets/discord-logo.svg"
                                     className="m-auto h-[1rem] w-[1rem]"
-                                    alt="Buy me a coffee logo"
+                                    alt="Discord logo"
                                     width={22}
                                     height={22}
                                 />
@@ -47,16 +47,16 @@ export const Header = ({ discordUrl, buyMeACoffeeUrl, githubUrl }: HeaderProps) 
                     </Button>
                     <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
                         <Link
-                            href={buyMeACoffeeUrl}
+                            href={patreonUrl}
                             rel="external nofollow noreferrer"
                             target="_blank"
                             data-sa-click="support"
                         >
                             <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-3">
                                 <Image
-                                    src="/assets/bmc-logo-no-background.png"
+                                    src="/assets/patreon-logo.png"
                                     className="m-auto h-[1rem] w-[1rem]"
-                                    alt="Buy me a coffee logo"
+                                    alt="Patreon logo"
                                     width={22}
                                     height={22}
                                 />
@@ -89,3 +89,4 @@ export const Header = ({ discordUrl, buyMeACoffeeUrl, githubUrl }: HeaderProps) 
         </div>
     </header>
 );
+
