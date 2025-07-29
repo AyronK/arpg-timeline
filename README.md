@@ -6,6 +6,7 @@
   </a>
   <h1>aRPG Timeline</h1>
   <a href="https://discord.gg/39mTbjkePg"><img src="https://img.shields.io/badge/discord-grey.svg?&logo=discord&style=for-the-badge" alt="aRPG Timeline Discord"></a>
+  <a href="https://www.patreon.com/AyronK"><img src="https://img.shields.io/badge/Support_on_Patreon-test2?style=for-the-badge&color=grey&logo=patreon" alt="Support on Patreon"></a>  
   <a href="https://coff.ee/ayron"><img src="https://img.shields.io/badge/Buy_me_a_coffee-test2?style=for-the-badge&color=grey&logo=buymeacoffee" alt="Buy me a coffee"></a>  
 </div>
 <br/>
