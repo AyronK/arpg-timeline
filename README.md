@@ -8,8 +8,19 @@
   <a href="https://discord.gg/39mTbjkePg"><img src="https://img.shields.io/badge/discord-grey.svg?&logo=discord&style=for-the-badge" alt="aRPG Timeline Discord"></a>
   <a href="https://coff.ee/ayron"><img src="https://img.shields.io/badge/Buy_me_a_coffee-test2?style=for-the-badge&color=grey&logo=buymeacoffee" alt="Buy me a coffee"></a>  
 </div>
-
-
+<br/>
+<div align="center">
+  <a
+  href="https://dashboard.simpleanalytics.com/arpg-timeline.com?utm_source=arpg-timeline.com&utm_content=badge&affiliate=davep"
+  referrerpolicy="origin"
+  target="_blank">
+    <img
+      src="https://simpleanalyticsbadges.com/arpg-timeline.com"
+      referrerpolicy="no-referrer"
+      crossorigin="anonymous"
+    />
+  </a>
+</div>
 
 ## 🧑‍💻 Become a Code Contributor
 Want to help shape the future of arpg‑timeline?  
