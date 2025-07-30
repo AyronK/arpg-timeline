@@ -6,6 +6,7 @@ import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
+import { DashboardConfigurationProvider } from "@/lib/config/DashboardConfigurationProvider";
 import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
 import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
@@ -23,7 +24,9 @@ const Home = async () => {
             {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
                 <Kicker />
-                <Main games={games} streams={streams} />
+                <DashboardConfigurationProvider>
+                    <Main games={games} streams={streams} />
+                </DashboardConfigurationProvider>
             </div>
             <StructuredDataScripts games={games} />
             <Faq patreonUrl={process.env.PATREON_URL!} faq={data.faq} />
@@ -98,4 +101,3 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const experimental_ppr = true;
-

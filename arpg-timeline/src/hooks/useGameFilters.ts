@@ -2,6 +2,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
+import { useDashboardConfiguration } from "@/lib/config/DashboardConfigurationProvider";
 import { sa_event } from "@/lib/sa_event";
 
 export const useGameFilters = (
@@ -17,6 +18,9 @@ export const useGameFilters = (
     activeFilters: string[];
     filteredGames: Game[];
 } => {
+    const dashboardConfig = useDashboardConfiguration();
+    console.log(dashboardConfig?.games); // TODO bind to filters
+
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
 

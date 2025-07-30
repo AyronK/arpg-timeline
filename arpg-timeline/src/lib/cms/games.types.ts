@@ -1,5 +1,7 @@
 import { SanityImageAssetDocument } from "next-sanity";
 
+import { MinifiedId } from "../config/DashboardConfig";
+
 export type GameStream = {
     gameSlug: string;
     gameName: string;
@@ -12,6 +14,7 @@ export type GameStream = {
 };
 
 export type Game = {
+    minifiedId: MinifiedId;
     name: string;
     shortName: string | null | undefined;
     official: boolean;
