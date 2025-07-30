@@ -18,7 +18,7 @@ const DashboardConfigurationContext = createContext<DashboardConfigurationContex
     null,
 );
 
-export const useDashboardConfiguration = () => {
+export const useDashboardConfiguration = (): [DashboardConfig, (value: DashboardConfig) => void] => {
     const context = useContext(DashboardConfigurationContext);
 
     if (!context) {
@@ -27,7 +27,7 @@ export const useDashboardConfiguration = () => {
         );
     }
 
-    return context.value ?? {};
+    return [context.value ?? {}, context.update];
 };
 
 export const useDashboardConfigurationSwitch = () => {

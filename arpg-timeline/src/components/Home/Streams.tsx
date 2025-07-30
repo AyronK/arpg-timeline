@@ -6,13 +6,13 @@ import { Twitch } from "lucide-react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
-import { useGameFilters } from "@/hooks/useGameFilters";
-import { Game, GameStream } from "@/lib/cms/games.types";
+import { useFilteredGames } from "@/hooks/dashboardConfig/useFilteredGames";
+import { GameStream } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
-export const Streams = ({ games, streams }: { games: Game[]; streams: GameStream[] }) => {
-    const { filteredGames } = useGameFilters(games);
+export const Streams = ({ streams }: { streams: GameStream[] }) => {
+    const filteredGames = useFilteredGames();
     const filteredStreams = streams.filter((s) => filteredGames.find((g) => g.slug === s.gameSlug));
 
     return (
