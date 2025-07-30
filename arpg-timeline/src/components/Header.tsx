@@ -89,4 +89,3 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
         </div>
     </header>
 );
-

@@ -4,7 +4,7 @@ export class DocumentStorage implements IDocumentStorage {
     constructor(private storage: Storage) {}
 
     get<T>(key: string): T | null {
-        const value = this.storage.get(key);
+        const value = this.storage.getItem(key);
         return value ? (JSON.parse(value) as T) : null;
     }
     key<T>(index: number): T | null {

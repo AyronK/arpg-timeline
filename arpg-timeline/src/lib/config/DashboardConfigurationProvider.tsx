@@ -1,5 +1,6 @@
 "use client";
-import { randomUUID } from "crypto";
+
+import { useHasMounted } from "@react-hooks-library/core";
 import { createContext, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 
 import { DocumentStorage } from "../storage/DocumentStorage";
@@ -18,13 +19,21 @@ const DashboardConfigurationContext = createContext<DashboardConfigurationContex
     null,
 );
 
-export const useDashboardConfiguration = (): [DashboardConfig, (value: DashboardConfig) => void] => {
+export const useDashboardConfiguration = (): [
+    DashboardConfig,
+    (value: DashboardConfig) => void,
+] => {
     const context = useContext(DashboardConfigurationContext);
 
     if (!context) {
-        throw new Error(
-            "useDashboardConfiguration must be used within DashboardConfigurationProvider.",
-        );
+        return [
+            null!,
+            () => {
+                throw new Error(
+                    "useDashboardConfiguration must be used within DashboardConfigurationProvider.",
+                );
+            },
+        ];
     }
 
     return [context.value ?? {}, context.update];
@@ -58,19 +67,32 @@ const STORAGE_KEYS = {
 export const MAX_ALIAS_LENGTH = 10;
 
 export const DashboardConfigurationProvider = ({ children }: PropsWithChildren) => {
+    const hasMounted = useHasMounted();
+    return hasMounted ? (
+        <DashboardConfigurationProvider2>{children}</DashboardConfigurationProvider2>
+    ) : (
+        children
+    );
+};
+
+const DashboardConfigurationProvider2 = ({ children }: PropsWithChildren) => {
     const storage = useRef<DocumentStorage>(new LocalDocumentStorage());
 
     const [config, setConfig] = useState<DashboardConfig>(() => {
-        let value = storage.current.get<DashboardConfig>(STORAGE_KEYS.CURRENT);
+        let id = storage.current.get<string>(STORAGE_KEYS.CURRENT);
+        const all = storage.current.get<DashboardConfig[]>(STORAGE_KEYS.ALL) ?? [];
+        let value = all.find((c) => c.id === id);
 
         if (!value) {
-            const all = storage.current.get<DashboardConfig[]>(STORAGE_KEYS.ALL);
-            value = all?.[0] ?? null;
+            value = all[0] ?? null;
         }
 
         if (!value) {
-            value = { id: randomUUID(), alias: "Default" };
-            storage.current.set(STORAGE_KEYS.CURRENT, value);
+            id = crypto.randomUUID();
+            value = { id, alias: "Default" };
+            all.push(value);
+            storage.current.set(STORAGE_KEYS.CURRENT, id);
+            storage.current.set(STORAGE_KEYS.ALL, all);
         }
 
         return value;
@@ -121,7 +143,7 @@ export const DashboardConfigurationProvider = ({ children }: PropsWithChildren) 
 
     const handleAddCopy = () => {
         const all = storage.current.get<DashboardConfig[]>(STORAGE_KEYS.ALL) ?? [];
-        const copy = { ...config, id: randomUUID(), alias: config.alias + " - Copy" };
+        const copy = { ...config, id: crypto.randomUUID(), alias: config.alias + " - Copy" };
         all.push(copy);
 
         storage.current.set(STORAGE_KEYS.ALL, all);

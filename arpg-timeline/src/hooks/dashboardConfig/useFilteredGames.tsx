@@ -39,6 +39,20 @@ export const GameFiltersContextProvider = ({
     children,
     games,
 }: PropsWithChildren<{ games: Game[] }>) => {
+    const [config] = useDashboardConfiguration();
+    return !!config ? (
+        <ClientGameFiltersContextProvider games={games}>
+            {children}
+        </ClientGameFiltersContextProvider>
+    ) : (
+        children
+    );
+};
+
+const ClientGameFiltersContextProvider = ({
+    children,
+    games,
+}: PropsWithChildren<{ games: Game[] }>) => {
     const [config, updateConfig] = useDashboardConfiguration();
     const filteredGames = useFilteredGamesMemo(games);
 
@@ -119,26 +133,32 @@ const useFilteredGameSlugsMemo = (games: Game[]): string[] => {
 
     return useMemo(() => {
         const { hidden = [], visible = [] } = dashboardConfig.games ?? {};
-        const newGamesStrategy = dashboardConfig.preferences?.newGamesStrategy;
+        const { newGamesStrategy = NewGameStrategy.Show } = dashboardConfig.preferences ?? {};
 
-        const explicitlyVisible = games.filter((g) => visible.includes(g.slug));
-        const unspecified = games.filter((g) => ![...hidden, ...visible].includes(g.slug));
+        const hiddenSet = new Set(hidden);
+        const visibleSet = new Set(visible);
 
-        const filteredGames = explicitlyVisible;
+        const isVisible = (game: Game) => visibleSet.has(game.slug);
+        const isHidden = (game: Game) => hiddenSet.has(game.slug);
+        const isUnspecified = (game: Game) => !isVisible(game) && !isHidden(game);
 
-        if (newGamesStrategy === NewGameStrategy.ShowOnEvent)
-            unspecified.forEach((g) => {
-                if (
-                    g.nextSeason?.start?.confirmed ||
-                    inGracePeriod(g?.currentSeason?.start?.startDate)
-                ) {
-                    filteredGames.push(g);
-                }
-            });
-        else if (newGamesStrategy === NewGameStrategy.Show) {
-            filteredGames.concat(explicitlyVisible);
-        }
+        const shouldIncludeUnspecified = (game: Game) => {
+            if (newGamesStrategy === NewGameStrategy.Show) return true;
+            if (newGamesStrategy === NewGameStrategy.ShowOnEvent) {
+                return (
+                    game.nextSeason?.start?.confirmed ||
+                    inGracePeriod(game.currentSeason?.start?.startDate)
+                );
+            }
+            return false;
+        };
 
-        return filteredGames.map((g) => g.slug);
-    }, [dashboardConfig.games, dashboardConfig.preferences?.newGamesStrategy, games]);
+        return games
+            .filter((game) => {
+                if (isVisible(game)) return true;
+                if (isUnspecified(game)) return shouldIncludeUnspecified(game);
+                return false;
+            })
+            .map((game) => game.slug);
+    }, [dashboardConfig.games, dashboardConfig.preferences, games]);
 };
