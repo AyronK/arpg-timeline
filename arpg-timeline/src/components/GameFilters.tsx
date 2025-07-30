@@ -3,7 +3,7 @@
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
-import { useGameFilters } from "@/hooks/dashboardConfig/useFilteredGames";
+import { useGameFilters } from "@/hooks/dashboardConfig/GameFiltersContext";
 
 export const GameFilters = () => {
     const { filteredGames, filters, setGameFilter, setGroupFilter } = useGameFilters();

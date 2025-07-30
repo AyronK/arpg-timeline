@@ -31,6 +31,12 @@ export type Game = {
     averageSeasonDuration: number | null;
 };
 
+export type GameFilter = {
+    label: string;
+    value: string;
+    group?: string | null;
+};
+
 export type Season = {
     start?: SeasonStart | null | undefined;
     end?: SeasonEnd | null | undefined;

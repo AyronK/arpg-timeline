@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { GameFiltersContextProvider } from "@/hooks/dashboardConfig/useFilteredGames";
+import { GameFiltersContextProvider } from "@/hooks/dashboardConfig/GameFiltersContext";
 import { Game, GameStream } from "@/lib/cms/games.types";
 
 import { GamesAndEventsGrid, GamesAndEventsGridFallback } from "./GamesAndEventsGrid";

@@ -4,6 +4,7 @@ import { Eye, EyeOff, Filter, Lightbulb } from "lucide-react";
 import { forwardRef } from "react";
 
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { GameFilter } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
@@ -28,7 +29,7 @@ import {
 import { Switch } from "@/ui/Switch";
 
 export type FiltersDialogProps = {
-    filters: { value: string; label: string; group?: string | undefined }[];
+    filters: GameFilter[];
     checked: string[];
     onCheckedChange: (value: string, checked: boolean) => void;
     onGroupCheckedChange: (group: string, checked: boolean) => void;

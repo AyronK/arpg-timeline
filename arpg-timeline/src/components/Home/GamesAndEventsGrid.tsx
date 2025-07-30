@@ -1,7 +1,7 @@
 "use client";
 
 import { GameFilters } from "@/components/GameFilters";
-import { useFilteredGames } from "@/hooks/dashboardConfig/useFilteredGames";
+import { useFilteredGames } from "@/hooks/dashboardConfig/GameFiltersContext";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game } from "@/lib/cms/games.types";
 import { useDashboardConfiguration } from "@/lib/config/DashboardConfigurationProvider";
@@ -12,7 +12,7 @@ import { Games } from "./Games";
 
 export const GamesAndEventsGrid = () => {
     const [dashboardConfig] = useDashboardConfiguration();
-    console.log(dashboardConfig?.games); // TODO bind to filters
+
     const filteredGames = useFilteredGames();
     const events = useTimelineEvents(filteredGames);
     const activeGames = filteredGames.filter((g) => !g.isDormant && !g.isComingSoon);
