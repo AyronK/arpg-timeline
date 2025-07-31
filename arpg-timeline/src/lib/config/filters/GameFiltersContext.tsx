@@ -4,7 +4,7 @@ import { createContext, PropsWithChildren, useCallback, useContext, useMemo } fr
 import { Game, GameFilter } from "@/lib/cms/games.types";
 import { useDashboardConfiguration } from "@/lib/config/DashboardConfigurationProvider";
 
-import { byLabel, mapGameToFilter } from "../../lib/GameFilterHelpers";
+import { byLabel, mapGameToFilter } from "../../GameFilterHelpers";
 import { useFilteredGameSlugs } from "./useFilteredGameSlugs";
 
 type GameFiltersContextValue = {

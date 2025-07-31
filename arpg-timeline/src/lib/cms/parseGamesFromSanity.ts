@@ -71,6 +71,7 @@ const adjustDateIfTooSoon = (date: string | undefined | null, offset: number): s
 };
 
 export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
+    console.log(data.games);
     return data.games
         .map((g) => {
             const game = { ...g } as Game;

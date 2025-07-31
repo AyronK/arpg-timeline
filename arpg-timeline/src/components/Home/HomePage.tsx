@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import { GameFiltersContextProvider } from "@/hooks/dashboardConfig/GameFiltersContext";
 import { Game, GameStream } from "@/lib/cms/games.types";
+import { GameFiltersContextProvider } from "@/lib/config/filters/GameFiltersContext";
 
 import { GamesAndEventsGrid, GamesAndEventsGridFallback } from "./GamesAndEventsGrid";
 import { Streams, StreamsFallback } from "./Streams";

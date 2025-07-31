@@ -69,4 +69,5 @@ type _DashboardConfig = {
 export type DashboardConfig = Partial<_DashboardConfig> & {
     id: string;
     alias: string;
+    version: number;
 };

@@ -6,8 +6,8 @@ import { Twitch } from "lucide-react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
-import { useFilteredGames } from "@/hooks/dashboardConfig/GameFiltersContext";
 import { GameStream } from "@/lib/cms/games.types";
+import { useFilteredGames } from "@/lib/config/filters/GameFiltersContext";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 

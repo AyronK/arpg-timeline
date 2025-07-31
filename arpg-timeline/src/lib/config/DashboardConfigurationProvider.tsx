@@ -5,7 +5,7 @@ import { createContext, PropsWithChildren, useCallback, useContext, useRef, useS
 
 import { DocumentStorage } from "../storage/DocumentStorage";
 import { LocalDocumentStorage } from "../storage/LocalDocumentStorage";
-import type { DashboardConfig } from "./DashboardConfig";
+import { type DashboardConfig, NewGameStrategy, SeasonProgressType } from "./DashboardConfig";
 
 export type DashboardConfigurationContextValue = {
     value: DashboardConfig;
@@ -69,13 +69,13 @@ export const MAX_ALIAS_LENGTH = 10;
 export const DashboardConfigurationProvider = ({ children }: PropsWithChildren) => {
     const hasMounted = useHasMounted();
     return hasMounted ? (
-        <DashboardConfigurationProvider2>{children}</DashboardConfigurationProvider2>
+        <ClientDashboardConfigurationProvider>{children}</ClientDashboardConfigurationProvider>
     ) : (
         children
     );
 };
 
-const DashboardConfigurationProvider2 = ({ children }: PropsWithChildren) => {
+const ClientDashboardConfigurationProvider = ({ children }: PropsWithChildren) => {
     const storage = useRef<DocumentStorage>(new LocalDocumentStorage());
 
     const [config, setConfig] = useState<DashboardConfig>(() => {
@@ -88,8 +88,23 @@ const DashboardConfigurationProvider2 = ({ children }: PropsWithChildren) => {
         }
 
         if (!value) {
-            id = crypto.randomUUID();
-            value = { id, alias: "Default" };
+            id = all.length.toString();
+            value = {
+                id,
+                alias: "Default",
+                preferences: {
+                    newGamesStrategy: NewGameStrategy.Show,
+                    seasonProgressType: SeasonProgressType.TimeLeft,
+                },
+                widgets: {
+                    timeline: {
+                        expanded: false,
+                        visible: true,
+                        zoom: 1,
+                    },
+                },
+                version: 1,
+            };
             all.push(value);
             storage.current.set(STORAGE_KEYS.CURRENT, id);
             storage.current.set(STORAGE_KEYS.ALL, all);
@@ -143,7 +158,7 @@ const DashboardConfigurationProvider2 = ({ children }: PropsWithChildren) => {
 
     const handleAddCopy = () => {
         const all = storage.current.get<DashboardConfig[]>(STORAGE_KEYS.ALL) ?? [];
-        const copy = { ...config, id: crypto.randomUUID(), alias: config.alias + " - Copy" };
+        const copy = { ...config, id: all.length.toString(), alias: config.alias + " - Copy" };
         all.push(copy);
 
         storage.current.set(STORAGE_KEYS.ALL, all);

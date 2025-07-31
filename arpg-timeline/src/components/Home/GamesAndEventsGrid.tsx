@@ -1,10 +1,12 @@
 "use client";
 
 import { GameFilters } from "@/components/GameFilters";
-import { useFilteredGames } from "@/hooks/dashboardConfig/GameFiltersContext";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game } from "@/lib/cms/games.types";
+import { DashboardConfigCompressor } from "@/lib/config/DashboardConfigCompressor";
 import { useDashboardConfiguration } from "@/lib/config/DashboardConfigurationProvider";
+import { useFilteredGames } from "@/lib/config/filters/GameFiltersContext";
+import { Button } from "@/ui/Button";
 
 import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
 import { Events } from "./Events";
@@ -24,7 +26,26 @@ export const GamesAndEventsGrid = () => {
     return (
         <>
             <article>
-                {JSON.stringify(dashboardConfig, null, "\t")}
+                <Button
+                    onClick={async () => {
+                        const compressed = await new DashboardConfigCompressor().compress(
+                            dashboardConfig,
+                        );
+                        console.log("Compressed", {
+                            compressed,
+                            length: compressed.length,
+                            uncompressed: JSON.stringify(dashboardConfig).length,
+                        });
+
+                        const decompressed = await new DashboardConfigCompressor().decompress(
+                            compressed,
+                        );
+
+                        console.log("Decompressed", { decompressed });
+                    }}
+                >
+                    Export
+                </Button>
                 <h2 className="sr-only">Seasons</h2>
                 <div className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
                     <GameFilters />

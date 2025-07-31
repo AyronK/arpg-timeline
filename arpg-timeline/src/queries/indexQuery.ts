@@ -2,6 +2,7 @@ import { PortableTextBlock, SanityImageAssetDocument } from "next-sanity";
 
 export const indexQuery = `{
   "games": *[_type == "game"]{
+    _id,
     "slug":slug.current,
     name,
     shortName,
