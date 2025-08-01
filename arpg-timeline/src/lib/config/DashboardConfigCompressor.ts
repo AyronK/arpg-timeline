@@ -1,33 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DashboardConfig } from "./DashboardConfig";
 
-const propertiesMapByVersion: {
-    "1": [
-        "id",
-        "alias",
-        "preferences",
-        "newGamesStrategy",
-        "seasonProgressType",
-        "widgets",
-        "timeline",
-        "expanded",
-        "visible",
-        "zoom",
-        "games",
-        "hidden",
-    ];
-};
-
 export class DashboardConfigCompressor {
     async compress(config: DashboardConfig): Promise<string> {
-        config = { ...config };
-        config.games.hidden = config.games.hidden.map((g) => g.substring(0, 2));
-        config.games.visible = config.games.visible.map((g) => g.substring(0, 2));
-
         const compressor = await import("lz-string");
-
-        console.log(serializeWithNumericKeys(config).keyMap);
-
         const json = JSON.stringify(serializeWithNumericKeys(config).transformed, (_, value) => {
             if (value === true) return 1;
             if (value === false) return 0;

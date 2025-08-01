@@ -10,6 +10,9 @@ export const useFilteredGameSlugs = (games: Game[]): string[] => {
     const [dashboardConfig] = useDashboardConfiguration();
 
     return useMemo(() => {
+        if (!dashboardConfig) {
+            return games.map((g) => g.slug);
+        }
         const { hidden = [], visible = [] } = dashboardConfig.games ?? {};
         const { newGamesStrategy = NewGameStrategy.Show } = dashboardConfig.preferences ?? {};
 
@@ -38,5 +41,5 @@ export const useFilteredGameSlugs = (games: Game[]): string[] => {
                 return false;
             })
             .map((game) => game.slug);
-    }, [dashboardConfig.games, dashboardConfig.preferences, games]);
+    }, [dashboardConfig, games]);
 };

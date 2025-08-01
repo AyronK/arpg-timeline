@@ -40,20 +40,6 @@ export const GameFiltersContextProvider = ({
     children,
     games,
 }: PropsWithChildren<{ games: Game[] }>) => {
-    const [config] = useDashboardConfiguration();
-    return !!config ? (
-        <ClientGameFiltersContextProvider games={games}>
-            {children}
-        </ClientGameFiltersContextProvider>
-    ) : (
-        children
-    );
-};
-
-const ClientGameFiltersContextProvider = ({
-    children,
-    games,
-}: PropsWithChildren<{ games: Game[] }>) => {
     const [config, updateConfig] = useDashboardConfiguration();
     const filteredGameSlugs = useFilteredGameSlugs(games);
 
