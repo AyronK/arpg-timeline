@@ -21,7 +21,7 @@ export const Faq = ({
                     <Button variant={"link"} size="lg" asChild>
                         <Link
                             href={patreonUrl}
-                            rel="external nofollow noreferrer"
+                            rel="noopener"
                             target="_blank"
                             data-sa-click="support"
                         >
