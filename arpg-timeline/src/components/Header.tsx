@@ -48,7 +48,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
                     <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
                         <Link
                             href={patreonUrl}
-                            rel="external nofollow noreferrer"
+                            rel="noopener"
                             target="_blank"
                             data-sa-click="support"
                         >
