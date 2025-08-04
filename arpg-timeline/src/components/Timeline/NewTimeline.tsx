@@ -270,7 +270,7 @@ export const GanttChart: React.FC<{ events: TimelineEvent[] }> = ({ events }) =>
 
             <div
                 className={cn("max-h-full w-full overflow-y-hidden", {
-                    "max-h-[152px]": !expanded, // TODO move this to the whole card and animate height on the card itself
+                    "max-h-[153px]": !expanded, // TODO move this to the whole card and animate height on the card itself
                 })}
             >
                 <div className="relative overflow-hidden">
@@ -280,7 +280,9 @@ export const GanttChart: React.FC<{ events: TimelineEvent[] }> = ({ events }) =>
                         ))}
                     </div>
 
-                    <div className="divide-card-foreground/50 bg-background divide-y">
+                    {/* TODO: Add today's indicator */}
+
+                    <div className="border-card-foreground/25 divide-card-foreground/50 bg-background divide-y border-r border-b border-l">
                         {gameGroups.map((group, index) => (
                             <GameRow
                                 key={`${group.game}-${index}`}
