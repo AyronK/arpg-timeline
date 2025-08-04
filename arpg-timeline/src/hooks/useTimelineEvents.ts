@@ -70,4 +70,3 @@ export const useTimelineEvents = (games: Game[]) => {
             return next;
         }, [] as TimelineEvent[]);
 };
-

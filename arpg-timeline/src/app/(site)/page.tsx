@@ -98,4 +98,3 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const experimental_ppr = true;
-
