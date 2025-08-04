@@ -119,7 +119,7 @@ const MonthMarker: React.FC<MonthMarkerProps> = ({ marker, index }) => (
         style={{ left: `${marker.position}%` }}
     >
         <div className="h-full w-px" />
-        <div className="text-card-foreground font-heading ml-2 text-xs text-nowrap group-first-of-type:ml-0">
+        <div className="text-card-foreground font-heading ml-2 text-xs text-nowrap select-none group-first-of-type:ml-0">
             {marker.label}
         </div>
     </div>
@@ -166,7 +166,7 @@ const EventBar: React.FC<EventBarProps> = ({ event, index, allEvents, startPos, 
         <div className={barClasses} style={barStyle} suppressHydrationWarning>
             <div className="absolute inset-0 flex items-center justify-center">
                 <span
-                    className="font-heading text-foreground flex flex-row flex-nowrap text-center text-xs text-nowrap text-ellipsis drop-shadow-sm"
+                    className="font-heading text-foreground flex flex-row flex-nowrap text-center text-xs text-nowrap text-ellipsis drop-shadow-sm select-none"
                     title={`${event.game}: ${event.name}`}
                 >
                     {index === 1 ? (
