@@ -2,7 +2,11 @@ import { TimelineEvent } from "@/components/Timeline/Const";
 import { Game } from "@/lib/cms/games.types";
 
 export const useTimelineEvents = (games: Game[]) => {
-    return games
+    const filteredGames = [
+        ...games.filter((g) => !g.isComingSoon),
+        ...games.filter((g) => g.isComingSoon),
+    ];
+    return filteredGames
         .filter((g) => !g.isDormant)
         .reduce((prev: TimelineEvent[], g: Game) => {
             const next = [...prev];
@@ -66,3 +70,4 @@ export const useTimelineEvents = (games: Game[]) => {
             return next;
         }, [] as TimelineEvent[]);
 };
+

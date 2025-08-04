@@ -63,7 +63,7 @@ function addMonthsWithFraction(date: Date, months: number): Date {
 
 export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
     const hasMounted = useHasMounted();
-    const [range, setRange] = useState(5);
+    const [range, setRange] = useState(4);
     const isMd = useBreakpoint("md");
     const [expanded, setIsExpanded] = useState(false);
     const breakpointFactor = useMemo(() => (isMd ? 1 : 20), [isMd]);
@@ -107,8 +107,6 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
         return { gameGroups, minDate: min, maxDate: max, totalDays: diffDays };
     }, [filteredEvents]);
 
-    console.log(gameGroups);
-
     const getPositionPercent = (date: Date) => {
         const daysSinceStart = Math.floor(
             (date.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24),
@@ -135,10 +133,13 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
                 markers.push({
                     date: new Date(current),
                     position,
-                    label: current.toLocaleDateString("en-US", {
-                        month: showYear ? undefined : "short",
-                        year: showYear ? "numeric" : undefined,
-                    }),
+                    label:
+                        current.getMonth() === new Date().getMonth()
+                            ? "Today"
+                            : current.toLocaleDateString("en-US", {
+                                  month: showYear ? undefined : "short",
+                                  year: showYear ? "numeric" : undefined,
+                              }),
                 });
             }
             current.setMonth(current.getMonth() + 1);
@@ -155,7 +156,7 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
             <Slider
                 className="absolute top-4 right-12 h-4 w-xs max-w-1/3"
                 value={[range / breakpointFactor]}
-                max={12 / breakpointFactor}
+                max={18 / breakpointFactor}
                 min={3 / breakpointFactor}
                 step={1 / breakpointFactor}
                 onValueChange={([value]) => setRange(value)}
@@ -170,14 +171,18 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
             >
                 {expanded ? <Shrink className="h-4 w-4" /> : <Expand className="h-4 w-4" />}
             </Button>
-            <div className={cn("w-full", { "max-h-[184px] overflow-y-hidden": !expanded })}>
+            <div
+                className={cn("max-h-full w-full overflow-y-hidden transition-all", {
+                    "max-h-[152px]": !expanded,
+                })}
+            >
                 <div className="relative overflow-hidden">
                     {/* Timeline Header */}
                     <div className="border-card-foreground/75 relative h-6 border-b">
                         {getMonthMarkers().map((marker, index) => (
                             <div
                                 key={index}
-                                className="group absolute top-0 flex h-full items-center not-md:even:hidden first-of-type:left-0! md:last-of-type:right-0 md:last-of-type:left-auto!"
+                                className="group absolute top-0 flex h-full items-center not-md:even:hidden first-of-type:left-0!"
                                 style={{ left: `${marker.position}%` }}
                             >
                                 <div className="h-full w-px"></div>
@@ -190,23 +195,30 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
 
                     {/* Events */}
                     <div className="divide-card-foreground/50 bg-background divide-y">
-                        {gameGroups
-                            ?.map((g) => g.events)
-                            .map((event, index) => {
-                                const startPos = getPositionPercent(event.startDate);
-                                const width = getEventWidth(event);
+                        {gameGroups?.flatMap((group, index) => (
+                            <div key={index} className="relative h-8">
+                                <div className="absolute top-0 right-0 left-0 flex h-full items-center px-2">
+                                    {group.events.map((event, index, all) => {
+                                        const startPos = getPositionPercent(event.startDate);
+                                        const width = getEventWidth(event);
 
-                                return (
-                                    <div key={index} className="relative h-8">
-                                        {/* Event Bar */}
-                                        <div className="absolute top-0 right-0 left-0 flex h-full items-center px-2">
+                                        const isNextConfirmed =
+                                            event.startDate.getTime() > new Date().getTime() &&
+                                            event.startDateConfirmed &&
+                                            (all.length - 1 === index ||
+                                                !all[all.length - 1].startDateConfirmed);
+                                        // todo fix border radius when two next to each other
+
+                                        return (
                                             <div
                                                 className={cn(
-                                                    `relative h-6 rounded bg-sky-900/75 shadow-sm md:overflow-hidden`,
+                                                    `relative z-10 h-6 rounded bg-sky-900 shadow-sm`,
                                                     {
-                                                        ring:
-                                                            event.startDateConfirmed &&
-                                                            event.endDateConfirmed,
+                                                        "z-20": index === 0,
+                                                        "z-30 rounded-l-none rounded-tr-2xl rounded-br-xs bg-emerald-900 ring ring-emerald-500":
+                                                            isNextConfirmed,
+                                                        "border border-dashed border-emerald-900/75 bg-emerald-900/25":
+                                                            !event.startDateConfirmed,
                                                     },
                                                 )}
                                                 style={{
@@ -226,17 +238,27 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
                                                 {/* Event name inside bar */}
                                                 <div className="absolute inset-0 flex items-center justify-center px-2">
                                                     <span
-                                                        className="font-heading text-foreground flexflex-nowrap flex flex-row truncate text-center text-xs text-nowrap text-ellipsis drop-shadow-sm"
+                                                        className="font-heading text-foreground flexflex-nowrap flex flex-row text-center text-xs text-nowrap text-ellipsis drop-shadow-sm"
                                                         title={`${event.game}: ${event.name}`}
                                                     >
-                                                        {event.game}
+                                                        {index === 1 && range <= 6 ? (
+                                                            <>
+                                                                {event.game}
+                                                                <span className="not-md:hidden">
+                                                                    : {event.name}
+                                                                </span>
+                                                            </>
+                                                        ) : (
+                                                            event.game
+                                                        )}
                                                     </span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
