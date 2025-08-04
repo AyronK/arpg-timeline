@@ -1,22 +1,11 @@
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
-import { Slider } from "@/ui/Slider";
 import { useHasMounted } from "@react-hooks-library/core";
 import { Expand, Shrink } from "lucide-react";
 
 import React, { useState, useMemo } from "react";
-
-interface TimelineEvent {
-    name: string;
-    game: string;
-    startDate: Date;
-    startDateConfirmed: boolean;
-    startDateNotice?: string | null;
-    endDate: Date;
-    endDateConfirmed: boolean;
-    endDateNotice?: string | null;
-}
+import { TimelineEvent } from "./Const";
 
 function trimEventsToWindow(events: TimelineEvent[], minDate: Date, maxDate: Date) {
     return events
@@ -63,18 +52,10 @@ function addMonthsWithFraction(date: Date, months: number): Date {
 
 export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
     const hasMounted = useHasMounted();
-    const [range, setRange] = useState(4);
     const isMd = useBreakpoint("md");
     const [expanded, setIsExpanded] = useState(false);
-    const breakpointFactor = useMemo(() => (isMd ? 1 : 20), [isMd]);
-    const min = useMemo(
-        () => addMonthsWithFraction(new Date(), -(range / breakpointFactor)),
-        [range, isMd],
-    );
-    const max = useMemo(
-        () => addMonthsWithFraction(new Date(), range / breakpointFactor),
-        [range, isMd],
-    );
+    const min = useMemo(() => addMonthsWithFraction(new Date(), -3), []);
+    const max = useMemo(() => addMonthsWithFraction(new Date(), 6), []);
     const filteredEvents = useMemo(() => trimEventsToWindow(events, min, max), [min, max]);
 
     const { gameGroups, minDate, maxDate, totalDays } = useMemo(() => {
@@ -90,6 +71,9 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
 
         const grouped = filteredEvents.reduce(
             (acc, event) => {
+                if (!event) {
+                    return acc;
+                }
                 if (!acc[event.game]) {
                     acc[event.game] = [];
                 }
@@ -153,15 +137,6 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
 
     return (
         <>
-            <Slider
-                className="absolute top-4 right-12 h-4 w-xs max-w-1/3"
-                value={[range / breakpointFactor]}
-                max={18 / breakpointFactor}
-                min={3 / breakpointFactor}
-                step={1 / breakpointFactor}
-                onValueChange={([value]) => setRange(value)}
-                aria-description="Timeline scale"
-            />
             <Button
                 variant={"ghost"}
                 size="icon"
@@ -177,7 +152,6 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
                 })}
             >
                 <div className="relative overflow-hidden">
-                    {/* Timeline Header */}
                     <div className="border-card-foreground/75 relative h-6 border-b">
                         {getMonthMarkers().map((marker, index) => (
                             <div
@@ -193,11 +167,10 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
                         ))}
                     </div>
 
-                    {/* Events */}
                     <div className="divide-card-foreground/50 bg-background divide-y">
                         {gameGroups?.flatMap((group, index) => (
                             <div key={index} className="relative h-8">
-                                <div className="absolute top-0 right-0 left-0 flex h-full items-center px-2">
+                                <div className="absolute top-0 right-0 left-0 flex h-full items-center">
                                     {group.events.map((event, index, all) => {
                                         const startPos = getPositionPercent(event.startDate);
                                         const width = getEventWidth(event);
@@ -207,6 +180,7 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
                                             event.startDateConfirmed &&
                                             (all.length - 1 === index ||
                                                 !all[all.length - 1].startDateConfirmed);
+
                                         // todo fix border radius when two next to each other
 
                                         return (
@@ -215,33 +189,38 @@ export const GanttChart = ({ events }: { events: TimelineEvent[] }) => {
                                                     `relative z-10 h-6 rounded bg-sky-900 shadow-sm`,
                                                     {
                                                         "z-20": index === 0,
-                                                        "z-30 rounded-l-none rounded-tr-2xl rounded-br-xs bg-emerald-900 ring ring-emerald-500":
+                                                        "z-30 rounded-l-none rounded-tr-2xl rounded-br-xs bg-emerald-900 ring ring-emerald-600":
                                                             isNextConfirmed,
                                                         "border border-dashed border-emerald-900/75 bg-emerald-900/25":
                                                             !event.startDateConfirmed,
+                                                        "bg-sky-900/50":
+                                                            all[index + 1]?.startDateConfirmed,
                                                     },
                                                 )}
                                                 style={{
                                                     left: `${startPos}%`,
-                                                    width: `${Math.max(width, 0.5)}%`,
+                                                    right: startPos + width > 99 ? 0 : undefined,
+                                                    width:
+                                                        startPos + width > 99
+                                                            ? undefined
+                                                            : `${Math.max(width, 0.5)}%`,
                                                     position: "absolute",
                                                     borderTopLeftRadius:
                                                         startPos === 0 ? 0 : undefined,
                                                     borderBottomLeftRadius:
                                                         startPos === 0 ? 0 : undefined,
                                                     borderTopRightRadius:
-                                                        startPos + width >= 100 ? 0 : undefined,
+                                                        startPos + width > 99 ? 0 : undefined,
                                                     borderBottomRightRadius:
-                                                        startPos + width >= 100 ? 0 : undefined,
+                                                        startPos + width > 99 ? 0 : undefined,
                                                 }}
                                             >
-                                                {/* Event name inside bar */}
-                                                <div className="absolute inset-0 flex items-center justify-center px-2">
+                                                <div className="absolute inset-0 flex items-center justify-center">
                                                     <span
                                                         className="font-heading text-foreground flexflex-nowrap flex flex-row text-center text-xs text-nowrap text-ellipsis drop-shadow-sm"
                                                         title={`${event.game}: ${event.name}`}
                                                     >
-                                                        {index === 1 && range <= 6 ? (
+                                                        {index === 1 ? (
                                                             <>
                                                                 {event.game}
                                                                 <span className="not-md:hidden">
