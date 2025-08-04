@@ -5,6 +5,7 @@ import { TimelineEvent } from "@/components/Timeline/Const";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 
 import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
+import { GanttChart } from "@/components/Timeline/NewTimeline";
 
 const Timeline = lazy(() =>
     import("@/components/Timeline/Timeline").then((m) => ({
@@ -23,8 +24,9 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => (
             }
         >
             <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                <Timeline events={events} />
+                <GanttChart events={events} />
             </ErrorBoundary>
         </Suspense>
     </div>
 );
+
