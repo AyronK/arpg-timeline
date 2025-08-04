@@ -167,11 +167,15 @@ const EventBar: React.FC<EventBarProps> = ({ event, index, allEvents, startPos, 
             <div className="absolute inset-0 flex items-center justify-center">
                 <span
                     className="font-heading text-foreground flex flex-row flex-nowrap text-center text-xs text-nowrap text-ellipsis drop-shadow-sm select-none"
-                    title={`${event.game}: ${event.name}`}
+                    title={
+                        !event.startDateConfirmed
+                            ? `[PRESUMED] ${event.game}: ${event.name}`
+                            : `${event.game}: ${event.name}`
+                    }
                 >
                     {index === 1 ? (
                         <>
-                            {event.game}
+                        {event.game}
                             <span className="not-md:hidden">: {event.name}</span>
                         </>
                     ) : (
