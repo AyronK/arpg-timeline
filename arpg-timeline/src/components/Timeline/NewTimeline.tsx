@@ -269,7 +269,7 @@ export const GanttChart: React.FC<{ events: TimelineEvent[] }> = ({ events }) =>
             </Button>
 
             <div
-                className={cn("max-h-full w-full overflow-y-hidden", {
+                className={cn("max-h-full w-full overflow-y-auto", {
                     "max-h-[153px]": !expanded, // TODO move this to the whole card and animate height on the card itself
                 })}
             >
