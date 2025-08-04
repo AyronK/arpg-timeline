@@ -141,7 +141,9 @@ const EventBar: React.FC<EventBarProps> = ({ event, index, allEvents, startPos, 
 
     const isNextEventConfirmed = allEvents[index + 1]?.startDateConfirmed;
 
-    const barClasses = cn("relative z-10 h-5 rounded bg-sky-900 shadow-sm", {
+    // TODO fix border radius when events "touch"
+
+    const barClasses = cn("relative z-10 h-5.5 rounded bg-sky-900 shadow-sm", {
         "z-20": index === 0,
         "z-30 rounded-l-none rounded-tr-2xl rounded-br-xs bg-emerald-900 ring ring-emerald-600":
             isNextConfirmed,
@@ -268,7 +270,7 @@ export const GanttChart: React.FC<{ events: TimelineEvent[] }> = ({ events }) =>
 
             <div
                 className={cn("max-h-full w-full overflow-y-hidden", {
-                    "max-h-[152px]": !expanded,
+                    "max-h-[152px]": !expanded, // TODO move this to the whole card and animate height on the card itself
                 })}
             >
                 <div className="relative overflow-hidden">
