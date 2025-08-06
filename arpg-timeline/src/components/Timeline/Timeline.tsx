@@ -61,7 +61,7 @@ export const Timeline: FC<{ events: TimelineEvent[] }> = ({ events }) => {
     return (
         <div className="max-h-full w-full overflow-x-hidden overflow-y-scroll">
             <div className="relative">
-                <div className="border-card-foreground/75 bg-card sticky top-0 z-50 h-6 border-b">
+                <div className="border-card-foreground/75 bg-card sticky top-0 z-[45] h-6 border-b">
                     {monthMarkers.map((marker, index) => (
                         <MonthMarker key={index} marker={marker} index={index} />
                     ))}
@@ -86,3 +86,4 @@ export const Timeline: FC<{ events: TimelineEvent[] }> = ({ events }) => {
         </div>
     );
 };
+
