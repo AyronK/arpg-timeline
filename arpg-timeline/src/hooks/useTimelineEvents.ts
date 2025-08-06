@@ -1,4 +1,4 @@
-import { TimelineEvent } from "@/components/Timeline/Const";
+import { TimelineEvent } from "@/components/Timeline/Timeline.types";
 import { Game } from "@/lib/cms/games.types";
 
 export const useTimelineEvents = (games: Game[]) => {
