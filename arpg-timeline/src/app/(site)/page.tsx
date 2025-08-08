@@ -9,6 +9,51 @@ import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity
 import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
 import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
+type PeakStats = {
+    currentPlayers: number;
+    peak24h: number;
+    peakAllTime: number;
+};
+
+// todo: calculate peak in a season
+// todo: display in a widget stats for a season and current/24h players
+function calculatePeakStats(data: [number, number][]): PeakStats {
+    if (data.length === 0) {
+        return { peak24h: 0, currentPlayers: 0, peakAllTime: 0 };
+    }
+
+    const latestTimestamp = Math.max(...data.map(([timestamp]) => timestamp));
+
+    const oneDayAgo = latestTimestamp - 24 * 60 * 60 * 1000;
+    const sevenDaysAgo = latestTimestamp - 7 * 24 * 60 * 60 * 1000;
+    const thirtyDaysAgo = latestTimestamp - 30 * 24 * 60 * 60 * 1000;
+
+    const last24h = data.filter(([timestamp]) => timestamp >= oneDayAgo);
+    const last7d = data.filter(([timestamp]) => timestamp >= sevenDaysAgo);
+    const last30d = data.filter(([timestamp]) => timestamp >= thirtyDaysAgo);
+
+    const peak24h = last24h.length > 0 ? Math.max(...last24h.map(([, count]) => count)) : 0;
+    const peakAllTime = Math.max(...data.map(([, count]) => count));
+
+    return {
+        peak24h,
+        currentPlayers: data[data.length - 1][1],
+        peakAllTime,
+    };
+}
+
+async function getGamePlayersStats(appId: number): Promise<PeakStats | null> {
+    const url = `https://steamcharts.com/app/${appId}/chart-data.json`;
+    const response = await fetch(url, { next: { revalidate: 60 * 60 } });
+
+    if (!response.ok) {
+        console.error(`Failed to fetch data for appId ${appId}`);
+    }
+
+    const data: [number, number][] = await response.json();
+    return calculatePeakStats(data);
+}
+
 const Home = async () => {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
@@ -18,8 +63,12 @@ const Home = async () => {
     const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
 
+    const players = await getGamePlayersStats(238960);
+    console.log(players);
+
     return (
         <>
+            {JSON.stringify(players, null, "\t")}
             {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
                 <Kicker />
