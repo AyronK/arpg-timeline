@@ -23,7 +23,7 @@ export const Faq = ({
                             href={patreonUrl}
                             rel="noopener"
                             target="_blank"
-                            data-sa-click="support"
+                            data-sa-click="patron"
                         >
                             <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-3">
                                 <Image

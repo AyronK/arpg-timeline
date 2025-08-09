@@ -4,9 +4,11 @@ import { Faq } from "@/components/Faq";
 import { Main } from "@/components/Home/HomePage";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
+import { GameStatistics } from "@/lib/cms/games.types";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
+import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async () => {
@@ -18,12 +20,39 @@ const Home = async () => {
     const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
 
+    const steamApps = data.games
+        .map((g) => g.steam?.appId)
+        .filter((i) => !!i)
+        .map((i) => Number(i));
+
+    const steamStats = await getMultipleSteamCurrentPlayers(steamApps);
+
+    const statistics: Record<string, GameStatistics> = data.games.reduce((acc, game) => {
+        if (!game.steam?.appId) return acc;
+
+        const steamPlayersResult = steamStats.find((s) => s.appId === game.steam?.appId);
+
+        if (!steamPlayersResult?.success) {
+            return acc;
+        }
+
+        return {
+            ...acc,
+            [game.slug]: {
+                steam: {
+                    currentPlayers: steamPlayersResult.currentPlayers,
+                    appId: steamPlayersResult.appId,
+                },
+            } as GameStatistics,
+        };
+    }, {});
+
     return (
         <>
             {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
                 <Kicker />
-                <Main games={games} streams={streams} />
+                <Main games={games} streams={streams} statistics={statistics} />
             </div>
             <StructuredDataScripts games={games} />
             <Faq patreonUrl={process.env.PATREON_URL!} faq={data.faq} />

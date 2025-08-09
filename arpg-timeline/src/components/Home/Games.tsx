@@ -8,7 +8,7 @@ import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
-import { Game } from "@/lib/cms/games.types";
+import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
@@ -16,7 +16,13 @@ import { Button } from "@/ui/Button";
 import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
 import { SanityImage } from "../SanityImage";
 
-export const Games = ({ games }: { games: Game[] }) => {
+export const Games = ({
+    games,
+    statistics = {},
+}: {
+    games: Game[];
+    statistics?: Record<string, GameStatistics>;
+}) => {
     return games.map((game, idx) => (
         <div
             key={game.slug}
@@ -45,6 +51,7 @@ export const Games = ({ games }: { games: Game[] }) => {
                     shortName={game.shortName!}
                     url={game.url!}
                     official={game.official}
+                    stats={statistics[game.slug]}
                 >
                     <GameToSeasonWidget game={game} selector="current" />
                     {inGracePeriod(game.currentSeason?.start?.startDate) ? (

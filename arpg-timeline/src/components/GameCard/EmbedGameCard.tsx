@@ -6,9 +6,10 @@ import { sa_event } from "@/lib/sa_event";
 
 import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
 import { Logo } from "../Logo";
+import { SteamPlayersChip } from "../SteamPlayersChip";
 import { GameCardProps } from "./GameCard.types";
 
-export const EmbedGameCard = ({ slug, gameLogo, children }: GameCardProps) => {
+export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps) => {
     function handleClick() {
         let hostname = "unknown";
         try {
@@ -41,6 +42,11 @@ export const EmbedGameCard = ({ slug, gameLogo, children }: GameCardProps) => {
                 onClick={handleClick}
             >
                 <section className="text-card-foreground relative flex max-w-[720px] min-w-[350px] flex-1 flex-col gap-1 rounded-md bg-transparent p-4">
+                    {stats?.steam && (
+                        <div className="pointer-none: absolute top-2 right-2">
+                            <SteamPlayersChip playersCount={stats.steam.currentPlayers} />
+                        </div>
+                    )}
                     <div className="flex flex-col">
                         <div className="relative flex min-h-[80px] flex-1 flex-row items-center justify-between">
                             <div className="h-[72px] min-h-[72px] w-[120px]">{gameLogo}</div>
