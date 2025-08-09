@@ -9,6 +9,7 @@ import { EmbedGameToSeasonWidget } from "@/hoc/GameToSeasonWidget/EmbedGameToSea
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { getSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
@@ -23,6 +24,9 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
     if (!game) {
         return notFound();
     }
+
+    const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
+    const steamStats = steamAppId ? await getSteamCurrentPlayers(steamAppId) : null;
 
     return (
         <ErrorBoundary fallback={<WidgetDiedFallback />}>
@@ -42,6 +46,7 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                 slug={game.slug}
                 shortName={game.shortName!}
                 official={game.official}
+                stats={{ steam: steamStats }}
             >
                 <EmbedGameToSeasonWidget game={game} selector="current" />
                 {inGracePeriod(game.currentSeason?.start?.startDate) ? (

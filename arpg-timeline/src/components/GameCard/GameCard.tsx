@@ -4,7 +4,7 @@ import { GameCardProps } from "@/components/GameCard/GameCard.types";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { sa_event } from "@/lib/sa_event";
 
-import { SteamPlayersChip } from "../SteamPlayersChip";
+import { SteamPlayersChipButton } from "../SteamPlayersChip";
 
 export const GameCard = ({
     name,
@@ -22,7 +22,7 @@ export const GameCard = ({
                     <h3 className="font-heading text-xs">{name}</h3>
                     {!official && <CommunityLabel />}
                     {stats?.steam && (
-                        <SteamPlayersChip
+                        <SteamPlayersChipButton
                             appId={stats.steam.appId}
                             playersCount={stats.steam.currentPlayers}
                         />

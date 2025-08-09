@@ -40,7 +40,7 @@ const Home = async () => {
             ...acc,
             [game.slug]: {
                 steam: {
-                    currentPlayers: steamPlayersResult.playerCount,
+                    currentPlayers: steamPlayersResult.currentPlayers,
                     appId: steamPlayersResult.appId,
                 },
             } as GameStatistics,

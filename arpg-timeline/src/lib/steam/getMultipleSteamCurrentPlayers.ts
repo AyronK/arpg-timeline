@@ -1,11 +1,11 @@
 export type SteamPlayersResult = {
     success: boolean;
     error?: string;
-    playerCount: number;
+    currentPlayers: number;
     appId: number;
 };
 
-async function getSteamCurrentPlayers(appId: number): Promise<SteamPlayersResult> {
+export async function getSteamCurrentPlayers(appId: number): Promise<SteamPlayersResult> {
     const url = `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${appId}&format=json`;
 
     try {
@@ -15,14 +15,14 @@ async function getSteamCurrentPlayers(appId: number): Promise<SteamPlayersResult
         if (data.response && data.response.result === 1) {
             return {
                 success: true,
-                playerCount: data.response.player_count,
+                currentPlayers: data.response.player_count,
                 appId: appId,
             };
         } else {
             return {
                 success: false,
                 error: "Failed to fetch player count",
-                playerCount: 0,
+                currentPlayers: 0,
                 appId: appId,
             };
         }
@@ -30,7 +30,7 @@ async function getSteamCurrentPlayers(appId: number): Promise<SteamPlayersResult
         return {
             success: false,
             error: (error as Error)?.message,
-            playerCount: 0,
+            currentPlayers: 0,
             appId: appId,
         };
     }
@@ -48,7 +48,7 @@ export async function getMultipleSteamCurrentPlayers(
         } else {
             return {
                 success: false,
-                playerCount: 0,
+                currentPlayers: 0,
                 error: result.reason,
                 appId: appIds[index],
             };

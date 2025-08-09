@@ -11,7 +11,7 @@ export type GameStream = {
     twitchChannel: string;
 };
 export type GameStatistics = {
-    steam?: { currentPlayers: number; appId: number };
+    steam?: { currentPlayers: number; appId: number } | null;
 };
 export type Game = {
     name: string;

@@ -12,14 +12,9 @@ import {
 } from "@/ui/Dialog";
 
 import { SteamDBEmbed } from "./SteamDBEmbed";
+import { SteamEmbed } from "./SteamEmbed";
 
-export const SteamPlayersChip = ({
-    playersCount,
-    appId,
-}: {
-    playersCount: number;
-    appId: number;
-}) => {
+export const SteamPlayersChip = ({ playersCount }: { playersCount: number }) => {
     const description = `${playersCount} players online on Steam`;
 
     const text =
@@ -28,28 +23,45 @@ export const SteamPlayersChip = ({
             : playersCount > 1_000
               ? `${Math.floor(playersCount / 1_000)}k`
               : playersCount;
+    return (
+        <span
+            title={description}
+            className="font-ui text-foreground flex cursor-pointer flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 transition-all select-none hover:opacity-100"
+        >
+            <RiSteamLine className="h-4 w-4" />
+            <span aria-hidden>{text}</span>
+            <span className="sr-only">{description}</span>
+            <PiUsersThree className="h-4 w-4" />
+        </span>
+    );
+};
+
+export const SteamPlayersChipButton = ({
+    playersCount,
+    appId,
+}: {
+    playersCount: number;
+    appId: number;
+}) => {
+    const description = `${playersCount} players online on Steam`;
 
     return (
         <Dialog>
-            <DialogTrigger>
-                <button
-                    type="button"
-                    title={description}
-                    className="font-ui text-foreground flex cursor-pointer flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 transition-all select-none hover:opacity-100"
-                >
-                    <RiSteamLine className="h-4 w-4" />
-                    <span aria-hidden>{text}</span>
-                    <span className="sr-only">{description}</span>
-                    <PiUsersThree className="h-4 w-4" />
-                </button>
+            <DialogTrigger aria-description={description}>
+                <SteamPlayersChip playersCount={playersCount} />
             </DialogTrigger>
-            <DialogContent className="rounded-xl! p-0!">
-                <DialogHeader className="sr-only">
-                    <DialogTitle>Steam DB</DialogTitle>
+            <DialogContent className="w-[95vw] md:max-w-4xl!">
+                <DialogHeader>
+                    <DialogTitle className="flex flex-row">
+                        <RiSteamLine className="mr-2 h-4 w-4" />
+                        Steam
+                    </DialogTitle>
                     <DialogDescription asChild>
                         <Description />
                     </DialogDescription>
                 </DialogHeader>
+                <SteamEmbed appId={appId} />
+
                 <SteamDBEmbed appId={appId} />
             </DialogContent>
         </Dialog>
