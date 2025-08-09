@@ -1,5 +1,7 @@
 import { PropsWithChildren, ReactNode } from "react";
 
+import { GameStatistics } from "@/lib/cms/games.types";
+
 export type Game = {
     readonly slug: string;
     readonly name: string;
@@ -14,4 +16,8 @@ export type GameCardTestProps = TestProps<{
     timeLeft?: number;
 }>;
 
-export type GameCardProps = PropsWithChildren & GameCardTestProps & Game;
+export type GameCardProps = PropsWithChildren &
+    GameCardTestProps &
+    Game & {
+        stats?: GameStatistics;
+    };

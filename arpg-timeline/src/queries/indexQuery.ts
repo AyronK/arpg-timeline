@@ -14,7 +14,8 @@ export const indexQuery = `{
     "logo": logo.asset->{
       _id,
       url      
-    }
+    },
+    steam
   },
   "seasons": *[_type == "season"]{
     name,
@@ -71,6 +72,7 @@ export interface Game {
     url?: string;
     group?: string;
     logo?: SanityImageAssetDocument;
+    steam?: SteamData;
 }
 
 export interface SeasonStartDateInfo {
@@ -130,4 +132,8 @@ export interface IndexQueryResult {
     liveStreamsOnTwitch: LiveStreamOnTwitch[];
     twitchChannels: TwitchChannel[];
     toast?: Toast;
+}
+
+export interface SteamData {
+    appId?: number | null;
 }

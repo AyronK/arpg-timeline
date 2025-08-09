@@ -3,13 +3,19 @@
 import { GameFilters } from "@/components/GameFilters";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
-import { Game } from "@/lib/cms/games.types";
+import { Game, GameStatistics } from "@/lib/cms/games.types";
 
 import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
 import { Events } from "./Events";
 import { Games } from "./Games";
 
-export const GamesAndEventsGrid = ({ games }: { games: Game[] }) => {
+export const GamesAndEventsGrid = ({
+    games,
+    statistics,
+}: {
+    games: Game[];
+    statistics: Record<string, GameStatistics>;
+}) => {
     const { filteredGames, ...filtersProps } = useGameFilters(games);
     const events = useTimelineEvents(filteredGames);
     const activeGames = filteredGames.filter((g) => !g.isDormant && !g.isComingSoon);
@@ -24,7 +30,10 @@ export const GamesAndEventsGrid = ({ games }: { games: Game[] }) => {
                 <h2 className="sr-only">Seasons</h2>
                 <div className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
                     <GameFilters {...filtersProps} />
-                    <Games games={[...activeGames, ...comingSoonGames, ...dormantGames]} />
+                    <Games
+                        games={[...activeGames, ...comingSoonGames, ...dormantGames]}
+                        statistics={statistics}
+                    /> 
                     <Events events={events} />
                 </div>
             </article>
