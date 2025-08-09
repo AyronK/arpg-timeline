@@ -39,15 +39,17 @@ export const SteamPlayersChip = ({ playersCount }: { playersCount: number }) => 
 export const SteamPlayersChipButton = ({
     playersCount,
     appId,
+    gameSlug,
 }: {
     playersCount: number;
     appId: number;
+    gameSlug: string;
 }) => {
     const description = `${playersCount} players online on Steam`;
 
     return (
         <Dialog>
-            <DialogTrigger aria-description={description}>
+            <DialogTrigger aria-description={description} data-sa-click={`steam-${gameSlug}`}>
                 <SteamPlayersChip playersCount={playersCount} />
             </DialogTrigger>
             <DialogContent className="w-[95vw] md:max-w-4xl!">

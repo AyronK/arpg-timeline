@@ -25,6 +25,7 @@ export const GameCard = ({
                         <SteamPlayersChipButton
                             appId={stats.steam.appId}
                             playersCount={stats.steam.currentPlayers}
+                            gameSlug={slug}
                         />
                     )}
                 </div>
