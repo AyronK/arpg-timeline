@@ -1,6 +1,13 @@
 import { useState } from "react";
 
+import { addUTMParameters } from "@/lib/utm";
+
 import { Logo } from "./Logo";
+
+const addUTM = addUTMParameters({
+    utm_source: "arpg-timeline",
+    utm_content: "steamdb_embed",
+});
 
 export const SteamDBEmbed = ({ appId }: { appId: number }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +27,7 @@ export const SteamDBEmbed = ({ appId }: { appId: number }) => {
                 </div>
             )}
             <iframe
-                src={`https://steamdb.info/embed/?appid=${appId}&utm_source=arpg-timeline`}
+                src={addUTM(`https://steamdb.info/embed/?appid=${appId}`)}
                 height="389"
                 style={{ border: 0, overflow: "hidden", width: "100%" }}
                 loading="lazy"

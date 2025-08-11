@@ -2,6 +2,7 @@ import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { SeasonChip, SeasonWidgetProps } from "@/components/SeasonWidget/SeasonWidget.types";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
 const ChipColorMap: Record<SeasonChip, string> = {
@@ -23,6 +24,12 @@ const ChipColorText: Record<SeasonChip, string> = {
 };
 
 export const SeasonWidget = ({ name, url, children, chip, ...divProps }: SeasonWidgetProps) => {
+    const addUTM = addUTMParameters({
+        utm_source: "arpg-timeline",
+        utm_content: "season_link",
+        utm_term: encodeURIComponent(name),
+    });
+
     return (
         <div {...divProps} className={cn(divProps.className, "flex flex-1 flex-col gap-2")}>
             <div className="flex w-full flex-row items-center justify-between gap-2 text-xs">
@@ -32,7 +39,7 @@ export const SeasonWidget = ({ name, url, children, chip, ...divProps }: SeasonW
                 <h4 className="font-heading text-foreground flex-1 md:text-sm">
                     <MaybeLinkWrapper
                         className="underline decoration-transparent underline-offset-2 select-none hover:decoration-current/75"
-                        href={url}
+                        href={url ? addUTM(url) : null}
                         target="_blank"
                         rel="noopener"
                         onClick={() => sa_event(`${name}-link-click`)}

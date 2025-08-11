@@ -11,6 +11,7 @@ import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget"
 import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
 
 import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
@@ -58,7 +59,11 @@ export const Games = ({
                         <div className="mt-auto flex flex-col gap-2">
                             {game.currentSeason?.patchNotesUrl && (
                                 <MaybeLinkWrapper
-                                    href={game.currentSeason.patchNotesUrl}
+                                    href={addUTMParameters({
+                                        utm_source: "arpg-timeline",
+                                        utm_term: "patch+notes",
+                                        utm_content: "patch-notes-link",
+                                    })(game.currentSeason.patchNotesUrl)}
                                     target="_blank"
                                     className="ml-auto text-sm text-nowrap hover:underline"
                                     data-sm-click={`${game.currentSeason.name}-patch-notes`}

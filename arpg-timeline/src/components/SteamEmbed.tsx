@@ -1,6 +1,13 @@
 import { useState } from "react";
 
+import { addUTMParameters } from "@/lib/utm";
+
 import { Logo } from "./Logo";
+
+const addUTM = addUTMParameters({
+    utm_source: "arpg-timeline",
+    utm_content: "steam_embed",
+});
 
 export const SteamEmbed = ({ appId }: { appId: number }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +27,7 @@ export const SteamEmbed = ({ appId }: { appId: number }) => {
                 </div>
             )}
             <iframe
-                src={`https://store.steampowered.com/widget/${appId}?utm_source=arpg-timeline`}
+                src={addUTM(`https://store.steampowered.com/widget/${appId}`)}
                 height="190"
                 style={{ border: 0, overflow: "hidden", width: "100%" }}
                 loading="lazy"
