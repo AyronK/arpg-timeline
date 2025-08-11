@@ -3,8 +3,14 @@ import { CommunityLabel } from "@/components/CommunityLabel";
 import { GameCardProps } from "@/components/GameCard/GameCard.types";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { sa_event } from "@/lib/sa_event";
+import { addUTMParameters } from "@/lib/utm";
 
 import { SteamPlayersChipButton } from "../SteamPlayersChip";
+
+const addUTM = addUTMParameters({
+    utm_source: "arpg-timeline",
+    utm_content: "logo_link",
+});
 
 export const GameCard = ({
     name,
@@ -31,7 +37,7 @@ export const GameCard = ({
                 </div>
                 <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
                     <MaybeLinkWrapper
-                        href={url}
+                        href={url ? addUTM(url) : null}
                         rel="noopener"
                         className="select-none hover:scale-105"
                         target="_blank"
