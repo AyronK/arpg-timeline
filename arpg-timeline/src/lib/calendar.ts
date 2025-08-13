@@ -14,7 +14,7 @@ export async function downloadICSFile(eventTitle: string, eventDate: Date) {
             formattedDate.getHours(),
             formattedDate.getMinutes(),
         ] as DateTime,
-        duration: {},
+        duration: { hours: 1},
     };
 
     const file = await new Promise((resolve, reject) => {
@@ -44,15 +44,19 @@ export async function downloadICSFile(eventTitle: string, eventDate: Date) {
 
 export function addToGoogleCalendar(eventTitle: string, eventDate: Date) {
     sa_event(`Calendar - Google - ${eventTitle}}`);
+    const endDateTime = new Date(eventDate.getTime() + 3600000);
     const formattedDate = new Date(eventDate).toISOString().replace(/[-:]/g, "").slice(0, -5) + "Z";
-    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${encodeURIComponent(formattedDate)}/${encodeURIComponent(formattedDate)}`;
+    const formattedEnd = new Date(endDateTime).toISOString().replace(/[-:]/g, "").slice(0, -5) + "Z";
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${encodeURIComponent(formattedDate)}/${encodeURIComponent(formattedEnd)}`;
     window.open(googleCalendarUrl, "_blank");
 }
 
 export function addToICloudCalendar(eventTitle: string, eventDate: Date) {
     sa_event(`Calendar - Apple - ${eventTitle}}`);
+    const endDateTime = new Date(eventDate.getTime() + 3600000);
     const formattedDate = eventDate.toISOString().replace(/[-:]/g, "").slice(0, -5) + "Z";
-    const iCloudCalendarUrl = `https://www.icloud.com/calendar/event?title=${encodeURIComponent(eventTitle)}&starts=${encodeURIComponent(formattedDate)}`;
+    const formattedEnd = endDateTime.toISOString().replace(/[-:]/g, "").slice(0, -5) + "Z";
+    const iCloudCalendarUrl = `https://www.icloud.com/calendar/event?title=${encodeURIComponent(eventTitle)}&starts=${encodeURIComponent(formattedDate)}&ends=${encodeURIComponent(formattedEnd)}`;
     window.open(iCloudCalendarUrl, "_blank");
 }
 
