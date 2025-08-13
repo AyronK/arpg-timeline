@@ -25,7 +25,7 @@ export const Faq = ({
                             target="_blank"
                             data-sa-click="patron"
                         >
-                            <div className="grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current 2xl:mr-3">
+                            <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current">
                                 <Image
                                     src="/assets/patreon-logo.png"
                                     className="m-auto h-[1rem] w-[1rem]"
@@ -34,7 +34,7 @@ export const Faq = ({
                                     height={22}
                                 />
                             </div>
-                            <span className="hidden 2xl:block">Support me</span>
+                            <span>Support me</span>
                         </Link>
                     </Button>
                     <Button

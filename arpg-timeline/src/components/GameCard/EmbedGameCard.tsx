@@ -42,7 +42,7 @@ export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps
                 onClick={handleClick}
             >
                 <section className="text-card-foreground relative flex max-w-[720px] min-w-[350px] flex-1 flex-col gap-1 rounded-md bg-transparent p-4">
-                    {stats?.steam && (
+                    {stats?.steam && stats?.steam?.currentPlayers && (
                         <div className="pointer-none: absolute top-2 right-2">
                             <SteamPlayersChip playersCount={stats.steam.currentPlayers} />
                         </div>

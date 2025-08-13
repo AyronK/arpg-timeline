@@ -16,6 +16,7 @@ export type MonthMarkerProps = {
         label: string;
     };
     index: number;
+    totalMarkers: number;
 };
 
 export type EventBarProps = {

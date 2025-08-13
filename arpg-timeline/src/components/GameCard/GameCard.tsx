@@ -32,6 +32,7 @@ export const GameCard = ({
                             appId={stats.steam.appId}
                             playersCount={stats.steam.currentPlayers}
                             gameSlug={slug}
+                            isComingSoon={stats.steam.isComingSoon}
                         />
                     )}
                 </div>

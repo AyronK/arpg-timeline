@@ -34,7 +34,7 @@ export const GamesAndEventsGrid = ({
                         games={[...activeGames, ...comingSoonGames, ...dormantGames]}
                         statistics={statistics}
                     />
-                    <Events events={events} />
+                    {filteredGames.length > 1 && <Events events={events} />}
                 </div>
             </article>
         </>

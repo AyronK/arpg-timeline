@@ -32,7 +32,7 @@ const Home = async () => {
 
         const steamPlayersResult = steamStats.find((s) => s.appId === game.steam?.appId);
 
-        if (!steamPlayersResult?.success) {
+        if (!steamPlayersResult) {
             return acc;
         }
 
@@ -42,6 +42,7 @@ const Home = async () => {
                 steam: {
                     currentPlayers: steamPlayersResult.currentPlayers,
                     appId: steamPlayersResult.appId,
+                    isComingSoon: steamPlayersResult.currentPlayers <= 0 && game.isComingSoon,
                 },
             } as GameStatistics,
         };
