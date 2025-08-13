@@ -86,4 +86,3 @@ export const Timeline: FC<{ events: TimelineEvent[] }> = ({ events }) => {
         </div>
     );
 };
-
