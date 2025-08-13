@@ -4,7 +4,6 @@ import Image from "next/image";
 import {
     addToGoogleCalendar,
     addToICloudCalendar,
-    addToOutlookCalendar,
     addToTickTick,
     downloadICSFile,
 } from "@/lib/calendar";
@@ -57,20 +56,6 @@ export const CalendarMenu = ({ title, startDate }: { title: string; startDate: s
                     alt="iCloud logo"
                 />
                 <span>iCloud</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-                onClick={() => addToOutlookCalendar(title, new Date(startDate))}
-                aria-label="Add to Outlook"
-            >
-                <Image
-                    className="mr-2 h-4 w-4"
-                    width="24"
-                    height="24"
-                    src="/assets/outlook-logo.png"
-                    aria-hidden
-                    alt="Outlook logo"
-                />
-                <span>Outlook</span>
             </DropdownMenuItem>
             <DropdownMenuItem
                 className={cn({
