@@ -33,7 +33,7 @@ export const GamesAndEventsGrid = ({
                     <Games
                         games={[...activeGames, ...comingSoonGames, ...dormantGames]}
                         statistics={statistics}
-                    /> 
+                    />
                     <Events events={events} />
                 </div>
             </article>

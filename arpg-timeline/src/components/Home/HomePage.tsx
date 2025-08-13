@@ -21,7 +21,7 @@ export const Main = ({
             </Suspense>
             <div className="relative flex flex-col gap-4">
                 <Suspense fallback={<GamesAndEventsGridFallback games={games} />}>
-                    <GamesAndEventsGrid games={games} statistics={statistics}/>
+                    <GamesAndEventsGrid games={games} statistics={statistics} />
                 </Suspense>
             </div>
         </div>

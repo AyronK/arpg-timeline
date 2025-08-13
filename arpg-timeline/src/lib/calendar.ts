@@ -14,7 +14,7 @@ export async function downloadICSFile(eventTitle: string, eventDate: Date) {
             formattedDate.getHours(),
             formattedDate.getMinutes(),
         ] as DateTime,
-        duration: {},
+        duration: { hours: 1 },
     };
 
     const file = await new Promise((resolve, reject) => {
@@ -42,26 +42,32 @@ export async function downloadICSFile(eventTitle: string, eventDate: Date) {
     URL.revokeObjectURL(url);
 }
 
+const HOUR_IN_MS = 60 * 60 * 1000;
+
+function formatDateForCalendar(date: Date): string {
+    return date.toISOString().replace(/[-:]/g, "").slice(0, -5) + "Z";
+}
+
+function getEndDateTime(startDate: Date): Date {
+    return new Date(startDate.getTime() + HOUR_IN_MS);
+}
+
 export function addToGoogleCalendar(eventTitle: string, eventDate: Date) {
     sa_event(`Calendar - Google - ${eventTitle}}`);
-    const formattedDate = new Date(eventDate).toISOString().replace(/[-:]/g, "").slice(0, -5) + "Z";
-    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${encodeURIComponent(formattedDate)}/${encodeURIComponent(formattedDate)}`;
+    const endDateTime = getEndDateTime(eventDate);
+    const formattedStart = formatDateForCalendar(eventDate);
+    const formattedEnd = formatDateForCalendar(endDateTime);
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${encodeURIComponent(formattedStart)}/${encodeURIComponent(formattedEnd)}`;
     window.open(googleCalendarUrl, "_blank");
 }
 
 export function addToICloudCalendar(eventTitle: string, eventDate: Date) {
     sa_event(`Calendar - Apple - ${eventTitle}}`);
-    const formattedDate = eventDate.toISOString().replace(/[-:]/g, "").slice(0, -5) + "Z";
-    const iCloudCalendarUrl = `https://www.icloud.com/calendar/event?title=${encodeURIComponent(eventTitle)}&starts=${encodeURIComponent(formattedDate)}`;
+    const endDateTime = getEndDateTime(eventDate);
+    const formattedStart = formatDateForCalendar(eventDate);
+    const formattedEnd = formatDateForCalendar(endDateTime);
+    const iCloudCalendarUrl = `https://www.icloud.com/calendar/event?title=${encodeURIComponent(eventTitle)}&starts=${encodeURIComponent(formattedStart)}&ends=${encodeURIComponent(formattedEnd)}`;
     window.open(iCloudCalendarUrl, "_blank");
-}
-
-export function addToOutlookCalendar(eventTitle: string, eventDate: Date) {
-    sa_event(`Calendar - Outlook - ${eventTitle}}`);
-    const startDateTime = eventDate.toISOString();
-    const endDateTime = new Date(eventDate.getTime() + 3600000).toISOString(); // Adding 1 hour for end time
-    const outlookCalendarUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(eventTitle)}&startdt=${encodeURIComponent(startDateTime)}&enddt=${encodeURIComponent(endDateTime)}&allday=false&body=&location=`;
-    window.open(outlookCalendarUrl, "_blank");
 }
 
 const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
