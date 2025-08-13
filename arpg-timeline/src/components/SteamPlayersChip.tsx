@@ -14,24 +14,38 @@ import {
 import { SteamDBEmbed } from "./SteamDBEmbed";
 import { SteamEmbed } from "./SteamEmbed";
 
-export const SteamPlayersChip = ({ playersCount }: { playersCount: number }) => {
-    const description = `${playersCount} players online on Steam`;
+export const SteamPlayersChip = ({
+    playersCount,
+    isComingSoon,
+}: {
+    playersCount: number;
+    isComingSoon?: boolean;
+}) => {
+    const description = playersCount > 0 ? `${playersCount} players online on Steam` : undefined;
 
-    const text =
-        playersCount > 1_000_000
-            ? `${Math.floor(playersCount / 1_000_000)}m`
-            : playersCount > 1_000
-              ? `${Math.floor(playersCount / 1_000)}k`
-              : playersCount;
+    const formatPlayerCount = (count: number): string => {
+        if (count > 1_000_000) return `${Math.floor(count / 1_000_000)}m`;
+        if (count > 1_000) return `${Math.floor(count / 1_000)}k`;
+        return count.toString();
+    };
+
+    const text = isComingSoon
+        ? "Wishlist on"
+        : playersCount <= 0
+          ? "Steam"
+          : formatPlayerCount(playersCount);
+
     return (
         <span
             title={description}
-            className="font-ui text-foreground flex cursor-pointer flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 transition-all select-none hover:opacity-100"
+            className="text-foreground flex cursor-pointer flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 shadow-sky-400/25 transition-all select-none hover:-translate-y-0.5 hover:opacity-100 hover:shadow-sm"
         >
-            <RiSteamLine className="h-4 w-4" />
-            <span aria-hidden>{text}</span>
+            {playersCount > 0 && <PiUsersThree className="h-4 w-4" />}
+            <span className="mx-1" aria-hidden>
+                {text}
+            </span>
             <span className="sr-only">{description}</span>
-            <PiUsersThree className="h-4 w-4" />
+            <RiSteamLine className="h-4 w-4" />
         </span>
     );
 };
@@ -40,17 +54,19 @@ export const SteamPlayersChipButton = ({
     playersCount,
     appId,
     gameSlug,
+    isComingSoon,
 }: {
     playersCount: number;
     appId: number;
     gameSlug: string;
+    isComingSoon?: boolean;
 }) => {
     const description = `${playersCount} players online on Steam`;
 
     return (
         <Dialog>
             <DialogTrigger aria-description={description} data-sa-click={`steam-${gameSlug}`}>
-                <SteamPlayersChip playersCount={playersCount} />
+                <SteamPlayersChip playersCount={playersCount} isComingSoon={isComingSoon} />
             </DialogTrigger>
             <DialogContent className="w-[95vw] md:max-w-4xl!">
                 <DialogHeader>
@@ -63,8 +79,7 @@ export const SteamPlayersChipButton = ({
                     </DialogDescription>
                 </DialogHeader>
                 <SteamEmbed appId={appId} />
-
-                <SteamDBEmbed appId={appId} />
+                {playersCount > 0 && <SteamDBEmbed appId={appId} />}
             </DialogContent>
         </Dialog>
     );
