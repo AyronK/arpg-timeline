@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
 
             const discordPayload = {
                 username: "aRPG Timeline Bot",
-                avatar_url: "https://www.arpg-timeline.com/favicon.ico",
+                avatar_url: "https://www.arpg-timeline.com/favicon-192.png",
                 embeds: [embed],
             };
 
