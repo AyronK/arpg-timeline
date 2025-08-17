@@ -13,6 +13,7 @@ type ToasterToast = ToastProps & {
     description?: ReactNode;
     action?: ToastActionElement;
     withLogo?: boolean | undefined;
+    hideClose?: boolean | undefined;
 };
 
 /* eslint-disable @typescript-eslint/no-unused-vars */

@@ -80,11 +80,13 @@ export const Timeline: FC<{ events: TimelineEvent[] }> = ({ events }) => {
                                 key={`month-line-${index}`}
                                 className="border-card-foreground/10 absolute top-6 bottom-0 z-0 border-l max-md:even:hidden"
                                 style={{ left: `${marker.position}%` }}
+                                suppressHydrationWarning
                             />
                         ))}
                         <div
                             className="border-destructive/50 absolute top-6 bottom-0 z-40 w-1 border-l"
                             style={{ left: `${getPositionPercent(new Date())}%` }}
+                            suppressHydrationWarning
                         />
                     </div>
                     <div className="divide-card-foreground/25 bg-background divide-y border-r border-l">

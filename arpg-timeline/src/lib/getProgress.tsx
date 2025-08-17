@@ -5,8 +5,6 @@ import LocalDate from "@/components/LocalDate";
 import { SeasonChip } from "@/components/SeasonWidget";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 
-import { INTL_LOCAL_DATE } from "./date";
-
 export const getProgress = (
     startDate: string | null,
     endDate: string | null,
