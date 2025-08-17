@@ -26,7 +26,7 @@ export type DetectedChange<T = unknown> = {
     field?: string;
     oldValue?: T;
     newValue?: T;
-    description: string;
+    discordMessage: string;
 };
 
 const historyQuery = `*[_id == $id] | order(_updatedAt desc) [0...10] {

@@ -12,7 +12,7 @@ export function detectChanges(
     if (!previous) {
         changes.push({
             type: "added",
-            description: `New ${current.seasonKeyword} information added.`,
+            discordMessage: `New ${current.seasonKeyword} information added.`,
         });
         return changes;
     }
@@ -23,7 +23,7 @@ export function detectChanges(
             field: "name",
             oldValue: previous.name,
             newValue: current.name,
-            description: `${capitalizeFirstChar(current.seasonKeyword)} name changed from "${previous.name}" to "${current.name}"`,
+            discordMessage: `${capitalizeFirstChar(current.seasonKeyword)} name changed from "${previous.name}" to "${current.name}"`,
         });
     }
 
@@ -43,7 +43,7 @@ export function detectChanges(
             field: "start_date",
             oldValue: previousStartConfirmed ? previous.start?.startDate : null,
             newValue: currentStartConfirmed ? current.start?.startDate : null,
-            description: currentStartConfirmed
+            discordMessage: currentStartConfirmed
                 ? `Start date ${previousStartConfirmed ? "updated to" : "confirmed for"} ${formatDiscordDate(new Date(current.start!.startDate!), "f")}`
                 : `Start date confirmation removed`,
         });
@@ -60,7 +60,7 @@ export function detectChanges(
             field: "end_date",
             oldValue: previousEndConfirmed ? previous.end?.endDate : null,
             newValue: currentEndConfirmed ? current.end?.endDate : null,
-            description: currentEndConfirmed
+            discordMessage: currentEndConfirmed
                 ? `End date ${previousEndConfirmed ? "updated to" : "confirmed for"} ${formatDiscordDate(new Date(current.end!.endDate!), "f")}`
                 : `End date confirmation removed`,
         });
@@ -72,7 +72,7 @@ export function detectChanges(
             field: "patchNotesUrl",
             oldValue: previous.patchNotesUrl,
             newValue: current.patchNotesUrl,
-            description: current.patchNotesUrl
+            discordMessage: current.patchNotesUrl
                 ? previous.patchNotesUrl
                     ? "Patch notes link updated"
                     : "Patch notes link added"
@@ -86,7 +86,7 @@ export function detectChanges(
             field: "seasonUrl",
             oldValue: previous.seasonUrl,
             newValue: current.seasonUrl,
-            description: current.seasonUrl
+            discordMessage: current.seasonUrl
                 ? previous.seasonUrl
                     ? "Season link updated"
                     : "Season link added"

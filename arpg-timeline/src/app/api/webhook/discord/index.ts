@@ -33,7 +33,7 @@ function createDiscordEmbed(seasonUpdate: WebhookProjection, changes: DetectedCh
     }
 
     if (changes.length > 0) {
-        const changeDescriptions = changes.map((change) => `- ${change.description}`).join("\n");
+        const changeDescriptions = changes.map((change) => `- ${change.discordMessage}`).join("\n");
         fields.push({
             name: "🔄 What changed",
             value:

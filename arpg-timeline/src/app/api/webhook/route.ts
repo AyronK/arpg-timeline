@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
             message: "Webhook processed successfully",
             timestamp: new Date().toISOString(),
             changesDetected: changes.length,
-            changes: changes.map((c) => ({ type: c.type, description: c.description })),
+            changes: changes.map((c) => ({ type: c.type, description: c.discordMessage })),
             discordSent: changes.length > 0,
             webhooksSent: false, // TODO: implement webhook receivers
         });
