@@ -23,7 +23,7 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
     };
 
     return (
-        <article className="mx-auto flex max-w-4xl flex-col gap-6 p-6">
+        <article className="mx-auto flex max-w-4xl flex-col gap-6 p-2 md:p-6">
             <header className="space-y-2">
                 <h1 className="font-heading text-foreground text-3xl font-bold">
                     Embed aRPG-Timeline on Your Website
@@ -82,7 +82,7 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
                 <h2 className="font-heading text-xl font-semibold">Customization Options</h2>
                 <div className="grid gap-3 text-sm">
                     <div className="flex gap-3">
-                        <code className="bg-muted text-foreground rounded px-2 py-1 font-mono">
+                        <code className="bg-muted text-foreground mb-auto min-w-[64px] rounded px-2 py-1 text-center font-mono">
                             width
                         </code>
                         <span className="text-muted-foreground">
@@ -90,7 +90,7 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
                         </span>
                     </div>
                     <div className="flex gap-3">
-                        <code className="bg-muted text-foreground rounded px-2 py-1 font-mono">
+                        <code className="bg-muted text-foreground mb-auto min-w-[64px] rounded px-2 py-1 text-center font-mono">
                             height
                         </code>
                         <span className="text-muted-foreground">
@@ -98,7 +98,7 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
                         </span>
                     </div>
                     <div className="flex gap-3">
-                        <code className="bg-muted text-foreground rounded px-2 py-1 font-mono">
+                        <code className="bg-muted text-foreground mb-auto min-w-[64px] rounded px-2 py-1 text-center font-mono">
                             style
                         </code>
                         <span className="text-muted-foreground">
@@ -110,7 +110,7 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
 
             <section className="space-y-4">
                 <div className="flex items-center gap-2">
-                    <h2 className="font-heading text-xl font-semibold">Live Preview</h2>
+                    <h2 className="font-heading text-xl font-semibold">Live Preview (transparent)</h2>
                     <a
                         href={`https://www.arpg-timeline.com/embed/season-widget/${game}`}
                         target="_blank"
@@ -122,11 +122,11 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
                         Open in new tab
                     </a>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground hidden md:flex">
                     This is how the widget will appear on your website:
                 </p>
 
-                <div className="flex justify-center">
+                <div className="hidden justify-center md:flex">
                     <div className="border-muted-foreground bg-card overflow-hidden rounded-lg border shadow-sm">
                         <div className="w-full overflow-auto">
                             <iframe
@@ -144,12 +144,12 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
             </section>
 
             <section className="bg-card space-y-2 rounded-lg p-4">
-                <h3 className="text-foreground font-semibold">💡 Pro Tips</h3>
+                <h3 className="text-foreground font-semibold">💡 Tips</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm">
                     <li>• The widget is responsive and will adapt to smaller screens</li>
                     <li>• For optimal display, ensure a minimum width of 350px</li>
                     <li>• The widget automatically updates with the latest season information</li>
-                    <li>• No JavaScript required - it&amp;s a simple HTML embed</li>
+                    <li>• No JavaScript required - it&apos;s a simple HTML embed</li>
                 </ul>
             </section>
         </article>

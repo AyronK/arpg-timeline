@@ -9,7 +9,7 @@ const ObsBrowserSourceManualPage = async ({
 }) => {
     const { gameSlug } = await params;
     return (
-        <div className="relative container mx-auto mb-8 md:mt-8">
+        <div className="relative container mx-auto mt-4 mb-8 md:mt-8">
             <ObsBrowserSourceManual game={gameSlug} />
         </div>
     );

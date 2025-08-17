@@ -71,7 +71,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                         </p>
                         <div className="relative ml-8">
                             <div className="bg-muted overflow-x-auto rounded border p-3">
-                                <code className="text-foreground font-mono text-sm break-all">
+                                <code className="text-foreground overflow-auto font-mono text-sm whitespace-nowrap">
                                     {widgetUrl}
                                 </code>
                             </div>
@@ -111,15 +111,11 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                             <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Width:</span>
-                                    <code className="bg-muted rounded px-2 py-1 font-mono">
-                                        600
-                                    </code>
+                                    <code className="bg-muted rounded px-2 font-mono">600</code>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Height:</span>
-                                    <code className="bg-muted rounded px-2 py-1 font-mono">
-                                        300
-                                    </code>
+                                    <code className="bg-muted rounded px-2 font-mono">300</code>
                                 </div>
                             </div>
                         </div>
@@ -213,11 +209,10 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                         Test in browser
                     </a>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground hidden md:flex">
                     This is how the widget will appear overlaid on your stream:
                 </p>
 
-                {/* Desktop mockup */}
                 <div className="hidden justify-center md:flex">
                     <div className="relative w-full max-w-4xl overflow-hidden rounded-lg border-2 border-gray-700 bg-gray-900 shadow-lg">
                         {/* Mock stream background - responsive aspect ratio */}
@@ -289,33 +284,10 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                         </div>
                     </div>
                 </div>
-
-                {/* Mobile simple iframe */}
-                <div className="flex justify-center md:hidden">
-                    <div className="border-muted-foreground bg-card w-full max-w-md overflow-hidden rounded-lg border shadow-sm">
-                        <iframe
-                            style={{ background: "#17171c" }}
-                            src={widgetUrl}
-                            width="100%"
-                            height="200"
-                            title="aRPG Timeline Widget OBS Preview"
-                            className="block w-full"
-                            loading="lazy"
-                        />
-                    </div>
-                </div>
-
-                <p className="text-muted-foreground text-center text-sm">
-                    Example showing the widget positioned in the bottom-right corner of a 1920×1080
-                    stream
-                </p>
             </section>
 
             <section className="bg-card space-y-2 rounded-lg p-4">
-                <h3 className="text-foreground flex items-center gap-2 font-semibold">
-                    <Monitor className="h-4 w-4" />
-                    OBS Pro Tips
-                </h3>
+                <h3 className="text-foreground font-semibold">💡 Tips</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm">
                     <li>• Position the widget in a corner or overlay area of your stream layout</li>
                     <li>• The widget updates automatically - no need to refresh manually</li>
