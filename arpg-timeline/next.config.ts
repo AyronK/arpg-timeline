@@ -86,6 +86,32 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/docs/html/:path*",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=2592000",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=2592000, stale-while-revalidate=2592000",
+                    },
+                ],
+            },
+            {
+                source: "/docs/obs/:path*",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=2592000",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=2592000, stale-while-revalidate=2592000",
+                    },
+                ],
+            },
+            {
                 source: "/robots.txt",
                 headers: [
                     {

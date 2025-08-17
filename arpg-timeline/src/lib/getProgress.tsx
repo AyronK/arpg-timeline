@@ -55,22 +55,36 @@ export const getProgressStartContent = (
     const startTimeMs = new Date(startDate).getTime();
     const endTimeMs = new Date(endDate).getTime();
 
-    const elapsedTime = Math.ceil((now - startTimeMs) / 1000 / 60 / 60);
-    const elapsedDays = Math.ceil(elapsedTime / 24);
+    const elapsedMinutes = Math.ceil((now - startTimeMs) / 1000 / 60);
+    const elapsedHours = Math.ceil(elapsedMinutes / 60);
+    const elapsedDays = Math.ceil(elapsedHours / 24);
 
-    if (inGracePeriod(startDate)) {
-        return <IconLabel icon={TimerReset}>Started {elapsedTime}h ago</IconLabel>;
+    if (elapsedMinutes < 60) {
+        return <IconLabel icon={TimerReset}>Started {elapsedMinutes}min ago</IconLabel>;
+    }
+
+    if (elapsedHours <= 48) {
+        return <IconLabel icon={TimerReset}>Started {elapsedHours}h ago</IconLabel>;
     }
 
     if (endTimeMs <= now) {
-        return <IconLabel icon={TimerOff}>Lasted {elapsedDays} days</IconLabel>;
+        return <IconLabel icon={TimerOff}>Started {elapsedDays} days ago</IconLabel>;
     }
 
     if (isDormant) {
-        return <IconLabel icon={Sword}>Released {elapsedDays} days ago</IconLabel>;
+        return (
+            <IconLabel icon={Sword}>
+                Released on{" "}
+                {new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                }).format(new Date(startDate))}
+            </IconLabel>
+        );
     }
 
-    return <IconLabel icon={TimerReset}>Lasts {elapsedDays} days</IconLabel>;
+    return <IconLabel icon={TimerReset}>Started {elapsedDays} days ago</IconLabel>;
 };
 
 export const getProgressEndContent = (

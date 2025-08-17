@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { EmbedGameCard } from "@/components/GameCard/EmbedGameCard";
+import { EmbedGameCard, EmbedRefresh } from "@/components/GameCard/EmbedGameCard";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { SanityImage } from "@/components/SanityImage";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
@@ -30,6 +30,7 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
 
     return (
         <ErrorBoundary fallback={<WidgetDiedFallback />}>
+            <EmbedRefresh game={game} />
             <EmbedGameCard
                 name={game.name}
                 gameLogo={
@@ -50,8 +51,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
             >
                 <EmbedGameToSeasonWidget game={game} selector="current" />
                 {inGracePeriod(game.currentSeason?.start?.startDate) ? (
-                    <div className="mt-auto flex flex-col gap-2">
-                        {game.currentSeason?.patchNotesUrl && (
+                    game.currentSeason?.patchNotesUrl && (
+                        <div className="mt-auto flex flex-col gap-2">
                             <MaybeLinkWrapper
                                 href={game.currentSeason.patchNotesUrl}
                                 target="_blank"
@@ -60,8 +61,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                             >
                                 Patch notes
                             </MaybeLinkWrapper>
-                        )}
-                    </div>
+                        </div>
+                    )
                 ) : (
                     <EmbedGameToSeasonWidget game={game} selector="next" />
                 )}

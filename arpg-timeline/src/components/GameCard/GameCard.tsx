@@ -6,6 +6,7 @@ import { sa_event } from "@/lib/sa_event";
 import { addUTMParameters } from "@/lib/utm";
 
 import { SteamPlayersChipButton } from "../SteamPlayersChip";
+import { GameMenu } from "./Menu/Menu";
 
 const addUTM = addUTMParameters({
     utm_source: "arpg-timeline",
@@ -24,17 +25,20 @@ export const GameCard = ({
     return (
         <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
             <div className="flex flex-col">
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center justify-between gap-2">
                     <h3 className="font-heading text-xs">{name}</h3>
-                    {!official && <CommunityLabel />}
-                    {stats?.steam && (
-                        <SteamPlayersChipButton
-                            appId={stats.steam.appId}
-                            playersCount={stats.steam.currentPlayers}
-                            gameSlug={slug}
-                            isComingSoon={stats.steam.isComingSoon}
-                        />
-                    )}
+                    <div className="flex flex-row items-center gap-2">
+                        {!official && <CommunityLabel />}
+                        {stats?.steam && (
+                            <SteamPlayersChipButton
+                                appId={stats.steam.appId}
+                                playersCount={stats.steam.currentPlayers}
+                                gameSlug={slug}
+                                isComingSoon={stats.steam.isComingSoon}
+                            />
+                        )}
+                        <GameMenu game={slug} />
+                    </div>
                 </div>
                 <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
                     <MaybeLinkWrapper

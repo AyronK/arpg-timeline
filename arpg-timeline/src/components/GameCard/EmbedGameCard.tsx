@@ -1,13 +1,28 @@
 "use client";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
+import { useScheduledRefresh } from "@/hooks/useScheduledRefresh";
+import { Game } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 
 import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
+import { getNextSeasonDate } from "../Home/Games";
 import { Logo } from "../Logo";
 import { SteamPlayersChip } from "../SteamPlayersChip";
 import { GameCardProps } from "./GameCard.types";
+
+export const EmbedRefresh = ({ game }: { game: Game }) => {
+    const nextRefreshDate = useMemo(() => {
+        return getNextSeasonDate([game]);
+    }, [game]);
+
+    useScheduledRefresh({
+        targetDate: nextRefreshDate,
+    });
+
+    return null;
+};
 
 export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps) => {
     function handleClick() {
@@ -43,7 +58,7 @@ export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps
             >
                 <section className="text-card-foreground relative flex max-w-[720px] min-w-[350px] flex-1 flex-col gap-1 rounded-md bg-transparent p-4">
                     {stats?.steam && stats?.steam?.currentPlayers && (
-                        <div className="pointer-none: absolute top-2 right-2">
+                        <div className="pointer-events-none absolute top-2 right-2 rounded-md bg-sky-700">
                             <SteamPlayersChip playersCount={stats.steam.currentPlayers} />
                         </div>
                     )}
