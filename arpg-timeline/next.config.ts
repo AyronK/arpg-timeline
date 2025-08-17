@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
         dangerouslyAllowSVG: true,
-        minimumCacheTTL: 30 * 24 * 60 * 60
+        minimumCacheTTL: 30 * 24 * 60 * 60,
     },
     async headers() {
         return [
@@ -186,4 +186,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
