@@ -12,7 +12,7 @@ import {
 
 export function GameMenu({ game }: { game: string }) {
     return (
-        <DropdownMenu dir="rtl">
+        <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant={"link"}
