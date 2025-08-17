@@ -22,6 +22,3 @@ export async function generateStaticParams() {
         gameSlug: g.slug,
     }));
 }
-
-export const revalidate = 43200;
-export const dynamic = "force-static";
