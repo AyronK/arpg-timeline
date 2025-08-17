@@ -6,6 +6,7 @@ import { Countdown } from "@/components/Countdown";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
+import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ShareMenu } from "@/components/ShareMenu";
 import { Game } from "@/lib/cms/games.types";
@@ -51,6 +52,16 @@ export const Content = ({
                                     </span>
                                 </IconLabel>
                             </ClientOnlyVisibleWrapper>
+                        )}
+                        {season.patchNotesUrl && (
+                            <MaybeLinkWrapper
+                                href={season.patchNotesUrl}
+                                target="_blank"
+                                className="ml-auto text-sm text-nowrap hover:underline"
+                                data-sm-click={`${season.name}-patch-notes`}
+                            >
+                                Patch notes
+                            </MaybeLinkWrapper>
                         )}
                     </div>
                     {info}

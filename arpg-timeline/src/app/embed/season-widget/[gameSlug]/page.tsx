@@ -50,8 +50,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
             >
                 <EmbedGameToSeasonWidget game={game} selector="current" />
                 {inGracePeriod(game.currentSeason?.start?.startDate) ? (
-                    <div className="mt-auto flex flex-col gap-2">
-                        {game.currentSeason?.patchNotesUrl && (
+                    game.currentSeason?.patchNotesUrl && (
+                        <div className="mt-auto flex flex-col gap-2">
                             <MaybeLinkWrapper
                                 href={game.currentSeason.patchNotesUrl}
                                 target="_blank"
@@ -60,8 +60,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                             >
                                 Patch notes
                             </MaybeLinkWrapper>
-                        )}
-                    </div>
+                        </div>
+                    )
                 ) : (
                     <EmbedGameToSeasonWidget game={game} selector="next" />
                 )}
