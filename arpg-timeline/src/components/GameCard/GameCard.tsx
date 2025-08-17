@@ -25,10 +25,10 @@ export const GameCard = ({
     return (
         <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
             <div className="flex flex-col">
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center justify-between gap-2">
                     <h3 className="font-heading text-xs">{name}</h3>
-                    {!official && <CommunityLabel />}
-                    <div className="flex flex-row gap-2">
+                    <div className="flex flex-row items-center gap-2">
+                        {!official && <CommunityLabel />}
                         {stats?.steam && (
                             <SteamPlayersChipButton
                                 appId={stats.steam.appId}
