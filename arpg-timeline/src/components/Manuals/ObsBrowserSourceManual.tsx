@@ -228,14 +228,6 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                     <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-gray-600/50 bg-gray-800/50 md:h-32 md:w-32 md:border-4">
                                         <Monitor className="h-8 w-8 text-gray-400 md:h-16 md:w-16" />
                                     </div>
-                                    <div className="space-y-1 md:space-y-2">
-                                        <div className="text-lg font-bold text-white md:text-xl">
-                                            Your Game Content
-                                        </div>
-                                        <div className="text-xs text-gray-300 md:text-sm">
-                                            Stream overlay preview
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -259,12 +251,10 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                     <div className="text-xs font-semibold text-white md:text-sm">
                                         StreamerName
                                     </div>
-                                    <div className="text-xs text-gray-300">
-                                        Playing Diablo 4 • 1,234 viewers
-                                    </div>
+                                    <div className="text-xs text-gray-300">1,234 viewers</div>
                                 </div>
 
-                                <div className="absolute -top-[32px] right-0 rounded-full bg-green-500 px-1 py-1 text-xs text-white shadow md:-top-2 md:-right-2 md:px-2">
+                                <div className="absolute -top-8 right-0 rounded-full bg-green-500 px-1 px-2 py-1 text-xs text-white shadow">
                                     Widget
                                 </div>
 
