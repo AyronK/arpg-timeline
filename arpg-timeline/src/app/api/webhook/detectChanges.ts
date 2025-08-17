@@ -1,18 +1,45 @@
 import { capitalizeFirstChar } from "@/lib/capitalizeFirstChar";
 
 import { formatDiscordDate } from "../../../lib/discord/formatDiscordDate";
-import { DetectedChange, WebhookProjection } from "./sanity";
+import { DetectedChange, LiveStreamProjection, SeasonProjection } from "./sanity";
 
-export function detectChanges(
-    current: WebhookProjection,
-    previous: WebhookProjection | null,
+export function detectLiveStreamChanges(
+    current: LiveStreamProjection,
+    previous: LiveStreamProjection | null,
 ): DetectedChange[] {
     const changes: DetectedChange[] = [];
 
     if (!previous) {
         changes.push({
             type: "added",
-            discordMessage: `New ${current.seasonKeyword} information added.`,
+            discordMessage: `New stream scheduled`,
+        });
+        return changes;
+    }
+
+    if (current.date !== previous.date) {
+        changes.push({
+            type: "date_changed",
+            field: "date",
+            oldValue: previous.date,
+            newValue: current.date,
+            discordMessage: `Stream date changed to ${formatDiscordDate(new Date(current.date), "f")}`,
+        });
+    }
+
+    return changes;
+}
+
+export function detectSeasonChanges(
+    current: SeasonProjection,
+    previous: SeasonProjection | null,
+): DetectedChange[] {
+    const changes: DetectedChange[] = [];
+
+    if (!previous) {
+        changes.push({
+            type: "added",
+            discordMessage: `New ${current.seasonKeyword} added.`,
         });
         return changes;
     }
@@ -23,7 +50,7 @@ export function detectChanges(
             field: "name",
             oldValue: previous.name,
             newValue: current.name,
-            discordMessage: `${capitalizeFirstChar(current.seasonKeyword)} name changed from "${previous.name}" to "${current.name}"`,
+            discordMessage: `${capitalizeFirstChar(current.seasonKeyword)} name changed to "${current.name}"`,
         });
     }
 

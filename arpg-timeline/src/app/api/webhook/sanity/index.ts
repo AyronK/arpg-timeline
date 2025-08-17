@@ -3,7 +3,7 @@ import { SanityImageAssetDocument } from "next-sanity";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { SeasonEndDateInfo, SeasonStartDateInfo } from "@/queries/indexQuery";
 
-export type WebhookProjection = {
+export type SeasonProjection = {
     _id: string;
     _rev: string;
     _type: string;
@@ -18,6 +18,21 @@ export type WebhookProjection = {
     end?: SeasonEndDateInfo;
     color: string;
 };
+
+export type LiveStreamProjection = {
+    _id: string;
+    _rev: string;
+    _type: string;
+    name: string;
+    date: string;
+    game: string;
+    gameUrl: string;
+    color: string;
+    thumbnail: SanityImageAssetDocument;
+    twitchUrl: string;
+};
+
+export type WebhookProjection = SeasonProjection | LiveStreamProjection;
 
 type ChangeType = "added" | "date_changed" | "patch_notes_changed" | "name_changed";
 
@@ -48,7 +63,7 @@ const historyQuery = `*[_id == $id] | order(_updatedAt desc) [0...10] {
 export async function getPreviousRevision(
     documentId: string,
     currentRev: string,
-): Promise<WebhookProjection | null> {
+): Promise<SeasonProjection | null> {
     try {
         const history = await sanityFetch({
             query: historyQuery,
@@ -59,7 +74,7 @@ export async function getPreviousRevision(
             return null;
         }
 
-        const currentIndex = history.findIndex((doc: WebhookProjection) => doc._rev === currentRev);
+        const currentIndex = history.findIndex((doc: SeasonProjection) => doc._rev === currentRev);
 
         if (currentIndex === -1) {
             return history[0];
