@@ -1,9 +1,10 @@
 import { sa_event } from "@/lib/sa_event";
 import { toast } from "@/ui/hooks/useToast";
 
+import { formatDiscordDate } from "./discord/formatDiscordDate";
+
 export const shareOnDiscord = (eventTitle: string, eventDate: Date) => {
     sa_event(`Share - Discord - ${eventTitle}}`);
-    const unixTimestamp = Math.floor(eventDate.getTime() / 1000);
 
     const baseUrl = window.location.href;
     const url = new URL(baseUrl);
@@ -11,7 +12,7 @@ export const shareOnDiscord = (eventTitle: string, eventDate: Date) => {
     url.searchParams.set("utm_medium", "share");
     url.searchParams.set("utm_campaign", "event_widget");
 
-    const shareText = `📅 ${eventTitle}\n⏰ Starts <t:${unixTimestamp}:R>\n🔗 ${url.toString()}`;
+    const shareText = `📅 ${eventTitle}\n⏰ Starts ${formatDiscordDate(eventDate)}\n🔗 ${url.toString()}`;
 
     navigator.clipboard.writeText(shareText).then(() => {
         toast({

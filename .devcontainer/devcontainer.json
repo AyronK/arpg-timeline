@@ -14,7 +14,8 @@
       "extensions": [
         "bradlc.vscode-tailwindcss",
         "esbenp.prettier-vscode",
-        "rvest.vs-code-prettier-eslint"
+        "rvest.vs-code-prettier-eslint",
+        "Postman.postman-for-vscode"
       ]
     }
   }
