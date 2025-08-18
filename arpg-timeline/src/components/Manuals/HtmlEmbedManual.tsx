@@ -110,7 +110,9 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
 
             <section className="space-y-4">
                 <div className="flex items-center gap-2">
-                    <h2 className="font-heading text-xl font-semibold">Live Preview (transparent)</h2>
+                    <h2 className="font-heading text-xl font-semibold">
+                        Live Preview (transparent)
+                    </h2>
                     <a
                         href={`https://www.arpg-timeline.com/embed/season-widget/${game}`}
                         target="_blank"

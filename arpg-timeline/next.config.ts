@@ -51,11 +51,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=2592000, immutable",
+                        value: "public, max-age=2592000",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=31536000, immutable",
+                        value: "public, max-age=31536000",
                     },
                 ],
             },
@@ -64,11 +64,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=2592000, immutable",
+                        value: "public, max-age=2592000",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=31536000, immutable",
+                        value: "public, max-age=31536000",
                     },
                 ],
             },
@@ -77,11 +77,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=2592000",
+                        value: "public, max-age=86400",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=2592000, stale-while-revalidate=2592000",
+                        value: "public, max-age=86400, stale-while-revalidate=3600",
                     },
                 ],
             },
@@ -90,11 +90,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=2592000",
+                        value: "public, max-age=86400",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=2592000, stale-while-revalidate=2592000",
+                        value: "public, max-age=86400, stale-while-revalidate=86400",
                     },
                 ],
             },
@@ -103,11 +103,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=2592000",
+                        value: "public, max-age=86400",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=2592000, stale-while-revalidate=2592000",
+                        value: "public, max-age=86400, stale-while-revalidate=86400",
                     },
                 ],
             },
@@ -115,8 +115,12 @@ const nextConfig: NextConfig = {
                 source: "/robots.txt",
                 headers: [
                     {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400",
+                    },
+                    {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "max-age=86400",
+                        value: "public, max-age=86400",
                     },
                 ],
             },
@@ -124,8 +128,12 @@ const nextConfig: NextConfig = {
                 source: "/sitemap.xml",
                 headers: [
                     {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400",
+                    },
+                    {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "max-age=86400",
+                        value: "public, max-age=86400",
                     },
                 ],
             },
@@ -160,11 +168,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=60, s-maxage=300",
+                        value: "public, max-age=3600",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=60, stale-while-revalidate=300",
+                        value: "public, max-age=86400, stale-while-revalidate=3600",
                     },
                 ],
             },
@@ -173,11 +181,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=60, s-maxage=300",
+                        value: "public, max-age=3600",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=60, stale-while-revalidate=300",
+                        value: "public, max-age=86400, stale-while-revalidate=3600",
                     },
                 ],
             },
@@ -186,11 +194,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, s-max-age=31536000",
+                        value: "public, max-age=86400",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, s-max-age=31536000",
+                        value: "public, max-age=86400, stale-while-revalidate=86400",
                     },
                 ],
             },
@@ -199,11 +207,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, s-max-age=31536000",
+                        value: "public, max-age=86400",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, s-max-age=31536000",
+                        value: "public, max-age=86400, stale-while-revalidate=86400",
                     },
                 ],
             },

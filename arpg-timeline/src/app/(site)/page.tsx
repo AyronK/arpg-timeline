@@ -61,7 +61,7 @@ const Home = async () => {
     );
 };
 
-export const revalidate = 900;
+export const revalidate = 3600;
 
 export default Home;
 
