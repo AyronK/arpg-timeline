@@ -1,5 +1,5 @@
 interface UTMParameters {
-    utm_source: "arpg-timeline";
+    utm_source: "arpg-timeline" | "obs";
     utm_medium?: string;
     utm_campaign?: string;
     utm_term?: string;

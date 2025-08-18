@@ -3,13 +3,19 @@
 import { Check, Copy, ExternalLink, Monitor, Settings } from "lucide-react";
 import { useState } from "react";
 
+import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
+
+export const addUTM = addUTMParameters({
+    utm_source: "obs",
+    utm_content: "season_embed",
+});
 
 export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
     const [copiedUrl, setCopiedUrl] = useState(false);
     const [copiedCss, setCopiedCss] = useState(false);
 
-    const widgetUrl = `https://www.arpg-timeline.com/embed/season-widget/${game}`;
+    const widgetUrl = addUTM(`https://www.arpg-timeline.com/embed/season-widget/${game}`);
     const customCss = `body { 
   margin: 0; 
   background-color: rgba(0,0,0,0); 

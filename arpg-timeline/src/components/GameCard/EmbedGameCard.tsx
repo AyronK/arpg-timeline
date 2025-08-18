@@ -38,12 +38,19 @@ export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps
 
     useEffect(() => {
         let hostname = "unknown";
+        let isOBS = false;
+
         try {
             if (document.referrer) {
                 hostname = new URL(document.referrer).hostname;
             }
+
+            const ua = navigator.userAgent;
+            if (ua.includes("Chrome") && ua.includes("OBS")) {
+                isOBS = true;
+            }
         } finally {
-            sa_event(`${slug}-embed-view`, { hostname });
+            sa_event(`${slug}-embed-view`, { hostname, isOBS });
         }
     }, [slug]);
 
