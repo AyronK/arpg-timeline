@@ -77,11 +77,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=86400",
+                        value: "public, max-age=300",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=3600",
+                        value: "public, max-age=86400, stale-while-revalidate=300",
                     },
                 ],
             },
@@ -168,11 +168,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=3600",
+                        value: "public, max-age=300",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=3600",
+                        value: "public, max-age=86400, stale-while-revalidate=300",
                     },
                 ],
             },
@@ -181,11 +181,11 @@ const nextConfig: NextConfig = {
                 headers: [
                     {
                         key: "Cache-Control",
-                        value: "public, max-age=3600",
+                        value: "public, max-age=300",
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=3600",
+                        value: "public, max-age=86400, stale-while-revalidate=300",
                     },
                 ],
             },
@@ -220,3 +220,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
