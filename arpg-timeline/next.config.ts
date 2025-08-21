@@ -164,19 +164,6 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
-                source: "/index",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=300",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=300",
-                    },
-                ],
-            },
-            {
                 source: "/",
                 headers: [
                     {
@@ -220,4 +207,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
