@@ -44,7 +44,7 @@ export type DetectedChange<T = unknown> = {
     discordMessage: string;
 };
 
-const historyQuery = `*[_id == $id] | order(_updatedAt desc) [0...10] {
+const historyQuery = `*[_id == $id] | order(_rev desc) [0...10] {
     _id,
     _rev,
     _type,
@@ -70,14 +70,18 @@ export async function getPreviousRevision(
             params: { id: documentId },
         });
 
-        if (!history) {
+        if (!history || history.length === 0) {
             return null;
         }
 
         const currentIndex = history.findIndex((doc: SeasonProjection) => doc._rev === currentRev);
 
         if (currentIndex === -1) {
-            return history[0];
+            return null;
+        }
+
+        if (currentIndex === history.length - 1) {
+            return null;
         }
 
         return history[currentIndex + 1];
