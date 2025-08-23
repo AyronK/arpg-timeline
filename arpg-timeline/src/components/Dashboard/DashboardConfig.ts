@@ -1,6 +1,7 @@
-import { FlaskConical, Telescope, Users, RotateCwSquare } from "lucide-react";
+import { FlaskConical, RotateCwSquare,Telescope, Users } from "lucide-react";
 
 import { DashboardTag } from "@/lib/cms/gameTags";
+
 import { LogoIcon } from "../LogoIcon";
 
 export const DashboardConfig: Partial<

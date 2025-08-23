@@ -42,11 +42,13 @@ export const GamesAndEventsGrid = ({
             <article className="flex flex-col gap-4 2xl:gap-5">
                 <h2 className="sr-only">Seasons</h2>
                 <div className="relative flex flex-col gap-1">
-                    <GameCountDisplay
-                        shownGames={shownGames}
-                        totalGames={totalGames}
-                        dashboard={dashboard}
-                    />
+                    <div className="hidden md:block">
+                        <GameCountDisplay
+                            shownGames={shownGames}
+                            totalGames={totalGames}
+                            dashboard={dashboard}
+                        />
+                    </div>
                     <div className="hidden md:flex md:flex-row md:items-end md:gap-4">
                         <DashboardSelector
                             key={dashboard}
@@ -70,6 +72,8 @@ export const GamesAndEventsGrid = ({
                 dashboard={dashboard}
                 onLoadingChange={handleLoadingChange}
                 filtersProps={filtersProps}
+                shownGames={shownGames}
+                totalGames={totalGames}
             />
         </>
     );

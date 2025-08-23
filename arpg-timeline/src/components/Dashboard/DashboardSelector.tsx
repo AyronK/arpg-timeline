@@ -3,12 +3,12 @@
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { DashboardTag } from "@/lib/cms/gameTags";
+import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import { ToggleGroup, ToggleGroupItem } from "@/ui/ToggleGroup";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 import { DashboardConfig } from "./DashboardConfig";
-import { cn } from "@/lib/utils";
 
 interface DashboardSelectorProps {
     dashboard: DashboardTag;
