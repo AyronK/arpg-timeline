@@ -12,10 +12,290 @@ import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { cn } from "@/lib/utils";
 
 interface GamePageProps {
     params: Promise<{ gameSlug: string }>;
 }
+
+interface SeasonDuration {
+    duration: number;
+    name: string;
+}
+
+interface GameStatistics {
+    averagePerYear: string;
+    usualStartTime: string;
+    maxDuration: { days: string; name: string };
+    minDuration: { days: string; name: string };
+}
+
+interface Season {
+    game?: string;
+    start?: { startDate?: string };
+    end?: { endDate?: string };
+    name?: string;
+}
+
+interface Game {
+    name: string;
+    logo?: { url?: string };
+    slug: string;
+    shortName?: string | null;
+    url?: string | null;
+    official?: boolean;
+    averageSeasonDuration?: number | null;
+    currentSeason?: {
+        start?: { startDate?: string };
+        patchNotesUrl?: string;
+        name?: string;
+        url?: string;
+    };
+    nextSeason?: { url?: string };
+}
+
+const calculateAveragePerYear = (gameSeasons: Season[]): string => {
+    if (gameSeasons.length < 2) return "N/A";
+
+    const seasonsWithDates = gameSeasons.filter((s) => s?.start?.startDate);
+    if (seasonsWithDates.length < 2) return "N/A";
+
+    const sortedSeasons = seasonsWithDates.sort((a, b) => {
+        const aDate = a?.start?.startDate ? new Date(a.start.startDate).getTime() : 0;
+        const bDate = b?.start?.startDate ? new Date(b.start.startDate).getTime() : 0;
+        return aDate - bDate;
+    });
+
+    let totalDays = 0;
+    let count = 0;
+
+    for (let i = 0; i < sortedSeasons.length - 1; i++) {
+        const currentStartDate = sortedSeasons[i]?.start?.startDate;
+        const nextStartDate = sortedSeasons[i + 1]?.start?.startDate;
+        if (!currentStartDate || !nextStartDate) continue;
+
+        const current = new Date(currentStartDate);
+        const next = new Date(nextStartDate);
+        const daysBetween = Math.ceil((next.getTime() - current.getTime()) / (1000 * 60 * 60 * 24));
+        totalDays += daysBetween;
+        count++;
+    }
+
+    if (count === 0) return "N/A";
+
+    const avgDaysBetweenSeasons = totalDays / count;
+    return (365 / avgDaysBetweenSeasons).toFixed(2);
+};
+
+const calculateUsualStartTime = (gameSeasons: Season[]): string => {
+    if (gameSeasons.length === 0) return "N/A";
+
+    const seasonsWithStartTimes = gameSeasons.filter((s) => s?.start?.startDate);
+    if (seasonsWithStartTimes.length === 0) return "N/A";
+
+    const startHours = seasonsWithStartTimes
+        .map((s) => s?.start?.startDate)
+        .filter((d): d is string => typeof d === "string")
+        .map((d) => {
+            const date = new Date(d);
+            return date.getHours();
+        });
+
+    const hourCounts = startHours.reduce(
+        (acc, hour) => {
+            acc[hour] = (acc[hour] || 0) + 1;
+            return acc;
+        },
+        {} as Record<number, number>,
+    );
+
+    const mostCommonHour = Object.entries(hourCounts).sort(([, a], [, b]) => b - a)[0];
+
+    if (!mostCommonHour) return "N/A";
+
+    const hour = parseInt(mostCommonHour[0]);
+    const ampm = hour >= 12 ? "PM" : "AM";
+    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+
+    return `${displayHour} ${ampm}`;
+};
+
+const calculateSeasonDurations = (gameSeasons: Season[]): SeasonDuration[] => {
+    const completedSeasons = gameSeasons.filter((s) => s?.start?.startDate && s?.end?.endDate);
+
+    return completedSeasons
+        .map((s) => {
+            if (!s?.start?.startDate || !s?.end?.endDate) return null;
+            const start = new Date(s.start.startDate);
+            const end = new Date(s.end.endDate);
+            return {
+                duration: Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)),
+                name: s.name || "Unknown",
+            };
+        })
+        .filter((s): s is NonNullable<typeof s> => s !== null);
+};
+
+const calculateGameStatistics = (data: IndexQueryResult, gameSlug: string): GameStatistics => {
+    const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
+
+    const seasonDurations = calculateSeasonDurations(gameSeasons);
+
+    if (seasonDurations.length === 0) {
+        return {
+            averagePerYear: "N/A",
+            usualStartTime: "N/A",
+            maxDuration: { days: "N/A", name: "N/A" },
+            minDuration: { days: "N/A", name: "N/A" },
+        };
+    }
+
+    const maxSeason = seasonDurations.reduce((max, season) =>
+        season.duration > max.duration ? season : max,
+    );
+
+    const minSeason = seasonDurations.reduce((min, season) =>
+        season.duration < min.duration ? season : min,
+    );
+
+    return {
+        averagePerYear: calculateAveragePerYear(gameSeasons),
+        usualStartTime: calculateUsualStartTime(gameSeasons),
+        maxDuration: { days: `${maxSeason.duration} days`, name: maxSeason.name },
+        minDuration: { days: `${minSeason.duration} days`, name: minSeason.name },
+    };
+};
+
+const getOldestSeasonInfo = (data: IndexQueryResult, gameSlug: string): string => {
+    const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
+    if (gameSeasons.length === 0) return "No season data available";
+
+    const seasonsWithStartDates = gameSeasons.filter((s) => s?.start?.startDate);
+    if (seasonsWithStartDates.length === 0) return "No season start dates available";
+
+    const oldestSeason = seasonsWithStartDates.reduce((oldest, season) => {
+        if (!season?.start?.startDate || !oldest?.start?.startDate) return oldest || season;
+        const currentDate = new Date(season.start.startDate);
+        const oldestDate = new Date(oldest.start.startDate);
+        return currentDate < oldestDate ? season : oldest;
+    });
+
+    if (!oldestSeason?.start?.startDate) return "No valid season data available";
+
+    const oldestDate = new Date(oldestSeason.start.startDate);
+    const formattedOldestDate = oldestDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
+    return `Calculations based on ${seasonsWithStartDates.length} historical entries. Oldest season in aRPG Timeline's archive started ${formattedOldestDate}.`;
+};
+
+const StatisticsCard = ({
+    value,
+    label,
+    subValue = null,
+    className,
+}: {
+    value: string;
+    label: string;
+    subValue?: string | null;
+    className?: string;
+}) => (
+    <div className={cn("text-center", className)}>
+        <div className="text-2xl font-bold text-slate-400">{value}</div>
+        <div className="text-muted-foreground text-sm">{label}</div>
+        {subValue && <div className="text-muted-foreground mt-1 text-xs">{subValue}</div>}
+    </div>
+);
+
+const QuickLinksSection = ({
+    game,
+    gameSlug,
+    steamAppId,
+}: {
+    game: Game;
+    gameSlug: string;
+    steamAppId?: number | null;
+}) => (
+    <div className="flex-1 rounded-lg border p-4 md:p-6">
+        <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">Quick Links</h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
+            {game.url && (
+                <MaybeLinkWrapper
+                    href={game.url}
+                    target="_blank"
+                    rel="noopener"
+                    data-sa-click={`${gameSlug}-official-website`}
+                >
+                    Official Game Website
+                </MaybeLinkWrapper>
+            )}
+            {steamAppId && (
+                <MaybeLinkWrapper
+                    href={`https://store.steampowered.com/app/${steamAppId}`}
+                    target="_blank"
+                    rel="noopener"
+                    data-sa-click={`${gameSlug}-steam-page`}
+                >
+                    Steam Page
+                </MaybeLinkWrapper>
+            )}
+            {game.currentSeason?.url && (
+                <MaybeLinkWrapper
+                    href={game.currentSeason.url}
+                    target="_blank"
+                    rel="noopener"
+                    data-sa-click={`${gameSlug}-current-season-details`}
+                >
+                    Current Season Details
+                </MaybeLinkWrapper>
+            )}
+            {game.nextSeason?.url && (
+                <MaybeLinkWrapper
+                    href={game.nextSeason.url}
+                    target="_blank"
+                    rel="noopener"
+                    data-sa-click={`${gameSlug}-next-season-details`}
+                >
+                    Next Season Details
+                </MaybeLinkWrapper>
+            )}
+            <MaybeLinkWrapper
+                href={`/docs/html/${gameSlug}`}
+                data-sa-click={`${gameSlug}-html-docs`}
+            >
+                HTML Documentation
+            </MaybeLinkWrapper>
+            <MaybeLinkWrapper href={`/docs/obs/${gameSlug}`} data-sa-click={`${gameSlug}-obs-docs`}>
+                OBS Integration
+            </MaybeLinkWrapper>
+            <MaybeLinkWrapper
+                href={`/embed/season-widget/${gameSlug}`}
+                data-sa-click={`${gameSlug}-embed-widget`}
+            >
+                Embed Widget
+            </MaybeLinkWrapper>
+        </div>
+    </div>
+);
+
+const SteamIntegrationSection = ({ steamAppId }: { steamAppId: number }) => (
+    <div className="space-y-6 md:space-y-8">
+        <h2 className="text-2xl font-bold md:text-3xl">Steam Integration</h2>
+        <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
+            <div>
+                <h3 className="mb-3 text-lg font-semibold">Steam Store</h3>
+                <SteamEmbed appId={steamAppId} />
+            </div>
+            <div>
+                <h3 className="mb-3 text-lg font-semibold">SteamDB Stats</h3>
+                <SteamDBEmbed appId={steamAppId} />
+            </div>
+        </div>
+    </div>
+);
 
 const GamePage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
@@ -32,7 +312,10 @@ const GamePage = async ({ params }: GamePageProps) => {
     if (!game) {
         notFound();
     }
+
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
+    const statistics = calculateGameStatistics(data, gameSlug);
+    const oldestSeasonInfo = getOldestSeasonInfo(data, gameSlug);
 
     return (
         <>
@@ -46,19 +329,25 @@ const GamePage = async ({ params }: GamePageProps) => {
                     <GameCard
                         name={game.name}
                         gameLogo={
-                            <SanityImage
-                                loading="lazy"
-                                src={game.logo!}
-                                alt={`${game.name} logo`}
-                                className="my-auto"
-                                width={160}
-                                height={140}
-                                objectFit="contain"
-                            />
+                            game.logo?.url ? (
+                                <SanityImage
+                                    loading="lazy"
+                                    src={game.logo!}
+                                    alt={`${game.name} logo`}
+                                    className="my-auto"
+                                    width={160}
+                                    height={140}
+                                    objectFit="contain"
+                                />
+                            ) : (
+                                <div className="my-auto flex h-[140px] w-[160px] items-center justify-center bg-gray-200 text-gray-500">
+                                    No Logo
+                                </div>
+                            )
                         }
                         slug={game.slug}
-                        shortName={game.shortName!}
-                        url={game.url!}
+                        shortName={game.shortName || game.name}
+                        url={game.url || "#"}
                         official={game.official}
                         stats={{}}
                     >
@@ -81,71 +370,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                         )}
                     </GameCard>
 
-                    <div className="flex-1 rounded-lg border p-4 md:p-6">
-                        <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">
-                            Quick Links
-                        </h2>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
-                            {game.url && (
-                                <MaybeLinkWrapper
-                                    href={game.url}
-                                    target="_blank"
-                                    rel="noopener"
-                                    data-sa-click={`${gameSlug}-official-website`}
-                                >
-                                    Official Game Website
-                                </MaybeLinkWrapper>
-                            )}
-                            {steamAppId && (
-                                <MaybeLinkWrapper
-                                    href={`https://store.steampowered.com/app/${steamAppId}`}
-                                    target="_blank"
-                                    rel="noopener"
-                                    data-sa-click={`${gameSlug}-steam-page`}
-                                >
-                                    Steam Page
-                                </MaybeLinkWrapper>
-                            )}
-                            {game.currentSeason?.url && (
-                                <MaybeLinkWrapper
-                                    href={game.currentSeason.url}
-                                    target="_blank"
-                                    rel="noopener"
-                                    data-sa-click={`${gameSlug}-current-season-details`}
-                                >
-                                    Current Season Details
-                                </MaybeLinkWrapper>
-                            )}
-                            {game.nextSeason?.url && (
-                                <MaybeLinkWrapper
-                                    href={game.nextSeason.url}
-                                    target="_blank"
-                                    rel="noopener"
-                                    data-sa-click={`${gameSlug}-next-season-details`}
-                                >
-                                    Next Season Details
-                                </MaybeLinkWrapper>
-                            )}
-                            <MaybeLinkWrapper
-                                href={`/docs/html/${gameSlug}`}
-                                data-sa-click={`${gameSlug}-html-docs`}
-                            >
-                                HTML Documentation
-                            </MaybeLinkWrapper>
-                            <MaybeLinkWrapper
-                                href={`/docs/obs/${gameSlug}`}
-                                data-sa-click={`${gameSlug}-obs-docs`}
-                            >
-                                OBS Integration
-                            </MaybeLinkWrapper>
-                            <MaybeLinkWrapper
-                                href={`/embed/season-widget/${gameSlug}`}
-                                data-sa-click={`${gameSlug}-embed-widget`}
-                            >
-                                Embed Widget
-                            </MaybeLinkWrapper>
-                        </div>
-                    </div>
+                    <QuickLinksSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
                 </div>
 
                 <div className="mb-6 md:mb-8">
@@ -154,313 +379,37 @@ const GamePage = async ({ params }: GamePageProps) => {
                             Statistics
                         </h2>
                         <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-slate-400">
-                                    {game.averageSeasonDuration || "N/A"} days
-                                </div>
-                                <div className="text-muted-foreground text-sm">
-                                    Average Duration
-                                </div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-slate-400">
-                                    {(() => {
-                                        const gameSeasons = data.seasons.filter(
-                                            (s) => s?.game === gameSlug,
-                                        );
-                                        if (gameSeasons.length < 2) return "N/A";
-
-                                        const seasonsWithDates = gameSeasons.filter(
-                                            (s) => s?.start?.startDate,
-                                        );
-                                        if (seasonsWithDates.length < 2) return "N/A";
-
-                                        const sortedSeasons = seasonsWithDates.sort((a, b) => {
-                                            const aDate = a?.start?.startDate
-                                                ? new Date(a.start.startDate).getTime()
-                                                : 0;
-                                            const bDate = b?.start?.startDate
-                                                ? new Date(b.start.startDate).getTime()
-                                                : 0;
-                                            return aDate - bDate;
-                                        });
-
-                                        let totalDays = 0;
-                                        let count = 0;
-
-                                        for (let i = 0; i < sortedSeasons.length - 1; i++) {
-                                            const currentStartDate =
-                                                sortedSeasons[i]!.start!.startDate;
-                                            const nextStartDate =
-                                                sortedSeasons[i + 1]!.start!.startDate;
-                                            if (!currentStartDate || !nextStartDate) continue;
-                                            const current = new Date(currentStartDate);
-                                            const next = new Date(nextStartDate);
-                                            const daysBetween = Math.ceil(
-                                                (next.getTime() - current.getTime()) /
-                                                    (1000 * 60 * 60 * 24),
-                                            );
-                                            totalDays += daysBetween;
-                                            count++;
-                                        }
-
-                                        if (count === 0) return "N/A";
-
-                                        const avgDaysBetweenSeasons = totalDays / count;
-                                        const seasonsPerYear = (
-                                            365 / avgDaysBetweenSeasons
-                                        ).toFixed(2);
-
-                                        return seasonsPerYear;
-                                    })()}
-                                </div>
-                                <div className="text-muted-foreground text-sm">
-                                    Average Per Year
-                                </div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-slate-400">
-                                    {(() => {
-                                        const gameSeasons = data.seasons.filter(
-                                            (s) => s?.game === gameSlug,
-                                        );
-                                        if (gameSeasons.length === 0) return "N/A";
-
-                                        const seasonsWithStartTimes = gameSeasons.filter(
-                                            (s) => s?.start?.startDate,
-                                        );
-                                        if (seasonsWithStartTimes.length === 0) return "N/A";
-
-                                        const startHours = seasonsWithStartTimes
-                                            .map((s) => s?.start?.startDate)
-                                            .filter((d): d is string => typeof d === "string")
-                                            .map((d) => {
-                                                const date = new Date(d);
-                                                return date.getHours();
-                                            });
-
-                                        const hourCounts = startHours.reduce(
-                                            (acc, hour) => {
-                                                acc[hour] = (acc[hour] || 0) + 1;
-                                                return acc;
-                                            },
-                                            {} as Record<number, number>,
-                                        );
-
-                                        const mostCommonHour = Object.entries(hourCounts).sort(
-                                            ([, a], [, b]) => b - a,
-                                        )[0];
-
-                                        if (!mostCommonHour) return "N/A";
-
-                                        const hour = parseInt(mostCommonHour[0]);
-                                        const ampm = hour >= 12 ? "PM" : "AM";
-                                        const displayHour =
-                                            hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-
-                                        return `${displayHour} ${ampm}`;
-                                    })()}
-                                </div>
-                                <div className="text-muted-foreground text-sm">
-                                    Usual Start Time
-                                </div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-slate-400">
-                                    {(() => {
-                                        const gameSeasons = data.seasons.filter(
-                                            (s) => s?.game === gameSlug,
-                                        );
-                                        if (gameSeasons.length === 0) return "N/A";
-
-                                        const completedSeasons = gameSeasons.filter(
-                                            (s) => s?.start?.startDate && s?.end?.endDate,
-                                        );
-                                        if (completedSeasons.length === 0) return "N/A";
-
-                                        const seasonDurations = completedSeasons
-                                            .map((s) => {
-                                                if (!s?.start?.startDate || !s?.end?.endDate)
-                                                    return null;
-                                                const start = new Date(s.start.startDate);
-                                                const end = new Date(s.end.endDate);
-                                                return {
-                                                    duration: Math.ceil(
-                                                        (end.getTime() - start.getTime()) /
-                                                            (1000 * 60 * 60 * 24),
-                                                    ),
-                                                    name: s.name,
-                                                };
-                                            })
-                                            .filter((s): s is NonNullable<typeof s> => s !== null);
-
-                                        const maxSeason = seasonDurations.reduce((max, season) =>
-                                            season.duration > max.duration ? season : max,
-                                        );
-                                        return `${maxSeason.duration} days`;
-                                    })()}
-                                </div>
-                                <div className="text-muted-foreground text-sm">Max Duration</div>
-                                <div className="text-muted-foreground mt-1 text-xs">
-                                    {(() => {
-                                        const gameSeasons = data.seasons.filter(
-                                            (s) => s?.game === gameSlug,
-                                        );
-                                        if (gameSeasons.length === 0) return "";
-
-                                        const completedSeasons = gameSeasons.filter(
-                                            (s) => s?.start?.startDate && s?.end?.endDate,
-                                        );
-                                        if (completedSeasons.length === 0) return "";
-
-                                        const seasonDurations = completedSeasons
-                                            .map((s) => {
-                                                if (!s?.start?.startDate || !s?.end?.endDate)
-                                                    return null;
-                                                const start = new Date(s.start.startDate);
-                                                const end = new Date(s.end.endDate);
-                                                return {
-                                                    duration: Math.ceil(
-                                                        (end.getTime() - start.getTime()) /
-                                                            (1000 * 60 * 60 * 24),
-                                                    ),
-                                                    name: s.name,
-                                                };
-                                            })
-                                            .filter((s): s is NonNullable<typeof s> => s !== null);
-
-                                        const maxSeason = seasonDurations.reduce((max, season) =>
-                                            season.duration > max.duration ? season : max,
-                                        );
-                                        return maxSeason.name;
-                                    })()}
-                                </div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-slate-400">
-                                    {(() => {
-                                        const gameSeasons = data.seasons.filter(
-                                            (s) => s?.game === gameSlug,
-                                        );
-                                        if (gameSeasons.length === 0) return "N/A";
-
-                                        const completedSeasons = gameSeasons.filter(
-                                            (s) => s?.start?.startDate && s?.end?.endDate,
-                                        );
-                                        if (completedSeasons.length === 0) return "N/A";
-
-                                        const seasonDurations = completedSeasons
-                                            .map((s) => {
-                                                if (!s?.start?.startDate || !s?.end?.endDate)
-                                                    return null;
-                                                const start = new Date(s.start.startDate);
-                                                const end = new Date(s.end.endDate);
-                                                return {
-                                                    duration: Math.ceil(
-                                                        (end.getTime() - start.getTime()) /
-                                                            (1000 * 60 * 60 * 24),
-                                                    ),
-                                                    name: s.name,
-                                                };
-                                            })
-                                            .filter((s): s is NonNullable<typeof s> => s !== null);
-
-                                        const minSeason = seasonDurations.reduce((min, season) =>
-                                            season.duration < min.duration ? season : min,
-                                        );
-                                        return `${minSeason.duration} days`;
-                                    })()}
-                                </div>
-                                <div className="text-muted-foreground text-sm">Min Duration</div>
-                                <div className="text-muted-foreground mt-1 text-xs">
-                                    {(() => {
-                                        const gameSeasons = data.seasons.filter(
-                                            (s) => s?.game === gameSlug,
-                                        );
-                                        if (gameSeasons.length === 0) return "";
-
-                                        const completedSeasons = gameSeasons.filter(
-                                            (s) => s?.start?.startDate && s?.end?.endDate,
-                                        );
-                                        if (completedSeasons.length === 0) return "";
-
-                                        const seasonDurations = completedSeasons
-                                            .map((s) => {
-                                                if (!s?.start?.startDate || !s?.end?.endDate)
-                                                    return null;
-                                                const start = new Date(s.start.startDate);
-                                                const end = new Date(s.end.endDate);
-                                                return {
-                                                    duration: Math.ceil(
-                                                        (end.getTime() - start.getTime()) /
-                                                            (1000 * 60 * 60 * 24),
-                                                    ),
-                                                    name: s.name,
-                                                };
-                                            })
-                                            .filter((s): s is NonNullable<typeof s> => s !== null);
-
-                                        const minSeason = seasonDurations.reduce((min, season) =>
-                                            season.duration < min.duration ? season : min,
-                                        );
-                                        return minSeason.name;
-                                    })()}
-                                </div>
-                            </div>
+                            <StatisticsCard
+                                value={`${game.averageSeasonDuration || "N/A"} days`}
+                                label="Average Duration"
+                            />
+                            <StatisticsCard
+                                value={statistics.averagePerYear}
+                                label="Average Per Year"
+                            />
+                            <StatisticsCard
+                                className="col-span-full md:col-span-1"
+                                value={statistics.usualStartTime}
+                                label="Usual Start Time"
+                            />
+                            <StatisticsCard
+                                value={statistics.maxDuration.days}
+                                label="Max Duration"
+                                subValue={statistics.maxDuration.name}
+                            />
+                            <StatisticsCard
+                                value={statistics.minDuration.days}
+                                label="Min Duration"
+                                subValue={statistics.minDuration.name}
+                            />
                         </div>
                         <div className="text-muted-foreground mt-4 text-center text-xs">
-                            {(() => {
-                                const gameSeasons = data.seasons.filter(
-                                    (s) => s?.game === gameSlug,
-                                );
-                                if (gameSeasons.length === 0) return "No season data available";
-
-                                const seasonsWithStartDates = gameSeasons.filter(
-                                    (s) => s?.start?.startDate,
-                                );
-                                if (seasonsWithStartDates.length === 0)
-                                    return "No season start dates available";
-
-                                const oldestSeason = seasonsWithStartDates.reduce(
-                                    (oldest, season) => {
-                                        if (!season?.start?.startDate || !oldest?.start?.startDate)
-                                            return oldest || season;
-                                        const currentDate = new Date(season.start.startDate);
-                                        const oldestDate = new Date(oldest.start.startDate);
-                                        return currentDate < oldestDate ? season : oldest;
-                                    },
-                                );
-
-                                if (!oldestSeason?.start?.startDate)
-                                    return "No valid season data available";
-                                const oldestDate = new Date(oldestSeason.start.startDate);
-                                const formattedOldestDate = oldestDate.toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                });
-
-                                return `Calculations based on ${seasonsWithStartDates.length} historical entries. Oldest season in aRPG Timeline's archive started ${formattedOldestDate}.`;
-                            })()}
+                            {oldestSeasonInfo}
                         </div>
                     </div>
                 </div>
 
-                {steamAppId && (
-                    <div className="space-y-6 md:space-y-8">
-                        <h2 className="text-2xl font-bold md:text-3xl">Steam Integration</h2>
-                        <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-                            <div>
-                                <h3 className="mb-3 text-lg font-semibold">Steam Store</h3>
-                                <SteamEmbed appId={steamAppId} />
-                            </div>
-                            <div>
-                                <h3 className="mb-3 text-lg font-semibold">SteamDB Stats</h3>
-                                <SteamDBEmbed appId={steamAppId} />
-                            </div>
-                        </div>
-                    </div>
-                )}
+                {steamAppId && <SteamIntegrationSection steamAppId={steamAppId} />}
             </div>
         </>
     );
