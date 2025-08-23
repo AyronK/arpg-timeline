@@ -1,7 +1,8 @@
 "use client";
 
 import { FlaskConical, Gamepad2, Telescope, Users } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import { GameFilters } from "@/components/GameFilters";
 import { useGameFilters } from "@/hooks/useGameFilters";
@@ -71,12 +72,12 @@ export const GamesAndEventsGrid = ({
     statistics: Record<string, GameStatistics>;
     dashboard?: DashboardTag;
 }) => {
-    const [currentDashboard, setCurrentDashboard] = useState<DashboardTag>(dashboard);
-    const [isAnimating, setIsAnimating] = useState(false);
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = useState(false);
     const { filteredGames, totalGames, shownGames, ...filtersProps } = useGameFilters(
         games,
-        currentDashboard,
+        dashboard,
     );
     const events = useTimelineEvents(filteredGames);
     const activeGames = filteredGames.filter((g) => !g.isDormant && !g.isComingSoon);
@@ -84,19 +85,6 @@ export const GamesAndEventsGrid = ({
     const dormantGames = filteredGames
         .filter((g) => g.isDormant)
         .map((g) => ({ ...g, nextSeason: null }));
-
-    const isFirstRender = useRef(true);
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-        setIsAnimating(true);
-        const timer = setTimeout(() => {
-            setIsAnimating(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, [currentDashboard]);
 
     return (
         <>
@@ -106,8 +94,8 @@ export const GamesAndEventsGrid = ({
                     <div className="text-muted-foreground text-right text-sm">
                         <span>
                             <span
-                                key={currentDashboard}
-                                className={`inline-block origin-bottom-right transition-all ease-in-out ${isAnimating ? "text-warning scale-150" : ""}`}
+                                key={dashboard}
+                                className="inline-block origin-bottom-right transition-all ease-in-out"
                             >
                                 {shownGames}
                             </span>{" "}
@@ -119,14 +107,15 @@ export const GamesAndEventsGrid = ({
                             type="single"
                             variant="outline"
                             className="hidden md:flex"
-                            value={currentDashboard}
+                            value={dashboard}
                             onValueChange={(value) => {
                                 if (value) {
                                     setIsLoading(true);
-                                    setTimeout(() => {
-                                        setCurrentDashboard(value as DashboardTag);
-                                        setIsLoading(false);
-                                    }, 100);
+                                    const currentParams = searchParams.toString();
+                                    const newUrl = currentParams
+                                        ? `/dashboard/${value}?${currentParams}`
+                                        : `/dashboard/${value}`;
+                                    router.push(newUrl);
                                 }
                             }}
                         >
