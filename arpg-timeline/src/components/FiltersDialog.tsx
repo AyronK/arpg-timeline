@@ -47,7 +47,7 @@ export const FiltersDialog = ({
     const isMounted = useHasMounted();
 
     if (!isMounted) {
-        return null;
+        return <Trigger />;
     }
 
     if (is4xl) {

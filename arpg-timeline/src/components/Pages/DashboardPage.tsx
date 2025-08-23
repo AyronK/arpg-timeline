@@ -1,5 +1,5 @@
+import { Main } from "@/components/Dashboard/Main";
 import { Faq } from "@/components/Faq";
-import { Main } from "@/components/Home/HomePage";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { GameStatistics } from "@/lib/cms/games.types";
