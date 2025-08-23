@@ -138,7 +138,7 @@ const Trigger = forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typ
 
 Trigger.displayName = "Trigger";
 
-const Filters = ({
+export const Filters = ({
     filters,
     checked,
     onGroupCheckedChange,

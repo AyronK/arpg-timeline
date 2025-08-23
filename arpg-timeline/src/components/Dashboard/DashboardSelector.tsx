@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { DashboardTag } from "@/lib/cms/gameTags";
+import { Button } from "@/ui/Button";
 import { ToggleGroup, ToggleGroupItem } from "@/ui/ToggleGroup";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
@@ -11,9 +12,14 @@ import { DashboardConfig } from "./DashboardConfig";
 interface DashboardSelectorProps {
     dashboard: DashboardTag;
     onLoadingChange: (loading: boolean) => void;
+    isMobile?: boolean;
 }
 
-export const DashboardSelector = ({ dashboard, onLoadingChange }: DashboardSelectorProps) => {
+export const DashboardSelector = ({
+    dashboard,
+    onLoadingChange,
+    isMobile = false,
+}: DashboardSelectorProps) => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -27,6 +33,31 @@ export const DashboardSelector = ({ dashboard, onLoadingChange }: DashboardSelec
             router.push(newUrl);
         }
     };
+
+    if (isMobile) {
+        return (
+            <div className="flex flex-col gap-3">
+                {(Object.keys(DashboardConfig) as DashboardTag[])
+                    .filter((tag) => DashboardConfig[tag])
+                    .map((tag) => {
+                        const config = DashboardConfig[tag]!;
+                        const IconComponent = config.icon;
+                        const isActive = tag === dashboard;
+                        return (
+                            <Button
+                                key={tag}
+                                variant={isActive ? "default" : "outline"}
+                                className="justify-start gap-3"
+                                onClick={() => handleDashboardChange(tag)}
+                            >
+                                <IconComponent className="h-4 w-4" />
+                                <span>{config.description}</span>
+                            </Button>
+                        );
+                    })}
+            </div>
+        );
+    }
 
     return (
         <ToggleGroup

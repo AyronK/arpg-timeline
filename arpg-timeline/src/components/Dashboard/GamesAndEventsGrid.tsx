@@ -14,6 +14,7 @@ import { DashboardSelector } from "./DashboardSelector";
 import { Events } from "./Events";
 import { GameCountDisplay } from "./GameCountDisplay";
 import { Games } from "./Games";
+import { MobileBottomMenu } from "./MobileBottomMenu";
 
 export const GamesAndEventsGrid = ({
     games,
@@ -38,7 +39,7 @@ export const GamesAndEventsGrid = ({
 
     return (
         <>
-            <article className="flex flex-col gap-4 md:gap-5">
+            <article className="flex flex-col gap-4 pb-20 md:pb-0 2xl:gap-5">
                 <h2 className="sr-only">Seasons</h2>
                 <div className="relative flex flex-col gap-1">
                     <GameCountDisplay
@@ -46,7 +47,7 @@ export const GamesAndEventsGrid = ({
                         totalGames={totalGames}
                         dashboard={dashboard}
                     />
-                    <div className="flex flex-row items-end gap-4">
+                    <div className="hidden md:flex md:flex-row md:items-end md:gap-4">
                         <DashboardSelector
                             key={dashboard}
                             dashboard={dashboard}
@@ -65,6 +66,11 @@ export const GamesAndEventsGrid = ({
                     {filteredGames.length > 1 && <Events events={events} />}
                 </div>
             </article>
+            <MobileBottomMenu
+                dashboard={dashboard}
+                onLoadingChange={handleLoadingChange}
+                filtersProps={filtersProps}
+            />
         </>
     );
 };

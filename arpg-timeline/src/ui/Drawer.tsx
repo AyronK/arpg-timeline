@@ -1,5 +1,6 @@
 "use client";
 
+import { useHasMounted } from "@react-hooks-library/core";
 import {
     ComponentProps,
     ComponentPropsWithoutRef,
@@ -11,9 +12,13 @@ import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "@/lib/utils";
 
-const Drawer = ({ ...props }: ComponentProps<typeof DrawerPrimitive.Root>) => (
-    <DrawerPrimitive.Root shouldScaleBackground={false} {...props} />
-);
+const Drawer = ({ ...props }: ComponentProps<typeof DrawerPrimitive.Root>) => {
+    const hasMounted = useHasMounted();
+    if (!hasMounted) {
+        return null;
+    }
+    return <DrawerPrimitive.Root shouldScaleBackground={false} {...props} />;
+};
 Drawer.displayName = "Drawer";
 
 const DrawerTrigger = DrawerPrimitive.Trigger;
