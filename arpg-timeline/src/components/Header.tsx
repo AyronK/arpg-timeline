@@ -84,7 +84,7 @@ export const Header = () => {
                                 />
                             }
                             label="Support Our Work"
-                            dataSaClick="patron"
+                            dataSaClick="patreon"
                             className="hidden lg:flex"
                         />
                         <SocialButton
@@ -107,7 +107,12 @@ export const Header = () => {
 
                     <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                         <DropdownMenuTrigger asChild className="lg:hidden">
-                            <Button variant="ghost" size="icon" className="h-10 w-10">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-10 w-10"
+                                data-sa-click="menu-toggle"
+                            >
                                 {isMobileMenuOpen ? (
                                     <X className="h-5 w-5" />
                                 ) : (
@@ -128,6 +133,7 @@ export const Header = () => {
                                     className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
                                     target="_blank"
                                     rel="external noopener noreferrer"
+                                    data-sa-click="discord"
                                 >
                                     <Image
                                         src="/assets/discord-logo.svg"
@@ -143,6 +149,7 @@ export const Header = () => {
                                     className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
                                     target="_blank"
                                     rel="noopener"
+                                    data-sa-click="patreon"
                                 >
                                     <Image
                                         src="/assets/patreon-logo.png"
@@ -158,6 +165,7 @@ export const Header = () => {
                                     className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
                                     target="_blank"
                                     rel="external nofollow noreferrer"
+                                    data-sa-click="github"
                                 >
                                     <svg
                                         className="fill-foreground h-4 w-4"

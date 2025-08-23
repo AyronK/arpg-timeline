@@ -27,6 +27,7 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => {
                 aria-label={expanded ? "Collapse" : "Expand"}
                 className="absolute top-1 right-1"
                 onClick={() => setExpanded((prev) => !prev)}
+                data-sa-click="timeline-expand-collapse"
             >
                 {expanded ? <Shrink className="h-4 w-4" /> : <Expand className="h-4 w-4" />}
             </Button>

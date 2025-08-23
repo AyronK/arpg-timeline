@@ -87,6 +87,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                 variant={"default"}
                                 onClick={handleCopyUrl}
                                 aria-label={copiedUrl ? "Copied!" : "Copy URL"}
+                                data-sa-click={`${game}-copy-obs-url`}
                             >
                                 {copiedUrl ? (
                                     <>
@@ -152,6 +153,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                 variant={"default"}
                                 onClick={handleCopyCss}
                                 aria-label={copiedCss ? "Copied!" : "Copy CSS"}
+                                data-sa-click={`${game}-copy-obs-css`}
                             >
                                 {copiedCss ? (
                                     <>
@@ -210,6 +212,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm transition-colors"
                         aria-label="Open widget in new tab"
+                        data-sa-click={`${game}-test-obs-browser`}
                     >
                         <ExternalLink className="h-3 w-3" />
                         Test in browser
@@ -316,6 +319,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline hover:no-underline"
+                        data-sa-click="obs-documentation"
                     >
                         official OBS Browser Source documentation
                     </a>

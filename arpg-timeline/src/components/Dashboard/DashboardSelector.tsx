@@ -62,6 +62,7 @@ export const DashboardSelector = ({
                                 variant={isActive ? "default" : "ghost"}
                                 className="h-auto min-h-[60px] justify-start gap-3 py-2 text-left"
                                 onClick={() => handleDashboardChange(tag)}
+                                data-sa-click={`dashboard-${tag}`}
                             >
                                 <div className="flex w-full flex-col items-start text-left">
                                     <div className="flex items-start gap-3">
@@ -107,6 +108,7 @@ export const DashboardSelector = ({
                             value={tag}
                             key={tag}
                             aria-label={tag}
+                            data-sa-click={`dashboard-${tag}`}
                         >
                             <Tooltip delayDuration={500}>
                                 <TooltipTrigger asChild>

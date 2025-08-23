@@ -15,6 +15,7 @@ const LookingForModeratorsPage = () => {
                     className="font-semibold hover:opacity-75"
                     href={process.env.NEXT_PUBLIC_DISCORD_URL}
                     rel="noopener noreferrer"
+                    data-sa-click="discord"
                 >
                     contact us on Discord
                 </Link>{" "}
@@ -23,6 +24,7 @@ const LookingForModeratorsPage = () => {
                     className="font-semibold hover:opacity-75"
                     href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
                     rel="noopener noreferrer"
+                    data-sa-click="email"
                 >
                     send an email
                 </Link>

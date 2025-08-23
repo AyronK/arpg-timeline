@@ -24,6 +24,7 @@ export const CalendarMenu = ({ title, startDate }: { title: string; startDate: s
                 className="h-[32px]! w-[32px]! flex-1 md:h-[40px]! md:w-[40px]!"
                 size={"icon"}
                 aria-label="Add to calendar"
+                data-sa-click="calendar-menu"
             >
                 <CalendarPlus className="h-4 w-4" />
             </Button>

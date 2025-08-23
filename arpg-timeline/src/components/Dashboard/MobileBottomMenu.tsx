@@ -140,7 +140,7 @@ export function MobileBottomMenu({
                                             href={process.env.NEXT_PUBLIC_PATREON_URL}
                                             rel="noopener"
                                             target="_blank"
-                                            data-sa-click="patron"
+                                            data-sa-click="patreon"
                                         >
                                             <Button
                                                 variant="ghost"
@@ -170,6 +170,7 @@ export function MobileBottomMenu({
                                         size="sm"
                                         onClick={handleShare}
                                         className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
+                                        data-sa-click="share"
                                     >
                                         <Share2 className="h-5 w-5" />
                                         <span className="text-[0.65rem] leading-2 font-medium">
@@ -186,6 +187,7 @@ export function MobileBottomMenu({
                                                 size="sm"
                                                 disabled={isFiltersDisabled}
                                                 className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
+                                                data-sa-click="filters"
                                             >
                                                 <div className="relative">
                                                     <Filter className="h-5 w-5" />
@@ -257,7 +259,10 @@ export function MobileBottomMenu({
                                     />
                                 </DropdownMenuContent>
                                 <DropdownMenuTrigger asChild>
-                                    <Button className="flex h-11 w-11 rotate-45 transform flex-col items-center justify-center border-2 border-slate-500 bg-gray-800 hover:bg-gray-700">
+                                    <Button
+                                        className="flex h-11 w-11 rotate-45 transform flex-col items-center justify-center border-2 border-slate-500 bg-gray-800 hover:bg-gray-700"
+                                        data-sa-click="dashboard-selector"
+                                    >
                                         <div className="-rotate-45 transform">
                                             {(() => {
                                                 const config = DashboardConfig[dashboard];

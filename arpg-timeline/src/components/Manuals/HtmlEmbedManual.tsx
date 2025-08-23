@@ -54,6 +54,7 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
                         variant={"default"}
                         onClick={handleCopy}
                         aria-label={copied ? "Copied!" : "Copy embed code"}
+                        data-sa-click={`${game}-copy-embed-code`}
                     >
                         {copied ? (
                             <>
@@ -119,6 +120,7 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm transition-colors"
                         aria-label="Open widget in new tab"
+                        data-sa-click={`${game}-open-widget-in-new-tab`}
                     >
                         <ExternalLink className="h-3 w-3" />
                         Open in new tab

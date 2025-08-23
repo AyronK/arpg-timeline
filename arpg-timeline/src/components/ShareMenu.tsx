@@ -18,6 +18,7 @@ export const ShareMenu = ({ title, startDate }: { title: string; startDate: stri
                 className="h-[32px]! w-[32px]! flex-1 md:h-[40px]! md:w-[40px]!"
                 size={"icon"}
                 aria-label="Share"
+                data-sa-click="share-menu"
             >
                 <Share2 className="h-4 w-4" />
             </Button>
@@ -26,6 +27,7 @@ export const ShareMenu = ({ title, startDate }: { title: string; startDate: stri
             <DropdownMenuItem
                 onClick={() => shareOnDiscord(title, new Date(startDate))}
                 aria-label="Share on Discord"
+                data-sa-click="discord"
             >
                 <Image
                     className="mr-2 h-4 w-4"

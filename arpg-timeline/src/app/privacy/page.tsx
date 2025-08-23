@@ -29,6 +29,7 @@ const PrivacyPage = () => {
                                 href={links.gdpr}
                                 rel="noopener nofollow noreferrer"
                                 target="_blank"
+                                data-sa-click="privacy-gdpr"
                             >
                                 here
                             </Link>
@@ -49,6 +50,7 @@ const PrivacyPage = () => {
                                 href={links.github}
                                 rel="noopener nofollow noreferrer"
                                 target="_blank"
+                                data-sa-click="github"
                             >
                                 GitHub
                             </Link>
@@ -71,6 +73,7 @@ const PrivacyPage = () => {
                                 href={links.whatWeCollect}
                                 rel="noreferrer noopener"
                                 target="_blank"
+                                data-sa-click="privacy-what-we-collect"
                             >
                                 here
                             </Link>
@@ -82,6 +85,7 @@ const PrivacyPage = () => {
                                 href={links.metrics}
                                 rel="noreferrer noopener"
                                 target="_blank"
+                                data-sa-click="privacy-metrics"
                             >
                                 here
                             </Link>

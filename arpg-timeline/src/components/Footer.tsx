@@ -16,6 +16,7 @@ export const Footer = () => (
                         target="_blank"
                         rel="noopener noreferrer nofollow"
                         className="font-semibold transition-opacity duration-200 hover:opacity-75"
+                        data-sa-click="licenses"
                     >
                         Licenses
                     </Link>
@@ -25,6 +26,7 @@ export const Footer = () => (
                     <Link
                         className="font-semibold transition-opacity duration-200 hover:opacity-75"
                         href="/faq"
+                        data-sa-click="faq"
                     >
                         FAQ
                     </Link>
@@ -34,6 +36,7 @@ export const Footer = () => (
                     <Link
                         className="font-semibold transition-opacity duration-200 hover:opacity-75"
                         href="/privacy"
+                        data-sa-click="privacy"
                     >
                         Privacy & GDPR
                     </Link>
@@ -54,6 +57,7 @@ export const Footer = () => (
                     <Link
                         className="font-semibold transition-opacity duration-200 hover:opacity-75"
                         href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
+                        data-sa-click="contact"
                     >
                         Contact
                     </Link>
@@ -67,6 +71,7 @@ export const Footer = () => (
                         rel="external nofollow noreferrer"
                         target="_blank"
                         aria-label="Author's Github Profile - AyronK"
+                        data-sa-click="github"
                     >
                         AyronK @ GitHub
                     </Link>

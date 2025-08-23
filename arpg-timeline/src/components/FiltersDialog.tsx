@@ -184,6 +184,7 @@ export const Filters = ({
                                     variant="ghost"
                                     onClick={() => onGroupCheckedChange(g, !anyChecked)}
                                     disabled={disabled}
+                                    data-sa-click={`filter-group-${g === "" ? "uncategorized" : g}`}
                                 >
                                     {anyChecked ? (
                                         <Eye className="h-4 w-4" />

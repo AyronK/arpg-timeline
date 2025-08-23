@@ -14,7 +14,11 @@ export const SupportButtons = () => {
                 <div className="mx-auto mb-4 max-w-prose text-center">
                     <p className="text-muted-foreground text-sm">
                         Have questions? Check out our{" "}
-                        <MaybeLinkWrapper className="inline-flex! underline" href="/faq">
+                        <MaybeLinkWrapper
+                            className="inline-flex! underline"
+                            href="/faq"
+                            data-sa-click="faq"
+                        >
                             FAQ
                         </MaybeLinkWrapper>
                         .
@@ -26,7 +30,7 @@ export const SupportButtons = () => {
                             href={process.env.NEXT_PUBLIC_PATREON_URL}
                             rel="noopener"
                             target="_blank"
-                            data-sa-click="patron"
+                            data-sa-click="patreon"
                         >
                             <div className="mr-2 grid h-[1.4rem] w-[1.4rem] place-content-center rounded-full bg-current">
                                 <Image
@@ -46,7 +50,7 @@ export const SupportButtons = () => {
                         size="lg"
                         className="font-ui font-semibold transition-all hover:opacity-100 max-sm:order-3"
                     >
-                        <a href="/looking-for-moderators" rel="self">
+                        <a href="/looking-for-moderators" rel="self" data-sa-click="moderators">
                             <UsersRound className="mr-2 h-[1.2rem] w-[1.2rem]" />
                             Looking for moderators
                         </a>
