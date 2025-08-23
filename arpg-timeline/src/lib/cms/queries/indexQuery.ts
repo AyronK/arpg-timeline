@@ -39,11 +39,7 @@ export const indexQuery = `{
       additionalText
     }
   },
-  "faq": *[_type == "faq"] | order(order asc){
-    title,
-    content,
-    order
-  },
+
   "liveStreamsOnTwitch": *[_type == "liveStreamTwitch"]{
     "game": game->slug.current,
     "platform": platform->_id,
@@ -103,12 +99,6 @@ export interface Season {
     end?: SeasonEndDateInfo;
 }
 
-export interface Faq {
-    title: string;
-    content: PortableTextBlock[];
-    order: number;
-}
-
 export interface LiveStreamOnTwitch {
     game: string;
     platform: string;
@@ -134,7 +124,6 @@ export interface Toast {
 export interface IndexQueryResult {
     games: Game[];
     seasons: Season[];
-    faq: Faq[];
     liveStreamsOnTwitch: LiveStreamOnTwitch[];
     twitchChannels: TwitchChannel[];
     toast?: Toast;

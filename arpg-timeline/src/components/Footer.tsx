@@ -23,6 +23,12 @@ export const Footer = () => (
                 </div>
 
                 <div className="flex flex-row gap-1">
+                    <Link className="font-semibold hover:opacity-75" href="/faq" rel="self">
+                        FAQ
+                    </Link>
+                </div>
+
+                <div className="flex flex-row gap-1">
                     <Link className="font-semibold hover:opacity-75" href="/privacy" rel="self">
                         Privacy & GDPR
                     </Link>

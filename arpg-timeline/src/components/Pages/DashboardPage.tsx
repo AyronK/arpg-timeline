@@ -1,7 +1,7 @@
 import { Main } from "@/components/Dashboard/Main";
-import { Faq } from "@/components/Faq";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
+import { SupportButtons } from "@/components/SupportButtons";
 import { GameStatistics } from "@/lib/cms/games.types";
 import { DashboardTag } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
@@ -64,7 +64,7 @@ export const DashboardPage = async ({ dashboard }: DashboardPageProps) => {
                 />
             </div>
             <StructuredDataScripts games={games} />
-            <Faq faq={data.faq} />
+            <SupportButtons />
         </>
     );
 };
