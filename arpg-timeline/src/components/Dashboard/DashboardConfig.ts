@@ -1,4 +1,4 @@
-import { FlaskConical, RotateCwSquare, Telescope, Users } from "lucide-react";
+import { FlaskConical, Library, RotateCwSquare, Telescope, Users } from "lucide-react";
 
 import { DashboardTag } from "@/lib/cms/gameTags";
 
@@ -35,5 +35,10 @@ export const DashboardConfig: Partial<
         tooltip:
             "Other games related to the genre or with similar appeal that do not strictly follow a seasonal aRPG type",
         icon: Telescope,
+    },
+    everything: {
+        description: "Full Catalog",
+        tooltip: "Display all games together in one comprehensive view",
+        icon: Library,
     },
 };

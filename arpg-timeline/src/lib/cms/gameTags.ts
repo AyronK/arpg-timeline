@@ -5,7 +5,8 @@ export type DashboardTag =
     | "other"
     | "community"
     | "seasonal"
-    | "early-access";
+    | "early-access"
+    | "everything";
 
 // Main Game Tags - comprehensive game features and characteristics
 export type GameTag =
@@ -73,6 +74,7 @@ export const DASHBOARD_TAGS = [
     "community",
     "seasonal",
     "early-access",
+    "everything",
 ] satisfies DashboardTag[];
 
 // Tag Categories for easier filtering and grouping
@@ -232,6 +234,7 @@ export const isDashboardTag = (value: string): value is DashboardTag => {
         "community",
         "seasonal",
         "early-access",
+        "everything",
     ];
     return dashboardTags.includes(value as DashboardTag);
 };

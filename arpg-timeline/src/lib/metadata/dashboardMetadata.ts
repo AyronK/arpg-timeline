@@ -18,6 +18,7 @@ const dashboardLabels: Record<string, string> = {
     community: "Community Games",
     seasonal: "Seasonal Games",
     "early-access": "Early Access Games",
+    everything: "Full Catalog",
 };
 
 export async function generateDashboardMetadata(

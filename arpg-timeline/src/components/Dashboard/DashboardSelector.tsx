@@ -30,6 +30,13 @@ export const DashboardSelector = ({
             const currentParams = searchParams.toString();
             const newUrl = currentParams ? `/?${currentParams}` : "/";
             router.push(newUrl);
+        } else if (value === "everything") {
+            onLoadingChange(true);
+            const currentParams = searchParams.toString();
+            const newUrl = currentParams
+                ? `/dashboard/everything?${currentParams}`
+                : `/dashboard/everything`;
+            router.push(newUrl);
         } else if (value) {
             onLoadingChange(true);
             const currentParams = searchParams.toString();

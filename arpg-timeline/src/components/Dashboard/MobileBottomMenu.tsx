@@ -32,6 +32,7 @@ type MobileBottomMenuProps = {
     onLoadingChange: (loading: boolean) => void;
     shownGames: number;
     totalGames: number;
+    isFiltersDisabled?: boolean;
 };
 
 export function MobileBottomMenu({
@@ -40,6 +41,7 @@ export function MobileBottomMenu({
     onLoadingChange,
     shownGames,
     totalGames,
+    isFiltersDisabled = false,
 }: MobileBottomMenuProps) {
     const { isMd } = useBreakpoint("md");
     const [isVisible, setIsVisible] = useState(true);
@@ -98,7 +100,7 @@ export function MobileBottomMenu({
 
     return (
         <>
-            <div className="fixed right-0 bottom-0 left-0 z-[60] md:hidden">
+            <div className="fixed right-0 bottom-0 left-0 z-[60] lg:hidden">
                 <div
                     className={`transition-all duration-300 ease-in-out ${
                         isVisible ? "translate-none" : "pointer-events-none translate-y-[96px]"
@@ -182,6 +184,7 @@ export function MobileBottomMenu({
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
+                                                disabled={isFiltersDisabled}
                                                 className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
                                             >
                                                 <div className="relative">
@@ -213,12 +216,13 @@ export function MobileBottomMenu({
                                                 onGroupCheckedChange={
                                                     filtersProps.toggleGroupFilter
                                                 }
+                                                disabled={isFiltersDisabled}
                                             />
-                                            <DrawerFooter className="absolute right-0 bottom-0 md:relative">
-                                                <div className="ml-auto md:mr-auto md:ml-0">
+                                            <DrawerFooter className="absolute right-0 bottom-0 lg:relative">
+                                                <div className="ml-auto lg:mr-auto lg:ml-0">
                                                     <DrawerClose asChild>
                                                         <Button
-                                                            className="shadow-md shadow-black md:shadow-none"
+                                                            className="shadow-md shadow-black lg:shadow-none"
                                                             variant="outline"
                                                         >
                                                             Close

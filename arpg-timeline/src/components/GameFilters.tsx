@@ -13,6 +13,7 @@ export type GameFiltersProps = {
     toggleGameFilter: (slug: string, value: boolean) => void;
     toggleGroupFilter: (group: string, value: boolean) => void;
     activeFilters: string[];
+    disabled?: boolean;
 };
 
 export const GameFilters = ({
@@ -20,6 +21,7 @@ export const GameFilters = ({
     gameFilters,
     toggleGameFilter,
     toggleGroupFilter,
+    disabled = false,
 }: GameFiltersProps) => (
     <div className="">
         <ErrorBoundary fallback={<WidgetDiedFallback />}>
@@ -28,6 +30,7 @@ export const GameFilters = ({
                 filters={gameFilters}
                 onCheckedChange={toggleGameFilter}
                 onGroupCheckedChange={toggleGroupFilter}
+                disabled={disabled}
             />
         </ErrorBoundary>
     </div>

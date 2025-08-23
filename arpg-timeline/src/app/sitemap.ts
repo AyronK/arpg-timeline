@@ -62,7 +62,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         });
 
         Object.keys(DashboardConfig)
-            .filter((dashboard) => dashboard !== "default-when-next-confirmed")
+            .filter(
+                (dashboard) =>
+                    dashboard !== "default-when-next-confirmed" && dashboard !== "everything",
+            )
             .forEach((dashboard) => {
                 sitemap.push({
                     url: `${baseUrl}/dashboard/${dashboard}`,

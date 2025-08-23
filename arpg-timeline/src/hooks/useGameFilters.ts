@@ -83,6 +83,10 @@ export const useGameFilters = (
     };
 
     const filteredGames = useMemo(() => {
+        if (dashboardTag === "everything") {
+            return games;
+        }
+
         let filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
 
         if (dashboardTag === "default-when-next-confirmed") {
