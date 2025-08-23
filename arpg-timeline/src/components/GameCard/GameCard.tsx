@@ -1,4 +1,5 @@
 "use client";
+
 import { CommunityLabel } from "@/components/CommunityLabel";
 import { GameCardProps } from "@/components/GameCard/GameCard.types";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
