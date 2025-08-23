@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { DashboardPage as SharedDashboardPage } from "@/components/Pages/DashboardPage";
-import { DASHBOARD_TAGS, isDashboardTag } from "@/lib/cms/gameTags";
+import { isDashboardTag } from "@/lib/cms/gameTags";
 import { generateDashboardMetadata } from "@/lib/metadata/dashboardMetadata";
 
 interface DashboardPageProps {
@@ -22,7 +23,7 @@ const DashboardPage = async ({ params }: DashboardPageProps) => {
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-    return DASHBOARD_TAGS.map((dashboard) => ({
+    return Object.keys(DashboardConfig).map((dashboard) => ({
         dashboard,
     }));
 }

@@ -18,7 +18,7 @@ export const Main = ({
     dashboard?: DashboardTag;
 }) => {
     return (
-        <div className="mt-4 flex flex-col gap-4 xl:mt-8">
+        <div className="mt-2 flex flex-col gap-4">
             <Suspense fallback={<StreamsFallback streams={streams} />}>
                 <Streams games={games} streams={streams} />
             </Suspense>
