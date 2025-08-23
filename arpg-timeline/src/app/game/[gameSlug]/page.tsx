@@ -453,6 +453,6 @@ export async function generateStaticParams() {
     const games = parseGamesFromSanity(data);
 
     return games.map((g) => ({
-        slug: g.slug,
+        gameSlug: g.slug,
     }));
 }
