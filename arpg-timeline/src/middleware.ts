@@ -8,7 +8,13 @@ const validRoutes = [
     "/api/revalidate",
     "/api/webhook",
 ];
-const routePrefixes = ["/docs/html/", "/docs/obs/", "/embed/season-widget/", "/dashboard/"];
+const routePrefixes = [
+    "/docs/html/",
+    "/docs/obs/",
+    "/embed/season-widget/",
+    "/dashboard/",
+    "/assets/",
+];
 
 function isValidRoute(pathname: string): boolean {
     if (validRoutes.includes(pathname)) {
