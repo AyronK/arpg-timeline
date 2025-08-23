@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { Description } from "@radix-ui/react-toast";
-import { Filter, ChartGantt } from "lucide-react";
+import { Filter, ChartGantt, Home, Settings, Search } from "lucide-react";
 import { title } from "process";
 
 import { GameFiltersProps } from "@/components/GameFilters";
@@ -76,95 +76,129 @@ export function MobileBottomMenu({
         <>
             <div className="fixed right-0 bottom-0 left-0 z-50 md:hidden">
                 <div
-                    className={`bg-popover border-t shadow-xl transition-all duration-300 ease-in-out ${
-                        isVisible ? "translate-none" : "pointer-events-none translate-y-full"
+                    className={`transition-all duration-300 ease-in-out ${
+                        isVisible ? "translate-none" : "pointer-events-none translate-y-[96px]"
                     }`}
                 >
-                    <div className={`flex items-center justify-around px-12 py-1`}>
-                        <Drawer
-                            direction={isMd ? "right" : "bottom"}
-                            onOpenChange={handleDrawerOpenChange}
-                        >
-                            <DrawerTrigger asChild>
+                    <div className="relative">
+                        <div className="border-t border-gray-700 bg-gray-900">
+                            <div className="flex items-center justify-around px-4 py-3">
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="flex h-10 flex-col items-center gap-0.5 px-2 py-1"
+                                    className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
                                 >
-                                    <ChartGantt className="h-4 w-4" />
-                                    <span className="text-[0.65rem]">Dashboard</span>
+                                    <Home className="h-5 w-5" />
+                                    <span className="text-[0.65rem] font-medium">Home</span>
                                 </Button>
-                            </DrawerTrigger>
-                            <DrawerContent className={!isMd ? "left-0" : undefined}>
-                                <DrawerHeader className="pb-3">
-                                    <DrawerTitle>Select Dashboard</DrawerTitle>
-                                </DrawerHeader>
-                                <div className="flex flex-col gap-3 overflow-auto px-4 pb-20">
-                                    <DashboardSelector
-                                        dashboard={dashboard}
-                                        onLoadingChange={onLoadingChange}
-                                        isMobile
-                                    />
-                                </div>
-                                <DrawerFooter className="absolute right-0 bottom-0 md:relative">
-                                    <div className="ml-auto md:mr-auto md:ml-0">
-                                        <DrawerClose asChild>
-                                            <Button
-                                                className="shadow-md shadow-black md:shadow-none"
-                                                variant="outline"
-                                            >
-                                                Close
-                                            </Button>
-                                        </DrawerClose>
-                                    </div>
-                                </DrawerFooter>
-                            </DrawerContent>
-                        </Drawer>
 
-                        <Drawer
-                            direction={isMd ? "right" : "bottom"}
-                            onOpenChange={handleDrawerOpenChange}
-                        >
-                            <DrawerTrigger asChild>
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="flex h-10 flex-col items-center gap-0.5 px-2 py-1"
+                                    className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
                                 >
-                                    <Filter className="h-4 w-4" />
-                                    <span className="text-[0.65rem]">Game Filter</span>
+                                    <Search className="h-5 w-5" />
+                                    <span className="text-[0.65rem] font-medium">Search</span>
                                 </Button>
-                            </DrawerTrigger>
-                            <DrawerContent className={!isMd ? "left-0" : undefined}>
-                                <DrawerDescription className="sr-only">
-                                    Filters dialog
-                                </DrawerDescription>
-                                <DrawerHeader className="pb-3">
-                                    <DrawerTitle>{title}</DrawerTitle>
-                                    <DrawerDescription asChild>
-                                        <Description />
-                                    </DrawerDescription>
-                                </DrawerHeader>
-                                <Filters
-                                    checked={filtersProps.activeFilters}
-                                    filters={filtersProps.gameFilters}
-                                    onCheckedChange={filtersProps.toggleGameFilter}
-                                    onGroupCheckedChange={filtersProps.toggleGroupFilter}
-                                />
-                                <DrawerFooter className="absolute right-0 bottom-0 md:relative">
-                                    <div className="ml-auto md:mr-auto md:ml-0">
-                                        <DrawerClose asChild>
-                                            <Button
-                                                className="shadow-md shadow-black md:shadow-none"
-                                                variant="outline"
-                                            >
-                                                Close
-                                            </Button>
-                                        </DrawerClose>
+
+                                <div className="w-16" />
+
+                                <Drawer
+                                    direction={isMd ? "right" : "bottom"}
+                                    onOpenChange={handleDrawerOpenChange}
+                                >
+                                    <DrawerTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
+                                        >
+                                            <Filter className="h-5 w-5" />
+                                            <span className="text-[0.65rem] font-medium">
+                                                Filters
+                                            </span>
+                                        </Button>
+                                    </DrawerTrigger>
+                                    <DrawerContent className={!isMd ? "left-0" : undefined}>
+                                        <DrawerDescription className="sr-only">
+                                            Filters dialog
+                                        </DrawerDescription>
+                                        <DrawerHeader className="pb-3">
+                                            <DrawerTitle>{title}</DrawerTitle>
+                                            <DrawerDescription asChild>
+                                                <Description />
+                                            </DrawerDescription>
+                                        </DrawerHeader>
+                                        <Filters
+                                            checked={filtersProps.activeFilters}
+                                            filters={filtersProps.gameFilters}
+                                            onCheckedChange={filtersProps.toggleGameFilter}
+                                            onGroupCheckedChange={filtersProps.toggleGroupFilter}
+                                        />
+                                        <DrawerFooter className="absolute right-0 bottom-0 md:relative">
+                                            <div className="ml-auto md:mr-auto md:ml-0">
+                                                <DrawerClose asChild>
+                                                    <Button
+                                                        className="shadow-md shadow-black md:shadow-none"
+                                                        variant="outline"
+                                                    >
+                                                        Close
+                                                    </Button>
+                                                </DrawerClose>
+                                            </div>
+                                        </DrawerFooter>
+                                    </DrawerContent>
+                                </Drawer>
+
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
+                                >
+                                    <Settings className="h-5 w-5" />
+                                    <span className="text-[0.65rem] font-medium">Settings</span>
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <Drawer
+                                direction={isMd ? "right" : "bottom"}
+                                onOpenChange={handleDrawerOpenChange}
+                            >
+                                <DrawerTrigger asChild>
+                                    <Button className="flex h-11 w-11 rotate-45 transform flex-col items-center justify-center border-2 border-gray-600 bg-gray-800 hover:bg-gray-700">
+                                        <div className="-rotate-45 transform">
+                                            <ChartGantt className="h-5 w-5 text-white" />
+                                        </div>
+                                    </Button>
+                                </DrawerTrigger>
+                                <DrawerContent className={!isMd ? "left-0" : undefined}>
+                                    <DrawerHeader className="pb-3">
+                                        <DrawerTitle>Select Dashboard</DrawerTitle>
+                                    </DrawerHeader>
+                                    <div className="flex flex-col gap-3 overflow-auto px-4 pb-20">
+                                        <DashboardSelector
+                                            dashboard={dashboard}
+                                            onLoadingChange={onLoadingChange}
+                                            isMobile
+                                        />
                                     </div>
-                                </DrawerFooter>
-                            </DrawerContent>
-                        </Drawer>
+                                    <DrawerFooter className="absolute right-0 bottom-0 md:relative">
+                                        <div className="ml-auto md:mr-auto md:ml-0">
+                                            <DrawerClose asChild>
+                                                <Button
+                                                    className="shadow-md shadow-black md:shadow-none"
+                                                    variant="outline"
+                                                >
+                                                    Close
+                                                </Button>
+                                            </DrawerClose>
+                                        </div>
+                                    </DrawerFooter>
+                                </DrawerContent>
+                            </Drawer>
+                        </div>
                     </div>
                 </div>
             </div>
