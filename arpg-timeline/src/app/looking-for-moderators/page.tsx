@@ -13,7 +13,7 @@ const LookingForModeratorsPage = () => {
                 community, please{" "}
                 <Link
                     className="font-semibold hover:opacity-75"
-                    href={process.env.DISCORD_URL!}
+                    href={process.env.NEXT_PUBLIC_DISCORD_URL}
                     rel="noopener noreferrer"
                 >
                     contact us on Discord
@@ -21,7 +21,7 @@ const LookingForModeratorsPage = () => {
                 or{" "}
                 <Link
                     className="font-semibold hover:opacity-75"
-                    href={`mailto:${process.env.CONTACT_EMAIL!}`}
+                    href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
                     rel="noopener noreferrer"
                 >
                     send an email

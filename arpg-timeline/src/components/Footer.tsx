@@ -1,12 +1,6 @@
 import Link from "next/link";
 
-export type FooterProps = {
-    discordUrl: string;
-    githubUrl: string;
-    contactEmail: string;
-};
-
-export const Footer = ({ discordUrl, githubUrl, contactEmail }: FooterProps) => (
+export const Footer = () => (
     <footer className="mt-4">
         <div className="border-foreground bg-card flex flex-col gap-4 border-t px-4 py-4">
             <p className="mx-auto max-w-4xl text-center text-balance italic">
@@ -37,7 +31,7 @@ export const Footer = ({ discordUrl, githubUrl, contactEmail }: FooterProps) => 
                 <div className="flex flex-row gap-1">
                     <Link
                         className="font-semibold hover:opacity-75"
-                        href={discordUrl}
+                        href={process.env.NEXT_PUBLIC_DISCORD_URL}
                         rel="noopener noreferrer"
                         data-sa-click="discord"
                     >
@@ -48,7 +42,7 @@ export const Footer = ({ discordUrl, githubUrl, contactEmail }: FooterProps) => 
                 <div className="flex flex-row gap-1">
                     <Link
                         className="font-semibold hover:opacity-75"
-                        href={`mailto:${contactEmail}`}
+                        href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
                         rel="noopener noreferrer"
                     >
                         Contact
@@ -59,7 +53,7 @@ export const Footer = ({ discordUrl, githubUrl, contactEmail }: FooterProps) => 
                     &copy; <span id="currentYear">{new Date().getFullYear()}</span>-
                     <Link
                         className="font-semibold hover:opacity-75"
-                        href={githubUrl}
+                        href={process.env.NEXT_PUBLIC_GITHUB_URL}
                         rel="external nofollow noreferrer"
                         target="_blank"
                         aria-label="Author's Github Profile - AyronK"

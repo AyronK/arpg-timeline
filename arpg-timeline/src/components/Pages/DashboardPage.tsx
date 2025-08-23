@@ -64,7 +64,7 @@ export const DashboardPage = async ({ dashboard }: DashboardPageProps) => {
                 />
             </div>
             <StructuredDataScripts games={games} />
-            <Faq patreonUrl={process.env.PATREON_URL!} faq={data.faq} />
+            <Faq faq={data.faq} />
         </>
     );
 };

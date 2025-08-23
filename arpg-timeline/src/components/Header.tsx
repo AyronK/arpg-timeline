@@ -5,13 +5,7 @@ import { Button } from "@/ui/Button";
 
 import { Logo } from "./Logo";
 
-export type HeaderProps = {
-    discordUrl: string;
-    patreonUrl: string;
-    githubUrl: string;
-};
-
-export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
+export const Header = () => (
     <header className="max-md:bg-card relative h-[56px] px-2 max-sm:shadow-sm md:h-[80px] md:px-8 md:pt-6 md:pb-0">
         <div className="relative h-full w-full">
             <Link
@@ -28,7 +22,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
                 <div className="ml-auto flex items-center">
                     <Button variant={"ghost"} asChild className="hidden px-2 md:flex 2xl:px-4">
                         <Link
-                            href={discordUrl}
+                            href={process.env.NEXT_PUBLIC_DISCORD_URL}
                             rel="external noopener noreferrer"
                             target="_blank"
                             data-sa-click="click"
@@ -47,7 +41,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
                     </Button>
                     <Button variant={"ghost"} asChild className="hidden px-2 md:flex 2xl:px-4">
                         <Link
-                            href={patreonUrl}
+                            href={process.env.NEXT_PUBLIC_PATREON_URL}
                             rel="noopener"
                             target="_blank"
                             data-sa-click="patron"
@@ -66,7 +60,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
                     </Button>
                     <Button variant={"ghost"} asChild className="hidden px-2 sm:flex 2xl:px-4">
                         <Link
-                            href={githubUrl}
+                            href={`${process.env.NEXT_PUBLIC_GITHUB_URL}/${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues`}
                             rel="external nofollow noreferrer"
                             target="_blank"
                             data-sa-click="github"

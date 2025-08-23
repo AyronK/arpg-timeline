@@ -19,7 +19,7 @@ export const CantFindGame = () => (
             </span>
             <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
                 <Link
-                    href={"discord TODO"}
+                    href={process.env.NEXT_PUBLIC_DISCORD_URL}
                     rel="external noopener noreferrer"
                     target="_blank"
                     data-sa-click="click"

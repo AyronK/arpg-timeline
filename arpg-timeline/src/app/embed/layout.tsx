@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 
 export const metadata: Metadata = {
-    authors: [{ name: "Ayron", url: process.env.GITHUB_URL! }],
+    authors: [{ name: "Ayron", url: process.env.NEXT_PUBLIC_GITHUB_URL }],
     creator: "Ayron",
     metadataBase: process.env.SITE_URL ? new URL(process.env.SITE_URL) : null,
     verification: {

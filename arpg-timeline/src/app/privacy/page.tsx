@@ -4,7 +4,7 @@ import { Button } from "@/ui/Button";
 
 const links = {
     gdpr: "https://docs.simpleanalytics.com/gdpr",
-    github: `${process.env.GITHUB_URL!}/${process.env.GITHUB_REPO!}/issues`,
+    github: `${process.env.NEXT_PUBLIC_GITHUB_URL}/${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues`,
     whatWeCollect: "https://docs.simpleanalytics.com/what-we-collect",
     metrics: "https://docs.simpleanalytics.com/metrics",
 };

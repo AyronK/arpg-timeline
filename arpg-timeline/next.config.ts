@@ -4,6 +4,13 @@ const nextConfig: NextConfig = {
     experimental: {
         //ppr: "incremental",
     },
+    env: {
+        NEXT_PUBLIC_PATREON_URL: process.env.PATREON_URL,
+        NEXT_PUBLIC_GITHUB_URL: process.env.GITHUB_URL,
+        NEXT_PUBLIC_GITHUB_REPO: process.env.GITHUB_REPO,
+        NEXT_PUBLIC_DISCORD_URL: process.env.DISCORD_URL,
+        NEXT_PUBLIC_CONTACT_EMAIL: process.env.CONTACT_EMAIL,
+    },
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
         dangerouslyAllowSVG: true,

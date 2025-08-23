@@ -6,13 +6,7 @@ import { PortableTextBlock } from "next-sanity";
 import { RichTextRenderer } from "@/lib/sanity/portableTextComponents";
 import { Button } from "@/ui/Button";
 
-export const Faq = ({
-    faq,
-    patreonUrl,
-}: {
-    faq: { title: string; content: PortableTextBlock[] }[];
-    patreonUrl: string;
-}) => {
+export const Faq = ({ faq }: { faq: { title: string; content: PortableTextBlock[] }[] }) => {
     return (
         <section className="container flex flex-col gap-4 md:my-16">
             <div>
@@ -20,7 +14,7 @@ export const Faq = ({
                 <div className="mx-auto flex max-w-prose flex-col-reverse justify-between gap-2 md:flex-row md:gap-8">
                     <Button variant={"link"} size="lg" asChild>
                         <Link
-                            href={patreonUrl}
+                            href={process.env.NEXT_PUBLIC_PATREON_URL}
                             rel="noopener"
                             target="_blank"
                             data-sa-click="patron"
