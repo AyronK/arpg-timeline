@@ -8,6 +8,7 @@ import { SanityImage } from "@/components/SanityImage";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
 import { SteamEmbed } from "@/components/SteamEmbed";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
+import { Game as CMSGame } from "@/lib/cms/games.types";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
@@ -30,31 +31,14 @@ interface GameStatistics {
     minDuration: { days: string; name: string };
 }
 
-interface Season {
+interface LocalSeason {
     game?: string;
     start?: { startDate?: string };
     end?: { endDate?: string };
     name?: string;
 }
 
-interface Game {
-    name: string;
-    logo?: { url?: string };
-    slug: string;
-    shortName?: string | null;
-    url?: string | null;
-    official?: boolean;
-    averageSeasonDuration?: number | null;
-    currentSeason?: {
-        start?: { startDate?: string };
-        patchNotesUrl?: string;
-        name?: string;
-        url?: string;
-    };
-    nextSeason?: { url?: string };
-}
-
-const calculateAveragePerYear = (gameSeasons: Season[]): string => {
+const calculateAveragePerYear = (gameSeasons: LocalSeason[]): string => {
     if (gameSeasons.length < 2) return "N/A";
 
     const seasonsWithDates = gameSeasons.filter((s) => s?.start?.startDate);
@@ -87,7 +71,7 @@ const calculateAveragePerYear = (gameSeasons: Season[]): string => {
     return (365 / avgDaysBetweenSeasons).toFixed(2);
 };
 
-const calculateUsualStartTime = (gameSeasons: Season[]): string => {
+const calculateUsualStartTime = (gameSeasons: LocalSeason[]): string => {
     if (gameSeasons.length === 0) return "N/A";
 
     const seasonsWithStartTimes = gameSeasons.filter((s) => s?.start?.startDate);
@@ -119,7 +103,7 @@ const calculateUsualStartTime = (gameSeasons: Season[]): string => {
     return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 };
 
-const calculateSeasonDurations = (gameSeasons: Season[]): SeasonDuration[] => {
+const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDuration[] => {
     const completedSeasons = gameSeasons.filter((s) => s?.start?.startDate && s?.end?.endDate);
 
     return completedSeasons
@@ -214,7 +198,7 @@ const QuickLinksSection = ({
     gameSlug,
     steamAppId,
 }: {
-    game: Game;
+    game: CMSGame;
     gameSlug: string;
     steamAppId?: number | null;
 }) => (
@@ -243,7 +227,7 @@ const QuickLinksSection = ({
             )}
             {game.currentSeason?.url && (
                 <MaybeLinkWrapper
-                    href={game.currentSeason.url}
+                    href={game.currentSeason?.url}
                     target="_blank"
                     rel="noopener"
                     data-sa-click={`${gameSlug}-current-season-details`}
@@ -253,7 +237,7 @@ const QuickLinksSection = ({
             )}
             {game.nextSeason?.url && (
                 <MaybeLinkWrapper
-                    href={game.nextSeason.url}
+                    href={game.nextSeason?.url}
                     target="_blank"
                     rel="noopener"
                     data-sa-click={`${gameSlug}-next-season-details`}
@@ -331,10 +315,10 @@ const GamePage = async ({ params }: GamePageProps) => {
                     <GameCard
                         name={game.name}
                         gameLogo={
-                            game.logo?.url ? (
+                            game.logo ? (
                                 <SanityImage
                                     loading="lazy"
-                                    src={game.logo!}
+                                    src={game.logo}
                                     alt={`${game.name} logo`}
                                     className="my-auto"
                                     width={160}
@@ -358,10 +342,10 @@ const GamePage = async ({ params }: GamePageProps) => {
                             game.currentSeason?.patchNotesUrl && (
                                 <div className="mt-auto flex flex-col gap-2">
                                     <MaybeLinkWrapper
-                                        href={game.currentSeason.patchNotesUrl}
+                                        href={game.currentSeason?.patchNotesUrl}
                                         target="_blank"
                                         className="ml-auto text-sm text-nowrap hover:underline"
-                                        data-sa-click={`${game.currentSeason.name}-patch-notes`}
+                                        data-sa-click={`${game.currentSeason?.name}-patch-notes`}
                                     >
                                         Patch notes
                                     </MaybeLinkWrapper>
@@ -451,7 +435,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
         openGraph: {
             title: `${game.name} Season Tracker`,
             description: `Track ${game.name} seasons and get countdowns for upcoming content.`,
-            images: [game.logo?.url || "/assets/seoimage.png"],
+            images: ["/assets/seoimage.png"],
             type: "website",
             url: `https://arpg-timeline.com/game/${slug}`,
         },
