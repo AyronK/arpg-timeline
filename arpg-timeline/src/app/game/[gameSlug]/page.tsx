@@ -193,6 +193,7 @@ const StatisticsCard = ({
     </div>
 );
 
+// TODO add UTM
 const QuickLinksSection = ({
     game,
     gameSlug,
@@ -421,6 +422,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
         };
     }
 
+    // TODO revisit metadata and make code review overall on the PR
     return {
         title: `${game.name} Seasons & Updates | aRPG Timeline`,
         description: `Track ${game.name} seasons, league starts, and updates. Get countdowns, start dates, and never miss a ${game.name} season launch.`,
