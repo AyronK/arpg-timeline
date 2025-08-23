@@ -61,14 +61,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             }
         });
 
-        Object.keys(DashboardConfig).forEach((dashboard) => {
-            sitemap.push({
-                url: `${baseUrl}/dashboard/${dashboard}`,
-                lastModified: new Date(),
-                changeFrequency: "daily",
-                priority: 1,
+        Object.keys(DashboardConfig)
+            .filter((dashboard) => dashboard !== "default-when-next-confirmed")
+            .forEach((dashboard) => {
+                sitemap.push({
+                    url: `${baseUrl}/dashboard/${dashboard}`,
+                    lastModified: new Date(),
+                    changeFrequency: "daily",
+                    priority: 1,
+                });
             });
-        });
     } catch (error) {
         console.error("Error fetching data for sitemap:", error);
     }

@@ -17,13 +17,13 @@ export const GameCountDisplay = ({ shownGames, totalGames, dashboard }: GameCoun
         if (displayedNumber !== shownGames) {
             setIsAnimating(true);
             setDisplayedNumber(shownGames);
-
-            const timer = setTimeout(() => {
-                setIsAnimating(false);
-            }, 750);
-
-            return () => clearTimeout(timer);
         }
+
+        const timer = setTimeout(() => {
+            setIsAnimating(false);
+        }, 750);
+
+        return () => clearTimeout(timer);
     }, [shownGames, displayedNumber]);
 
     useEffect(() => {

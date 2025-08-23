@@ -25,7 +25,12 @@ export const DashboardSelector = ({
     const searchParams = useSearchParams();
 
     const handleDashboardChange = (value: string) => {
-        if (value) {
+        if (value === "default-when-next-confirmed") {
+            onLoadingChange(true);
+            const currentParams = searchParams.toString();
+            const newUrl = currentParams ? `/?${currentParams}` : "/";
+            router.push(newUrl);
+        } else if (value) {
             onLoadingChange(true);
             const currentParams = searchParams.toString();
             const newUrl = currentParams

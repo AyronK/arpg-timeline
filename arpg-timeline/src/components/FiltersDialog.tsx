@@ -46,15 +46,17 @@ export const FiltersDialog = ({
     const { is4xl } = useBreakpoint("4xl");
     const isMounted = useHasMounted();
 
+    const showIndicator = filters.length !== checked.length;
+
     if (!isMounted) {
-        return <Trigger />;
+        return <Trigger showIndicator={showIndicator} />;
     }
 
     if (is4xl) {
         return (
             <Dialog>
                 <DialogTrigger asChild>
-                    <Trigger />
+                    <Trigger showIndicator={showIndicator} />
                 </DialogTrigger>
                 <DialogContent>
                     <DialogDescription className="sr-only">Filters dialog</DialogDescription>
@@ -78,7 +80,7 @@ export const FiltersDialog = ({
     return (
         <Drawer direction={isMd ? "right" : "bottom"}>
             <DrawerTrigger asChild>
-                <Trigger />
+                <Trigger showIndicator={showIndicator} />
             </DrawerTrigger>
             <DrawerContent className={!isMd ? "left-0" : undefined}>
                 <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
@@ -118,23 +120,29 @@ const Description = () => (
     </div>
 );
 
-const Trigger = forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof Button>>(
-    ({ ...rest }, ref) => (
-        <Button
-            {...rest}
-            ref={ref}
-            variant="default"
-            size={"sm"}
-            onMouseDown={() => {
-                sa_event("filters_opened");
-            }}
-            className="inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
-        >
+const Trigger = forwardRef<
+    HTMLButtonElement,
+    React.ComponentPropsWithoutRef<typeof Button> & { showIndicator?: boolean }
+>(({ showIndicator, ...rest }, ref) => (
+    <Button
+        {...rest}
+        ref={ref}
+        variant="default"
+        size={"sm"}
+        onMouseDown={() => {
+            sa_event("filters_opened");
+        }}
+        className="inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
+    >
+        <div className="relative">
             <Filter className="h-4 w-4" />
-            <span className="text-center leading-0 whitespace-nowrap">Filter</span>
-        </Button>
-    ),
-);
+            {showIndicator && (
+                <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-600"></div>
+            )}
+        </div>
+        <span className="text-center leading-0 whitespace-nowrap">Filter</span>
+    </Button>
+));
 
 Trigger.displayName = "Trigger";
 

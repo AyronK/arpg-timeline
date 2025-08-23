@@ -1,4 +1,4 @@
-import { FlaskConical, RotateCwSquare,Telescope, Users } from "lucide-react";
+import { FlaskConical, RotateCwSquare, Telescope, Users } from "lucide-react";
 
 import { DashboardTag } from "@/lib/cms/gameTags";
 
@@ -11,7 +11,7 @@ export const DashboardConfig: Partial<
     >
 > = {
     "default-when-next-confirmed": {
-        description: "Standard",
+        description: "Featured",
         tooltip: "Top picks and recommendations from aRPG Timeline",
         icon: LogoIcon,
     },
