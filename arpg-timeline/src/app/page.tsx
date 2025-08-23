@@ -7,9 +7,9 @@ import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { GameStatistics } from "@/lib/cms/games.types";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
 import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
-import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async () => {
     const data: IndexQueryResult = await sanityFetch({

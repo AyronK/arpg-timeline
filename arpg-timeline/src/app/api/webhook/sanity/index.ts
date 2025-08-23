@@ -1,7 +1,7 @@
 import { SanityImageAssetDocument } from "next-sanity";
 
+import { SeasonEndDateInfo, SeasonStartDateInfo } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { SeasonEndDateInfo, SeasonStartDateInfo } from "@/queries/indexQuery";
 
 export type SeasonProjection = {
     _id: string;

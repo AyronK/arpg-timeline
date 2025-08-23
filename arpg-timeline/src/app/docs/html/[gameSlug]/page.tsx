@@ -1,6 +1,6 @@
 import { HtmlEmbedManual } from "@/components/Manuals/HtmlEmbedManual";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const HtmlEmbedManualPage = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
     const { gameSlug } = await params;

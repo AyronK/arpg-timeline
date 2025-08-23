@@ -1,5 +1,7 @@
 import { SanityImageAssetDocument } from "next-sanity";
 
+import { DashboardTag, GameTag } from "./gameTags";
+
 export type GameStream = {
     gameSlug: string;
     gameName: string;
@@ -28,6 +30,8 @@ export type Game = {
     nextSeason?: Season | null | undefined;
     twitchCategory: string | null | undefined;
     averageSeasonDuration: number | null;
+    dashboardTags?: DashboardTag[];
+    tags?: GameTag[];
 };
 
 export type Season = {

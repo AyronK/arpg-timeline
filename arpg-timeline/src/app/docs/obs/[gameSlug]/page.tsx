@@ -1,6 +1,6 @@
 import { ObsBrowserSourceManual } from "@/components/Manuals/ObsBrowserSourceManual";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const ObsBrowserSourceManualPage = async ({
     params,

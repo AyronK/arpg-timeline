@@ -1,5 +1,5 @@
 import { GameStream } from "@/lib/cms/games.types";
-import { IndexQueryResult } from "@/queries/indexQuery";
+import { IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 
 export const parseGameStreamsFromSanity = (data: IndexQueryResult): GameStream[] =>
     data?.liveStreamsOnTwitch

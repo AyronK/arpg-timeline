@@ -12,6 +12,6 @@
         "jsx": "preserve",
         "incremental": true
     },
-    "include": ["**/*.ts", "**/*.tsx"],
+    "include": ["**/*.ts", "**/*.tsx", "../arpg-timeline/src/lib/cms/gameTags.ts"],
     "exclude": ["node_modules"]
 }

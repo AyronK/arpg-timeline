@@ -2,10 +2,12 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
+import { DashboardTag } from "@/lib/cms/gameTags";
 import { sa_event } from "@/lib/sa_event";
 
 export const useGameFilters = (
     games: Game[],
+    dashboardTag: DashboardTag = "default-when-next-confirmed",
 ): {
     gameFilters: {
         label: string;
@@ -16,6 +18,9 @@ export const useGameFilters = (
     toggleGroupFilter: (group: string, value: boolean) => void;
     activeFilters: string[];
     filteredGames: Game[];
+    totalGames: number;
+    shownGames: number;
+    dashboardTag: DashboardTag;
 } => {
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
@@ -77,7 +82,22 @@ export const useGameFilters = (
         }
     };
 
-    const filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
+    const filteredGames = useMemo(() => {
+        let filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
+
+        if (dashboardTag === "default-when-next-confirmed") {
+            filteredGames = filteredGames.filter(
+                (g) =>
+                    g.dashboardTags?.includes("default") ||
+                    (g.dashboardTags?.includes("default-when-next-confirmed") &&
+                        g.nextSeason?.start?.confirmed),
+            );
+        } else {
+            filteredGames = filteredGames.filter((g) => g.dashboardTags?.includes(dashboardTag));
+        }
+
+        return filteredGames;
+    }, [dashboardTag, excludedSlugs, games]);
 
     useEffect(() => {
         for (const i in excludedSlugs) {
@@ -109,5 +129,8 @@ export const useGameFilters = (
         toggleGroupFilter,
         filteredGames,
         activeFilters,
+        dashboardTag,
+        shownGames: filteredGames.length,
+        totalGames: games.length,
     };
 };

@@ -7,10 +7,10 @@ import { SanityImage } from "@/components/SanityImage";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { EmbedGameToSeasonWidget } from "@/hoc/GameToSeasonWidget/EmbedGameToSeasonWidget";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
-import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
     const { gameSlug } = await params;
