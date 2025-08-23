@@ -1,7 +1,8 @@
-import { CodeXml, MoreHorizontal } from "lucide-react";
+import { CodeXml, Info, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { SiObsstudio } from "react-icons/si";
 
+import { DropdownMenuSeparator } from "@/components/DropdownMenu";
 import { Button } from "@/ui/Button";
 import {
     DropdownMenu,
@@ -25,6 +26,16 @@ export function GameMenu({ game }: { game: string }) {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+                <Link href={`/game/${game}`}>
+                    <DropdownMenuItem
+                        aria-label="View game details"
+                        data-sa-click={`${game}-view-details`}
+                    >
+                        <Info className="mr-2 h-4 w-4" />
+                        Details
+                    </DropdownMenuItem>
+                </Link>
+                <DropdownMenuSeparator />
                 <Link href={`/docs/html/${game}`} target="_blank" rel="noopener noreferrer">
                     <DropdownMenuItem
                         aria-label="Share on Discord"

@@ -114,10 +114,9 @@ const calculateUsualStartTime = (gameSeasons: Season[]): string => {
     if (!mostCommonHour) return "N/A";
 
     const hour = parseInt(mostCommonHour[0]);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-
-    return `${displayHour} ${ampm}`;
+    const date = new Date();
+    date.setHours(hour, 0, 0, 0);
+    return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 };
 
 const calculateSeasonDurations = (gameSeasons: Season[]): SeasonDuration[] => {
@@ -262,6 +261,9 @@ const QuickLinksSection = ({
                     Next Season Details
                 </MaybeLinkWrapper>
             )}
+
+            <div className="bg-border col-span-full h-px" />
+
             <MaybeLinkWrapper
                 href={`/docs/html/${gameSlug}`}
                 data-sa-click={`${gameSlug}-html-docs`}
