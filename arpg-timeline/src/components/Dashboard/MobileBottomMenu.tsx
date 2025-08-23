@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { Description } from "@radix-ui/react-toast";
 import { Filter, ChartGantt } from "lucide-react";
 import { title } from "process";
@@ -34,12 +36,55 @@ export function MobileBottomMenu({
     onLoadingChange,
 }: MobileBottomMenuProps) {
     const { isMd } = useBreakpoint("md");
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+    useEffect(() => {
+        let ticking = false;
+
+        const handleScroll = () => {
+            if (!ticking && !isDrawerOpen) {
+                requestAnimationFrame(() => {
+                    const currentScrollY = window.scrollY;
+
+                    if (currentScrollY > lastScrollY && currentScrollY > 150) {
+                        setIsVisible(false);
+                    } else if (currentScrollY < lastScrollY || currentScrollY < 100) {
+                        setIsVisible(true);
+                    }
+
+                    setLastScrollY(currentScrollY);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY, isDrawerOpen]);
+
+    const handleDrawerOpenChange = (open: boolean) => {
+        setIsDrawerOpen(open);
+        if (open) {
+            setIsVisible(true);
+        }
+    };
+
     return (
         <>
             <div className="fixed right-0 bottom-0 left-0 z-50 md:hidden">
-                <div className="bg-popover border-t shadow-xl">
-                    <div className="flex items-center justify-around px-12 py-1">
-                        <Drawer direction={isMd ? "right" : "bottom"}>
+                <div
+                    className={`bg-popover border-t shadow-xl transition-all duration-300 ease-in-out ${
+                        isVisible ? "translate-none" : "pointer-events-none translate-y-full"
+                    }`}
+                >
+                    <div className={`flex items-center justify-around px-12 py-1`}>
+                        <Drawer
+                            direction={isMd ? "right" : "bottom"}
+                            onOpenChange={handleDrawerOpenChange}
+                        >
                             <DrawerTrigger asChild>
                                 <Button
                                     variant="ghost"
@@ -76,7 +121,10 @@ export function MobileBottomMenu({
                             </DrawerContent>
                         </Drawer>
 
-                        <Drawer direction={isMd ? "right" : "bottom"}>
+                        <Drawer
+                            direction={isMd ? "right" : "bottom"}
+                            onOpenChange={handleDrawerOpenChange}
+                        >
                             <DrawerTrigger asChild>
                                 <Button
                                     variant="ghost"
