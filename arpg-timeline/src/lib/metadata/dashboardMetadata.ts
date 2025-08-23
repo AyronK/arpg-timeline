@@ -34,27 +34,25 @@ export async function generateDashboardMetadata(
         ? "aRPG Timeline | Season Tracker"
         : `${dashboardLabels[dashboard]} | aRPG Timeline`;
 
-    const description = isDefault
-        ? "Stay ahead in your favorite aRPGs with our season tracker"
-        : `Track ${dashboardLabels[dashboard].toLowerCase()} in the aRPG timeline`;
+    const description = "Stay ahead in your favorite aRPGs with our season tracker";
 
     return {
         title,
         description,
         openGraph: {
             title: isDefault ? "aRPG Timeline" : title,
-            description: isDefault
-                ? "Track aRPG seasons for Path of Exile, Diablo, and more"
-                : description,
+            description: isDefault ? "Track your favorite aRPG game seasons" : description,
             siteName: "aRPG Timeline",
             type: "website",
             url: `https://arpg-timeline.com${canonicalPath}`,
+            locale: "en_US",
             images: [
                 {
                     url: "/assets/seoimage.png",
                     width: 1200,
                     height: 630,
-                    alt: title,
+                    alt: "aRPG Timeline - Track your favorite aRPG game seasons",
+                    type: "image/png",
                 },
             ],
         },
@@ -78,7 +76,26 @@ export async function generateDashboardMetadata(
             "d2",
             "d3",
             "d4",
+            "path of exile seasons",
+            "diablo 4 seasons",
+            "last epoch seasons",
+            "arpg countdown",
+            "season launch date",
+            "arpg news",
+            "gaming calendar",
+            "poe league",
+            "diablo season",
         ],
         alternates: { canonical: canonicalPath },
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                "max-image-preview": "large",
+                "max-snippet": -1,
+            },
+        },
     };
 }

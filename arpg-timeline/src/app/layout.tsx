@@ -46,4 +46,8 @@ export const metadata: Metadata = {
     verification: {
         google: process.env.GOOGLE_SITE_VERIFICATION,
     },
+    other: {
+        "msapplication-TileColor": "#082f49",
+        "theme-color": "#082f49",
+    },
 };

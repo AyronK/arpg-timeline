@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
     experimental: {
         //ppr: "incremental",
+        optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
     },
     env: {
         NEXT_PUBLIC_PATREON_URL: process.env.PATREON_URL,
@@ -15,7 +16,13 @@ const nextConfig: NextConfig = {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
         dangerouslyAllowSVG: true,
         minimumCacheTTL: 30 * 24 * 60 * 60,
+        formats: ["image/webp", "image/avif"],
+        deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+        imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     },
+    compress: true,
+    poweredByHeader: false,
+    generateEtags: true,
     async headers() {
         return [
             {
@@ -184,6 +191,19 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/game/:path",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=300",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=86400, stale-while-revalidate=300",
+                    },
+                ],
+            },
+            {
                 source: "/privacy",
                 headers: [
                     {
@@ -198,6 +218,19 @@ const nextConfig: NextConfig = {
             },
             {
                 source: "/looking-for-moderators",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=86400, stale-while-revalidate=86400",
+                    },
+                ],
+            },
+            {
+                source: "/faq",
                 headers: [
                     {
                         key: "Cache-Control",

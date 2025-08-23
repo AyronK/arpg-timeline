@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 import { Faq } from "@/components/Faq";
+import { FAQSchema } from "@/components/FAQSchema";
 import { faqQuery, FaqQueryResult } from "@/lib/cms/queries/faqQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 
@@ -17,8 +18,11 @@ export default async function FaqPage() {
     });
 
     return (
-        <div className="container mx-auto mb-8">
-            <Faq faq={data.faq} />
-        </div>
+        <>
+            <FAQSchema />
+            <div className="container mx-auto mb-8">
+                <Faq faq={data.faq} />
+            </div>
+        </>
     );
 }

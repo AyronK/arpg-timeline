@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /embed
-Sitemap: https://arpg-timeline.com/sitemap-index.xml
+Disallow: /api
+
+Sitemap: https://arpg-timeline.com/sitemap.xml
 Host: https://arpg-timeline.com

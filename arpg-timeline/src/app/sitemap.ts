@@ -16,13 +16,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/faq`,
             lastModified: new Date(),
-            changeFrequency: "yearly",
+            changeFrequency: "monthly",
             priority: 0.8,
         },
         {
             url: `${baseUrl}/looking-for-moderators`,
             lastModified: new Date(),
-            changeFrequency: "yearly",
+            changeFrequency: "monthly",
             priority: 0.7,
         },
         {
@@ -45,6 +45,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         games.forEach((game: { slug: string }) => {
             if (game.slug) {
                 sitemap.push(
+                    {
+                        url: `${baseUrl}/game/${game.slug}`,
+                        lastModified: new Date(),
+                        changeFrequency: "daily",
+                        priority: 0.8,
+                    },
                     {
                         url: `${baseUrl}/docs/html/${game.slug}`,
                         lastModified: new Date(),
