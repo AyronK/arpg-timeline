@@ -1,8 +1,7 @@
-import { FlaskConical, Gamepad2, Telescope, Users } from "lucide-react";
+import { FlaskConical, Telescope, Users, RotateCwSquare } from "lucide-react";
 
 import { DashboardTag } from "@/lib/cms/gameTags";
-
-import { Logo } from "../Logo";
+import { LogoIcon } from "../LogoIcon";
 
 export const DashboardConfig: Partial<
     Record<
@@ -13,16 +12,16 @@ export const DashboardConfig: Partial<
     "default-when-next-confirmed": {
         description: "Standard",
         tooltip: "Top picks and recommendations from aRPG Timeline",
-        icon: Logo,
+        icon: LogoIcon,
     },
     seasonal: {
         description: "Seasonal",
         tooltip: "Games with active or upcoming seasons and ladders",
-        icon: Gamepad2,
+        icon: RotateCwSquare,
     },
     "early-access": {
         description: "Early Access",
-        tooltip: "Games currently in early access, open beta, or preview",
+        tooltip: "Games currently in early access or open beta",
         icon: FlaskConical,
     },
     community: {

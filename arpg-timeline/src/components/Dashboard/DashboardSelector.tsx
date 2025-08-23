@@ -8,6 +8,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/ui/ToggleGroup";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 import { DashboardConfig } from "./DashboardConfig";
+import { cn } from "@/lib/utils";
 
 interface DashboardSelectorProps {
     dashboard: DashboardTag;
@@ -36,7 +37,7 @@ export const DashboardSelector = ({
 
     if (isMobile) {
         return (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col">
                 {(Object.keys(DashboardConfig) as DashboardTag[])
                     .filter((tag) => DashboardConfig[tag])
                     .map((tag) => {
@@ -46,12 +47,28 @@ export const DashboardSelector = ({
                         return (
                             <Button
                                 key={tag}
-                                variant={isActive ? "default" : "outline"}
-                                className="justify-start gap-3"
+                                variant={isActive ? "default" : "ghost"}
+                                className="h-auto min-h-[60px] justify-start gap-3 py-2 text-left"
                                 onClick={() => handleDashboardChange(tag)}
                             >
-                                <IconComponent className="h-4 w-4" />
-                                <span>{config.description}</span>
+                                <div className="flex w-full flex-col items-start text-left">
+                                    <div className="flex items-start gap-3">
+                                        <IconComponent className="h-8 w-8 flex-shrink-0 py-1" />
+                                        <div className="flex flex-col">
+                                            <span className="font-medium">
+                                                {config.description}
+                                            </span>
+                                            <span
+                                                className={cn(
+                                                    "text-muted-foreground text-xs leading-relaxed text-wrap whitespace-break-spaces",
+                                                    { "text-primary-foreground/75": isActive },
+                                                )}
+                                            >
+                                                {config.tooltip}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </Button>
                         );
                     })}

@@ -17,7 +17,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
             <Link
                 href="/"
                 rel="self"
-                className="absolute top-0 z-20 transform text-base font-semibold tracking-[0.3rem] sm:text-lg md:left-1/2 md:mr-auto md:ml-auto md:-translate-x-1/2 md:text-4xl"
+                className="absolute top-0 left-1/2 z-20 mr-auto ml-auto -translate-x-1/2 transform text-base font-semibold tracking-[0.3rem] sm:text-lg md:text-4xl"
             >
                 <h1 className="flex flex-row items-center md:gap-2">
                     <Logo className="mx-auto scale-75 md:scale-100" />
@@ -26,7 +26,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
             </Link>
             <div className="flex h-full items-center justify-between gap-2">
                 <div className="ml-auto flex items-center">
-                    <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
+                    <Button variant={"ghost"} asChild className="hidden px-2 md:flex 2xl:px-4">
                         <Link
                             href={discordUrl}
                             rel="external noopener noreferrer"
@@ -45,7 +45,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
                             <span className="hidden 2xl:block">Discord</span>
                         </Link>
                     </Button>
-                    <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
+                    <Button variant={"ghost"} asChild className="hidden px-2 md:flex 2xl:px-4">
                         <Link
                             href={patreonUrl}
                             rel="noopener"
@@ -61,7 +61,7 @@ export const Header = ({ discordUrl, patreonUrl, githubUrl }: HeaderProps) => (
                                     height={22}
                                 />
                             </div>
-                            <span className="hidden 2xl:block">Support me</span>
+                            <span className="hidden 2xl:block">Support Our Work</span>
                         </Link>
                     </Button>
                     <Button variant={"ghost"} asChild className="hidden px-2 sm:flex 2xl:px-4">

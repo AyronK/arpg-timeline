@@ -39,7 +39,7 @@ export const GamesAndEventsGrid = ({
 
     return (
         <>
-            <article className="flex flex-col gap-4 pb-20 md:pb-0 2xl:gap-5">
+            <article className="flex flex-col gap-4 2xl:gap-5">
                 <h2 className="sr-only">Seasons</h2>
                 <div className="relative flex flex-col gap-1">
                     <GameCountDisplay

@@ -14,7 +14,7 @@ export const Faq = ({
     patreonUrl: string;
 }) => {
     return (
-        <section className="container my-16 flex flex-col gap-4">
+        <section className="container flex flex-col gap-4 md:my-16">
             <div>
                 <h2 className="sr-only">Support</h2>
                 <div className="mx-auto flex max-w-prose flex-col-reverse justify-between gap-2 md:flex-row md:gap-8">
