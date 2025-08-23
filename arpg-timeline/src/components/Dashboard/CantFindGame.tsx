@@ -1,6 +1,7 @@
-import { Button } from "@/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
+
+import { Button } from "@/ui/Button";
 
 export const CantFindGame = () => (
     <div className="bg-card 3xl:nth-[2]:order-first 3xl:nth-[3]:order-first 3xl:nth-[4]:order-first 4xl:nth-[2]:order-first 4xl:nth-[3]:order-first 4xl:nth-[4]:order-first 4xl:nth-[5]:order-first order-last flex flex-col items-center justify-center rounded-lg p-6 text-center lg:nth-[2]:order-first xl:nth-[2]:order-first">
