@@ -21,16 +21,14 @@ export const GameFilters = ({
     toggleGameFilter,
     toggleGroupFilter,
 }: GameFiltersProps) => (
-    <div className="fixed right-8 bottom-8 z-50 xl:sticky xl:top-0 xl:order-first xl:col-span-full xl:h-0">
-        <div className="xl:absolute xl:top-6 xl:-right-16">
-            <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                <FiltersDialog
-                    checked={activeFilters}
-                    filters={gameFilters}
-                    onCheckedChange={toggleGameFilter}
-                    onGroupCheckedChange={toggleGroupFilter}
-                />
-            </ErrorBoundary>
-        </div>
+    <div className="">
+        <ErrorBoundary fallback={<WidgetDiedFallback />}>
+            <FiltersDialog
+                checked={activeFilters}
+                filters={gameFilters}
+                onCheckedChange={toggleGameFilter}
+                onGroupCheckedChange={toggleGroupFilter}
+            />
+        </ErrorBoundary>
     </div>
 );

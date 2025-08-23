@@ -5,13 +5,24 @@ import { Main } from "@/components/Home/HomePage";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { GameStatistics } from "@/lib/cms/games.types";
+import { DASHBOARD_TAGS, isDashboardTag } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityClient, sanityFetch } from "@/lib/sanity/sanityClient";
 import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 
-const Home = async () => {
+const Home = async ({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+    const dashboardParam = (await searchParams).dashboard;
+    const dashboard =
+        dashboardParam && isDashboardTag(dashboardParam)
+            ? dashboardParam
+            : "default-when-next-confirmed";
+
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
         revalidate: 24 * 60 * 60,
@@ -53,7 +64,12 @@ const Home = async () => {
             {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
                 <Kicker />
-                <Main games={games} streams={streams} statistics={statistics} />
+                <Main
+                    games={games}
+                    streams={streams}
+                    statistics={statistics}
+                    dashboard={dashboard}
+                />
             </div>
             <StructuredDataScripts games={games} />
             <Faq patreonUrl={process.env.PATREON_URL!} faq={data.faq} />
@@ -62,6 +78,12 @@ const Home = async () => {
 };
 
 export const revalidate = 3600;
+
+export async function generateStaticParams() {
+    return DASHBOARD_TAGS.map((dashboard) => ({
+        dashboard,
+    }));
+}
 
 export default Home;
 

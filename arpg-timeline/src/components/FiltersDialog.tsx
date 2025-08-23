@@ -54,7 +54,7 @@ export const FiltersDialog = ({
         return (
             <Dialog>
                 <DialogTrigger asChild>
-                    <Trigger checked={checked} />
+                    <Trigger />
                 </DialogTrigger>
                 <DialogContent>
                     <DialogDescription className="sr-only">Filters dialog</DialogDescription>
@@ -78,7 +78,7 @@ export const FiltersDialog = ({
     return (
         <Drawer direction={isMd ? "right" : "bottom"}>
             <DrawerTrigger asChild>
-                <Trigger checked={checked} />
+                <Trigger />
             </DrawerTrigger>
             <DrawerContent className={!isMd ? "left-0" : undefined}>
                 <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
@@ -118,33 +118,23 @@ const Description = () => (
     </div>
 );
 
-const Trigger = forwardRef<
-    HTMLButtonElement,
-    React.ComponentPropsWithoutRef<typeof Button> & Pick<FiltersDialogProps, "checked">
->(({ checked, ...rest }, ref) => (
-    <Button
-        {...rest}
-        ref={ref}
-        variant="default"
-        size={"lg"}
-        onMouseDown={() => {
-            sa_event("filters_opened");
-        }}
-        className={
-            "group relative z-0 h-12 rounded-full px-4 shadow-md shadow-black transition-all ease-in-out"
-        }
-    >
-        <Filter className="h-4 w-4" />
-        <span className="max-w-0 overflow-hidden transition-all ease-in-out group-hover:ml-2 group-hover:max-w-20">
-            Filter games
-        </span>
-        <span className="absolute -top-2 -right-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-            <span className="bg-secondary font-ui text-primary-foreground relative grid h-6 w-6 place-content-center rounded-full font-semibold shadow-xs shadow-black">
-                {checked.length}
-            </span>
-        </span>
-    </Button>
-));
+const Trigger = forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof Button>>(
+    ({ ...rest }, ref) => (
+        <Button
+            {...rest}
+            ref={ref}
+            variant="default"
+            size={"sm"}
+            onMouseDown={() => {
+                sa_event("filters_opened");
+            }}
+            className="inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
+        >
+            <Filter className="h-4 w-4" />
+            <span className="text-center leading-0 whitespace-nowrap">Filter</span>
+        </Button>
+    ),
+);
 
 Trigger.displayName = "Trigger";
 

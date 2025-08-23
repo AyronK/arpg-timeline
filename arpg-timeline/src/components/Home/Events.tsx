@@ -14,7 +14,7 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => {
     return (
         <div
             className={cn(
-                "bg-card text-card-foreground 3xl:col-span-4 4xl:col-span-5 lg-col-span-2 relative order-3 col-span-1 flex max-h-full flex-col gap-4 rounded-md border p-4 transition-all ease-out md:col-span-2 md:gap-4 xl:col-span-3",
+                "bg-card text-card-foreground 3xl:col-span-4 4xl:col-span-5 lg-col-span-2 relative order-3 col-span-1 flex max-h-full min-h-auto! flex-col gap-4 rounded-md border p-4 transition-all ease-out md:col-span-2 md:gap-4 xl:col-span-3",
                 {
                     "max-h-[272px]": !expanded,
                 },
