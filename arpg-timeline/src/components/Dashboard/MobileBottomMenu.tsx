@@ -52,8 +52,8 @@ export function MobileBottomMenu({
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: "ARPG Timeline",
-                    text: `Check out this ARPG timeline dashboard: ${dashboard}`,
+                    title: "aRPG Timeline",
+                    text: `Check out aRPG timeline`,
                     url: window.location.href,
                 });
             } catch (error) {
