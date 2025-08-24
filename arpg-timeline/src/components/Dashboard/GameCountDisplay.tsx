@@ -9,7 +9,7 @@ export const GameCountDisplay = ({ shownGames, totalGames }: GameCountDisplayPro
     return (
         <div className="text-muted-foreground text-right text-sm">
             <span>
-                <span className="inline-block origin-bottom-right font-medium transition-all duration-300 ease-in-out">
+                <span className="text-foreground inline-block origin-bottom-right font-medium transition-all duration-300 ease-in-out">
                     {shownGames}
                 </span>
                 &nbsp;
