@@ -3,6 +3,99 @@
 @plugin 'tailwindcss-animate';
 @plugin 'tailwind-scrollbar';
 
+@layer utilities {
+    .line-clamp-2 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .line-clamp-3 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+    }
+}
+
+@layer components {
+    .steam-news-content {
+        @apply text-muted-foreground text-xs leading-relaxed;
+    }
+
+    .steam-news-content h1,
+    .steam-news-content h2,
+    .steam-news-content h3,
+    .steam-news-content h4,
+    .steam-news-content h5,
+    .steam-news-content h6 {
+        @apply text-foreground mb-1 font-semibold;
+    }
+
+    .steam-news-content h1 {
+        @apply text-sm;
+    }
+    .steam-news-content h2 {
+        @apply text-sm;
+    }
+    .steam-news-content h3 {
+        @apply text-xs;
+    }
+    .steam-news-content h4 {
+        @apply text-xs;
+    }
+    .steam-news-content h5 {
+        @apply text-xs;
+    }
+    .steam-news-content h6 {
+        @apply text-xs;
+    }
+
+    .steam-news-content p {
+        @apply mb-1 last:mb-0;
+    }
+
+    .steam-news-content ul,
+    .steam-news-content ol {
+        @apply mb-1 ml-4 last:mb-0;
+    }
+
+    .steam-news-content li {
+        @apply mb-0.5 last:mb-0;
+    }
+
+    .steam-news-content strong,
+    .steam-news-content b {
+        @apply text-foreground font-semibold;
+    }
+
+    .steam-news-content em,
+    .steam-news-content i {
+        @apply italic;
+    }
+
+    .steam-news-content u {
+        @apply underline;
+    }
+
+    .steam-news-content br {
+        @apply mb-1 block;
+    }
+
+    .steam-news-content a {
+        @apply text-blue-500 transition-colors hover:text-blue-600 hover:underline;
+    }
+
+    .steam-news-content span {
+        @apply text-muted-foreground;
+    }
+
+    .steam-news-title a {
+        @apply text-foreground transition-colors hover:text-blue-600;
+    }
+}
+
 @theme {
     --breakpoint-*: initial;
     --breakpoint-sm: 640px;
