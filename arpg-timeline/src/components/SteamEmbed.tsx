@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 
 import { addUTMParameters } from "@/lib/utm";
 
@@ -16,6 +17,14 @@ export const SteamEmbed = ({ appId }: { appId: number }) => {
         setIsLoading(false);
     };
 
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
+
+        return () => clearTimeout(timeout);
+    }, []);
+
     return (
         <div className="relative min-h-[190px] w-full">
             {isLoading && (
@@ -32,6 +41,7 @@ export const SteamEmbed = ({ appId }: { appId: number }) => {
                 style={{ border: 0, overflow: "hidden", width: "100%" }}
                 loading="lazy"
                 onLoad={handleIframeLoad}
+                onError={() => setIsLoading(false)}
             />
         </div>
     );

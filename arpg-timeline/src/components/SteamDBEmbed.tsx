@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 
 import { addUTMParameters } from "@/lib/utm";
 
@@ -15,6 +16,14 @@ export const SteamDBEmbed = ({ appId }: { appId: number }) => {
     const handleIframeLoad = () => {
         setIsLoading(false);
     };
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
+
+        return () => clearTimeout(timeout);
+    }, []);
 
     return (
         <div className="relative min-h-[389px] w-full">

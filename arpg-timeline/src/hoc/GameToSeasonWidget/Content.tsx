@@ -57,8 +57,8 @@ export const Content = ({
                             <MaybeLinkWrapper
                                 href={season.patchNotesUrl}
                                 target="_blank"
-                                className="ml-auto text-sm text-nowrap hover:underline"
-                                data-sm-click={`${season.name}-patch-notes`}
+                                className="text-primary hover:text-primary/80 ml-auto text-sm text-nowrap hover:underline"
+                                data-sa-click={`${season.name}-patch-notes`}
                             >
                                 Patch notes
                             </MaybeLinkWrapper>

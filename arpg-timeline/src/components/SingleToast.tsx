@@ -2,7 +2,7 @@
 import { PortableText } from "next-sanity";
 import { useEffect } from "react";
 
-import { Toast } from "@/queries/indexQuery";
+import { Toast } from "@/lib/cms/queries/indexQuery";
 import { useToast } from "@/ui/hooks/useToast";
 
 export const SingleToast = ({ data }: { data: Toast }) => {

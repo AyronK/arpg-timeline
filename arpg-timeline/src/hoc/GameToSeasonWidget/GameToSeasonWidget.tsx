@@ -1,3 +1,5 @@
+"use client";
+
 import { SeasonWidget } from "@/components/SeasonWidget";
 import { Game } from "@/lib/cms/games.types";
 

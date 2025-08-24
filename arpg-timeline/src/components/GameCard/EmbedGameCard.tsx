@@ -7,7 +7,7 @@ import { Game } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 
 import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
-import { getNextSeasonDate } from "../Home/Games";
+import { getNextSeasonDate } from "../Dashboard/Games";
 import { Logo } from "../Logo";
 import { SteamPlayersChip } from "../SteamPlayersChip";
 import { GameCardProps } from "./GameCard.types";
@@ -28,7 +28,7 @@ export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps
     function handleClick() {
         let hostname = "unknown";
         try {
-            if (document.referrer) {
+            if (typeof document !== "undefined" && document.referrer) {
                 hostname = new URL(document.referrer).hostname;
             }
         } finally {
@@ -41,13 +41,15 @@ export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps
         let isOBS = false;
 
         try {
-            if (document.referrer) {
+            if (typeof document !== "undefined" && document?.referrer) {
                 hostname = new URL(document.referrer).hostname;
             }
 
-            const ua = navigator.userAgent;
-            if (ua.includes("Chrome") && ua.includes("OBS")) {
-                isOBS = true;
+            if (typeof navigator !== "undefined") {
+                const ua = navigator.userAgent;
+                if (ua.includes("Chrome") && ua.includes("OBS")) {
+                    isOBS = true;
+                }
             }
         } finally {
             sa_event(`${slug}-embed-view`, { hostname, isOBS });

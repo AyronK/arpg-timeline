@@ -1,7 +1,7 @@
 import { Game, SeasonEnd } from "@/lib/cms/games.types";
+import { IndexQueryResult, Season } from "@/lib/cms/queries/indexQuery";
 import { HOUR } from "@/lib/date";
 import { inGracePeriod, sortBySeasons } from "@/lib/games/sortBySeasons";
-import { IndexQueryResult, Season } from "@/queries/indexQuery";
 
 const DEFAULT_SEASON_OFFSET = 120 * 24 * 50 * 60 * 1000;
 

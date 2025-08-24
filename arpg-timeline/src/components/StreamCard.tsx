@@ -8,6 +8,7 @@ import LocalDate from "@/components/LocalDate";
 import { ShareMenu } from "@/components/ShareMenu";
 import { GameStream } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
+import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
@@ -47,30 +48,39 @@ const WatchNowAction = ({
 }: {
     twitchChannel: string;
     gameSlug: string;
-}) => (
-    <FramedAction
-        appendClassName="!bg-[#6441a5]"
-        append={
-            <Button
-                asChild
-                size="icon"
-                className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
-                variant="destructive"
-            >
-                <a
-                    target="_blank"
-                    rel="noopener"
-                    onClick={() => sa_event(`${gameSlug}-twitch-channel-click`)}
-                    href={`https://www.twitch.tv/${twitchChannel}`}
+}) => {
+    const addUTM = addUTMParameters({
+        utm_source: "arpg-timeline",
+        utm_medium: "link",
+        utm_campaign: "twitch-channel",
+        utm_content: gameSlug,
+    });
+
+    return (
+        <FramedAction
+            appendClassName="!bg-[#6441a5]"
+            append={
+                <Button
+                    asChild
+                    size="icon"
+                    className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
+                    variant="destructive"
                 >
-                    <Twitch className="h-4 w-4" />
-                </a>
-            </Button>
-        }
-    >
-        Watch now!
-    </FramedAction>
-);
+                    <a
+                        target="_blank"
+                        rel="noopener"
+                        onClick={() => sa_event(`${gameSlug}-twitch-channel-click`)}
+                        href={addUTM(`https://www.twitch.tv/${twitchChannel}`)}
+                    >
+                        <Twitch className="h-4 w-4" />
+                    </a>
+                </Button>
+            }
+        >
+            Watch now!
+        </FramedAction>
+    );
+};
 
 const CountdownAction = ({ stream }: { stream: GameStream }) => (
     <FramedAction

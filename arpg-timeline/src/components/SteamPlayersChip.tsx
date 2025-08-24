@@ -1,4 +1,6 @@
+import { DialogPortal } from "@radix-ui/react-dialog";
 import { Description } from "@radix-ui/react-toast";
+import { PropsWithChildren } from "react";
 import { PiUsersThree } from "react-icons/pi";
 import { RiSteamLine } from "react-icons/ri";
 
@@ -38,7 +40,7 @@ export const SteamPlayersChip = ({
     return (
         <span
             title={description}
-            className="text-foreground flex cursor-pointer flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 shadow-sky-400/25 transition-all select-none hover:-translate-y-0.5 hover:opacity-100 hover:shadow-sm"
+            className="text-foreground flex cursor-help flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 shadow-sky-400/25 select-none"
         >
             {playersCount > 0 && <PiUsersThree className="h-4 w-4" />}
             <span className="mx-1" aria-hidden>
@@ -50,37 +52,43 @@ export const SteamPlayersChip = ({
     );
 };
 
-export const SteamPlayersChipButton = ({
+export const SteamDialogTrigger = ({
     playersCount,
     appId,
     gameSlug,
-    isComingSoon,
-}: {
+    children,
+}: PropsWithChildren<{
     playersCount: number;
     appId: number;
     gameSlug: string;
     isComingSoon?: boolean;
-}) => {
+}>) => {
     const description = `${playersCount} players online on Steam`;
 
     return (
         <Dialog>
-            <DialogTrigger aria-description={description} data-sa-click={`steam-${gameSlug}`}>
-                <SteamPlayersChip playersCount={playersCount} isComingSoon={isComingSoon} />
+            <DialogTrigger
+                aria-description={description}
+                data-sa-click={`steam-${gameSlug}`}
+                asChild
+            >
+                {children}
             </DialogTrigger>
-            <DialogContent className="w-[95vw] md:max-w-4xl!">
-                <DialogHeader>
-                    <DialogTitle className="flex flex-row">
-                        <RiSteamLine className="mr-2 h-4 w-4" />
-                        Steam
-                    </DialogTitle>
-                    <DialogDescription asChild>
-                        <Description />
-                    </DialogDescription>
-                </DialogHeader>
-                <SteamEmbed appId={appId} />
-                {playersCount > 0 && <SteamDBEmbed appId={appId} />}
-            </DialogContent>
+            <DialogPortal>
+                <DialogContent className="w-[95vw] md:max-w-4xl!">
+                    <DialogHeader>
+                        <DialogTitle className="flex flex-row">
+                            <RiSteamLine className="mr-2 h-4 w-4" />
+                            Steam
+                        </DialogTitle>
+                        <DialogDescription asChild>
+                            <Description />
+                        </DialogDescription>
+                    </DialogHeader>
+                    <SteamEmbed appId={appId} />
+                    {playersCount > 0 && <SteamDBEmbed appId={appId} />}
+                </DialogContent>
+            </DialogPortal>
         </Dialog>
     );
 };

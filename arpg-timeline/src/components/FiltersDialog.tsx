@@ -32,6 +32,7 @@ export type FiltersDialogProps = {
     checked: string[];
     onCheckedChange: (value: string, checked: boolean) => void;
     onGroupCheckedChange: (group: string, checked: boolean) => void;
+    disabled?: boolean;
 };
 
 const title = "Which games would you like to see?";
@@ -41,20 +42,23 @@ export const FiltersDialog = ({
     checked,
     onCheckedChange,
     onGroupCheckedChange,
+    disabled = false,
 }: FiltersDialogProps) => {
     const { isMd } = useBreakpoint("md");
     const { is4xl } = useBreakpoint("4xl");
     const isMounted = useHasMounted();
 
+    const showIndicator = filters.length !== checked.length;
+
     if (!isMounted) {
-        return null;
+        return <Trigger showIndicator={showIndicator} />;
     }
 
     if (is4xl) {
         return (
             <Dialog>
                 <DialogTrigger asChild>
-                    <Trigger checked={checked} />
+                    <Trigger showIndicator={showIndicator} disabled={disabled} />
                 </DialogTrigger>
                 <DialogContent>
                     <DialogDescription className="sr-only">Filters dialog</DialogDescription>
@@ -69,6 +73,7 @@ export const FiltersDialog = ({
                         filters={filters}
                         onCheckedChange={onCheckedChange}
                         onGroupCheckedChange={onGroupCheckedChange}
+                        disabled={disabled}
                     />
                 </DialogContent>
             </Dialog>
@@ -78,7 +83,7 @@ export const FiltersDialog = ({
     return (
         <Drawer direction={isMd ? "right" : "bottom"}>
             <DrawerTrigger asChild>
-                <Trigger checked={checked} />
+                <Trigger showIndicator={showIndicator} disabled={disabled} />
             </DrawerTrigger>
             <DrawerContent className={!isMd ? "left-0" : undefined}>
                 <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
@@ -93,6 +98,7 @@ export const FiltersDialog = ({
                     filters={filters}
                     onCheckedChange={onCheckedChange}
                     onGroupCheckedChange={onGroupCheckedChange}
+                    disabled={disabled}
                 />
                 <DrawerFooter className="absolute right-0 bottom-0 md:relative">
                     <div className="ml-auto md:mr-auto md:ml-0">
@@ -120,39 +126,37 @@ const Description = () => (
 
 const Trigger = forwardRef<
     HTMLButtonElement,
-    React.ComponentPropsWithoutRef<typeof Button> & Pick<FiltersDialogProps, "checked">
->(({ checked, ...rest }, ref) => (
+    React.ComponentPropsWithoutRef<typeof Button> & { showIndicator?: boolean; disabled?: boolean }
+>(({ showIndicator, disabled = false, ...rest }, ref) => (
     <Button
         {...rest}
         ref={ref}
         variant="default"
-        size={"lg"}
+        size={"sm"}
+        disabled={disabled}
         onMouseDown={() => {
             sa_event("filters_opened");
         }}
-        className={
-            "group relative z-0 h-12 rounded-full px-4 shadow-md shadow-black transition-all ease-in-out"
-        }
+        className="inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
     >
-        <Filter className="h-4 w-4" />
-        <span className="max-w-0 overflow-hidden transition-all ease-in-out group-hover:ml-2 group-hover:max-w-20">
-            Filter games
-        </span>
-        <span className="absolute -top-2 -right-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-            <span className="bg-secondary font-ui text-primary-foreground relative grid h-6 w-6 place-content-center rounded-full font-semibold shadow-xs shadow-black">
-                {checked.length}
-            </span>
-        </span>
+        <div className="relative">
+            <Filter className="h-4 w-4" />
+            {showIndicator && (
+                <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-600"></div>
+            )}
+        </div>
+        <span className="text-center leading-0 whitespace-nowrap">Filter</span>
     </Button>
 ));
 
 Trigger.displayName = "Trigger";
 
-const Filters = ({
+export const Filters = ({
     filters,
     checked,
     onGroupCheckedChange,
     onCheckedChange,
+    disabled,
 }: FiltersDialogProps) => {
     const groups = filters.reduce(
         (prev, curr) => {
@@ -179,6 +183,8 @@ const Filters = ({
                                     size="icon"
                                     variant="ghost"
                                     onClick={() => onGroupCheckedChange(g, !anyChecked)}
+                                    disabled={disabled}
+                                    data-sa-click={`filter-group-${g === "" ? "uncategorized" : g}`}
                                 >
                                     {anyChecked ? (
                                         <Eye className="h-4 w-4" />
@@ -195,6 +201,7 @@ const Filters = ({
                                                 id={`${f.value}-filter`}
                                                 onCheckedChange={(v) => onCheckedChange(f.value, v)}
                                                 checked={checked.includes(f.value)}
+                                                disabled={disabled}
                                             />
                                             <label
                                                 className={cn(

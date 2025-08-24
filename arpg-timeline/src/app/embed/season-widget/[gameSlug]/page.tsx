@@ -7,10 +7,10 @@ import { SanityImage } from "@/components/SanityImage";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { EmbedGameToSeasonWidget } from "@/hoc/GameToSeasonWidget/EmbedGameToSeasonWidget";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
-import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
     const { gameSlug } = await params;
@@ -57,7 +57,7 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                                 href={game.currentSeason.patchNotesUrl}
                                 target="_blank"
                                 className="ml-auto text-sm text-nowrap hover:underline"
-                                data-sm-click={`${game.currentSeason.name}-patch-notes`}
+                                data-sa-click={`${game.currentSeason.name}-patch-notes`}
                             >
                                 Patch notes
                             </MaybeLinkWrapper>
@@ -73,6 +73,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
 
 export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({
+        revalidate: 3600,
+        tags: ["game", "season"],
         query: indexQuery,
     });
 
