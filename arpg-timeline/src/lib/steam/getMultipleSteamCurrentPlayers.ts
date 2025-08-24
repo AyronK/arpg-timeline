@@ -9,7 +9,7 @@ export async function getSteamCurrentPlayers(appId: number): Promise<SteamPlayer
     const url = `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${appId}&format=json`;
 
     try {
-        const response = await fetch(url, { next: { revalidate: 60 } });
+        const response = await fetch(url, { next: { revalidate: 3600 } });
         const data = await response.json();
 
         if (data.response && data.response.result === 1) {
