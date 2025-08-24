@@ -78,7 +78,7 @@ function parseSteamRss(xmlText: string): SteamNewsItem[] {
             }
         }
 
-        return items.slice(0, 3);
+        return items.slice(0, 4);
     } catch (error) {
         console.error("Error parsing Steam RSS:", error);
         return [];

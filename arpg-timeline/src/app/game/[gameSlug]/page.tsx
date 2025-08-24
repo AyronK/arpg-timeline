@@ -290,18 +290,18 @@ const SteamIntegrationSection = ({
 }) => (
     <div className="space-y-6 md:gap-6 md:space-y-8">
         <h2 className="text-2xl font-bold md:text-3xl">Steam Integration</h2>
-        <div className="grid gap-4 md:gap-6 lg:grid-cols-3">
-            <div>
-                <h3 className="mb-3 text-lg font-semibold">Steam Store</h3>
-                <SteamEmbed appId={steamAppId} />
+        <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
+            <div className="space-y-4">
+                <div>
+                    <h3 className="mb-3 text-lg font-semibold">Steam Store</h3>
+                    <SteamEmbed appId={steamAppId} />
+                </div>
+                <div>
+                    <h3 className="mb-3 text-lg font-semibold">SteamDB Stats</h3>
+                    <SteamDBEmbed appId={steamAppId} />
+                </div>
             </div>
-            <div>
-                <h3 className="mb-3 text-lg font-semibold">SteamDB Stats</h3>
-                <SteamDBEmbed appId={steamAppId} />
-            </div>
-            <div>
-                <SteamNews steamAppId={steamAppId} gameName={gameName} news={steamNews} />
-            </div>
+            <SteamNews steamAppId={steamAppId} news={steamNews} />
         </div>
     </div>
 );
