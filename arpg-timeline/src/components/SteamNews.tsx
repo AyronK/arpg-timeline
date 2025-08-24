@@ -1,12 +1,13 @@
-import { ExternalLink, Calendar, Newspaper } from "lucide-react";
+import { Calendar, ExternalLink, Newspaper } from "lucide-react";
 
-import { addUTMParameters } from "@/lib/utm";
-import { cn } from "@/lib/utils";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
+import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
+
+import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
 interface SteamNewsProps {
     steamAppId: number;
-    gameName: string;
     news: SteamNewsItem[];
     className?: string;
 }
@@ -21,7 +22,7 @@ const truncateText = (text: string, maxLength: number): string => {
     return text.substring(0, maxLength).trim() + "...";
 };
 
-export const SteamNews = ({ steamAppId, gameName, news, className }: SteamNewsProps) => {
+export const SteamNews = ({ steamAppId, news, className }: SteamNewsProps) => {
     if (news.length === 0) {
         return (
             <div className={cn("bg-card rounded-lg border p-4", className)}>
@@ -82,16 +83,14 @@ export const SteamNews = ({ steamAppId, gameName, news, className }: SteamNewsPr
                 ))}
             </div>
 
-            <div className="mt-4 border-t pt-3">
-                <a
+            <div className="mt-4 flex flex-1 justify-end border-t pt-3">
+                <MaybeLinkWrapper
                     href={addUTM(`https://store.steampowered.com/news/app/${steamAppId}`)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-xs text-blue-600 transition-colors hover:text-blue-700 hover:underline"
                 >
                     View all news
-                    <ExternalLink className="h-3 w-3" />
-                </a>
+                </MaybeLinkWrapper>
             </div>
         </div>
     );

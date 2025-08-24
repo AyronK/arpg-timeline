@@ -8,13 +8,13 @@ import { SanityImage } from "@/components/SanityImage";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
 import { SteamEmbed } from "@/components/SteamEmbed";
 import { SteamNews } from "@/components/SteamNews";
-import { getSteamNews, SteamNewsItem } from "@/lib/steam/getSteamNews";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
 import { Game as CMSGame } from "@/lib/cms/games.types";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { getSteamNews, SteamNewsItem } from "@/lib/steam/getSteamNews";
 import { cn } from "@/lib/utils";
 
 interface GamePageProps {
