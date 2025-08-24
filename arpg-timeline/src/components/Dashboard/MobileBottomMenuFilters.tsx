@@ -1,0 +1,106 @@
+import { Description } from "@radix-ui/react-toast";
+import { Filter, Share2 } from "lucide-react";
+import { title } from "process";
+
+import { GameFiltersProps } from "@/components/GameFilters";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useShareAction } from "@/hooks/useShareAction";
+import { DashboardTag } from "@/lib/cms/gameTags";
+import { Button } from "@/ui/Button";
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/ui/Drawer";
+
+import { Filters } from "../FiltersDialog";
+
+interface MobileBottomMenuFiltersProps {
+    filtersProps: GameFiltersProps;
+    dashboard: DashboardTag;
+    isFiltersDisabled?: boolean;
+    onDrawerOpenChange: (open: boolean) => void;
+}
+
+export function MobileBottomMenuFilters({
+    filtersProps,
+    dashboard,
+    isFiltersDisabled = false,
+    onDrawerOpenChange,
+}: MobileBottomMenuFiltersProps) {
+    const { isMd } = useBreakpoint("md");
+    const { handleShare } = useShareAction(null, {
+        utm_source: "arpg-timeline",
+        utm_medium: "mobile_menu",
+        utm_campaign: "share",
+        utm_content: dashboard,
+    });
+
+    return (
+        <div className="flex flex-1 justify-around">
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleShare()}
+                className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
+                data-sa-click="share"
+            >
+                <Share2 className="h-5 w-5" />
+                <span className="text-[0.65rem] leading-2 font-medium">Share</span>
+            </Button>
+            <Drawer direction={isMd ? "right" : "bottom"} onOpenChange={onDrawerOpenChange}>
+                <DrawerTrigger asChild>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={isFiltersDisabled}
+                        className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
+                        data-sa-click="filters"
+                    >
+                        <div className="relative">
+                            <Filter className="h-5 w-5" />
+                            {filtersProps.gameFilters.length !==
+                                filtersProps.activeFilters.length && (
+                                <div className="bg-warning absolute -top-1 -right-1 h-2 w-2 rounded-full"></div>
+                            )}
+                        </div>
+                        <span className="text-[0.65rem] leading-2 font-medium">Filters</span>
+                    </Button>
+                </DrawerTrigger>
+                <DrawerContent className={!isMd ? "left-0" : undefined}>
+                    <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
+                    <DrawerHeader className="pb-3">
+                        <DrawerTitle>{title}</DrawerTitle>
+                        <DrawerDescription asChild>
+                            <Description />
+                        </DrawerDescription>
+                    </DrawerHeader>
+                    <Filters
+                        checked={filtersProps.activeFilters}
+                        filters={filtersProps.gameFilters}
+                        onCheckedChange={filtersProps.toggleGameFilter}
+                        onGroupCheckedChange={filtersProps.toggleGroupFilter}
+                        disabled={isFiltersDisabled}
+                    />
+                    <DrawerFooter className="absolute right-0 bottom-0 lg:relative">
+                        <div className="ml-auto lg:mr-auto lg:ml-0">
+                            <DrawerClose asChild>
+                                <Button
+                                    className="shadow-md shadow-black lg:shadow-none"
+                                    variant="outline"
+                                >
+                                    Close
+                                </Button>
+                            </DrawerClose>
+                        </div>
+                    </DrawerFooter>
+                </DrawerContent>
+            </Drawer>
+        </div>
+    );
+}

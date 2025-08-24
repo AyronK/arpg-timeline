@@ -1,32 +1,15 @@
 "use client";
-import { Description } from "@radix-ui/react-toast";
-import { ChartGantt, Filter, Share2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { title } from "process";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { useShareAction } from "@/hooks/useShareAction";
+import { useScrollVisibility } from "@/hooks/useScrollVisibility";
 import { DashboardTag } from "@/lib/cms/gameTags";
 import { cn } from "@/lib/utils";
-import { Button } from "@/ui/Button";
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/ui/Drawer";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/DropdownMenu";
 
-import { Filters } from "../FiltersDialog";
-import { DashboardConfig } from "./DashboardConfig";
-import { DashboardSelector } from "./DashboardSelector";
+import { MobileBottomMenuActions } from "./MobileBottomMenuActions";
+import { MobileBottomMenuCenter } from "./MobileBottomMenuCenter";
+import { MobileBottomMenuCounter } from "./MobileBottomMenuCounter";
+import { MobileBottomMenuFilters } from "./MobileBottomMenuFilters";
 
 type MobileBottomMenuProps = {
     filtersProps: GameFiltersProps;
@@ -45,46 +28,18 @@ export function MobileBottomMenu({
     totalGames,
     isFiltersDisabled = false,
 }: MobileBottomMenuProps) {
-    const { isMd } = useBreakpoint("md");
-    const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const { handleShare } = useShareAction(null, {
-        utm_source: "arpg-timeline",
-        utm_medium: "mobile_menu",
-        utm_campaign: "share",
-        utm_content: dashboard,
+
+    const { isVisible, forceVisible } = useScrollVisibility({
+        threshold: 100,
+        hideThreshold: 150,
+        isDrawerOpen,
     });
-
-    useEffect(() => {
-        let ticking = false;
-
-        const handleScroll = () => {
-            if (!ticking && !isDrawerOpen) {
-                requestAnimationFrame(() => {
-                    const currentScrollY = window.scrollY;
-
-                    if (currentScrollY > lastScrollY && currentScrollY > 150) {
-                        setIsVisible(false);
-                    } else if (currentScrollY < lastScrollY || currentScrollY < 100) {
-                        setIsVisible(true);
-                    }
-
-                    setLastScrollY(currentScrollY);
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [lastScrollY, isDrawerOpen]);
 
     const handleDrawerOpenChange = (open: boolean) => {
         setIsDrawerOpen(open);
         if (open) {
-            setIsVisible(true);
+            forceVisible();
         }
     };
 
@@ -99,190 +54,28 @@ export function MobileBottomMenu({
                 >
                     <div className="relative">
                         <div className="bg-background relative border-t border-slate-500">
-                            <div className="absolute top-0 right-0 -z-10 -translate-y-full">
-                                <div className="relative z-10 flex items-center">
-                                    <div className="absolute top-[7px] left-[-17px] -z-10">
-                                        <div className="h-10 w-10 rotate-45 rounded-md border-l border-slate-500 bg-gray-600"></div>
-                                    </div>
-                                    <div className="origin-bottom-right rounded-tl-md border-t border-slate-500 bg-gray-600 px-3 py-1 text-xs font-medium text-white">
-                                        Showing {shownGames} of {totalGames}
-                                    </div>
-                                </div>
-                            </div>
+                            <MobileBottomMenuCounter
+                                shownGames={shownGames}
+                                totalGames={totalGames}
+                            />
                             <div className="z-20 flex items-center justify-between p-2">
-                                <div className="flex flex-1 justify-around">
-                                    <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
-                                        <Link
-                                            href={process.env.NEXT_PUBLIC_DISCORD_URL}
-                                            rel="external noopener noreferrer"
-                                            target="_blank"
-                                            data-sa-click="click"
-                                        >
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
-                                            >
-                                                <Image
-                                                    src="/assets/discord-logo.svg"
-                                                    className="h-5 w-5 brightness-200 grayscale-100"
-                                                    alt="Discord logo"
-                                                    width={20}
-                                                    height={20}
-                                                />
-                                                <span className="text-[0.65rem] leading-2 font-medium">
-                                                    Discord
-                                                </span>
-                                            </Button>
-                                        </Link>
-                                    </Button>
-                                    <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
-                                        <Link
-                                            href={process.env.NEXT_PUBLIC_PATREON_URL}
-                                            rel="noopener"
-                                            target="_blank"
-                                            data-sa-click="patreon"
-                                        >
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
-                                            >
-                                                <Image
-                                                    src="/assets/patreon-logo.png"
-                                                    className="h-5 w-5 brightness-200 grayscale-100"
-                                                    alt="Patreon logo"
-                                                    width={22}
-                                                    height={22}
-                                                />
-                                                <span className="text-[0.65rem] leading-2 font-medium">
-                                                    Donate
-                                                </span>
-                                            </Button>
-                                        </Link>
-                                    </Button>
-                                </div>
+                                <MobileBottomMenuActions />
 
                                 <div className="w-20" />
 
-                                <div className="flex flex-1 justify-around">
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => handleShare()}
-                                        className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
-                                        data-sa-click="share"
-                                    >
-                                        <Share2 className="h-5 w-5" />
-                                        <span className="text-[0.65rem] leading-2 font-medium">
-                                            Share
-                                        </span>
-                                    </Button>
-                                    <Drawer
-                                        direction={isMd ? "right" : "bottom"}
-                                        onOpenChange={handleDrawerOpenChange}
-                                    >
-                                        <DrawerTrigger asChild>
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                disabled={isFiltersDisabled}
-                                                className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
-                                                data-sa-click="filters"
-                                            >
-                                                <div className="relative">
-                                                    <Filter className="h-5 w-5" />
-                                                    {filtersProps.gameFilters.length !==
-                                                        filtersProps.activeFilters.length && (
-                                                        <div className="bg-warning absolute -top-1 -right-1 h-2 w-2 rounded-full"></div>
-                                                    )}
-                                                </div>
-                                                <span className="text-[0.65rem] leading-2 font-medium">
-                                                    Filters
-                                                </span>
-                                            </Button>
-                                        </DrawerTrigger>
-                                        <DrawerContent className={!isMd ? "left-0" : undefined}>
-                                            <DrawerDescription className="sr-only">
-                                                Filters dialog
-                                            </DrawerDescription>
-                                            <DrawerHeader className="pb-3">
-                                                <DrawerTitle>{title}</DrawerTitle>
-                                                <DrawerDescription asChild>
-                                                    <Description />
-                                                </DrawerDescription>
-                                            </DrawerHeader>
-                                            <Filters
-                                                checked={filtersProps.activeFilters}
-                                                filters={filtersProps.gameFilters}
-                                                onCheckedChange={filtersProps.toggleGameFilter}
-                                                onGroupCheckedChange={
-                                                    filtersProps.toggleGroupFilter
-                                                }
-                                                disabled={isFiltersDisabled}
-                                            />
-                                            <DrawerFooter className="absolute right-0 bottom-0 lg:relative">
-                                                <div className="ml-auto lg:mr-auto lg:ml-0">
-                                                    <DrawerClose asChild>
-                                                        <Button
-                                                            className="shadow-md shadow-black lg:shadow-none"
-                                                            variant="outline"
-                                                        >
-                                                            Close
-                                                        </Button>
-                                                    </DrawerClose>
-                                                </div>
-                                            </DrawerFooter>
-                                        </DrawerContent>
-                                    </Drawer>
-                                </div>
+                                <MobileBottomMenuFilters
+                                    filtersProps={filtersProps}
+                                    dashboard={dashboard}
+                                    isFiltersDisabled={isFiltersDisabled}
+                                    onDrawerOpenChange={handleDrawerOpenChange}
+                                />
                             </div>
                         </div>
 
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                            <DropdownMenu>
-                                <DropdownMenuContent
-                                    className="w-screen rounded-b-none! border-2 border-slate-500 bg-gray-800 p-2 pb-6! shadow-2xl"
-                                    align="center"
-                                    sideOffset={-32}
-                                    collisionPadding={0}
-                                >
-                                    <div className="mb-2 text-center">
-                                        <h3 className="text-sm font-medium text-white">
-                                            Select Dashboard
-                                        </h3>
-                                    </div>
-                                    <DashboardSelector
-                                        dashboard={dashboard}
-                                        onLoadingChange={onLoadingChange}
-                                        isMobile
-                                    />
-                                </DropdownMenuContent>
-                                <DropdownMenuTrigger asChild>
-                                    <Button
-                                        className="flex h-11 w-11 rotate-45 transform flex-col items-center justify-center border-2 border-slate-500 bg-gray-800 hover:bg-gray-700"
-                                        data-sa-click="dashboard-selector"
-                                    >
-                                        <div className="-rotate-45 transform">
-                                            {(() => {
-                                                const config = DashboardConfig[dashboard];
-                                                const IconComponent = config?.icon;
-                                                return IconComponent ? (
-                                                    <IconComponent className="h-6 w-6 text-white" />
-                                                ) : (
-                                                    <ChartGantt className="h-6 w-6 text-white" />
-                                                );
-                                            })()}
-                                        </div>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                            </DropdownMenu>
-                            <div className="absolute left-1/2 mt-3.5 -translate-x-1/2 text-center">
-                                <div className="text-[0.65rem] font-bold text-nowrap">
-                                    {DashboardConfig[dashboard]?.description ?? "aRPG"}
-                                </div>
-                            </div>
-                        </div>
+                        <MobileBottomMenuCenter
+                            dashboard={dashboard}
+                            onLoadingChange={onLoadingChange}
+                        />
                     </div>
                 </div>
             </div>
