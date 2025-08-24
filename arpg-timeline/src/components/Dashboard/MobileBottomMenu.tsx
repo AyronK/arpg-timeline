@@ -89,15 +89,25 @@ export function MobileBottomMenu({
 
     return (
         <>
-            <div className="fixed right-0 bottom-0 left-0 z-[60] lg:hidden">
+            <div className="fixed right-0 bottom-0 left-0 z-[60] select-none lg:hidden">
                 <div
                     className={`transition-all duration-300 ease-in-out ${
                         isVisible ? "translate-none" : "pointer-events-none translate-y-[96px]"
                     }`}
                 >
                     <div className="relative">
-                        <div className="bg-background border-t border-slate-500">
-                            <div className="flex items-center justify-between p-2">
+                        <div className="bg-background relative border-t border-slate-500">
+                            <div className="absolute top-0 right-0 -z-10 -translate-y-full">
+                                <div className="relative z-10 flex items-center">
+                                    <div className="absolute top-[7px] left-[-17px] -z-10">
+                                        <div className="h-10 w-10 rotate-45 rounded-md border-l border-slate-500 bg-gray-600"></div>
+                                    </div>
+                                    <div className="origin-bottom-right rounded-tl-md border-t border-slate-500 bg-gray-600 px-3 py-1 text-xs font-medium text-white">
+                                        Showing {shownGames} of {totalGames}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="z-20 flex items-center justify-between p-2">
                                 <div className="flex flex-1 justify-around">
                                     <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
                                         <Link
@@ -157,7 +167,7 @@ export function MobileBottomMenu({
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        onClick={handleShare}
+                                        onClick={() => handleShare()}
                                         className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
                                         data-sa-click="share"
                                     >
@@ -231,7 +241,6 @@ export function MobileBottomMenu({
                             <DropdownMenu>
                                 <DropdownMenuContent
                                     className="w-screen rounded-b-none! border-2 border-slate-500 bg-gray-800 p-2 pb-6! shadow-2xl"
-                                    side="top"
                                     align="center"
                                     sideOffset={-32}
                                     collisionPadding={0}
@@ -266,9 +275,9 @@ export function MobileBottomMenu({
                                     </Button>
                                 </DropdownMenuTrigger>
                             </DropdownMenu>
-                            <div className="absolute top-full left-1/2 mt-3 -translate-x-1/2 text-center">
-                                <div className="text-xs font-medium text-nowrap text-gray-300">
-                                    {shownGames} of {totalGames}
+                            <div className="absolute left-1/2 mt-3.5 -translate-x-1/2 text-center">
+                                <div className="text-[0.65rem] font-bold text-nowrap">
+                                    {DashboardConfig[dashboard]?.description ?? "aRPG"}
                                 </div>
                             </div>
                         </div>
