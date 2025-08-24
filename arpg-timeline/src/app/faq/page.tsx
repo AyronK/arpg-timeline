@@ -20,7 +20,7 @@ export default async function FaqPage() {
     return (
         <>
             <FAQSchema />
-            <div className="container mx-auto mb-8">
+            <div className="relative container mx-auto mb-8">
                 <Faq faq={data.faq} />
             </div>
         </>

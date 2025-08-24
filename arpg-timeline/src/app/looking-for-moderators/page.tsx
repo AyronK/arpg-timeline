@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const LookingForModeratorsPage = () => {
     return (
-        <div className="container mx-auto mb-20 min-h-[60vh] max-w-prose px-4">
+        <div className="relative container mx-auto mb-20 min-h-[60vh] max-w-prose px-4">
             <h2 className="mt-12 mb-6 pt-2 pb-4 text-center text-2xl font-semibold">
                 Looking for Moderators
             </h2>
