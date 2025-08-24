@@ -60,7 +60,7 @@ const RefreshLoader = () => {
     return (
         <div className="fixed top-0 left-0 z-[1000] h-[1px] w-screen">
             <div
-                className={`h-full w-full bg-blue-500 transition-all duration-300 ease-out`}
+                className="h-full w-full bg-blue-500 transition-all duration-300 ease-out"
                 style={{
                     width: `${Math.min(progress, 100)}%`,
                 }}
@@ -166,7 +166,9 @@ export const Games = ({
                                                             utm_medium: "link",
                                                             utm_campaign: "twitch-category",
                                                             utm_content: game.slug,
-                                                        })(`https://www.twitch.tv/directory/category/${game.twitchCategory}`)}
+                                                        })(
+                                                            `https://www.twitch.tv/directory/category/${game.twitchCategory}`,
+                                                        )}
                                                     >
                                                         <Twitch className="h-4 w-4" />
                                                     </Link>

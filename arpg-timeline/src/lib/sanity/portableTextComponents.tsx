@@ -1,5 +1,7 @@
 import { PortableText, PortableTextBlock, PortableTextReactComponents } from "@portabletext/react";
 
+import { cn } from "@/lib/utils";
+
 export const portableTextComponents: Partial<PortableTextReactComponents> = {
     block: {
         h1: ({ children }) => <h1 className="mb-6 text-4xl leading-tight font-bold">{children}</h1>,
@@ -93,7 +95,7 @@ export function StyledRichText({
     className?: string | undefined;
 }) {
     return (
-        <div className={`rich-text-content ${className}`}>
+        <div className={cn("rich-text-content", className)}>
             <PortableText value={content} components={portableTextComponents} />
         </div>
     );

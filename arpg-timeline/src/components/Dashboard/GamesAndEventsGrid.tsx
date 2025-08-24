@@ -8,6 +8,7 @@ import { useGameFilters } from "@/hooks/useGameFilters";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { DashboardTag } from "@/lib/cms/gameTags";
+import { cn } from "@/lib/utils";
 
 import { CantFindGame } from "./CantFindGame";
 import { DashboardSelector } from "./DashboardSelector";
@@ -59,9 +60,10 @@ export const GamesAndEventsGrid = ({
                     </div>
                 </div>
                 <div
-                    className={`3xl:grid-cols-4 4xl:grid-cols-5 transition- relative grid grid-cols-1 gap-4 transition-all ease-in-out ease-out md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3 [&>*]:min-h-52 md:[&>*]:min-h-80 ${
-                        isLoading ? "opacity-0" : ""
-                    }`}
+                    className={cn(
+                        "3xl:grid-cols-4 4xl:grid-cols-5 transition- relative grid grid-cols-1 gap-4 transition-all ease-in-out ease-out md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3 [&>*]:min-h-52 md:[&>*]:min-h-80",
+                        { "opacity-0": isLoading },
+                    )}
                 >
                     <Games games={allGames} statistics={statistics} />
                     <CantFindGame />

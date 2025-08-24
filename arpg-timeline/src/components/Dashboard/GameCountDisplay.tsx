@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 interface GameCountDisplayProps {
     shownGames: number;
     totalGames: number;
@@ -44,9 +46,10 @@ export const GameCountDisplay = ({ shownGames, totalGames, dashboard }: GameCoun
         <div className="text-muted-foreground text-right text-sm">
             <span>
                 <span
-                    className={`inline-block origin-bottom-right font-medium transition-all duration-300 ease-in-out ${
-                        isAnimating ? "text-warning scale-150" : "text-foreground"
-                    }`}
+                    className={cn(
+                        "inline-block origin-bottom-right font-medium transition-all duration-300 ease-in-out",
+                        isAnimating ? "text-warning scale-150" : "text-foreground",
+                    )}
                 >
                     {displayedNumber}
                 </span>

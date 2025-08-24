@@ -10,6 +10,7 @@ import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useShareAction } from "@/hooks/useShareAction";
 import { DashboardTag } from "@/lib/cms/gameTags";
+import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import {
     Drawer,
@@ -91,9 +92,10 @@ export function MobileBottomMenu({
         <>
             <div className="fixed right-0 bottom-0 left-0 z-[60] select-none lg:hidden">
                 <div
-                    className={`transition-all duration-300 ease-in-out ${
-                        isVisible ? "translate-none" : "pointer-events-none translate-y-[96px]"
-                    }`}
+                    className={cn(
+                        "transition-all duration-300 ease-in-out",
+                        isVisible ? "translate-none" : "pointer-events-none translate-y-[96px]",
+                    )}
                 >
                     <div className="relative">
                         <div className="bg-background relative border-t border-slate-500">

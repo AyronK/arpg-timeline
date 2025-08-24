@@ -8,8 +8,8 @@ import LocalDate from "@/components/LocalDate";
 import { ShareMenu } from "@/components/ShareMenu";
 import { GameStream } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
-import { Button } from "@/ui/Button";
 import { addUTMParameters } from "@/lib/utm";
+import { Button } from "@/ui/Button";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 import { SanityImage } from "./SanityImage";

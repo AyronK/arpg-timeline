@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/DropdownMenu";
 
@@ -27,7 +28,7 @@ export const Header = () => {
         dataSaClick,
         className = "",
     }: SocialButtonProps) => (
-        <Button variant="ghost" asChild className={`px-2 lg:px-3 2xl:px-4 ${className}`}>
+        <Button variant="ghost" asChild className={cn("px-2 lg:px-3 2xl:px-4", className)}>
             <Link
                 href={href}
                 rel="external noopener noreferrer"
