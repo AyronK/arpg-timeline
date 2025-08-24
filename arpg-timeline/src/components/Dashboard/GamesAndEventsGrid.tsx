@@ -78,14 +78,32 @@ export const GamesAndEventsGrid = ({
     );
 };
 
-export const GamesAndEventsGridFallback = ({ games }: { games: Game[] }) => {
-    const events = useTimelineEvents(games);
+export const GamesAndEventsGridFallback = ({
+    games,
+    dashboard = "default-when-next-confirmed",
+}: {
+    games: Game[];
+    dashboard?: DashboardTag;
+}) => {
     return (
-        <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 opacity-0 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
+        <article className="sr-only">
             <h2 className="sr-only">Seasons</h2>
-            <Games games={games} />
-            <Events events={events} />
-            <CantFindGame />
+            <div className="relative -mt-4 flex flex-col gap-1 lg:mt-0">
+                <div className="hidden lg:block">
+                    <GameCountDisplay shownGames={games.length} totalGames={games.length} />
+                </div>
+                <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
+                    <DashboardSelector
+                        key={dashboard}
+                        dashboard={dashboard}
+                        onLoadingChange={() => {}}
+                    />
+                </div>
+            </div>
+            <div>
+                <Games games={games} />
+                <CantFindGame />
+            </div>
         </article>
     );
 };
