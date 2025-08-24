@@ -33,18 +33,20 @@ interface GameStatistics {
 
 interface LocalSeason {
     game?: string;
-    start?: { startDate?: string };
-    end?: { endDate?: string };
+    start?: { startDate?: string; confirmed?: boolean };
+    end?: { endDate?: string; confirmed?: boolean };
     name?: string;
 }
 
 const calculateAveragePerYear = (gameSeasons: LocalSeason[]): string => {
     if (gameSeasons.length < 2) return "N/A";
 
-    const seasonsWithDates = gameSeasons.filter((s) => s?.start?.startDate);
-    if (seasonsWithDates.length < 2) return "N/A";
+    const seasonsWithConfirmedDates = gameSeasons.filter(
+        (s) => s?.start?.startDate && s?.start?.confirmed,
+    );
+    if (seasonsWithConfirmedDates.length < 2) return "N/A";
 
-    const sortedSeasons = seasonsWithDates.sort((a, b) => {
+    const sortedSeasons = seasonsWithConfirmedDates.sort((a, b) => {
         const aDate = a?.start?.startDate ? new Date(a.start.startDate).getTime() : 0;
         const bDate = b?.start?.startDate ? new Date(b.start.startDate).getTime() : 0;
         return aDate - bDate;
@@ -74,10 +76,12 @@ const calculateAveragePerYear = (gameSeasons: LocalSeason[]): string => {
 const calculateUsualStartTime = (gameSeasons: LocalSeason[]): string => {
     if (gameSeasons.length === 0) return "N/A";
 
-    const seasonsWithStartTimes = gameSeasons.filter((s) => s?.start?.startDate);
-    if (seasonsWithStartTimes.length === 0) return "N/A";
+    const seasonsWithConfirmedStartTimes = gameSeasons.filter(
+        (s) => s?.start?.startDate && s?.start?.confirmed,
+    );
+    if (seasonsWithConfirmedStartTimes.length === 0) return "N/A";
 
-    const startHours = seasonsWithStartTimes
+    const startHours = seasonsWithConfirmedStartTimes
         .map((s) => s?.start?.startDate)
         .filter((d): d is string => typeof d === "string")
         .map((d) => {
@@ -104,7 +108,9 @@ const calculateUsualStartTime = (gameSeasons: LocalSeason[]): string => {
 };
 
 const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDuration[] => {
-    const completedSeasons = gameSeasons.filter((s) => s?.start?.startDate && s?.end?.endDate);
+    const completedSeasons = gameSeasons.filter(
+        (s) => s?.start?.startDate && s?.start?.confirmed && s?.end?.endDate && s?.end?.confirmed,
+    );
 
     return completedSeasons
         .map((s) => {
@@ -153,10 +159,13 @@ const getOldestSeasonInfo = (data: IndexQueryResult, gameSlug: string): string =
     const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
     if (gameSeasons.length === 0) return "No season data available";
 
-    const seasonsWithStartDates = gameSeasons.filter((s) => s?.start?.startDate);
-    if (seasonsWithStartDates.length === 0) return "No season start dates available";
+    const seasonsWithConfirmedStartDates = gameSeasons.filter(
+        (s) => s?.start?.startDate && s?.start?.confirmed,
+    );
+    if (seasonsWithConfirmedStartDates.length === 0)
+        return "No confirmed season start dates available";
 
-    const oldestSeason = seasonsWithStartDates.reduce((oldest, season) => {
+    const oldestSeason = seasonsWithConfirmedStartDates.reduce((oldest, season) => {
         if (!season?.start?.startDate || !oldest?.start?.startDate) return oldest || season;
         const currentDate = new Date(season.start.startDate);
         const oldestDate = new Date(oldest.start.startDate);
@@ -172,7 +181,7 @@ const getOldestSeasonInfo = (data: IndexQueryResult, gameSlug: string): string =
         day: "numeric",
     });
 
-    return `Calculations based on ${seasonsWithStartDates.length} historical entries. Oldest season in aRPG Timeline's archive started ${formattedOldestDate}.`;
+    return `Calculations based on ${seasonsWithConfirmedStartDates.length} confirmed historical entries. Oldest season in aRPG Timeline's archive started ${formattedOldestDate}.`;
 };
 
 const StatisticsCard = ({
