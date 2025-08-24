@@ -85,7 +85,7 @@ export const GamesAndEventsGrid = ({
 export const GamesAndEventsGridFallback = ({ games }: { games: Game[] }) => {
     const events = useTimelineEvents(games);
     return (
-        <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
+        <article className="3xl:grid-cols-4 4xl:grid-cols-5 relative grid grid-cols-1 gap-4 opacity-0 md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3">
             <h2 className="sr-only">Seasons</h2>
             <Games games={games} />
             <Events events={events} />
