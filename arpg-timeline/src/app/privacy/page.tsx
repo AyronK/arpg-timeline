@@ -11,7 +11,7 @@ const links = {
 
 const PrivacyPage = () => {
     return (
-        <div className="relative container mx-auto my-12 max-w-prose space-y-16 px-4">
+        <div className="relative container mx-auto my-12 max-w-prose space-y-16">
             <section>
                 <h2 className="mb-4 text-center text-3xl font-semibold">Privacy</h2>
                 <div className="space-y-6 text-base leading-relaxed">
