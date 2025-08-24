@@ -344,14 +344,14 @@ const ArchivalSeasonsSection = ({
         <div className="mb-6 md:mb-8">
             <div className="bg-card text-card-foreground rounded-lg border p-4 md:p-6">
                 <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Archival Seasons</h2>
-                <div className="border-muted-foreground/20 max-h-52 overflow-y-auto rounded-md border px-3">
+                <div className="max-h-64 space-y-2 overflow-y-auto">
                     {seasons.map((season, index) => (
                         <div
                             key={index}
-                            className="border-muted-foreground/20 border-b py-2 text-sm last:border-b-0"
+                            className="border-muted-foreground/20 rounded-md border p-3"
                         >
-                            <div className="text-foreground mb-1 font-medium">{season.name}</div>
-                            <div className="text-muted-foreground">
+                            <div className="text-foreground mb-2 font-medium">{season.name}</div>
+                            <div className="text-muted-foreground text-sm">
                                 Started{" "}
                                 {season.startDate.toLocaleDateString("en-US", {
                                     year: "numeric",
@@ -495,11 +495,13 @@ const GamePage = async ({ params }: GamePageProps) => {
                     </div>
                 </div>
 
-                <ArchivalSeasonsSection seasons={archivalSeasons} />
+                <div className="mb-6 md:mb-8">
+                    {steamAppId && (
+                        <SteamIntegrationSection steamAppId={steamAppId} steamNews={steamNews} />
+                    )}
+                </div>
 
-                {steamAppId && (
-                    <SteamIntegrationSection steamAppId={steamAppId} steamNews={steamNews} />
-                )}
+                <ArchivalSeasonsSection seasons={archivalSeasons} />
             </div>
         </>
     );
