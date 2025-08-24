@@ -31,16 +31,27 @@ export const GameCard = ({
     return (
         <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
             <div className="flex flex-col">
-                <div className="flex flex-row items-center justify-between gap-2">
-                    <h3 className="font-heading text-xs">{name}</h3>
+                <div className="flex flex-row items-start justify-between gap-3">
+                    <div className="flex min-w-0 flex-1 flex-col gap-2">
+                        <h3 className="font-heading text-xs">{name}</h3>
+                        <div className="flex flex-row flex-wrap items-center justify-start gap-2">
+                            {!official && <CommunityLabel />}
+                            {stats?.steam && (
+                                <SteamPlayersChip
+                                    playersCount={stats.steam.currentPlayers}
+                                    isComingSoon={stats.steam.isComingSoon}
+                                />
+                            )}
+                        </div>
+                    </div>
                     {!noMenu && (
-                        <div className="border-card-foreground/25 flex flex-row items-center rounded-md border">
+                        <div className="border-foreground/10 flex flex-row items-center rounded-md border">
                             <Button
                                 asChild
                                 className="h-8 w-8"
                                 variant="ghost"
                                 size="icon"
-                                aria-label="View game details"
+                                aria-label={`View ${name} details`}
                                 data-sa-click={`${slug}-view-details`}
                             >
                                 <Link href={`/game/${slug}`} target="_blank" rel="noopener">
@@ -54,15 +65,6 @@ export const GameCard = ({
                                 playersCount={stats?.steam?.currentPlayers}
                             />
                         </div>
-                    )}
-                </div>
-                <div className="mt-2 flex max-h-0 flex-row items-center justify-start gap-2 overflow-visible">
-                    {!official && <CommunityLabel />}
-                    {stats?.steam && (
-                        <SteamPlayersChip
-                            playersCount={stats.steam.currentPlayers}
-                            isComingSoon={stats.steam.isComingSoon}
-                        />
                     )}
                 </div>
                 <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
