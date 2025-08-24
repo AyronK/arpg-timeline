@@ -33,7 +33,7 @@
         "embla-carousel-react": "^8.6.0",
         "focus-trap-react": "^11.0.4",
         "ics": "^3.8.1",
-        "lucide-react": "^0.540.0",
+        "lucide-react": "^0.541.0",
         "next": "15.5.0",
         "next-sanity": "^10.0.13",
         "react": "^19.1.1",
@@ -49,7 +49,7 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
-        "@eslint/js": "^9.33.0",
+        "@eslint/js": "^9.34.0",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^24",
         "@types/react": "^19",
