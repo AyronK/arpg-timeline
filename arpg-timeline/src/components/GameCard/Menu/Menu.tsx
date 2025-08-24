@@ -1,8 +1,10 @@
 import { CodeXml, Info, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
+import { RiSteamLine } from "react-icons/ri";
 import { SiObsstudio } from "react-icons/si";
 
 import { DropdownMenuSeparator } from "@/components/DropdownMenu";
+import { SteamDialogTrigger } from "@/components/SteamPlayersChip";
 import { Button } from "@/ui/Button";
 import {
     DropdownMenu,
@@ -11,22 +13,45 @@ import {
     DropdownMenuTrigger,
 } from "@/ui/DropdownMenu";
 
-export function GameMenu({ game }: { game: string }) {
+export function GameMenu({
+    game,
+    playersCount,
+    steamAppId,
+}: {
+    game: string;
+    playersCount?: number;
+    steamAppId?: number;
+}) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button
-                    variant={"link"}
-                    className="h-[32px]! w-[32px]! transition-all duration-200 hover:scale-110 md:h-[40px]! md:w-[40px]!"
+                    variant={"ghost"}
                     size={"icon"}
                     aria-label="Share"
                     data-sa-click="game-menu"
+                    className="h-8 w-8"
                 >
-                    <MoreHorizontal />
+                    <MoreHorizontal className="h-4 w-4" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <Link href={`/game/${game}`}>
+                {steamAppId && (
+                    <SteamDialogTrigger
+                        appId={steamAppId}
+                        gameSlug={game}
+                        playersCount={playersCount ?? 0}
+                    >
+                        <DropdownMenuItem
+                            aria-label="View steam details"
+                            data-sa-click={`${game}-steam-dialog`}
+                            onSelect={(e) => e.preventDefault()}
+                        >
+                            <RiSteamLine className="mr-2 h-4 w-4" /> Steam
+                        </DropdownMenuItem>
+                    </SteamDialogTrigger>
+                )}
+                <Link href={`/game/${game}`} target="_blank" rel="noopener">
                     <DropdownMenuItem
                         aria-label="View game details"
                         data-sa-click={`${game}-view-details`}

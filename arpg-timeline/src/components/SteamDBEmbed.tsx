@@ -20,7 +20,7 @@ export const SteamDBEmbed = ({ appId }: { appId: number }) => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsLoading(false);
-        }, 5000);
+        }, 2000);
 
         return () => clearTimeout(timeout);
     }, []);
