@@ -23,9 +23,7 @@ export const Main = ({
                 <Streams games={games} streams={streams} />
             </Suspense>
             <div className="relative flex flex-col gap-4">
-                <Suspense
-                    fallback={<GamesAndEventsGridFallback games={games} dashboard={dashboard} />}
-                >
+                <Suspense fallback={<GamesAndEventsGridFallback games={games} />}>
                     <GamesAndEventsGrid
                         games={games}
                         statistics={statistics}

@@ -80,30 +80,15 @@ export const GamesAndEventsGrid = ({
 
 export const GamesAndEventsGridFallback = ({
     games,
-    dashboard = "default-when-next-confirmed",
 }: {
     games: Game[];
     dashboard?: DashboardTag;
 }) => {
     return (
         <article className="sr-only">
-            <h2 className="sr-only">Seasons</h2>
-            <div className="relative -mt-4 flex flex-col gap-1 lg:mt-0">
-                <div className="hidden lg:block">
-                    <GameCountDisplay shownGames={games.length} totalGames={games.length} />
-                </div>
-                <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
-                    <DashboardSelector
-                        key={dashboard}
-                        dashboard={dashboard}
-                        onLoadingChange={() => {}}
-                    />
-                </div>
-            </div>
-            <div>
-                <Games games={games} />
-                <CantFindGame />
-            </div>
+            <h2>Seasons</h2>
+            <Games games={games} />
+            <CantFindGame />
         </article>
     );
 };
