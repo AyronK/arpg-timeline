@@ -44,11 +44,7 @@ export const GamesAndEventsGrid = ({
                 <h2 className="sr-only">Seasons</h2>
                 <div className="relative -mt-4 flex flex-col gap-1 lg:mt-0">
                     <div className="hidden lg:block">
-                        <GameCountDisplay
-                            shownGames={shownGames}
-                            totalGames={totalGames}
-                            dashboard={dashboard}
-                        />
+                        <GameCountDisplay shownGames={shownGames} totalGames={totalGames} />
                     </div>
                     <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
                         <DashboardSelector
