@@ -85,10 +85,17 @@ export const GamesAndEventsGridFallback = ({
     dashboard?: DashboardTag;
 }) => {
     return (
-        <article className="sr-only">
-            <h2>Seasons</h2>
-            <Games games={games} />
-            <CantFindGame />
+        <article className="opacity-0">
+            <h2 className="sr-only">Seasons</h2>
+            <div className="relative -mt-4 flex flex-col gap-1 lg:mt-0">
+                <div className="hidden lg:block">
+                    <GameCountDisplay shownGames={games.length} totalGames={games.length} />
+                </div>
+            </div>
+            <div>
+                <Games games={games} />
+                <CantFindGame />
+            </div>
         </article>
     );
 };
