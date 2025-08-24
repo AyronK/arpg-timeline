@@ -186,6 +186,33 @@ const getOldestSeasonInfo = (data: IndexQueryResult, gameSlug: string): string =
     return `Calculations based on ${seasonsWithConfirmedStartDates.length} confirmed historical entries. Oldest season in aRPG Timeline's archive started ${formattedOldestDate}.`;
 };
 
+const getArchivalSeasons = (data: IndexQueryResult, gameSlug: string) => {
+    const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
+
+    return gameSeasons
+        .filter((s) => s?.start?.startDate && s?.start?.confirmed)
+        .map((season) => {
+            const startDate = new Date(season.start!.startDate!);
+            const endDate =
+                season.end?.endDate && season.end?.confirmed ? new Date(season.end.endDate) : null;
+
+            const duration = endDate
+                ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
+                : null;
+
+            return {
+                name: season.name || "Unknown",
+                startDate,
+                endDate,
+                duration,
+                url: season.url,
+                patchNotesUrl: season.patchNotesUrl,
+            };
+        })
+        .sort((a, b) => b.startDate.getTime() - a.startDate.getTime())
+        .slice(1);
+};
+
 const StatisticsCard = ({
     value,
     label,
@@ -304,6 +331,59 @@ const SteamIntegrationSection = ({
     </div>
 );
 
+const ArchivalSeasonsSection = ({
+    seasons,
+}: {
+    seasons: ReturnType<typeof getArchivalSeasons>;
+}) => {
+    if (seasons.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="mb-6 md:mb-8">
+            <div className="bg-card text-card-foreground rounded-lg border p-4 md:p-6">
+                <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Archival Seasons</h2>
+                <div className="border-muted-foreground/20 max-h-52 overflow-y-auto rounded-md border px-3">
+                    {seasons.map((season, index) => (
+                        <div
+                            key={index}
+                            className="border-muted-foreground/20 border-b py-2 text-sm last:border-b-0"
+                        >
+                            <div className="text-foreground mb-1 font-medium">{season.name}</div>
+                            <div className="text-muted-foreground">
+                                Started{" "}
+                                {season.startDate.toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                })}
+                                {season.endDate && (
+                                    <>
+                                        {" • "}
+                                        Ended{" "}
+                                        {season.endDate.toLocaleDateString("en-US", {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                        })}
+                                    </>
+                                )}
+                                {season.duration && (
+                                    <>
+                                        {" • "}
+                                        {season.duration} days
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const GamePage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
 
@@ -324,6 +404,7 @@ const GamePage = async ({ params }: GamePageProps) => {
     const steamNews = steamAppId ? await getSteamNews(steamAppId) : [];
     const statistics = calculateGameStatistics(data, gameSlug);
     const oldestSeasonInfo = getOldestSeasonInfo(data, gameSlug);
+    const archivalSeasons = getArchivalSeasons(data, gameSlug);
 
     return (
         <>
@@ -414,12 +495,10 @@ const GamePage = async ({ params }: GamePageProps) => {
                     </div>
                 </div>
 
+                <ArchivalSeasonsSection seasons={archivalSeasons} />
+
                 {steamAppId && (
-                    <SteamIntegrationSection
-                        steamAppId={steamAppId}
-                        gameName={game.name}
-                        steamNews={steamNews}
-                    />
+                    <SteamIntegrationSection steamAppId={steamAppId} steamNews={steamNews} />
                 )}
             </div>
         </>
