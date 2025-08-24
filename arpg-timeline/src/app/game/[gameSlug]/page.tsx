@@ -439,7 +439,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
             description: `Track ${game.name} seasons and get countdowns for upcoming content.`,
             images: ["/assets/seoimage.png"],
             type: "website",
-            url: `https://arpg-timeline.com/game/${slug}`,
+            url: `https://www.arpg-timeline.com/game/${slug}`,
         },
         alternates: { canonical: `/game/${slug}` },
     };

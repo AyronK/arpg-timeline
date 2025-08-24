@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useShareAction } from "@/hooks/useShareAction";
 import { DashboardTag } from "@/lib/cms/gameTags";
 import { Button } from "@/ui/Button";
 import {
@@ -47,24 +48,12 @@ export function MobileBottomMenu({
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-    const handleShare = async () => {
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: "aRPG Timeline",
-                    text: `Check out aRPG timeline`,
-                    url: window.location.href,
-                });
-            } catch (error) {
-                if (error instanceof Error && error.name !== "AbortError") {
-                    console.error("Error sharing:", error);
-                }
-            }
-        } else {
-            navigator.clipboard.writeText(window.location.href);
-        }
-    };
+    const { handleShare } = useShareAction(null, {
+        utm_source: "arpg-timeline",
+        utm_medium: "mobile_menu",
+        utm_campaign: "share",
+        utm_content: dashboard,
+    });
 
     useEffect(() => {
         let ticking = false;

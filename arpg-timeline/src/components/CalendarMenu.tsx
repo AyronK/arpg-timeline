@@ -29,7 +29,7 @@ export const CalendarMenu = ({ title, startDate }: { title: string; startDate: s
                 <CalendarPlus className="h-4 w-4" />
             </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent align="end">
             <DropdownMenuItem
                 onClick={() => addToGoogleCalendar(title, new Date(startDate))}
                 aria-label="Add to Google calendar"

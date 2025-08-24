@@ -44,7 +44,7 @@ export async function generateDashboardMetadata(
             description: isDefault ? "Track your favorite aRPG game seasons" : description,
             siteName: "aRPG Timeline",
             type: "website",
-            url: `https://arpg-timeline.com${canonicalPath}`,
+            url: `https://www.arpg-timeline.com${canonicalPath}`,
             locale: "en_US",
             images: [
                 {
