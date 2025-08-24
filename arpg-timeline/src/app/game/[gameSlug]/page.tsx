@@ -196,9 +196,9 @@ const StatisticsCard = ({
     className?: string;
 }) => (
     <div className={cn("text-center", className)}>
-        <div className="text-2xl font-bold text-slate-400">{value}</div>
-        <div className="text-muted-foreground text-sm">{label}</div>
-        {subValue && <div className="text-muted-foreground mt-1 text-xs">{subValue}</div>}
+        <div className="text-2xl font-bold text-sky-200">{value}</div>
+        <div className="text-foreground text-sm">{label}</div>
+        {subValue && <div className="text-foreground mt-1 text-xs">{subValue}</div>}
     </div>
 );
 
@@ -323,6 +323,7 @@ const GamePage = async ({ params }: GamePageProps) => {
 
                 <div className="mb-6 flex flex-col gap-4 md:mb-8 md:gap-6 lg:flex-row">
                     <GameCard
+                        noMenu
                         name={game.name}
                         gameLogo={
                             game.logo ? (

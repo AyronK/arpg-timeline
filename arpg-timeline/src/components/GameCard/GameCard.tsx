@@ -26,32 +26,35 @@ export const GameCard = ({
     official,
     slug,
     stats,
+    noMenu,
 }: GameCardProps) => {
     return (
         <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
             <div className="flex flex-col">
                 <div className="flex flex-row items-center justify-between gap-2">
                     <h3 className="font-heading text-xs">{name}</h3>
-                    <div className="border-card-foreground/25 flex flex-row items-center rounded-md border">
-                        <Button
-                            asChild
-                            className="h-8 w-8"
-                            variant="ghost"
-                            size="icon"
-                            aria-label="View game details"
-                            data-sa-click={`${slug}-view-details`}
-                        >
-                            <Link href={`/game/${slug}`} target="_blank" rel="noopener">
-                                <BookOpen className="h-4 w-4" />
-                                <span className="sr-only">Details</span>
-                            </Link>
-                        </Button>
-                        <GameMenu
-                            game={slug}
-                            steamAppId={stats?.steam?.appId}
-                            playersCount={stats?.steam?.currentPlayers}
-                        />
-                    </div>
+                    {!noMenu && (
+                        <div className="border-card-foreground/25 flex flex-row items-center rounded-md border">
+                            <Button
+                                asChild
+                                className="h-8 w-8"
+                                variant="ghost"
+                                size="icon"
+                                aria-label="View game details"
+                                data-sa-click={`${slug}-view-details`}
+                            >
+                                <Link href={`/game/${slug}`} target="_blank" rel="noopener">
+                                    <BookOpen className="h-4 w-4" />
+                                    <span className="sr-only">Details</span>
+                                </Link>
+                            </Button>
+                            <GameMenu
+                                game={slug}
+                                steamAppId={stats?.steam?.appId}
+                                playersCount={stats?.steam?.currentPlayers}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="mt-2 flex max-h-0 flex-row items-center justify-start gap-2 overflow-visible">
                     {!official && <CommunityLabel />}
