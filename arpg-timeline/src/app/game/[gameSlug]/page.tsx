@@ -198,7 +198,7 @@ const StatisticsCard = ({
     className?: string;
 }) => (
     <div className={cn("text-center", className)}>
-        <div className="text-2xl font-bold text-sky-200">{value}</div>
+        <div className="text-primary text-2xl font-bold">{value}</div>
         <div className="text-foreground text-sm">{label}</div>
         {subValue && <div className="text-foreground mt-1 text-xs">{subValue}</div>}
     </div>
@@ -214,8 +214,8 @@ const QuickLinksSection = ({
     gameSlug: string;
     steamAppId?: number | null;
 }) => (
-    <div className="flex-1 rounded-lg border p-4 md:p-6">
-        <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">Quick Links</h2>
+    <div className="bg-card text-card-foreground flex-1 rounded-lg border p-4 md:p-6">
+        <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Quick Links</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
             {game.url && (
                 <MaybeLinkWrapper
@@ -258,7 +258,7 @@ const QuickLinksSection = ({
                 </MaybeLinkWrapper>
             )}
 
-            <div className="bg-border col-span-full h-px" />
+            <div className="border-muted-foreground col-span-full h-px border border-t opacity-50" />
 
             <MaybeLinkWrapper
                 href={`/docs/html/${gameSlug}`}
@@ -281,23 +281,21 @@ const QuickLinksSection = ({
 
 const SteamIntegrationSection = ({
     steamAppId,
-    gameName,
     steamNews,
 }: {
     steamAppId: number;
-    gameName: string;
     steamNews: SteamNewsItem[];
 }) => (
     <div className="space-y-6 md:gap-6 md:space-y-8">
-        <h2 className="text-2xl font-bold md:text-3xl">Steam Integration</h2>
+        <h2 className="font-heading text-2xl md:text-3xl">Steam Integration</h2>
         <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-            <div className="space-y-4">
-                <div>
-                    <h3 className="mb-3 text-lg font-semibold">Steam Store</h3>
+            <div className="flex flex-1 flex-col justify-between">
+                <div className="md:bg-card md:text-card-foreground md:rounded-lg md:border md:p-4">
+                    <h3 className="font-heading mb-3 text-lg">Steam Store</h3>
                     <SteamEmbed appId={steamAppId} />
                 </div>
-                <div>
-                    <h3 className="mb-3 text-lg font-semibold">SteamDB Stats</h3>
+                <div className="md:bg-card md:text-card-foreground md:rounded-lg md:border md:p-4">
+                    <h3 className="font-heading mb-3 text-lg">SteamDB Stats</h3>
                     <SteamDBEmbed appId={steamAppId} />
                 </div>
             </div>
@@ -331,9 +329,7 @@ const GamePage = async ({ params }: GamePageProps) => {
         <>
             <BreadcrumbSchema path={`game/${gameSlug}`} />
             <div className="container mx-auto px-4 py-6 md:py-8">
-                <h1 className="font-heading mb-6 text-3xl font-bold md:mb-8 md:text-4xl">
-                    {game.name}
-                </h1>
+                <h1 className="font-heading mb-6 text-3xl md:mb-8 md:text-4xl">{game.name}</h1>
 
                 <div className="mb-6 flex flex-col gap-4 md:mb-8 md:gap-6 lg:flex-row">
                     <GameCard
@@ -351,7 +347,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                                     objectFit="contain"
                                 />
                             ) : (
-                                <div className="my-auto flex h-[140px] w-[160px] items-center justify-center bg-gray-200 text-gray-500">
+                                <div className="bg-muted text-muted-foreground my-auto flex h-[140px] w-[160px] items-center justify-center">
                                     No Logo
                                 </div>
                             )
@@ -369,7 +365,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                                     <MaybeLinkWrapper
                                         href={game.currentSeason?.patchNotesUrl}
                                         target="_blank"
-                                        className="ml-auto text-sm text-nowrap hover:underline"
+                                        className="text-primary hover:text-primary/80 ml-auto text-sm text-nowrap hover:underline"
                                         data-sa-click={`${game.currentSeason?.name}-patch-notes`}
                                     >
                                         Patch notes
@@ -385,10 +381,8 @@ const GamePage = async ({ params }: GamePageProps) => {
                 </div>
 
                 <div className="mb-6 md:mb-8">
-                    <div className="rounded-lg border p-4 md:p-6">
-                        <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">
-                            Statistics
-                        </h2>
+                    <div className="bg-card text-card-foreground rounded-lg border p-4 md:p-6">
+                        <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Statistics</h2>
                         <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
                             <StatisticsCard
                                 value={`${game.averageSeasonDuration || "N/A"} days`}

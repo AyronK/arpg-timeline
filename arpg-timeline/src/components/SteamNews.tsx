@@ -1,4 +1,4 @@
-import { Calendar, ExternalLink, Newspaper } from "lucide-react";
+import { Calendar, ExternalLink } from "lucide-react";
 
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
 import { cn } from "@/lib/utils";
@@ -16,11 +16,6 @@ const addUTM = addUTMParameters({
     utm_source: "arpg-timeline",
     utm_content: "steam_news",
 });
-
-const truncateText = (text: string, maxLength: number): string => {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength).trim() + "...";
-};
 
 export const SteamNews = ({ steamAppId, news, className }: SteamNewsProps) => {
     if (news.length === 0) {
@@ -51,14 +46,14 @@ export const SteamNews = ({ steamAppId, news, className }: SteamNewsProps) => {
                             href={addUTM(item.link)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-muted/20 hover:bg-muted/40 hover:border-border block rounded-md border border-transparent p-3 transition-all hover:shadow-sm"
+                            className="bg-muted/20 hover:bg-muted/40 hover:border-border block rounded-md border border-transparent p-3 transition-all hover:shadow-lg"
                         >
                             <div className="space-y-2.5">
                                 <div className="flex items-start justify-between gap-2">
                                     <h4
                                         className="text-foreground group-hover:text-primary line-clamp-2 flex-1 text-sm leading-tight font-semibold transition-colors"
                                         dangerouslySetInnerHTML={{
-                                            __html: truncateText(item.title, 80),
+                                            __html: item.title,
                                         }}
                                     />
                                     <ExternalLink className="text-muted-foreground mt-0.5 h-4 w-4 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -77,7 +72,7 @@ export const SteamNews = ({ steamAppId, news, className }: SteamNewsProps) => {
 
                                 {item.description && (
                                     <p className="text-muted-foreground line-clamp-3 text-xs leading-relaxed">
-                                        {truncateText(item.description, 300)}
+                                        {item.description}
                                     </p>
                                 )}
                             </div>
