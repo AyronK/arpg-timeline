@@ -119,3 +119,5 @@ export async function generateStaticParams() {
         gameSlug: g.slug,
     }));
 }
+
+export const revalidate = 3600;
