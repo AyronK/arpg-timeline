@@ -16,6 +16,7 @@ import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getSteamNews, SteamNewsItem } from "@/lib/steam/getSteamNews";
 import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
 
 interface GamePageProps {
     params: Promise<{ gameSlug: string }>;
@@ -256,7 +257,12 @@ const QuickLinksSection = ({
             )}
             {steamAppId && (
                 <MaybeLinkWrapper
-                    href={`https://store.steampowered.com/app/${steamAppId}`}
+                    href={addUTMParameters({
+                        utm_source: "arpg-timeline",
+                        utm_medium: "link",
+                        utm_campaign: "steam-store",
+                        utm_content: gameSlug,
+                    })(`https://store.steampowered.com/app/${steamAppId}`)}
                     target="_blank"
                     rel="noopener"
                     data-sa-click={`${gameSlug}-steam-page`}

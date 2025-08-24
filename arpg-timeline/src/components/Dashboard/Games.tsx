@@ -161,7 +161,12 @@ export const Games = ({
                                                         target="_blank"
                                                         rel="noopener"
                                                         data-sa-click={`${game.slug}-twitch`}
-                                                        href={`https://www.twitch.tv/directory/category/${game.twitchCategory}`}
+                                                        href={addUTMParameters({
+                                                            utm_source: "arpg-timeline",
+                                                            utm_medium: "link",
+                                                            utm_campaign: "twitch-category",
+                                                            utm_content: game.slug,
+                                                        })(`https://www.twitch.tv/directory/category/${game.twitchCategory}`)}
                                                     >
                                                         <Twitch className="h-4 w-4" />
                                                     </Link>
