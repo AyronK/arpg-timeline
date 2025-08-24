@@ -19,6 +19,8 @@ export default ObsBrowserSourceManualPage;
 
 export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({
+        revalidate: 3600,
+        tags: ["game", "season"],
         query: indexQuery,
     });
 

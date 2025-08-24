@@ -1,23 +1,22 @@
-import { Faq } from "@/lib/cms/queries/faqQuery";
-import { sanityClient } from "@/lib/sanity/sanityClient";
-
-const faqQuery = `*[_type == "faq"] | order(order asc) {
-  title,
-  content
-}`;
+import { Faq, faqQuery, FaqQueryResult } from "@/lib/cms/queries/faqQuery";
+import { sanityFetch } from "@/lib/sanity/sanityClient";
 
 export const FAQSchema = async () => {
     try {
-        const faqData: Faq[] = await sanityClient.fetch(faqQuery);
+        const faqData: FaqQueryResult = await sanityFetch({
+            query: faqQuery,
+            revalidate: 30 * 24 * 60 * 60,
+            tags: ["faq"],
+        });
 
-        if (!faqData || faqData.length === 0) {
+        if (!faqData || !faqData.faq || faqData.faq.length === 0) {
             return null;
         }
 
         const schema = {
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            mainEntity: faqData.map((item: Faq) => ({
+            mainEntity: faqData.faq.map((item: Faq) => ({
                 "@type": "Question",
                 name: item.title,
                 acceptedAnswer: {

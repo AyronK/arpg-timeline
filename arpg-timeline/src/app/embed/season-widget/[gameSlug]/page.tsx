@@ -73,6 +73,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
 
 export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({
+        revalidate: 3600,
+        tags: ["game", "season"],
         query: indexQuery,
     });
 

@@ -63,12 +63,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                         changeFrequency: "yearly",
                         priority: 0.6,
                     },
-                    {
-                        url: `${baseUrl}/embed/season-widget/${game.slug}`,
-                        lastModified: new Date(),
-                        changeFrequency: "daily",
-                        priority: 0.9,
-                    },
                 );
             }
         });

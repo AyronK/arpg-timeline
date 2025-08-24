@@ -67,6 +67,8 @@ export async function getPreviousRevision(
     try {
         const history = await sanityFetch({
             query: historyQuery,
+            revalidate: 3600,
+            tags: ["game", "season"],
             params: { id: documentId },
         });
 

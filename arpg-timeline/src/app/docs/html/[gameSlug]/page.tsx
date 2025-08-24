@@ -16,6 +16,8 @@ export default HtmlEmbedManualPage;
 export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
+        revalidate: 3600,
+        tags: ["game", "season"],
     });
 
     return data.games.map((g) => ({

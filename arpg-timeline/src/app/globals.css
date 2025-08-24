@@ -3,22 +3,6 @@
 @plugin 'tailwindcss-animate';
 @plugin 'tailwind-scrollbar';
 
-@layer utilities {
-    .line-clamp-2 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-    }
-
-    .line-clamp-3 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-    }
-}
-
 @layer components {
     .steam-news-content {
         @apply text-muted-foreground text-xs leading-relaxed;

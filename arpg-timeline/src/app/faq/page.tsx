@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function FaqPage() {
     const data: FaqQueryResult = await sanityFetch({
         query: faqQuery,
-        revalidate: 24 * 60 * 60,
+        revalidate: 30 * 24 * 60 * 60,
         tags: ["faq"],
     });
 
@@ -26,3 +26,5 @@ export default async function FaqPage() {
         </>
     );
 }
+
+export const revalidate = 30 * 24 * 60 * 60;
