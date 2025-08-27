@@ -1,5 +1,5 @@
 export { DashboardConfig } from "./DashboardConfig";
-export { DashboardSelector } from "./DashboardSelector";
+export { CategorySelector as DashboardSelector } from "./DashboardSelector";
 export { DesktopDashboardSelector } from "./DesktopDashboardSelector";
 export { MobileBottomMenu } from "./MobileBottomMenu";
 export { MobileBottomMenuActions } from "./MobileBottomMenuActions";

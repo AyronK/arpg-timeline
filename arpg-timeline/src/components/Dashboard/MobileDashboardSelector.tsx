@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
@@ -8,30 +8,33 @@ import { DashboardConfig } from "./DashboardConfig";
 import { useDashboardNavigation } from "./useDashboardNavigation";
 
 interface MobileDashboardSelectorProps {
-    dashboard: DashboardTag;
+    category: GameFilterCategory;
     onLoadingChange: (loading: boolean) => void;
 }
 
 export const MobileDashboardSelector = ({
-    dashboard,
+    category,
     onLoadingChange,
 }: MobileDashboardSelectorProps) => {
     const { handleDashboardChange } = useDashboardNavigation(onLoadingChange);
 
     return (
         <div className="flex flex-col">
-            {(Object.keys(DashboardConfig) as DashboardTag[])
+            {(Object.keys(DashboardConfig) as GameFilterCategory[])
                 .filter((tag) => DashboardConfig[tag])
                 .map((tag) => {
                     const config = DashboardConfig[tag]!;
                     const IconComponent = config.icon;
-                    const isActive = tag === dashboard;
+                    const isActive = tag === category;
                     return (
                         <Button
                             key={tag}
                             variant={isActive ? "default" : "ghost"}
-                            className="h-auto min-h-[60px] justify-start gap-3 py-2 text-left"
-                            onClick={() => handleDashboardChange(tag)}
+                            className={cn(
+                                "h-auto min-h-[60px] justify-start gap-3 py-2 text-left",
+                                { "pointer-events-none": isActive },
+                            )}
+                            onClick={() => !isActive && handleDashboardChange(tag)}
                             data-sa-click={`dashboard-${tag}`}
                         >
                             <div className="flex w-full flex-col items-start text-left">

@@ -10,7 +10,7 @@ export const Main = ({
     games,
     streams,
     statistics,
-    dashboard = "default-when-next-confirmed",
+    dashboard = "featured",
 }: {
     games: Game[];
     streams: GameStream[];
@@ -27,7 +27,7 @@ export const Main = ({
                     <GamesAndEventsGrid
                         games={games}
                         statistics={statistics}
-                        dashboard={dashboard}
+                        category={dashboard}
                     />
                 </Suspense>
             </div>

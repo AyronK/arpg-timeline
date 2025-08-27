@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { ToggleGroup, ToggleGroupItem } from "@/ui/ToggleGroup";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
@@ -8,12 +8,12 @@ import { DashboardConfig } from "./DashboardConfig";
 import { useDashboardNavigation } from "./useDashboardNavigation";
 
 interface DesktopDashboardSelectorProps {
-    dashboard: DashboardTag;
+    category: GameFilterCategory;
     onLoadingChange: (loading: boolean) => void;
 }
 
 export const DesktopDashboardSelector = ({
-    dashboard,
+    category: dashboard,
     onLoadingChange,
 }: DesktopDashboardSelectorProps) => {
     const { handleDashboardChange } = useDashboardNavigation(onLoadingChange);
@@ -26,7 +26,7 @@ export const DesktopDashboardSelector = ({
             value={dashboard}
             onValueChange={handleDashboardChange}
         >
-            {(Object.keys(DashboardConfig) as DashboardTag[])
+            {(Object.keys(DashboardConfig) as GameFilterCategory[])
                 .filter((tag) => DashboardConfig[tag])
                 .map((tag, idx, items) => {
                     const config = DashboardConfig[tag]!;

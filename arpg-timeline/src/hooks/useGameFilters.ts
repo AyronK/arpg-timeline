@@ -2,12 +2,12 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { sa_event } from "@/lib/sa_event";
 
 export const useGameFilters = (
     games: Game[],
-    dashboardTag: DashboardTag = "default-when-next-confirmed",
+    category: GameFilterCategory = "all",
 ): {
     gameFilters: {
         label: string;
@@ -20,7 +20,6 @@ export const useGameFilters = (
     filteredGames: Game[];
     totalGames: number;
     shownGames: number;
-    dashboardTag: DashboardTag;
 } => {
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
@@ -83,25 +82,24 @@ export const useGameFilters = (
     };
 
     const filteredGames = useMemo(() => {
-        if (dashboardTag === "everything") {
-            return games;
-        }
-
         let filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
 
-        if (dashboardTag === "default-when-next-confirmed") {
+        if (category === "featured") {
             filteredGames = filteredGames.filter(
-                (g) =>
-                    g.dashboardTags?.includes("default") ||
-                    (g.dashboardTags?.includes("default-when-next-confirmed") &&
-                        g.nextSeason?.start?.confirmed),
+                (g) => g.categories?.includes("seasonal") || g.nextSeason?.start?.confirmed,
             );
-        } else {
-            filteredGames = filteredGames.filter((g) => g.dashboardTags?.includes(dashboardTag));
+        } else if (category === "seasonal") {
+            filteredGames = filteredGames.filter((g) => g.categories?.includes("seasonal"));
+        } else if (category === "non-seasonal") {
+            filteredGames = filteredGames.filter((g) => !g.categories?.includes("seasonal"));
+        } else if (category === "community") {
+            filteredGames = filteredGames.filter((g) => g.categories?.includes("community"));
+        } else if (category === "early-access") {
+            filteredGames = filteredGames.filter((g) => g.categories?.includes("early-access"));
         }
 
         return filteredGames;
-    }, [dashboardTag, excludedSlugs, games]);
+    }, [category, excludedSlugs, games]);
 
     useEffect(() => {
         for (const i in excludedSlugs) {
@@ -133,7 +131,6 @@ export const useGameFilters = (
         toggleGroupFilter,
         filteredGames,
         activeFilters,
-        dashboardTag,
         shownGames: filteredGames.length,
         totalGames: games.length,
     };

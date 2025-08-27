@@ -38,21 +38,15 @@ export default defineType({
             group: "main",
         },
         {
-            name: "dashboardTags",
-            title: "Dashboard Tags",
-            description: "Select one or more tags to categorize this game",
+            name: "categories",
+            title: "Categories",
+            description: "Select one or more options to categorize this game",
             type: "array",
             of: [
                 {
                     type: "string",
                     options: {
                         list: [
-                            { title: "Show in the default section", value: "default" },
-                            {
-                                title: "Show in the default section only if next update is confirmed",
-                                value: "default-when-next-confirmed",
-                            },
-                            { title: 'Show in the "You may also like" section', value: "other" },
                             { title: "Community Driven", value: "community" },
                             { title: "Seasonal", value: "seasonal" },
                             { title: "Early access", value: "early-access" },

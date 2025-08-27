@@ -5,7 +5,7 @@ import { title } from "process";
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useShareAction } from "@/hooks/useShareAction";
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { Button } from "@/ui/Button";
 import {
     Drawer,
@@ -22,14 +22,14 @@ import { Filters } from "../FiltersDialog";
 
 interface MobileBottomMenuFiltersProps {
     filtersProps: GameFiltersProps;
-    dashboard: DashboardTag;
+    category: GameFilterCategory;
     isFiltersDisabled?: boolean;
     onDrawerOpenChange: (open: boolean) => void;
 }
 
 export function MobileBottomMenuFilters({
     filtersProps,
-    dashboard,
+    category,
     isFiltersDisabled = false,
     onDrawerOpenChange,
 }: MobileBottomMenuFiltersProps) {
@@ -38,7 +38,7 @@ export function MobileBottomMenuFilters({
         utm_source: "arpg-timeline",
         utm_medium: "mobile_menu",
         utm_campaign: "share",
-        utm_content: dashboard,
+        utm_content: category,
     });
 
     return (

@@ -13,7 +13,7 @@ export function parseMetadataKeywords(input: string) {
 
 const dashboardLabels: Record<string, string> = {
     default: "Default",
-    "default-when-next-confirmed": "Default",
+    featured: "Default",
     other: "Other Games",
     community: "Community Games",
     seasonal: "Seasonal Games",
@@ -28,7 +28,7 @@ export async function generateDashboardMetadata(
     const data: IndexQueryResult = await sanityClient.fetch(indexQuery, { revalidate: 3600 });
     const gameNames = data.games.map((g) => parseMetadataKeywords(g.name));
 
-    const isDefault = dashboard === "default" || dashboard === "default-when-next-confirmed";
+    const isDefault = dashboard === "default" || dashboard === "featured";
 
     const title = isDefault
         ? "aRPG Timeline | Season Tracker"
