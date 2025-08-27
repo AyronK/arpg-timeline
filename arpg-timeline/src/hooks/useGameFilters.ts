@@ -24,6 +24,28 @@ export const useGameFilters = (
     totalGames: number;
     shownGames: number;
 } => {
+    const gameFilters = games
+        .map((g) => ({
+            label: g!.name!,
+            value: g!.slug!,
+            group: g.categories?.includes("early-access")
+                ? "Early Access"
+                : g.categories?.includes("community")
+                  ? "Community"
+                  : g.categories?.includes("seasonal")
+                    ? "Seasonal"
+                    : "Non-Seasonal",
+            groupPriority: g.categories?.includes("early-access")
+                ? 2
+                : g.categories?.includes("community")
+                  ? 3
+                  : g.categories?.includes("seasonal")
+                    ? 1
+                    : 4,
+            logo: g!.logo,
+        }))
+        .sort((a, b) => (a.label > b.label ? 1 : -1));
+
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
 
@@ -94,9 +116,9 @@ export const useGameFilters = (
     };
 
     const toggleGroupFilter = (group: string, value: boolean) => {
-        const slugs = games
+        const slugs = gameFilters
             .filter((g) => (group ? g?.group === group : !g?.group))
-            .map((g) => g?.slug ?? "")
+            .map((g) => g?.value ?? "")
             .filter((g) => !!g);
 
         const filtersParams: string | string[] | null = searchParams.getAll("exclude");
@@ -166,28 +188,6 @@ export const useGameFilters = (
     }, [excludedSlugs, filteredGames, searchParam]);
 
     const activeFilters = games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
-
-    const gameFilters = games
-        .map((g) => ({
-            label: g!.name!,
-            value: g!.slug!,
-            group: g.categories?.includes("early-access")
-                ? "Early Access"
-                : g.categories?.includes("community")
-                  ? "Community"
-                  : g.categories?.includes("seasonal")
-                    ? "Seasonal"
-                    : "Non-Seasonal",
-            groupPriority: g.categories?.includes("early-access")
-                ? 2
-                : g.categories?.includes("community")
-                  ? 3
-                  : g.categories?.includes("seasonal")
-                    ? 1
-                    : 4,
-            logo: g!.logo,
-        }))
-        .sort((a, b) => (a.label > b.label ? 1 : -1));
 
     return {
         gameFilters,

@@ -122,17 +122,24 @@ export const Filters = ({
     );
 
     return (
-        <div className="flex flex-col gap-6 overflow-auto pb-18">
+        <div className="flex flex-col gap-6 overflow-x-visible px-6 pb-18 lg:px-0">
             {Object.keys(groups)
                 .sort((a, b) => groups[a][0].groupPriority - groups[b][0].groupPriority)
                 .map((g) => {
                     const anyChecked = !!groups[g].find((f) => checked.includes(f.value));
+                    const checkedCount = groups[g].filter((f) => checked.includes(f.value)).length;
+                    const totalCount = groups[g].length;
                     return (
                         <div className="flex flex-col gap-4" key={g}>
                             <div className="flex flex-row items-center justify-between">
-                                <h3 className="text-lg font-semibold">
-                                    {g !== "" ? g : "Uncategorized"}
-                                </h3>
+                                <div className="flex flex-col">
+                                    <h3 className="text-lg font-semibold">
+                                        {g !== "" ? g : "Uncategorized"}
+                                    </h3>
+                                    <div className="text-muted-foreground text-sm">
+                                        {checkedCount} of {totalCount} shown
+                                    </div>
+                                </div>
                                 <Button
                                     size="sm"
                                     variant="ghost"
@@ -163,11 +170,11 @@ export const Filters = ({
                                             onClick={() => onCheckedChange(f.value, !isChecked)}
                                             disabled={disabled}
                                             className={cn(
-                                                "group relative col-span-1 flex flex-col items-center gap-2 rounded-lg border-2 p-2 transition-all duration-200",
+                                                "group relative col-span-1 flex h-28 flex-col items-center justify-center rounded-lg border-2 p-2 transition-all duration-200 md:h-36",
                                                 {
                                                     "bg-card shadow-sm shadow-neutral-950/80 hover:scale-105 hover:shadow-md":
                                                         isChecked,
-                                                    "scale-95 brightness-90 hover:scale-100":
+                                                    "hover:border-foreground/10 scale-95 brightness-90 hover:scale-100":
                                                         !isChecked,
                                                     "cursor-not-allowed opacity-50": disabled,
                                                     "cursor-pointer": !disabled,
@@ -184,7 +191,7 @@ export const Filters = ({
                                                 </div>
                                             </div>
                                             <div className="relative">
-                                                <div className="h-14 w-14 overflow-hidden rounded-md">
+                                                <div className="h-14 w-14 overflow-hidden rounded-md lg:h-20 lg:w-20">
                                                     {f.logo ? (
                                                         <SanityImage
                                                             src={f.logo}
@@ -203,10 +210,11 @@ export const Filters = ({
                                             </div>
                                             <span
                                                 className={cn(
-                                                    "text-center text-xs leading-tight font-medium",
+                                                    "text-center text-xs leading-tight font-medium transition-all duration-200",
                                                     {
-                                                        "text-primary font-semibold": isChecked,
-                                                        "text-muted-foreground": !isChecked,
+                                                        "text-primary": isChecked,
+                                                        "text-muted-foreground group-hover:text-primary":
+                                                            !isChecked,
                                                     },
                                                 )}
                                             >

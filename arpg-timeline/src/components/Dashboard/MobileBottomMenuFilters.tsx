@@ -1,5 +1,5 @@
 import { Description } from "@radix-ui/react-toast";
-import { Filter, Share2 } from "lucide-react";
+import { Filter, Share2, X } from "lucide-react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
@@ -75,22 +75,25 @@ export function MobileBottomMenuFilters({
                 </DrawerTrigger>
                 <DrawerContent className={!isMd ? "left-0" : undefined}>
                     <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
-                    <DrawerHeader className="pb-3">
+                    <DrawerHeader className="border-border border-b pb-3">
                         <DrawerTitle>{title}</DrawerTitle>
                         <DrawerDescription asChild>
                             <Description />
                         </DrawerDescription>
                     </DrawerHeader>
-                    <Filters
-                        checked={filtersProps.activeFilters}
-                        filters={filtersProps.gameFilters}
-                        onCheckedChange={filtersProps.toggleGameFilter}
-                        onGroupCheckedChange={filtersProps.toggleGroupFilter}
-                        disabled={isFiltersDisabled}
-                    />
+                    <div className="overflow-y-auto pt-3">
+                        <Filters
+                            checked={filtersProps.activeFilters}
+                            filters={filtersProps.gameFilters}
+                            onCheckedChange={filtersProps.toggleGameFilter}
+                            onGroupCheckedChange={filtersProps.toggleGroupFilter}
+                            disabled={isFiltersDisabled}
+                        />
+                    </div>
                     <DrawerFooter className="bg-background absolute right-0 bottom-0 left-0 h-14 border-t border-slate-500 p-0!">
                         <DrawerClose asChild>
                             <Button className="h-14! flex-1" variant="ghost">
+                                <X className="mr-2 h-4 w-4" />
                                 Close
                             </Button>
                         </DrawerClose>
