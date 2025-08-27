@@ -46,7 +46,7 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                 }
                 slug={game.slug}
                 shortName={game.shortName!}
-                official={game.official}
+                official={!game.categories?.includes("community")}
                 stats={{ steam: steamStats }}
             >
                 <EmbedGameToSeasonWidget game={game} selector="current" />

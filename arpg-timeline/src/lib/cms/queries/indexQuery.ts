@@ -7,7 +7,6 @@ export const indexQuery = `{
     "slug":slug.current,
     name,
     shortName,
-    official,
     isDormant,
     isComingSoon,
     seasonKeyword,
@@ -65,7 +64,6 @@ export interface Game {
     slug: string;
     name: string;
     shortName?: string;
-    official?: boolean;
     isDormant?: boolean;
     isComingSoon?: boolean;
     seasonKeyword?: string;

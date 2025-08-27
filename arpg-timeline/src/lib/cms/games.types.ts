@@ -18,7 +18,6 @@ export type GameStatistics = {
 export type Game = {
     name: string;
     shortName: string | null | undefined;
-    official: boolean;
     isDormant: boolean;
     isComingSoon: boolean;
     slug: string;

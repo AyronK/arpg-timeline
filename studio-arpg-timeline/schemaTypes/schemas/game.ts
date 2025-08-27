@@ -198,15 +198,6 @@ export default defineType({
         },
 
         {
-            name: "official",
-            title: "Official",
-            description: "Is this an official game/ladder?",
-            type: "boolean",
-            initialValue: true,
-            validation: (Rule: Rule) => Rule.required(),
-            group: "toggles",
-        },
-        {
             name: "isComingSoon",
             title: "Coming Soon",
             description: "Is this game prior to release?",
@@ -220,14 +211,6 @@ export default defineType({
             description: "Has this game stopped getting regular content updates?",
             type: "boolean",
             initialValue: false,
-            group: "toggles",
-        },
-        {
-            name: "isSeasonal",
-            title: "Seasonal",
-            description: "Does this game have regular seasons?",
-            type: "boolean",
-            initialValue: true,
             group: "toggles",
         },
 
