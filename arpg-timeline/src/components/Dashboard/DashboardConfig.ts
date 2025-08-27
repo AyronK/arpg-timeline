@@ -12,18 +12,18 @@ export const DashboardConfig: Partial<
 > = {
     featured: {
         description: "Featured",
-        tooltip: "Seasonal games and games with upcoming updates",
+        tooltip: "Default selection is shown unless you customize the filters",
         icon: LogoIcon,
-    },
-    "non-seasonal": {
-        description: "Non-Seasonal",
-        tooltip: "Games that do not feature seasonal updates or follow a classic DLC model",
-        icon: ArrowRightToLine,
     },
     "early-access": {
         description: "Early Access",
         tooltip: "Games currently in early access or open beta",
         icon: FlaskConical,
+    },
+    "non-seasonal": {
+        description: "Non-Seasonal",
+        tooltip: "Games that do not feature seasonal updates or follow a classic DLC model",
+        icon: ArrowRightToLine,
     },
     community: {
         description: "Community",

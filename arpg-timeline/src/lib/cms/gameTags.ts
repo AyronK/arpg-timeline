@@ -213,7 +213,6 @@ export const isGameTag = (value: string): value is GameTag => {
 
 export type GameFilterCategory =
     | "featured"
-    | "seasonal"
     | "non-seasonal"
     | "community"
     | "early-access"
@@ -225,7 +224,6 @@ export const isGameFilterCategory = (value: string): value is GameFilterCategory
         "all",
         "non-seasonal",
         "community",
-        "seasonal",
         "early-access",
     ];
     return gameCategories.includes(value as GameFilterCategory);

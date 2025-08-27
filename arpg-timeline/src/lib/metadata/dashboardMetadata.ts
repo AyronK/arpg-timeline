@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityClient } from "@/lib/sanity/sanityClient";
 
@@ -11,24 +11,22 @@ export function parseMetadataKeywords(input: string) {
         .trim();
 }
 
-const dashboardLabels: Record<string, string> = {
-    default: "Default",
-    featured: "Default",
-    other: "Other Games",
+const dashboardLabels: Record<GameFilterCategory, string> = {
+    featured: "Featured",
     community: "Community Games",
-    seasonal: "Seasonal Games",
+    "non-seasonal": "Non-Seasonal Games",
     "early-access": "Early Access Games",
-    everything: "Full Catalog",
+    all: "Full Catalog",
 };
 
 export async function generateDashboardMetadata(
-    dashboard: DashboardTag,
+    dashboard: GameFilterCategory,
     canonicalPath: string = "/",
 ): Promise<Metadata> {
     const data: IndexQueryResult = await sanityClient.fetch(indexQuery, { revalidate: 3600 });
     const gameNames = data.games.map((g) => parseMetadataKeywords(g.name));
 
-    const isDefault = dashboard === "default" || dashboard === "featured";
+    const isDefault = dashboard === "featured";
 
     const title = isDefault
         ? "aRPG Timeline | Season Tracker"

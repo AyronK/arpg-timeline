@@ -1,4 +1,5 @@
 import { useSearchParams } from "next/navigation";
+import { SanityImageAssetDocument } from "next-sanity";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
@@ -13,6 +14,8 @@ export const useGameFilters = (
         label: string;
         value: string;
         group: string;
+        groupPriority: number;
+        logo?: SanityImageAssetDocument;
     }[];
     toggleGameFilter: (slug: string, value: boolean) => void;
     toggleGroupFilter: (group: string, value: boolean) => void;
@@ -38,25 +41,55 @@ export const useGameFilters = (
         window.history.pushState({}, "", "?" + params.toString());
     }, []);
 
-    const excludedSlugs = useMemo(
-        () => (typeof searchParam === "string" ? [searchParam] : ((searchParam as string[]) ?? [])),
-        [searchParam],
-    );
+    const excludedSlugs = useMemo(() => {
+        const params =
+            typeof searchParam === "string" ? [searchParam] : ((searchParam as string[]) ?? []);
+        if (params.length === 0 && category === "featured") {
+            return games
+                .filter(
+                    (g) =>
+                        !g.categories?.includes("seasonal") &&
+                        !g.categories?.includes("early-access") &&
+                        !g.nextSeason?.start?.confirmed,
+                )
+                .map((g) => g.slug!)
+                .filter(Boolean);
+        }
+        return params;
+    }, [searchParam, category, games]);
 
     const toggleGameFilter = (slug: string, value: boolean) => {
         const filtersParams: string | string[] | null = searchParams.getAll("exclude");
-        const filters =
+        const currentFilters =
             filtersParams instanceof Array
                 ? filtersParams
                 : filtersParams !== null
                   ? [filtersParams]
                   : [];
 
-        if (value) {
-            handleUpdate(filters.filter((f) => f !== slug));
+        if (currentFilters.length === 0 && category === "featured") {
+            const defaultExcludedSlugs = games
+                .filter(
+                    (g) =>
+                        !g.categories?.includes("seasonal") &&
+                        !g.categories?.includes("early-access") &&
+                        !g.nextSeason?.start?.confirmed,
+                )
+                .map((g) => g.slug!)
+                .filter(Boolean);
+
+            if (value) {
+                const newFilters = defaultExcludedSlugs.filter((f) => f !== slug);
+                handleUpdate(newFilters);
+            } else {
+                handleUpdate([...defaultExcludedSlugs, slug]);
+            }
         } else {
-            filters.push(slug);
-            handleUpdate(filters);
+            if (value) {
+                handleUpdate(currentFilters.filter((f) => f !== slug));
+            } else {
+                handleUpdate([...currentFilters, slug]);
+            }
         }
     };
 
@@ -67,30 +100,43 @@ export const useGameFilters = (
             .filter((g) => !!g);
 
         const filtersParams: string | string[] | null = searchParams.getAll("exclude");
-        const filters =
+        const currentFilters =
             filtersParams instanceof Array
                 ? filtersParams
                 : filtersParams !== null
                   ? [filtersParams]
                   : [];
 
-        if (value) {
-            handleUpdate(filters.filter((f) => !slugs.includes(f)));
+        if (currentFilters.length === 0) {
+            const defaultExcludedSlugs = games
+                .filter(
+                    (g) =>
+                        !g.categories?.includes("seasonal") &&
+                        !g.categories?.includes("early-access") &&
+                        !g.nextSeason?.start?.confirmed,
+                )
+                .map((g) => g.slug!)
+                .filter(Boolean);
+
+            if (value) {
+                const newFilters = defaultExcludedSlugs.filter((f) => !slugs.includes(f));
+                handleUpdate(newFilters);
+            } else {
+                handleUpdate([...defaultExcludedSlugs, ...slugs]);
+            }
         } else {
-            handleUpdate([...filters, ...slugs]);
+            if (value) {
+                handleUpdate(currentFilters.filter((f) => !slugs.includes(f)));
+            } else {
+                handleUpdate([...currentFilters, ...slugs]);
+            }
         }
     };
 
     const filteredGames = useMemo(() => {
         let filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
 
-        if (category === "featured") {
-            filteredGames = filteredGames.filter(
-                (g) => g.categories?.includes("seasonal") || g.nextSeason?.start?.confirmed,
-            );
-        } else if (category === "seasonal") {
-            filteredGames = filteredGames.filter((g) => g.categories?.includes("seasonal"));
-        } else if (category === "non-seasonal") {
+        if (category === "non-seasonal") {
             filteredGames = filteredGames.filter((g) => !g.categories?.includes("seasonal"));
         } else if (category === "community") {
             filteredGames = filteredGames.filter((g) => g.categories?.includes("community"));
@@ -122,7 +168,25 @@ export const useGameFilters = (
     const activeFilters = games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
 
     const gameFilters = games
-        .map((g) => ({ label: g!.name!, value: g!.slug!, group: g!.group! }))
+        .map((g) => ({
+            label: g!.name!,
+            value: g!.slug!,
+            group: g.categories?.includes("early-access")
+                ? "Early Access"
+                : g.categories?.includes("community")
+                  ? "Community"
+                  : g.categories?.includes("seasonal")
+                    ? "Seasonal"
+                    : "Non-Seasonal",
+            groupPriority: g.categories?.includes("early-access")
+                ? 2
+                : g.categories?.includes("community")
+                  ? 3
+                  : g.categories?.includes("seasonal")
+                    ? 1
+                    : 4,
+            logo: g!.logo,
+        }))
         .sort((a, b) => (a.label > b.label ? 1 : -1));
 
     return {

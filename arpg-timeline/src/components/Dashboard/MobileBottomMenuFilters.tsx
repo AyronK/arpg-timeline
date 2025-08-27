@@ -1,6 +1,5 @@
 import { Description } from "@radix-ui/react-toast";
 import { Filter, Share2 } from "lucide-react";
-import { title } from "process";
 
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
@@ -19,6 +18,8 @@ import {
 } from "@/ui/Drawer";
 
 import { Filters } from "../FiltersDialog";
+
+const title = "Which games would you like to see?";
 
 interface MobileBottomMenuFiltersProps {
     filtersProps: GameFiltersProps;
@@ -87,17 +88,12 @@ export function MobileBottomMenuFilters({
                         onGroupCheckedChange={filtersProps.toggleGroupFilter}
                         disabled={isFiltersDisabled}
                     />
-                    <DrawerFooter className="absolute right-0 bottom-0 lg:relative">
-                        <div className="ml-auto lg:mr-auto lg:ml-0">
-                            <DrawerClose asChild>
-                                <Button
-                                    className="shadow-md shadow-black lg:shadow-none"
-                                    variant="outline"
-                                >
-                                    Close
-                                </Button>
-                            </DrawerClose>
-                        </div>
+                    <DrawerFooter className="bg-background absolute right-0 bottom-0 left-0 h-14 border-t border-slate-500 p-0!">
+                        <DrawerClose asChild>
+                            <Button className="h-14! flex-1" variant="ghost">
+                                Close
+                            </Button>
+                        </DrawerClose>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
