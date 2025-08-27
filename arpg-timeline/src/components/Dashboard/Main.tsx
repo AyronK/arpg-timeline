@@ -18,7 +18,7 @@ export const Main = ({
     category?: GameFilterCategory;
 }) => {
     return (
-        <div className="mt-2 flex flex-col gap-4">
+        <div className="mt-2 flex flex-col">
             <Suspense fallback={<StreamsFallback streams={streams} />}>
                 <Streams games={games} streams={streams} />
             </Suspense>

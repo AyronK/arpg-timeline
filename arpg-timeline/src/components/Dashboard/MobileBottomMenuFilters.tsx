@@ -19,7 +19,7 @@ import {
 
 import { Filters } from "../FiltersDialog";
 
-const title = "Which games would you like to see?";
+const title = "Choose your games";
 
 interface MobileBottomMenuFiltersProps {
     filtersProps: GameFiltersProps;
@@ -75,7 +75,7 @@ export function MobileBottomMenuFilters({
                 </DrawerTrigger>
                 <DrawerContent className={!isMd ? "left-0" : undefined}>
                     <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
-                    <DrawerHeader className="border-border border-b pb-3">
+                    <DrawerHeader className="border-border border-b pt-3! pb-3">
                         <DrawerTitle>{title}</DrawerTitle>
                         <DrawerDescription asChild>
                             <Description />

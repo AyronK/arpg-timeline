@@ -25,7 +25,7 @@ const StreamHeader = ({
 }) => (
     <div className="flex flex-row justify-between align-bottom">
         <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis">
-            <span className="sr-only md:not-sr-only">{gameName} - </span>
+            <span>{gameName} - </span>
             {name}
         </h3>
         <div className="hidden lg:block">
@@ -111,7 +111,7 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
             className="text-card-foreground bg-card relative flex flex-row gap-3 rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
             key={stream.slug}
         >
-            <div className="flex h-14 w-14 md:h-16 md:w-16">
+            <div className="hidden h-16 w-16 md:block">
                 <SanityImage
                     loading="lazy"
                     src={stream.gameLogo!}

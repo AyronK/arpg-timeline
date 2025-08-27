@@ -31,7 +31,7 @@ export type FiltersDialogProps = {
     disabled?: boolean;
 };
 
-const title = "Which games would you like to see?";
+const title = "Choose your games";
 
 export const FiltersDialog = ({
     filters,
@@ -150,12 +150,12 @@ export const Filters = ({
                                 >
                                     {anyChecked ? (
                                         <>
-                                            <Eye className="h-4 w-4" />
+                                            <EyeOff className="h-4 w-4" />
                                             <span className="hidden sm:inline">Hide All</span>
                                         </>
                                     ) : (
                                         <>
-                                            <EyeOff className="h-4 w-4" />
+                                            <Eye className="h-4 w-4" />
                                             <span className="hidden sm:inline">Show All</span>
                                         </>
                                     )}
