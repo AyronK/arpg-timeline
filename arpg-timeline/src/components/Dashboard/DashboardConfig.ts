@@ -1,42 +1,36 @@
-import { FlaskConical, Library, RotateCwSquare, Telescope, Users } from "lucide-react";
+import { ArrowRightToLine, FlaskConical, Library, Users } from "lucide-react";
 
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 
 import { LogoIcon } from "../LogoIcon";
 
 export const DashboardConfig: Partial<
     Record<
-        DashboardTag,
+        GameFilterCategory,
         { description: string; tooltip: string; icon: React.ComponentType<{ className?: string }> }
     >
 > = {
-    "default-when-next-confirmed": {
+    featured: {
         description: "Featured",
-        tooltip: "Top picks and recommendations from aRPG Timeline",
+        tooltip: "Default selection is shown unless you customize the filters",
         icon: LogoIcon,
-    },
-    seasonal: {
-        description: "Seasonal",
-        tooltip: "Games with active or upcoming seasons and ladders",
-        icon: RotateCwSquare,
     },
     "early-access": {
         description: "Early Access",
         tooltip: "Games currently in early access or open beta",
         icon: FlaskConical,
     },
+    "non-seasonal": {
+        description: "Non-Seasonal",
+        tooltip: "Games that do not feature seasonal updates or follow a classic DLC model",
+        icon: ArrowRightToLine,
+    },
     community: {
         description: "Community",
         tooltip: "Community-driven mods, events, and fan projects",
         icon: Users,
     },
-    other: {
-        description: "Explore",
-        tooltip:
-            "Other games related to the genre or with similar appeal that do not strictly follow a seasonal aRPG type",
-        icon: Telescope,
-    },
-    everything: {
+    all: {
         description: "Full Catalog",
         tooltip: "Display all games together in one comprehensive view",
         icon: Library,

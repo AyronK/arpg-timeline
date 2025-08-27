@@ -3,7 +3,7 @@ import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { SupportButtons } from "@/components/SupportButtons";
 import { GameStatistics } from "@/lib/cms/games.types";
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
@@ -11,10 +11,10 @@ import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 
 interface DashboardPageProps {
-    dashboard: DashboardTag;
+    category: GameFilterCategory;
 }
 
-export const DashboardPage = async ({ dashboard }: DashboardPageProps) => {
+export const DashboardPage = async ({ category }: DashboardPageProps) => {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
         revalidate: 24 * 60 * 60,
@@ -55,24 +55,10 @@ export const DashboardPage = async ({ dashboard }: DashboardPageProps) => {
         <>
             {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
-                <Kicker />
-                <Main
-                    games={games}
-                    streams={streams}
-                    statistics={statistics}
-                    dashboard={dashboard}
-                />
+                <Main games={games} streams={streams} statistics={statistics} category={category} />
             </div>
             <StructuredDataScripts games={games} />
             <SupportButtons />
         </>
     );
 };
-
-const Kicker = () => (
-    <p className="font-heading mx-auto hidden max-w-prose text-center text-lg md:mt-8 md:block md:text-xl">
-        Stay ahead in your favorite ARPGs with the season tracker.
-        <br />
-        Never miss a season start or end again!
-    </p>
-);

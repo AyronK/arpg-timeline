@@ -7,7 +7,7 @@ import { useGameCategories } from "@/hooks/useGameCategories";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { cn } from "@/lib/utils";
 
 import { CantFindGame } from "./CantFindGame";
@@ -20,16 +20,16 @@ import { MobileBottomMenu } from "./MobileBottomMenu";
 export const GamesAndEventsGrid = ({
     games,
     statistics,
-    dashboard = "default-when-next-confirmed",
+    category = "featured",
 }: {
     games: Game[];
     statistics: Record<string, GameStatistics>;
-    dashboard?: DashboardTag;
+    category?: GameFilterCategory;
 }) => {
     const [isLoading, setIsLoading] = useState(false);
     const { filteredGames, totalGames, shownGames, ...filtersProps } = useGameFilters(
         games,
-        dashboard,
+        category,
     );
     const events = useTimelineEvents(filteredGames);
     const { allGames } = useGameCategories(filteredGames);
@@ -48,11 +48,11 @@ export const GamesAndEventsGrid = ({
                     </div>
                     <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
                         <DashboardSelector
-                            key={dashboard}
-                            dashboard={dashboard}
+                            key={category}
+                            category={category}
                             onLoadingChange={handleLoadingChange}
                         />
-                        <GameFilters {...filtersProps} disabled={dashboard === "everything"} />
+                        <GameFilters {...filtersProps} />
                     </div>
                 </div>
                 <div
@@ -67,23 +67,17 @@ export const GamesAndEventsGrid = ({
                 </div>
             </article>
             <MobileBottomMenu
-                dashboard={dashboard}
+                category={category}
                 onLoadingChange={handleLoadingChange}
                 filtersProps={filtersProps}
                 shownGames={shownGames}
                 totalGames={totalGames}
-                isFiltersDisabled={dashboard === "everything"}
             />
         </>
     );
 };
 
-export const GamesAndEventsGridFallback = ({
-    games,
-}: {
-    games: Game[];
-    dashboard?: DashboardTag;
-}) => {
+export const GamesAndEventsGridFallback = ({ games }: { games: Game[] }) => {
     return (
         <article className="opacity-0">
             <h2 className="sr-only">Seasons</h2>

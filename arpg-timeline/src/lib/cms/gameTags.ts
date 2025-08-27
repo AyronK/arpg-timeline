@@ -1,12 +1,5 @@
 // Dashboard Tags - for controlling visibility and categorization
-export type DashboardTag =
-    | "default"
-    | "default-when-next-confirmed"
-    | "other"
-    | "community"
-    | "seasonal"
-    | "early-access"
-    | "everything";
+export type GameCategory = "community" | "seasonal" | "early-access";
 
 // Main Game Tags - comprehensive game features and characteristics
 export type GameTag =
@@ -67,15 +60,7 @@ export type GameTag =
     | "monetization-character-slots"
     | "monetization-pay-for-convenience";
 
-export const DASHBOARD_TAGS = [
-    "default",
-    "default-when-next-confirmed",
-    "other",
-    "community",
-    "seasonal",
-    "early-access",
-    "everything",
-] satisfies DashboardTag[];
+export const GAME_CATEGORIES = ["community", "seasonal", "early-access"] satisfies GameCategory[];
 
 // Tag Categories for easier filtering and grouping
 export const TAG_CATEGORIES = {
@@ -129,7 +114,7 @@ export const TAG_CATEGORIES = {
 export type TagCategory = keyof typeof TAG_CATEGORIES;
 
 // Helper types
-export type DashboardTagValue = DashboardTag;
+export type GameCategoryValue = GameCategory;
 export type GameTagValue = GameTag;
 
 // Game interface with tags
@@ -137,7 +122,7 @@ export interface GameWithTags {
     _id: string;
     name: string;
     slug: string;
-    dashboardTags?: DashboardTagValue[];
+    gameCategorys?: GameCategoryValue[];
     tags?: GameTagValue[];
     // ... other game properties
 }
@@ -178,11 +163,11 @@ export const filterGamesByTags = <T extends GameWithTags>(
 };
 
 // Filter games by dashboard tags
-export const filterGamesByDashboardTag = <T extends GameWithTags>(
+export const filterGamesByGameCategory = <T extends GameWithTags>(
     games: T[],
-    dashboardTag: DashboardTagValue,
+    gameCategory: GameCategoryValue,
 ): T[] => {
-    return games.filter((game) => game.dashboardTags?.includes(dashboardTag));
+    return games.filter((game) => game.gameCategorys?.includes(gameCategory));
 };
 
 // Get all unique tags from a list of games
@@ -208,11 +193,11 @@ export const getTagCounts = (games: GameWithTags[]): Record<GameTagValue, number
 };
 
 // Get dashboard tag counts
-export const getDashboardTagCounts = (games: GameWithTags[]): Record<DashboardTagValue, number> => {
-    const counts: Record<DashboardTagValue, number> = {} as Record<DashboardTagValue, number>;
+export const getGameCategoryCounts = (games: GameWithTags[]): Record<GameCategoryValue, number> => {
+    const counts: Record<GameCategoryValue, number> = {} as Record<GameCategoryValue, number>;
 
     games.forEach((game) => {
-        game.dashboardTags?.forEach((tag) => {
+        game.gameCategorys?.forEach((tag) => {
             counts[tag] = (counts[tag] || 0) + 1;
         });
     });
@@ -226,15 +211,20 @@ export const isGameTag = (value: string): value is GameTag => {
     return allTags.includes(value as GameTag);
 };
 
-export const isDashboardTag = (value: string): value is DashboardTag => {
-    const dashboardTags: DashboardTag[] = [
-        "default",
-        "default-when-next-confirmed",
-        "other",
+export type GameFilterCategory = "featured" | "non-seasonal" | "community" | "early-access" | "all";
+
+export const isGameFilterCategory = (value: string): value is GameFilterCategory => {
+    const gameCategories: GameFilterCategory[] = [
+        "featured",
+        "all",
+        "non-seasonal",
         "community",
-        "seasonal",
         "early-access",
-        "everything",
     ];
-    return dashboardTags.includes(value as DashboardTag);
+    return gameCategories.includes(value as GameFilterCategory);
+};
+
+export const isGameCategory = (value: string): value is GameCategory => {
+    const gameCategories: GameCategory[] = ["community", "seasonal", "early-access"];
+    return gameCategories.includes(value as GameCategory);
 };

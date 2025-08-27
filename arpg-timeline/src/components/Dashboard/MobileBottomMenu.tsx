@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useScrollVisibility } from "@/hooks/useScrollVisibility";
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { cn } from "@/lib/utils";
 
 import { MobileBottomMenuActions } from "./MobileBottomMenuActions";
@@ -13,7 +13,7 @@ import { MobileBottomMenuFilters } from "./MobileBottomMenuFilters";
 
 type MobileBottomMenuProps = {
     filtersProps: GameFiltersProps;
-    dashboard: DashboardTag;
+    category: GameFilterCategory;
     onLoadingChange: (loading: boolean) => void;
     shownGames: number;
     totalGames: number;
@@ -22,7 +22,7 @@ type MobileBottomMenuProps = {
 
 export function MobileBottomMenu({
     filtersProps,
-    dashboard,
+    category,
     onLoadingChange,
     shownGames,
     totalGames,
@@ -65,7 +65,7 @@ export function MobileBottomMenu({
 
                                 <MobileBottomMenuFilters
                                     filtersProps={filtersProps}
-                                    dashboard={dashboard}
+                                    category={category}
                                     isFiltersDisabled={isFiltersDisabled}
                                     onDrawerOpenChange={handleDrawerOpenChange}
                                 />
@@ -73,7 +73,7 @@ export function MobileBottomMenu({
                         </div>
 
                         <MobileBottomMenuCenter
-                            dashboard={dashboard}
+                            category={category}
                             onLoadingChange={onLoadingChange}
                         />
                     </div>

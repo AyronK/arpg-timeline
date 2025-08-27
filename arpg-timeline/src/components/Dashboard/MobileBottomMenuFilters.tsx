@@ -1,11 +1,10 @@
 import { Description } from "@radix-ui/react-toast";
-import { Filter, Share2 } from "lucide-react";
-import { title } from "process";
+import { Filter, Share2, X } from "lucide-react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useShareAction } from "@/hooks/useShareAction";
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { Button } from "@/ui/Button";
 import {
     Drawer,
@@ -20,16 +19,18 @@ import {
 
 import { Filters } from "../FiltersDialog";
 
+const title = "Choose your games";
+
 interface MobileBottomMenuFiltersProps {
     filtersProps: GameFiltersProps;
-    dashboard: DashboardTag;
+    category: GameFilterCategory;
     isFiltersDisabled?: boolean;
     onDrawerOpenChange: (open: boolean) => void;
 }
 
 export function MobileBottomMenuFilters({
     filtersProps,
-    dashboard,
+    category,
     isFiltersDisabled = false,
     onDrawerOpenChange,
 }: MobileBottomMenuFiltersProps) {
@@ -38,7 +39,7 @@ export function MobileBottomMenuFilters({
         utm_source: "arpg-timeline",
         utm_medium: "mobile_menu",
         utm_campaign: "share",
-        utm_content: dashboard,
+        utm_content: category,
     });
 
     return (
@@ -74,30 +75,28 @@ export function MobileBottomMenuFilters({
                 </DrawerTrigger>
                 <DrawerContent className={!isMd ? "left-0" : undefined}>
                     <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
-                    <DrawerHeader className="pb-3">
+                    <DrawerHeader className="border-border border-b pt-3! pb-3">
                         <DrawerTitle>{title}</DrawerTitle>
                         <DrawerDescription asChild>
                             <Description />
                         </DrawerDescription>
                     </DrawerHeader>
-                    <Filters
-                        checked={filtersProps.activeFilters}
-                        filters={filtersProps.gameFilters}
-                        onCheckedChange={filtersProps.toggleGameFilter}
-                        onGroupCheckedChange={filtersProps.toggleGroupFilter}
-                        disabled={isFiltersDisabled}
-                    />
-                    <DrawerFooter className="absolute right-0 bottom-0 lg:relative">
-                        <div className="ml-auto lg:mr-auto lg:ml-0">
-                            <DrawerClose asChild>
-                                <Button
-                                    className="shadow-md shadow-black lg:shadow-none"
-                                    variant="outline"
-                                >
-                                    Close
-                                </Button>
-                            </DrawerClose>
-                        </div>
+                    <div className="overflow-y-auto pt-3">
+                        <Filters
+                            checked={filtersProps.activeFilters}
+                            filters={filtersProps.gameFilters}
+                            onCheckedChange={filtersProps.toggleGameFilter}
+                            onGroupCheckedChange={filtersProps.toggleGroupFilter}
+                            disabled={isFiltersDisabled}
+                        />
+                    </div>
+                    <DrawerFooter className="bg-background absolute right-0 bottom-0 left-0 h-14 border-t border-slate-500 p-0!">
+                        <DrawerClose asChild>
+                            <Button className="h-14! flex-1" variant="ghost">
+                                <X className="mr-2 h-4 w-4" />
+                                Close
+                            </Button>
+                        </DrawerClose>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>

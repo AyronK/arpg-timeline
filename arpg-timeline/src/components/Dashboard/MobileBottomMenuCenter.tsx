@@ -1,6 +1,6 @@
 import { ChartGantt } from "lucide-react";
 
-import { DashboardTag } from "@/lib/cms/gameTags";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { Button } from "@/ui/Button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/DropdownMenu";
 
@@ -8,14 +8,11 @@ import { DashboardConfig } from "./DashboardConfig";
 import { DashboardSelector } from "./DashboardSelector";
 
 interface MobileBottomMenuCenterProps {
-    dashboard: DashboardTag;
+    category: GameFilterCategory;
     onLoadingChange: (loading: boolean) => void;
 }
 
-export function MobileBottomMenuCenter({
-    dashboard,
-    onLoadingChange,
-}: MobileBottomMenuCenterProps) {
+export function MobileBottomMenuCenter({ category, onLoadingChange }: MobileBottomMenuCenterProps) {
     return (
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <DropdownMenu>
@@ -29,7 +26,7 @@ export function MobileBottomMenuCenter({
                         <h3 className="text-sm font-medium text-white">Select Dashboard</h3>
                     </div>
                     <DashboardSelector
-                        dashboard={dashboard}
+                        category={category}
                         onLoadingChange={onLoadingChange}
                         isMobile
                     />
@@ -41,7 +38,7 @@ export function MobileBottomMenuCenter({
                     >
                         <div className="-rotate-45 transform">
                             {(() => {
-                                const config = DashboardConfig[dashboard];
+                                const config = DashboardConfig[category];
                                 const IconComponent = config?.icon;
                                 return IconComponent ? (
                                     <IconComponent className="h-6 w-6 text-white" />
@@ -55,7 +52,7 @@ export function MobileBottomMenuCenter({
             </DropdownMenu>
             <div className="absolute left-1/2 mt-3.5 -translate-x-1/2 text-center">
                 <div className="text-[0.65rem] font-bold text-nowrap">
-                    {DashboardConfig[dashboard]?.description ?? "aRPG"}
+                    {DashboardConfig[category]?.description ?? "aRPG"}
                 </div>
             </div>
         </div>

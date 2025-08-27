@@ -127,7 +127,7 @@ export const Games = ({
                             slug={game.slug}
                             shortName={game.shortName!}
                             url={game.url!}
-                            official={game.official}
+                            official={!game.categories?.includes("community")}
                             stats={statistics[game.slug]}
                         >
                             <GameToSeasonWidget game={game} selector="current" />

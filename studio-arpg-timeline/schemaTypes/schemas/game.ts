@@ -38,21 +38,15 @@ export default defineType({
             group: "main",
         },
         {
-            name: "dashboardTags",
-            title: "Dashboard Tags",
-            description: "Select one or more tags to categorize this game",
+            name: "categories",
+            title: "Categories",
+            description: "Select one or more options to categorize this game",
             type: "array",
             of: [
                 {
                     type: "string",
                     options: {
                         list: [
-                            { title: "Show in the default section", value: "default" },
-                            {
-                                title: "Show in the default section only if next update is confirmed",
-                                value: "default-when-next-confirmed",
-                            },
-                            { title: 'Show in the "You may also like" section', value: "other" },
                             { title: "Community Driven", value: "community" },
                             { title: "Seasonal", value: "seasonal" },
                             { title: "Early access", value: "early-access" },
@@ -204,15 +198,6 @@ export default defineType({
         },
 
         {
-            name: "official",
-            title: "Official",
-            description: "Is this an official game/ladder?",
-            type: "boolean",
-            initialValue: true,
-            validation: (Rule: Rule) => Rule.required(),
-            group: "toggles",
-        },
-        {
             name: "isComingSoon",
             title: "Coming Soon",
             description: "Is this game prior to release?",
@@ -226,14 +211,6 @@ export default defineType({
             description: "Has this game stopped getting regular content updates?",
             type: "boolean",
             initialValue: false,
-            group: "toggles",
-        },
-        {
-            name: "isSeasonal",
-            title: "Seasonal",
-            description: "Does this game have regular seasons?",
-            type: "boolean",
-            initialValue: true,
             group: "toggles",
         },
 

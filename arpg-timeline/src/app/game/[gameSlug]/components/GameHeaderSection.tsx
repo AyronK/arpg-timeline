@@ -32,7 +32,7 @@ export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSect
             slug={game.slug}
             shortName={game.shortName || game.name}
             url={game.url || "#"}
-            official={game.official}
+            official={!game.categories?.includes("community")}
             stats={{}}
         >
             <GameToSeasonWidget game={game} selector="current" />

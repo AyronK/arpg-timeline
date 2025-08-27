@@ -1,19 +1,18 @@
 import { PortableTextBlock, SanityImageAssetDocument } from "next-sanity";
 
-import { DashboardTag, GameTag } from "../gameTags";
+import { GameCategory, GameTag } from "../gameTags";
 
 export const indexQuery = `{
   "games": *[_type == "game"]{
     "slug":slug.current,
     name,
     shortName,
-    official,
     isDormant,
     isComingSoon,
     seasonKeyword,
     url,
     group,
-    "dashboardTags": coalesce(dashboardTags, []),
+    "categories": coalesce(categories, []),
     "tags": coalesce(tags, []),
     "logo": logo.asset->{
       _id,
@@ -65,13 +64,12 @@ export interface Game {
     slug: string;
     name: string;
     shortName?: string;
-    official?: boolean;
     isDormant?: boolean;
     isComingSoon?: boolean;
     seasonKeyword?: string;
     url?: string;
     group?: string;
-    dashboardTags?: DashboardTag[];
+    categories?: GameCategory[];
     tags?: GameTag[];
     logo?: SanityImageAssetDocument;
     steam?: SteamData;

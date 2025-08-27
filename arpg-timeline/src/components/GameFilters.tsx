@@ -1,5 +1,7 @@
 "use client";
 
+import { SanityImageAssetDocument } from "next-sanity";
+
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
@@ -9,6 +11,7 @@ export type GameFiltersProps = {
         label: string;
         value: string;
         group: string;
+        logo?: SanityImageAssetDocument;
     }[];
     toggleGameFilter: (slug: string, value: boolean) => void;
     toggleGroupFilter: (group: string, value: boolean) => void;

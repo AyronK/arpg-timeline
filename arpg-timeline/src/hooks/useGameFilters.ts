@@ -1,18 +1,24 @@
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { SanityImageAssetDocument } from "next-sanity";
+import { useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
-import { DashboardTag } from "@/lib/cms/gameTags";
-import { sa_event } from "@/lib/sa_event";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
+
+import { useGameFiltersAnalytics } from "./useGameFiltersAnalytics";
+import { useGameFiltersData } from "./useGameFiltersData";
+import { useGameFilterState } from "./useGameFilterState";
 
 export const useGameFilters = (
     games: Game[],
-    dashboardTag: DashboardTag = "default-when-next-confirmed",
+    category: GameFilterCategory = "all",
 ): {
     gameFilters: {
         label: string;
         value: string;
         group: string;
+        groupPriority: number;
+        logo?: SanityImageAssetDocument;
     }[];
     toggleGameFilter: (slug: string, value: boolean) => void;
     toggleGroupFilter: (group: string, value: boolean) => void;
@@ -20,112 +26,26 @@ export const useGameFilters = (
     filteredGames: Game[];
     totalGames: number;
     shownGames: number;
-    dashboardTag: DashboardTag;
 } => {
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
 
-    const handleUpdate = useCallback((slugs: string[]) => {
-        const params = new URLSearchParams();
-
-        if (slugs?.length > 0) {
-            slugs.forEach((val) => {
-                params.append("exclude", val);
-            });
-        } else {
-            params.delete("exclude");
-        }
-
-        window.history.pushState({}, "", "?" + params.toString());
-    }, []);
-
-    const excludedSlugs = useMemo(
-        () => (typeof searchParam === "string" ? [searchParam] : ((searchParam as string[]) ?? [])),
-        [searchParam],
+    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } = useGameFilterState(
+        games,
+        category,
+        searchParams,
     );
-
-    const toggleGameFilter = (slug: string, value: boolean) => {
-        const filtersParams: string | string[] | null = searchParams.getAll("exclude");
-        const filters =
-            filtersParams instanceof Array
-                ? filtersParams
-                : filtersParams !== null
-                  ? [filtersParams]
-                  : [];
-
-        if (value) {
-            handleUpdate(filters.filter((f) => f !== slug));
-        } else {
-            filters.push(slug);
-            handleUpdate(filters);
-        }
-    };
-
-    const toggleGroupFilter = (group: string, value: boolean) => {
-        const slugs = games
-            .filter((g) => (group ? g?.group === group : !g?.group))
-            .map((g) => g?.slug ?? "")
-            .filter((g) => !!g);
-
-        const filtersParams: string | string[] | null = searchParams.getAll("exclude");
-        const filters =
-            filtersParams instanceof Array
-                ? filtersParams
-                : filtersParams !== null
-                  ? [filtersParams]
-                  : [];
-
-        if (value) {
-            handleUpdate(filters.filter((f) => !slugs.includes(f)));
-        } else {
-            handleUpdate([...filters, ...slugs]);
-        }
-    };
+    const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {
-        if (dashboardTag === "everything") {
-            return games;
-        }
+        return getFilteredGames(excludedSlugs, category);
+    }, [getFilteredGames, excludedSlugs, category]);
 
-        let filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
+    useGameFiltersAnalytics(excludedSlugs, filteredGames, searchParam);
 
-        if (dashboardTag === "default-when-next-confirmed") {
-            filteredGames = filteredGames.filter(
-                (g) =>
-                    g.dashboardTags?.includes("default") ||
-                    (g.dashboardTags?.includes("default-when-next-confirmed") &&
-                        g.nextSeason?.start?.confirmed),
-            );
-        } else {
-            filteredGames = filteredGames.filter((g) => g.dashboardTags?.includes(dashboardTag));
-        }
-
-        return filteredGames;
-    }, [dashboardTag, excludedSlugs, games]);
-
-    useEffect(() => {
-        for (const i in excludedSlugs) {
-            if (Object.prototype.hasOwnProperty.call(filteredGames, i)) {
-                const element = excludedSlugs[i];
-                sa_event(`game-hidden--${element}`);
-            }
-        }
-
-        if (filteredGames.length > 0) {
-            sa_event("games-visible", {
-                games: filteredGames
-                    .sort((a, b) => a.slug.localeCompare(b.slug))
-                    .map((g) => g.slug)
-                    .join(","),
-            });
-        }
-    }, [excludedSlugs, filteredGames, searchParam]);
-
-    const activeFilters = games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
-
-    const gameFilters = games
-        .map((g) => ({ label: g!.name!, value: g!.slug!, group: g!.group! }))
-        .sort((a, b) => (a.label > b.label ? 1 : -1));
+    const activeFilters = useMemo(() => {
+        return games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
+    }, [games, excludedSlugs]);
 
     return {
         gameFilters,
@@ -133,7 +53,6 @@ export const useGameFilters = (
         toggleGroupFilter,
         filteredGames,
         activeFilters,
-        dashboardTag,
         shownGames: filteredGames.length,
         totalGames: games.length,
     };
