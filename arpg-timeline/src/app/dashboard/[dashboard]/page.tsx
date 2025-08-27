@@ -21,7 +21,7 @@ const DashboardPage = async ({ params }: DashboardPageProps) => {
         notFound();
     }
 
-    return <SharedDashboardPage dashboard={dashboard} />;
+    return <SharedDashboardPage category={dashboard} />;
 };
 
 export const revalidate = 3600;

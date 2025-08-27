@@ -4,7 +4,7 @@ import { DashboardPage } from "@/components/Pages/DashboardPage";
 import { generateDashboardMetadata } from "@/lib/metadata/dashboardMetadata";
 
 const Home = async () => {
-    return <DashboardPage dashboard="featured" />;
+    return <DashboardPage category="featured" />;
 };
 
 export const revalidate = 3600;
