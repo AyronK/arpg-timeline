@@ -1,13 +1,13 @@
-import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { SanityImageAssetDocument } from "next-sanity";
+import { useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 
-import { useGameFilterState } from "./useGameFilterState";
-import { useGameFiltersData } from "./useGameFiltersData";
 import { useGameFiltersAnalytics } from "./useGameFiltersAnalytics";
+import { useGameFiltersData } from "./useGameFiltersData";
+import { useGameFilterState } from "./useGameFilterState";
 
 export const useGameFilters = (
     games: Game[],
