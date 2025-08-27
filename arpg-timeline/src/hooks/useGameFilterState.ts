@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { Game } from "@/lib/cms/games.types";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import {
+    GameFiltersStorage,
     getStoredFilters,
     setStoredFilters,
-    GameFiltersStorage,
 } from "@/lib/storage/gameFiltersStorage";
 import { getUrlFilters, updateUrlFilters } from "@/lib/url/gameFiltersUrl";
 
@@ -44,6 +44,11 @@ export const useGameFilterState = (
             initialFilters = stored.excludedSlugs;
         } else if (urlFilters.length > 0) {
             initialFilters = urlFilters;
+            const storageData: GameFiltersStorage = {
+                excludedSlugs: urlFilters,
+                category,
+            };
+            setStoredFilters(storageData);
         } else {
             initialFilters = getDefaultExcludedSlugs();
         }
