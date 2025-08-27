@@ -122,7 +122,7 @@ export const StreamsFallback = ({ streams }: { streams: GameStream[] }) => {
 };
 
 const Kicker = () => (
-    <p className="font-heading flex-1 py-2 text-center align-middle text-sm select-none md:text-xl">
+    <p className="font-heading flex-1 py-2 text-center align-middle text-sm text-balance select-none md:text-xl">
         Stay ahead in your favorite ARPGs with the season tracker.
         <br />
         Never miss a season start or end again!
