@@ -52,7 +52,7 @@ export const GamesAndEventsGrid = ({
                             category={category}
                             onLoadingChange={handleLoadingChange}
                         />
-                        <GameFilters {...filtersProps} />
+                        <GameFilters {...filtersProps} disabled={category === "all"} />
                     </div>
                 </div>
                 <div
@@ -68,6 +68,7 @@ export const GamesAndEventsGrid = ({
             </article>
             <MobileBottomMenu
                 category={category}
+                isFiltersDisabled={category === "all"}
                 onLoadingChange={handleLoadingChange}
                 filtersProps={filtersProps}
                 shownGames={shownGames}

@@ -1,6 +1,6 @@
 "use client";
 import { useHasMounted } from "@react-hooks-library/core";
-import { Eye, EyeOff, Filter } from "lucide-react";
+import { Filter } from "lucide-react";
 import { SanityImageAssetDocument } from "next-sanity";
 import { forwardRef } from "react";
 
@@ -16,6 +16,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/ui/Dialog";
+import { Switch } from "@/ui/Switch";
 
 export type FiltersDialogProps = {
     filters: {
@@ -51,7 +52,7 @@ export const FiltersDialog = ({
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Trigger showIndicator={showIndicator} disabled={disabled} />
+                <Trigger showIndicator={showIndicator && !disabled} disabled={disabled} />
             </DialogTrigger>
             <DialogContent className="max-h-[80vh] w-full max-w-7xl!">
                 <DialogDescription className="sr-only">Filters dialog</DialogDescription>
@@ -131,64 +132,53 @@ export const Filters = ({
                     const totalCount = groups[g].length;
                     return (
                         <div className="flex flex-col gap-4" key={g}>
-                            <div className="flex flex-row items-center justify-between">
-                                <div className="flex flex-col">
+                            <label className="flex cursor-pointer flex-col items-start">
+                                <div className="flex flex-row items-center gap-2">
+                                    <Switch
+                                        checked={anyChecked}
+                                        onCheckedChange={() => onGroupCheckedChange(g, !anyChecked)}
+                                        disabled={disabled}
+                                        aria-label={`Toggle all ${g !== "" ? g : "uncategorized"} games`}
+                                    />
                                     <h3 className="text-lg font-semibold">
                                         {g !== "" ? g : "Uncategorized"}
                                     </h3>
-                                    <div className="text-muted-foreground text-sm">
-                                        {checkedCount} of {totalCount} shown
+                                    <div className="text-muted-foreground text-sm font-normal">
+                                        | {checkedCount} of {totalCount} shown
                                     </div>
                                 </div>
-                                <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={() => onGroupCheckedChange(g, !anyChecked)}
-                                    disabled={disabled}
-                                    data-sa-click={`filter-group-${g === "" ? "uncategorized" : g}`}
-                                    className="flex items-center gap-2"
-                                >
-                                    {anyChecked ? (
-                                        <>
-                                            <EyeOff className="h-4 w-4" />
-                                            <span className="hidden sm:inline">Hide All</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Eye className="h-4 w-4" />
-                                            <span className="hidden sm:inline">Show All</span>
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
+                            </label>
                             <div className="grid auto-rows-fr grid-cols-2 items-stretch gap-3 sm:grid-cols-4 xl:grid-cols-8">
                                 {groups[g].map((f) => {
                                     const isChecked = checked.includes(f.value);
                                     return (
-                                        <button
+                                        <label
                                             key={f.value}
-                                            onClick={() => onCheckedChange(f.value, !isChecked)}
-                                            disabled={disabled}
                                             className={cn(
-                                                "group relative col-span-1 flex h-28 flex-col items-center justify-center rounded-lg border-2 p-2 transition-all duration-200 md:h-36",
+                                                "group relative col-span-1 flex h-28 cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-2 transition-all duration-200 md:h-36",
                                                 {
-                                                    "bg-card shadow-sm shadow-neutral-950/80 hover:scale-105 hover:shadow-md":
+                                                    "bg-card shadow-sm shadow-neutral-950/80":
                                                         isChecked,
-                                                    "hover:border-foreground/10 scale-95 brightness-90 hover:scale-100":
-                                                        !isChecked,
+                                                    "hover:border-foreground/10": !isChecked,
                                                     "cursor-not-allowed opacity-50": disabled,
-                                                    "cursor-pointer": !disabled,
                                                 },
                                             )}
                                         >
-                                            <div className="absolute top-1 right-1 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                                <div className="flex h-4 w-4 items-center justify-center rounded-full shadow-sm">
-                                                    {isChecked ? (
-                                                        <EyeOff className="text-destructive h-4 w-4" />
-                                                    ) : (
-                                                        <Eye className="text-foreground h-4 w-4" />
-                                                    )}
-                                                </div>
+                                            <input
+                                                type="checkbox"
+                                                checked={isChecked}
+                                                onChange={() =>
+                                                    onCheckedChange(f.value, !isChecked)
+                                                }
+                                                disabled={disabled}
+                                                className="sr-only"
+                                            />
+                                            <div className="absolute top-1 right-1 z-10">
+                                                <Switch
+                                                    checked={isChecked}
+                                                    className="data-[state=checked]:bg-muted-foreground origin-top-right scale-50"
+                                                    aria-label={`Toggle ${f.label} visibility`}
+                                                />
                                             </div>
                                             <div className="relative">
                                                 <div className="h-14 w-14 overflow-hidden rounded-md lg:h-20 lg:w-20">
@@ -213,14 +203,13 @@ export const Filters = ({
                                                     "text-center text-xs leading-tight font-medium transition-all duration-200",
                                                     {
                                                         "text-primary": isChecked,
-                                                        "text-muted-foreground group-hover:text-primary":
-                                                            !isChecked,
+                                                        "text-muted-foreground": !isChecked,
                                                     },
                                                 )}
                                             >
                                                 {f.label}
                                             </span>
-                                        </button>
+                                        </label>
                                     );
                                 })}
                             </div>

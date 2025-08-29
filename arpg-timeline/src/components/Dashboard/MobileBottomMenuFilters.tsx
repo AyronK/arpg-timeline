@@ -66,9 +66,10 @@ export function MobileBottomMenuFilters({
                         <div className="relative">
                             <Filter className="h-5 w-5" />
                             {filtersProps.gameFilters.length !==
-                                filtersProps.activeFilters.length && (
-                                <div className="bg-warning absolute -top-1 -right-1 h-2 w-2 rounded-full"></div>
-                            )}
+                                filtersProps.activeFilters.length &&
+                                !isFiltersDisabled && (
+                                    <div className="bg-warning absolute -top-1 -right-1 h-2 w-2 rounded-full"></div>
+                                )}
                         </div>
                         <span className="text-[0.65rem] leading-2 font-medium">Filters</span>
                     </Button>
