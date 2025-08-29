@@ -13,10 +13,6 @@ import { Drawer as DrawerPrimitive } from "vaul";
 import { cn } from "@/lib/utils";
 
 const Drawer = ({ ...props }: ComponentProps<typeof DrawerPrimitive.Root>) => {
-    const hasMounted = useHasMounted();
-    if (!hasMounted) {
-        return null;
-    }
     return <DrawerPrimitive.Root shouldScaleBackground={false} {...props} />;
 };
 Drawer.displayName = "Drawer";
@@ -42,21 +38,27 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 const DrawerContent = forwardRef<
     ElementRef<typeof DrawerPrimitive.Content>,
     ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-    <>
-        <DrawerOverlay />
-        <DrawerPrimitive.Content
-            ref={ref}
-            className={cn(
-                "bg-background fixed top-16 right-0 bottom-0 z-50 flex h-auto flex-col rounded-t-[10px] border pt-2 md:top-0 md:pt-6",
-                className,
-            )}
-            {...props}
-        >
-            {children}
-        </DrawerPrimitive.Content>
-    </>
-));
+>(({ className, children, ...props }, ref) => {
+    const hasMounted = useHasMounted();
+    if (!hasMounted) {
+        return null;
+    }
+    return (
+        <>
+            <DrawerOverlay />
+            <DrawerPrimitive.Content
+                ref={ref}
+                className={cn(
+                    "bg-background fixed top-16 right-0 bottom-0 z-50 flex h-auto flex-col rounded-t-[10px] border pt-2 md:top-0 md:pt-6",
+                    className,
+                )}
+                {...props}
+            >
+                {children}
+            </DrawerPrimitive.Content>
+        </>
+    );
+});
 DrawerContent.displayName = "DrawerContent";
 
 const DrawerHeader = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
