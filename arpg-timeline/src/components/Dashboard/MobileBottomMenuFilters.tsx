@@ -91,7 +91,7 @@ export function MobileBottomMenuFilters({
                             disabled={isFiltersDisabled}
                         />
                     </div>
-                    <DrawerFooter className="bg-background absolute right-0 bottom-0 left-0 h-14 border-t border-slate-500 p-0!">
+                    <DrawerFooter className="bg-background absolute right-0 bottom-0 left-0 z-50 h-14 border-t border-slate-500 p-0!">
                         <DrawerClose asChild>
                             <Button className="h-14! flex-1" variant="ghost">
                                 <X className="mr-2 h-4 w-4" />
