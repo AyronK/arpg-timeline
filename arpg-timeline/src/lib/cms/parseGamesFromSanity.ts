@@ -211,5 +211,14 @@ export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
             }
             return g as Game;
         })
+        .sort((a, b) => {
+            const aDate = a.nextSeason?.start?.startDate
+                ? new Date(a.nextSeason.start.startDate).getTime()
+                : 0;
+            const bDate = b.nextSeason?.start?.startDate
+                ? new Date(b.nextSeason.start.startDate).getTime()
+                : 0;
+            return aDate - bDate;
+        })
         .sort(sortBySeasons);
 };
