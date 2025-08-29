@@ -1,6 +1,6 @@
 "use client";
 import { useHasMounted } from "@react-hooks-library/core";
-import { Eye, EyeOff, Filter } from "lucide-react";
+import { Filter } from "lucide-react";
 import { SanityImageAssetDocument } from "next-sanity";
 import { forwardRef } from "react";
 
