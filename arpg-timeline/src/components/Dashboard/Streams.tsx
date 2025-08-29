@@ -25,7 +25,7 @@ export const Streams = ({ games, streams }: { games: Game[]; streams: GameStream
                         <Carousel
                             plugins={[
                                 Autoplay({
-                                    delay: 5_000,
+                                    delay: 10_000,
                                     stopOnMouseEnter: true,
                                 }),
                             ]}
@@ -72,7 +72,6 @@ export const Streams = ({ games, streams }: { games: Game[]; streams: GameStream
 export const StreamsFallback = ({ streams }: { streams: GameStream[] }) => {
     return (
         <>
-            <Kicker />
             <div className="sr-only">
                 {streams?.length > 0 && (
                     <div className={cn({ "flex justify-center": streams.length === 1 })}>
@@ -86,12 +85,6 @@ export const StreamsFallback = ({ streams }: { streams: GameStream[] }) => {
                             <ErrorBoundary fallback={<WidgetDiedFallback />}>
                                 <div className="mx-auto max-w-3xl">
                                     <Carousel
-                                        plugins={[
-                                            Autoplay({
-                                                delay: 10_000,
-                                                stopOnMouseEnter: true,
-                                            }),
-                                        ]}
                                         className="w-full max-w-3xl"
                                         opts={{
                                             loop: true,
@@ -109,6 +102,9 @@ export const StreamsFallback = ({ streams }: { streams: GameStream[] }) => {
                                                     <StreamCard stream={s} />
                                                 </CarouselItem>
                                             ))}
+                                            <CarouselItem>
+                                                <Kicker />
+                                            </CarouselItem>
                                         </CarouselContent>
                                     </Carousel>
                                 </div>

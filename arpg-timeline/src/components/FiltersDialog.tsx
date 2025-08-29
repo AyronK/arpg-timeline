@@ -52,7 +52,7 @@ export const FiltersDialog = ({
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Trigger showIndicator={showIndicator} disabled={disabled} />
+                <Trigger showIndicator={showIndicator && !disabled} disabled={disabled} />
             </DialogTrigger>
             <DialogContent className="max-h-[80vh] w-full max-w-7xl!">
                 <DialogDescription className="sr-only">Filters dialog</DialogDescription>
@@ -132,29 +132,22 @@ export const Filters = ({
                     const totalCount = groups[g].length;
                     return (
                         <div className="flex flex-col gap-4" key={g}>
-                            <div className="flex flex-col items-start">
+                            <label className="flex cursor-pointer flex-col items-start">
                                 <div className="flex flex-row items-center gap-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="sr-only">
-                                            {anyChecked ? "Hide All" : "Show All"}
-                                        </span>
-                                        <Switch
-                                            checked={anyChecked}
-                                            onCheckedChange={() =>
-                                                onGroupCheckedChange(g, !anyChecked)
-                                            }
-                                            disabled={disabled}
-                                            aria-label={`Toggle all ${g !== "" ? g : "uncategorized"} games`}
-                                        />
-                                    </div>
+                                    <Switch
+                                        checked={anyChecked}
+                                        onCheckedChange={() => onGroupCheckedChange(g, !anyChecked)}
+                                        disabled={disabled}
+                                        aria-label={`Toggle all ${g !== "" ? g : "uncategorized"} games`}
+                                    />
                                     <h3 className="text-lg font-semibold">
                                         {g !== "" ? g : "Uncategorized"}
                                     </h3>
-                                    <div className="text-muted-foreground text-sm">
+                                    <div className="text-muted-foreground text-sm font-normal">
                                         | {checkedCount} of {totalCount} shown
                                     </div>
                                 </div>
-                            </div>
+                            </label>
                             <div className="grid auto-rows-fr grid-cols-2 items-stretch gap-3 sm:grid-cols-4 xl:grid-cols-8">
                                 {groups[g].map((f) => {
                                     const isChecked = checked.includes(f.value);

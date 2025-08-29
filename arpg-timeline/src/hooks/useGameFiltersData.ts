@@ -30,6 +30,10 @@ export const useGameFiltersData = (games: Game[]) => {
 
     const getFilteredGames = useMemo(() => {
         return (excludedSlugs: string[], category: GameFilterCategory) => {
+            if (category === "all") {
+                return games;
+            }
+
             let filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
 
             if (category === "non-seasonal") {

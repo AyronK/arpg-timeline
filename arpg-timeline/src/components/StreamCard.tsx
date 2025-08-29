@@ -28,17 +28,13 @@ const StreamHeader = ({
             <span>{gameName} - </span>
             {name}
         </h3>
-        <div className="hidden lg:block">
-            <ClientOnlyVisibleWrapper>
-                {Date.now() < new Date(date).getTime() && (
-                    <IconLabel icon={TimerReset}>
-                        <span className="font-semibold">
-                            <LocalDate longDate utcDate={date} />
-                        </span>
-                    </IconLabel>
-                )}
-            </ClientOnlyVisibleWrapper>
-        </div>
+        <ClientOnlyVisibleWrapper>
+            {Date.now() < new Date(date).getTime() && (
+                <IconLabel icon={TimerReset} className="text-xs font-semibold lg:text-sm">
+                    <LocalDate longDate utcDate={date} />
+                </IconLabel>
+            )}
+        </ClientOnlyVisibleWrapper>
     </div>
 );
 
@@ -111,7 +107,7 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
             className="text-card-foreground bg-card relative flex flex-row gap-3 rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
             key={stream.slug}
         >
-            <div className="hidden h-16 w-16 md:block">
+            <div className="h-12 w-12 lg:h-16 lg:w-16">
                 <SanityImage
                     loading="lazy"
                     src={stream.gameLogo!}
