@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
+import { sortBySeasons } from "@/lib/games/sortBySeasons";
 
 export const useGameFiltersData = (games: Game[]) => {
     const gameFilters = useMemo(() => {
@@ -34,7 +35,7 @@ export const useGameFiltersData = (games: Game[]) => {
                 return games;
             }
 
-            let filteredGames = games.filter((g) => !excludedSlugs.includes(g!.slug!));
+            let filteredGames = [...games];
 
             if (category === "non-seasonal") {
                 filteredGames = filteredGames.filter((g) => !g.categories?.includes("seasonal"));
@@ -44,7 +45,9 @@ export const useGameFiltersData = (games: Game[]) => {
                 filteredGames = filteredGames.filter((g) => g.categories?.includes("early-access"));
             }
 
-            return filteredGames;
+            filteredGames = filteredGames.filter((g) => !excludedSlugs.includes(g!.slug!));
+
+            return filteredGames.sort(sortBySeasons);
         };
     }, [games]);
 
