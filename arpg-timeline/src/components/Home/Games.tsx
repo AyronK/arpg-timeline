@@ -2,14 +2,13 @@
 
 import { Twitch } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
-import { useScheduledRefresh } from "@/hooks/useScheduledRefresh";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
@@ -19,20 +18,20 @@ import { Button } from "@/ui/Button";
 import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
 import { SanityImage } from "../SanityImage";
 
-export const getNextSeasonDate = (games: Game[]): Date => {
-    const futureDates = games
-        .flatMap((g) => [
-            g.currentSeason?.start?.startDate,
-            g.currentSeason?.end?.endDate,
-            g.nextSeason?.start?.startDate,
-            g.nextSeason?.end?.endDate,
-        ])
-        .filter((d) => d && new Date(d) > new Date())
-        .map((d) => new Date(d!));
-    return futureDates.length
-        ? new Date(Math.min(...futureDates.map((d) => d.getTime())))
-        : new Date();
-};
+// export const getNextSeasonDate = (games: Game[]): Date => {
+//     const futureDates = games
+//         .flatMap((g) => [
+//             g.currentSeason?.start?.startDate,
+//             g.currentSeason?.end?.endDate,
+//             g.nextSeason?.start?.startDate,
+//             g.nextSeason?.end?.endDate,
+//         ])
+//         .filter((d) => d && new Date(d) > new Date())
+//         .map((d) => new Date(d!));
+//     return futureDates.length
+//         ? new Date(Math.min(...futureDates.map((d) => d.getTime())))
+//         : new Date();
+// };
 
 const RefreshLoader = () => {
     const [progress, setProgress] = useState(0);
@@ -86,16 +85,16 @@ export const Games = ({
     games: Game[];
     statistics?: Record<string, GameStatistics>;
 }) => {
-    const nextRefreshDate = useMemo(() => {
-        return getNextSeasonDate(games);
-    }, [games]);
-    const { showLoader, showRefreshLoader, hideRefreshLoader } = useRefreshLoader();
+    // const nextRefreshDate = useMemo(() => {
+    //     return getNextSeasonDate(games);
+    // }, [games]);
+    // const { showLoader, showRefreshLoader, hideRefreshLoader } = useRefreshLoader();
 
-    useScheduledRefresh({
-        targetDate: nextRefreshDate,
-        onBeforeRefresh: showRefreshLoader,
-        onRefresh: hideRefreshLoader,
-    });
+    // useScheduledRefresh({
+    //     targetDate: nextRefreshDate,
+    //     onBeforeRefresh: showRefreshLoader,
+    //     onRefresh: hideRefreshLoader,
+    // });
 
     return (
         <>
