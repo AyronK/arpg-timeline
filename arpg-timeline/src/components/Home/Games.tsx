@@ -2,7 +2,6 @@
 
 import { Twitch } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
@@ -33,50 +32,50 @@ import { SanityImage } from "../SanityImage";
 //         : new Date();
 // };
 
-const RefreshLoader = () => {
-    const [progress, setProgress] = useState(0);
+// const RefreshLoader = () => {
+//     const [progress, setProgress] = useState(0);
 
-    useEffect(() => {
-        setProgress(0);
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    return 100;
-                }
+//     useEffect(() => {
+//         setProgress(0);
+//         const interval = setInterval(() => {
+//             setProgress((prev) => {
+//                 if (prev >= 100) {
+//                     clearInterval(interval);
+//                     return 100;
+//                 }
 
-                const remaining = 100 - prev;
-                const slowdownFactor = Math.pow(remaining / 100, 2);
-                const maxIncrement = 50 * slowdownFactor;
+//                 const remaining = 100 - prev;
+//                 const slowdownFactor = Math.pow(remaining / 100, 2);
+//                 const maxIncrement = 50 * slowdownFactor;
 
-                return prev + Math.random() * Math.max(maxIncrement, 0.1);
-            });
-        }, 100);
+//                 return prev + Math.random() * Math.max(maxIncrement, 0.1);
+//             });
+//         }, 100);
 
-        return () => clearInterval(interval);
-    }, []);
+//         return () => clearInterval(interval);
+//     }, []);
 
-    return (
-        <div className="fixed top-0 left-0 z-[1000] h-[1px] w-screen">
-            <div
-                className={`h-full w-full bg-blue-500 transition-all duration-300 ease-out`}
-                style={{
-                    width: `${Math.min(progress, 100)}%`,
-                }}
-            />
-        </div>
-    );
-};
+//     return (
+//         <div className="fixed top-0 left-0 z-[1000] h-[1px] w-screen">
+//             <div
+//                 className={`h-full w-full bg-blue-500 transition-all duration-300 ease-out`}
+//                 style={{
+//                     width: `${Math.min(progress, 100)}%`,
+//                 }}
+//             />
+//         </div>
+//     );
+// };
 
-export const useRefreshLoader = () => {
-    const [showLoader, setShowLoader] = useState(false);
+// export const useRefreshLoader = () => {
+//     const [showLoader, setShowLoader] = useState(false);
 
-    return {
-        showLoader,
-        showRefreshLoader: () => setShowLoader(true),
-        hideRefreshLoader: () => setShowLoader(false),
-    };
-};
+//     return {
+//         showLoader,
+//         showRefreshLoader: () => setShowLoader(true),
+//         hideRefreshLoader: () => setShowLoader(false),
+//     };
+// };
 
 export const Games = ({
     games,
@@ -98,7 +97,7 @@ export const Games = ({
 
     return (
         <>
-            {showLoader && <RefreshLoader />}
+            {/* {showLoader && <RefreshLoader />} */}
             {games.map((game, idx) => (
                 <div
                     key={game.slug}
