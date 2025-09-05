@@ -76,7 +76,7 @@ const WatchNowAction = ({
                 </Button>
             }
         >
-            Watch now!
+            <span className="my-auto">Watch now!</span>
         </FramedAction>
     );
 };
