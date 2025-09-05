@@ -95,7 +95,7 @@ const nextConfig: NextConfig = {
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=300",
+                        value: "public, max-age=3600, stale-while-revalidate=300",
                     },
                 ],
             },
@@ -186,7 +186,7 @@ const nextConfig: NextConfig = {
                     },
                     {
                         key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=300",
+                        value: "public, max-age=3600, stale-while-revalidate=300",
                     },
                 ],
             },

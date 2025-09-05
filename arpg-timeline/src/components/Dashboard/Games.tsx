@@ -2,14 +2,12 @@
 
 import { Twitch } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
-import { useScheduledRefresh } from "@/hooks/useScheduledRefresh";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
@@ -19,65 +17,65 @@ import { Button } from "@/ui/Button";
 import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
 import { SanityImage } from "../SanityImage";
 
-export const getNextSeasonDate = (games: Game[]): Date => {
-    const futureDates = games
-        .flatMap((g) => [
-            g.currentSeason?.start?.startDate,
-            g.currentSeason?.end?.endDate,
-            g.nextSeason?.start?.startDate,
-            g.nextSeason?.end?.endDate,
-        ])
-        .filter((d) => d && new Date(d) > new Date())
-        .map((d) => new Date(d!));
-    return futureDates.length
-        ? new Date(Math.min(...futureDates.map((d) => d.getTime())))
-        : new Date();
-};
+// export const getNextSeasonDate = (games: Game[]): Date => {
+//     const futureDates = games
+//         .flatMap((g) => [
+//             g.currentSeason?.start?.startDate,
+//             g.currentSeason?.end?.endDate,
+//             g.nextSeason?.start?.startDate,
+//             g.nextSeason?.end?.endDate,
+//         ])
+//         .filter((d) => d && new Date(d) > new Date())
+//         .map((d) => new Date(d!));
+//     return futureDates.length
+//         ? new Date(Math.min(...futureDates.map((d) => d.getTime())))
+//         : new Date();
+// };
 
-const RefreshLoader = () => {
-    const [progress, setProgress] = useState(0);
+// const RefreshLoader = () => {
+//     const [progress, setProgress] = useState(0);
 
-    useEffect(() => {
-        setProgress(0);
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    return 100;
-                }
+//     useEffect(() => {
+//         setProgress(0);
+//         const interval = setInterval(() => {
+//             setProgress((prev) => {
+//                 if (prev >= 100) {
+//                     clearInterval(interval);
+//                     return 100;
+//                 }
 
-                const remaining = 100 - prev;
-                const slowdownFactor = Math.pow(remaining / 100, 2);
-                const maxIncrement = 50 * slowdownFactor;
+//                 const remaining = 100 - prev;
+//                 const slowdownFactor = Math.pow(remaining / 100, 2);
+//                 const maxIncrement = 50 * slowdownFactor;
 
-                return prev + Math.random() * Math.max(maxIncrement, 0.1);
-            });
-        }, 100);
+//                 return prev + Math.random() * Math.max(maxIncrement, 0.1);
+//             });
+//         }, 100);
 
-        return () => clearInterval(interval);
-    }, []);
+//         return () => clearInterval(interval);
+//     }, []);
 
-    return (
-        <div className="fixed top-0 left-0 z-[1000] h-[1px] w-screen">
-            <div
-                className="h-full w-full bg-blue-500 transition-all duration-300 ease-out"
-                style={{
-                    width: `${Math.min(progress, 100)}%`,
-                }}
-            />
-        </div>
-    );
-};
+//     return (
+//         <div className="fixed top-0 left-0 z-[1000] h-[1px] w-screen">
+//             <div
+//                 className="h-full w-full bg-blue-500 transition-all duration-300 ease-out"
+//                 style={{
+//                     width: `${Math.min(progress, 100)}%`,
+//                 }}
+//             />
+//         </div>
+//     );
+// };
 
-export const useRefreshLoader = () => {
-    const [showLoader, setShowLoader] = useState(false);
+// export const useRefreshLoader = () => {
+//     const [showLoader, setShowLoader] = useState(false);
 
-    return {
-        showLoader,
-        showRefreshLoader: () => setShowLoader(true),
-        hideRefreshLoader: () => setShowLoader(false),
-    };
-};
+//     return {
+//         showLoader,
+//         showRefreshLoader: () => setShowLoader(true),
+//         hideRefreshLoader: () => setShowLoader(false),
+//     };
+// };
 
 export const Games = ({
     games,
@@ -86,20 +84,20 @@ export const Games = ({
     games: Game[];
     statistics?: Record<string, GameStatistics>;
 }) => {
-    const nextRefreshDate = useMemo(() => {
-        return getNextSeasonDate(games);
-    }, [games]);
-    const { showLoader, showRefreshLoader, hideRefreshLoader } = useRefreshLoader();
+    // const nextRefreshDate = useMemo(() => {
+    //     return getNextSeasonDate(games);
+    // }, [games]);
+    // const { showLoader, showRefreshLoader, hideRefreshLoader } = useRefreshLoader();
 
-    useScheduledRefresh({
-        targetDate: nextRefreshDate,
-        onBeforeRefresh: showRefreshLoader,
-        onRefresh: hideRefreshLoader,
-    });
+    // useScheduledRefresh({
+    //     targetDate: nextRefreshDate,
+    //     onBeforeRefresh: showRefreshLoader,
+    //     onRefresh: hideRefreshLoader,
+    // });
 
     return (
         <>
-            {showLoader && <RefreshLoader />}
+            {/* {showLoader && <RefreshLoader />} */}
             {games.map((game, idx) => (
                 <div
                     key={game.slug}
