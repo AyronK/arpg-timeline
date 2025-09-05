@@ -26,7 +26,6 @@ export const Games = ({
 }) => {
     return (
         <>
-            {/* {showLoader && <RefreshLoader />} */}
             {games.map((game, idx) => (
                 <div
                     key={game.slug}
