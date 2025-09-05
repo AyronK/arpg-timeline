@@ -2,24 +2,34 @@
 
 import Autoplay from "embla-carousel-autoplay";
 import { Twitch } from "lucide-react";
+import { useMemo } from "react";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { Game, GameStream } from "@/lib/cms/games.types";
+import { isStreamSoon } from "@/lib/cms/isStreamSoon";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
 export const TopCarousel = ({ games, streams }: { games: Game[]; streams: GameStream[] }) => {
     const { filteredGames } = useGameFilters(games);
-    const filteredStreams = streams.filter((s) => filteredGames.find((g) => g.slug === s.gameSlug));
+
+    const filteredStreams = useMemo(() => {
+        return streams
+            .map((s) => ({ ...s, isLiveSoon: isStreamSoon(s.date) }))
+            .filter(
+                (s) =>
+                    filteredGames.find((g) => g.slug === s.gameSlug) &&
+                    (s.isLiveSoon || new Date(s.date).getTime() < Date.now()),
+            );
+    }, [filteredGames, streams]);
 
     return (
         <div className="flex justify-center max-sm:-mx-4">
             <div className="relative mx-auto max-w-full flex-1 md:max-w-3xl">
                 <h2 className="hidden">Streams</h2>
-
                 <ErrorBoundary fallback={<WidgetDiedFallback />}>
                     <div className="mx-auto max-w-3xl">
                         <Carousel

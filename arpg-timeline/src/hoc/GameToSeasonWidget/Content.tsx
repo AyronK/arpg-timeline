@@ -1,4 +1,7 @@
+"use client";
 import { InfoIcon, TimerReset } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
 import ClientOnlyVisibleWrapper from "@/components/ClientOnlyVisibleWrapper";
@@ -25,6 +28,23 @@ export const Content = ({
     embed?: boolean | undefined;
 }) => {
     const season = selector === "current" ? game.currentSeason : game.nextSeason;
+    const router = useRouter();
+
+    useEffect(() => {
+        if (season?.start?.startDate && season.start?.confirmed) {
+            const startDate = new Date(season.start.startDate);
+            const now = new Date();
+            if (startDate > now) {
+                const timeUntilStart = startDate.getTime() - now.getTime();
+                const timeoutId = setTimeout(() => {
+                    router.refresh();
+                }, timeUntilStart);
+
+                return () => clearTimeout(timeoutId);
+            }
+        }
+    }, [router, season]);
+
     if (!season) {
         return null;
     }

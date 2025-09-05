@@ -17,66 +17,6 @@ import { Button } from "@/ui/Button";
 import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
 import { SanityImage } from "../SanityImage";
 
-// export const getNextSeasonDate = (games: Game[]): Date => {
-//     const futureDates = games
-//         .flatMap((g) => [
-//             g.currentSeason?.start?.startDate,
-//             g.currentSeason?.end?.endDate,
-//             g.nextSeason?.start?.startDate,
-//             g.nextSeason?.end?.endDate,
-//         ])
-//         .filter((d) => d && new Date(d) > new Date())
-//         .map((d) => new Date(d!));
-//     return futureDates.length
-//         ? new Date(Math.min(...futureDates.map((d) => d.getTime())))
-//         : new Date();
-// };
-
-// const RefreshLoader = () => {
-//     const [progress, setProgress] = useState(0);
-
-//     useEffect(() => {
-//         setProgress(0);
-//         const interval = setInterval(() => {
-//             setProgress((prev) => {
-//                 if (prev >= 100) {
-//                     clearInterval(interval);
-//                     return 100;
-//                 }
-
-//                 const remaining = 100 - prev;
-//                 const slowdownFactor = Math.pow(remaining / 100, 2);
-//                 const maxIncrement = 50 * slowdownFactor;
-
-//                 return prev + Math.random() * Math.max(maxIncrement, 0.1);
-//             });
-//         }, 100);
-
-//         return () => clearInterval(interval);
-//     }, []);
-
-//     return (
-//         <div className="fixed top-0 left-0 z-[1000] h-[1px] w-screen">
-//             <div
-//                 className="h-full w-full bg-blue-500 transition-all duration-300 ease-out"
-//                 style={{
-//                     width: `${Math.min(progress, 100)}%`,
-//                 }}
-//             />
-//         </div>
-//     );
-// };
-
-// export const useRefreshLoader = () => {
-//     const [showLoader, setShowLoader] = useState(false);
-
-//     return {
-//         showLoader,
-//         showRefreshLoader: () => setShowLoader(true),
-//         hideRefreshLoader: () => setShowLoader(false),
-//     };
-// };
-
 export const Games = ({
     games,
     statistics = {},
@@ -84,17 +24,6 @@ export const Games = ({
     games: Game[];
     statistics?: Record<string, GameStatistics>;
 }) => {
-    // const nextRefreshDate = useMemo(() => {
-    //     return getNextSeasonDate(games);
-    // }, [games]);
-    // const { showLoader, showRefreshLoader, hideRefreshLoader } = useRefreshLoader();
-
-    // useScheduledRefresh({
-    //     targetDate: nextRefreshDate,
-    //     onBeforeRefresh: showRefreshLoader,
-    //     onRefresh: hideRefreshLoader,
-    // });
-
     return (
         <>
             {/* {showLoader && <RefreshLoader />} */}

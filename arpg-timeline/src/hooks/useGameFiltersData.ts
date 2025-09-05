@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
-import { sortBySeasons } from "@/lib/games/sortBySeasons";
+import { processGamesWithGracePeriodAndSort } from "@/lib/cms/processGamesWithGracePeriodAndSort";
 
 export const useGameFiltersData = (games: Game[]) => {
     const gameFilters = useMemo(() => {
@@ -47,7 +47,7 @@ export const useGameFiltersData = (games: Game[]) => {
 
             filteredGames = filteredGames.filter((g) => !excludedSlugs.includes(g!.slug!));
 
-            return filteredGames.sort(sortBySeasons);
+            return processGamesWithGracePeriodAndSort(filteredGames);
         };
     }, [games]);
 

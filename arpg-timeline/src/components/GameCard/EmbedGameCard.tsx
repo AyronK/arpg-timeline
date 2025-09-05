@@ -9,18 +9,6 @@ import { Logo } from "../Logo";
 import { SteamPlayersChip } from "../SteamPlayersChip";
 import { GameCardProps } from "./GameCard.types";
 
-// export const EmbedRefresh = ({ game }: { game: Game }) => {
-//     const nextRefreshDate = useMemo(() => {
-//         return getNextSeasonDate([game]);
-//     }, [game]);
-
-//     useScheduledRefresh({
-//         targetDate: nextRefreshDate,
-//     });
-
-//     return null;
-// };
-
 export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps) => {
     function handleClick() {
         let hostname = "unknown";
