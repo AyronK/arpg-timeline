@@ -30,7 +30,6 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
 
     return (
         <ErrorBoundary fallback={<WidgetDiedFallback />}>
-            {/* <EmbedRefresh game={game} /> TODO - fix, self ddos*/}
             <EmbedGameCard
                 name={game.name}
                 gameLogo={

@@ -87,6 +87,19 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/embed/countdown-widget/:path*",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=300",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=3600, stale-while-revalidate=300",
+                    },
+                ],
+            },
+            {
                 source: "/embed/season-widget/:path*",
                 headers: [
                     {
