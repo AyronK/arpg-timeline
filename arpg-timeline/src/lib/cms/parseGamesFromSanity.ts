@@ -1,7 +1,7 @@
 import { Game, SeasonEnd } from "@/lib/cms/games.types";
 import { IndexQueryResult, Season } from "@/lib/cms/queries/indexQuery";
-import { HOUR } from "@/lib/date";
-import { inGracePeriod, sortBySeasons } from "@/lib/games/sortBySeasons";
+
+import { processGamesWithGracePeriodAndSort } from "./processGamesWithGracePeriodAndSort";
 
 const DEFAULT_SEASON_OFFSET = 120 * 24 * 50 * 60 * 1000;
 
@@ -71,154 +71,120 @@ const adjustDateIfTooSoon = (date: string | undefined | null, offset: number): s
 };
 
 export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
-    return data.games
-        .map((g) => {
-            const game = { ...g } as Game;
-            const gameTwitch = data.twitchChannels.find((e) => e?.game === g.slug);
+    const games = data.games.map((g) => {
+        const game = { ...g } as Game;
+        const gameTwitch = data.twitchChannels.find((e) => e?.game === g.slug);
 
-            game.twitchCategory = gameTwitch?.category ?? null;
+        game.twitchCategory = gameTwitch?.category ?? null;
 
-            const gameSeasons = data.seasons
-                .filter((e) => e?.game === g.slug)
-                .sort((a, b) => b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0);
+        const gameSeasons = data.seasons
+            .filter((e) => e?.game === g.slug)
+            .sort((a, b) => b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0);
 
-            const hasLatestSeasonStarted =
-                new Date().getTime() > new Date(gameSeasons[0]?.start?.startDate ?? "").getTime();
+        const hasLatestSeasonStarted =
+            new Date().getTime() > new Date(gameSeasons[0]?.start?.startDate ?? "").getTime();
 
-            game.currentSeason = hasLatestSeasonStarted ? gameSeasons[0] : gameSeasons[1];
+        game.currentSeason = hasLatestSeasonStarted ? gameSeasons[0] : gameSeasons[1];
 
-            const averageSeasonDuration = getAverageSeasonDuration(gameSeasons);
-            const defaultSeasonOffset = averageSeasonDuration ?? DEFAULT_SEASON_OFFSET;
-            const days =
-                averageSeasonDuration && Math.ceil(averageSeasonDuration / (1000 * 60 * 60 * 24));
-            game.averageSeasonDuration = days && roundToNearest7Or30(days);
+        const averageSeasonDuration = getAverageSeasonDuration(gameSeasons);
+        const defaultSeasonOffset = averageSeasonDuration ?? DEFAULT_SEASON_OFFSET;
+        const days =
+            averageSeasonDuration && Math.ceil(averageSeasonDuration / (1000 * 60 * 60 * 24));
+        game.averageSeasonDuration = days && roundToNearest7Or30(days);
 
-            if (game.currentSeason && !game.currentSeason.end?.endDate) {
-                game.currentSeason.end ??= {} as SeasonEnd;
-                game.currentSeason.end.endDate = calculateSimulatedDate(
+        if (game.currentSeason && !game.currentSeason.end?.endDate) {
+            game.currentSeason.end ??= {} as SeasonEnd;
+            game.currentSeason.end.endDate = calculateSimulatedDate(
+                game.currentSeason.start?.startDate,
+                defaultSeasonOffset,
+            );
+        }
+
+        game.nextSeason = hasLatestSeasonStarted
+            ? {
+                  name: `Next ${g.seasonKeyword}`,
+                  start: {
+                      confirmed: false,
+                      startDate:
+                          game.currentSeason?.end?.endDate ??
+                          calculateSimulatedDate(
+                              game.currentSeason?.start?.startDate,
+                              defaultSeasonOffset,
+                          ),
+                      overrideText: game.currentSeason?.end?.overrideText?.length
+                          ? game.currentSeason?.end?.overrideText
+                          : "To be announced",
+                  },
+                  end: {
+                      confirmed: false,
+                      endDate:
+                          game.currentSeason?.end?.endDate ??
+                          calculateSimulatedDate(
+                              game.currentSeason?.start?.startDate,
+                              defaultSeasonOffset,
+                          ),
+                  },
+              }
+            : gameSeasons[0];
+
+        if (game.currentSeason && !game.currentSeason.end) {
+            game.currentSeason.end = {
+                confirmed: false,
+                endDate: calculateSimulatedDate(
                     game.currentSeason.start?.startDate,
                     defaultSeasonOffset,
-                );
-            }
+                ),
+            };
+        }
 
-            game.nextSeason = hasLatestSeasonStarted
-                ? {
-                      name: `Next ${g.seasonKeyword}`,
-                      start: {
-                          confirmed: false,
-                          startDate:
-                              game.currentSeason?.end?.endDate ??
-                              calculateSimulatedDate(
-                                  game.currentSeason?.start?.startDate,
-                                  defaultSeasonOffset,
-                              ),
-                          overrideText: game.currentSeason?.end?.overrideText?.length
-                              ? game.currentSeason?.end?.overrideText
-                              : "To be announced",
-                      },
-                      end: {
-                          confirmed: false,
-                          endDate:
-                              game.currentSeason?.end?.endDate ??
-                              calculateSimulatedDate(
-                                  game.currentSeason?.start?.startDate,
-                                  defaultSeasonOffset,
-                              ),
-                      },
-                  }
-                : gameSeasons[0];
+        if (
+            game.currentSeason?.end &&
+            game.averageSeasonDuration &&
+            !game.currentSeason.end.confirmed &&
+            !game.currentSeason.end.overrideText
+        ) {
+            game.currentSeason.end.overrideText = `Avg. ${formatAverageDuration(game.averageSeasonDuration)}`;
+        }
 
-            if (game.currentSeason && !game.currentSeason.end) {
-                game.currentSeason.end = {
-                    confirmed: false,
-                    endDate: calculateSimulatedDate(
-                        game.currentSeason.start?.startDate,
-                        defaultSeasonOffset,
-                    ),
-                };
-            }
+        if (game.currentSeason && !game.currentSeason.end?.endDate) {
+            game.currentSeason.end!.endDate = calculateSimulatedDate(
+                game.currentSeason.start?.startDate,
+                defaultSeasonOffset,
+            );
+        }
 
-            if (
-                game.currentSeason?.end &&
-                game.averageSeasonDuration &&
-                !game.currentSeason.end.confirmed &&
-                !game.currentSeason.end.overrideText
-            ) {
-                game.currentSeason.end.overrideText = `Avg. ${formatAverageDuration(game.averageSeasonDuration)}`;
-            }
-
-            if (game.currentSeason && !game.currentSeason.end?.endDate) {
-                game.currentSeason.end!.endDate = calculateSimulatedDate(
-                    game.currentSeason.start?.startDate,
-                    defaultSeasonOffset,
-                );
-            }
-
-            if (game.nextSeason && !game.nextSeason.end) {
-                game.nextSeason.end = {
-                    confirmed: false,
-                    endDate: calculateSimulatedDate(
-                        game.nextSeason.start?.startDate,
-                        defaultSeasonOffset,
-                    ),
-                };
-            }
-
-            if (game.nextSeason && !game.nextSeason.end?.endDate) {
-                game.nextSeason.end!.endDate = calculateSimulatedDate(
-                    game.nextSeason.start?.startDate ??
-                        (game.currentSeason?.end?.endDate as string),
-                    defaultSeasonOffset,
-                );
-            }
-            if (game.currentSeason?.end?.endDate && !game.currentSeason.end.confirmed) {
-                game.currentSeason.end.endDate = adjustDateIfTooSoon(
-                    game.currentSeason.end?.endDate,
-                    defaultSeasonOffset,
-                );
-            }
-
-            if (game.nextSeason?.start?.startDate && !game.nextSeason.start.confirmed) {
-                game.nextSeason.start.startDate = adjustDateIfTooSoon(
+        if (game.nextSeason && !game.nextSeason.end) {
+            game.nextSeason.end = {
+                confirmed: false,
+                endDate: calculateSimulatedDate(
                     game.nextSeason.start?.startDate,
                     defaultSeasonOffset,
-                );
-            }
+                ),
+            };
+        }
 
-            return game;
-        })
-        .map((g) => {
-            if (
-                g?.currentSeason?.start?.startDate &&
-                inGracePeriod(g.currentSeason.start.startDate)
-            ) {
-                const diff =
-                    new Date().getTime() - new Date(g.currentSeason.start.startDate).getTime();
-                return {
-                    ...g,
-                    currentSeason: {
-                        ...g.currentSeason,
-                        start: {
-                            ...g.currentSeason.start,
-                            justStarted: true,
-                            overrideText:
-                                diff < 2 * HOUR
-                                    ? "Just started"
-                                    : `Started ${(diff / HOUR).toFixed(0)} hours ago`,
-                        },
-                    },
-                } as Game;
-            }
-            return g as Game;
-        })
-        .sort((a, b) => {
-            const aDate = a.nextSeason?.start?.startDate
-                ? new Date(a.nextSeason.start.startDate).getTime()
-                : 0;
-            const bDate = b.nextSeason?.start?.startDate
-                ? new Date(b.nextSeason.start.startDate).getTime()
-                : 0;
-            return aDate - bDate;
-        })
-        .sort(sortBySeasons);
+        if (game.nextSeason && !game.nextSeason.end?.endDate) {
+            game.nextSeason.end!.endDate = calculateSimulatedDate(
+                game.nextSeason.start?.startDate ?? (game.currentSeason?.end?.endDate as string),
+                defaultSeasonOffset,
+            );
+        }
+        if (game.currentSeason?.end?.endDate && !game.currentSeason.end.confirmed) {
+            game.currentSeason.end.endDate = adjustDateIfTooSoon(
+                game.currentSeason.end?.endDate,
+                defaultSeasonOffset,
+            );
+        }
+
+        if (game.nextSeason?.start?.startDate && !game.nextSeason.start.confirmed) {
+            game.nextSeason.start.startDate = adjustDateIfTooSoon(
+                game.nextSeason.start?.startDate,
+                defaultSeasonOffset,
+            );
+        }
+
+        return game;
+    });
+
+    return processGamesWithGracePeriodAndSort(games);
 };

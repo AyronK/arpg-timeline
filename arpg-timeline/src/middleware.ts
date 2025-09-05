@@ -12,6 +12,7 @@ const routePrefixes = [
     "/docs/html/",
     "/docs/obs/",
     "/embed/season-widget/",
+    "/embed/countdown-widget/",
     "/dashboard/",
     "/game/",
     "/assets/",

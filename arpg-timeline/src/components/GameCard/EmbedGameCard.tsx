@@ -1,28 +1,13 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
-import { useScheduledRefresh } from "@/hooks/useScheduledRefresh";
-import { Game } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 
 import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
-import { getNextSeasonDate } from "../Dashboard/Games";
 import { Logo } from "../Logo";
 import { SteamPlayersChip } from "../SteamPlayersChip";
 import { GameCardProps } from "./GameCard.types";
-
-export const EmbedRefresh = ({ game }: { game: Game }) => {
-    const nextRefreshDate = useMemo(() => {
-        return getNextSeasonDate([game]);
-    }, [game]);
-
-    useScheduledRefresh({
-        targetDate: nextRefreshDate,
-    });
-
-    return null;
-};
 
 export const EmbedGameCard = ({ slug, gameLogo, children, stats }: GameCardProps) => {
     function handleClick() {

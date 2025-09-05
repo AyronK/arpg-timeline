@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../globals.css";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
@@ -26,7 +26,7 @@ const montserrat = Montserrat({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
-            <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col">
+            <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col overflow-x-hidden">
                 <SimpleAnalytics />
                 {process.env.SPEED_INSIGHTS_ENABLED && <SpeedInsights />}
                 <Toaster />

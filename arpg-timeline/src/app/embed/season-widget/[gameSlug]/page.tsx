@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { EmbedGameCard, EmbedRefresh } from "@/components/GameCard/EmbedGameCard";
+import { EmbedGameCard } from "@/components/GameCard/EmbedGameCard";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { SanityImage } from "@/components/SanityImage";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
@@ -30,7 +30,6 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
 
     return (
         <ErrorBoundary fallback={<WidgetDiedFallback />}>
-            <EmbedRefresh game={game} />
             <EmbedGameCard
                 name={game.name}
                 gameLogo={

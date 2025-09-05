@@ -135,6 +135,7 @@ export const Filters = ({
                             <label className="flex cursor-pointer flex-col items-start">
                                 <div className="flex flex-row items-center gap-2">
                                     <Switch
+                                        className="z-10!"
                                         checked={anyChecked}
                                         onCheckedChange={() => onGroupCheckedChange(g, !anyChecked)}
                                         disabled={disabled}
@@ -176,7 +177,7 @@ export const Filters = ({
                                             <div className="absolute top-1 right-1 z-10">
                                                 <Switch
                                                     checked={isChecked}
-                                                    className="data-[state=checked]:bg-muted-foreground origin-top-right scale-50"
+                                                    className="data-[state=checked]:bg-muted-foreground z-10! origin-top-right scale-50"
                                                     aria-label={`Toggle ${f.label} visibility`}
                                                 />
                                             </div>

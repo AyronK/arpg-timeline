@@ -48,7 +48,7 @@ export function MobileBottomMenu({
             <div className="fixed right-0 bottom-0 left-0 z-[60] select-none lg:hidden">
                 <div
                     className={cn(
-                        "transition-all duration-300 ease-in-out",
+                        "origin-bottom transition-all duration-300 ease-in-out",
                         isVisible ? "translate-none" : "pointer-events-none translate-y-[96px]",
                     )}
                 >
