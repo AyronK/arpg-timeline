@@ -5,7 +5,6 @@ import { SupportButtons } from "@/components/SupportButtons";
 import { GameStatistics } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
-import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
@@ -21,7 +20,6 @@ export const DashboardPage = async ({ category }: DashboardPageProps) => {
         tags: ["season", "liveStreamTwitch", "game", "toast"],
     });
     const games = parseGamesFromSanity(data);
-    const streams = parseGameStreamsFromSanity(data);
 
     const steamApps = data.games
         .map((g) => g.steam?.appId)
@@ -55,7 +53,7 @@ export const DashboardPage = async ({ category }: DashboardPageProps) => {
         <>
             {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
-                <Main games={games} streams={streams} statistics={statistics} category={category} />
+                <Main games={games} statistics={statistics} category={category} />
             </div>
             <StructuredDataScripts games={games} />
             <SupportButtons />
