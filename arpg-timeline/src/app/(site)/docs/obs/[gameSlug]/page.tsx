@@ -1,6 +1,6 @@
 import { ObsBrowserSourceManual } from "@/components/Manuals/ObsBrowserSourceManual";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const ObsBrowserSourceManualPage = async ({
     params,
@@ -19,6 +19,8 @@ export default ObsBrowserSourceManualPage;
 
 export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({
+        revalidate: 3600,
+        tags: ["game", "season"],
         query: indexQuery,
     });
 

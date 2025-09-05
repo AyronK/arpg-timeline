@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const validRoutes = ["/", "/looking-for-moderators", "/privacy", "/api/revalidate", "/api/webhook"];
-const routePrefixes = ["/docs/html/", "/docs/obs/", "/embed/season-widget/"];
+const validRoutes = [
+    "/",
+    "/faq",
+    "/looking-for-moderators",
+    "/privacy",
+    "/api/revalidate",
+    "/api/webhook",
+];
+const routePrefixes = [
+    "/docs/html/",
+    "/docs/obs/",
+    "/embed/season-widget/",
+    "/embed/countdown-widget/",
+    "/dashboard/",
+    "/game/",
+    "/assets/",
+];
 
 function isValidRoute(pathname: string): boolean {
     if (validRoutes.includes(pathname)) {

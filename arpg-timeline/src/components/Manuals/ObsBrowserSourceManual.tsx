@@ -15,7 +15,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
     const [copiedUrl, setCopiedUrl] = useState(false);
     const [copiedCss, setCopiedCss] = useState(false);
 
-    const widgetUrl = addUTM(`https://www.arpg-timeline.com/embed/season-widget/${game}`);
+    const widgetUrl = addUTM(`https://arpg-timeline.com/embed/countdown-widget/${game}`);
     const customCss = `body { 
   margin: 0; 
   background-color: rgba(0,0,0,0); 
@@ -87,6 +87,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                 variant={"default"}
                                 onClick={handleCopyUrl}
                                 aria-label={copiedUrl ? "Copied!" : "Copy URL"}
+                                data-sa-click={`${game}-copy-obs-url`}
                             >
                                 {copiedUrl ? (
                                     <>
@@ -117,7 +118,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                             <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Width:</span>
-                                    <code className="bg-muted rounded px-2 font-mono">600</code>
+                                    <code className="bg-muted rounded px-2 font-mono">360</code>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Height:</span>
@@ -152,6 +153,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                 variant={"default"}
                                 onClick={handleCopyCss}
                                 aria-label={copiedCss ? "Copied!" : "Copy CSS"}
+                                data-sa-click={`${game}-copy-obs-css`}
                             >
                                 {copiedCss ? (
                                     <>
@@ -210,6 +212,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm transition-colors"
                         aria-label="Open widget in new tab"
+                        data-sa-click={`${game}-test-obs-browser`}
                     >
                         <ExternalLink className="h-3 w-3" />
                         Test in browser
@@ -263,14 +266,14 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                 <div className="relative mt-auto">
                                     <div
                                         style={{
-                                            width: 300,
+                                            width: 180,
                                             height: 150,
                                         }}
                                     >
                                         <iframe
                                             style={{
                                                 background: "transparent",
-                                                width: 600,
+                                                width: 360,
                                                 height: 300,
                                             }}
                                             src={widgetUrl}
@@ -316,6 +319,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline hover:no-underline"
+                        data-sa-click="obs-documentation"
                     >
                         official OBS Browser Source documentation
                     </a>

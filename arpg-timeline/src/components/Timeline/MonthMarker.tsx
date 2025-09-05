@@ -14,7 +14,7 @@ export const MonthMarker: FC<MonthMarkerProps> = ({ marker, index, totalMarkers 
         <div className="h-full w-px" />
         <div
             className={cn(
-                `text-card-foreground font-heading mx-2 w-full text-center text-xs text-nowrap select-none group-first:text-left group-last:text-left`,
+                `text-card-foreground font-heading mx-2 w-full text-left text-xs text-nowrap select-none`,
             )}
         >
             {marker.label}

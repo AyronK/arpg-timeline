@@ -4,14 +4,14 @@ import { Button } from "@/ui/Button";
 
 const links = {
     gdpr: "https://docs.simpleanalytics.com/gdpr",
-    github: `${process.env.GITHUB_URL!}/${process.env.GITHUB_REPO!}/issues`,
+    github: `${process.env.NEXT_PUBLIC_GITHUB_URL}/${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues`,
     whatWeCollect: "https://docs.simpleanalytics.com/what-we-collect",
     metrics: "https://docs.simpleanalytics.com/metrics",
 };
 
 const PrivacyPage = () => {
     return (
-        <div className="container mx-auto my-12 max-w-prose space-y-16 px-4">
+        <div className="relative container mx-auto my-12 max-w-prose space-y-16">
             <section>
                 <h2 className="mb-4 text-center text-3xl font-semibold">Privacy</h2>
                 <div className="space-y-6 text-base leading-relaxed">
@@ -29,6 +29,7 @@ const PrivacyPage = () => {
                                 href={links.gdpr}
                                 rel="noopener nofollow noreferrer"
                                 target="_blank"
+                                data-sa-click="privacy-gdpr"
                             >
                                 here
                             </Link>
@@ -49,6 +50,7 @@ const PrivacyPage = () => {
                                 href={links.github}
                                 rel="noopener nofollow noreferrer"
                                 target="_blank"
+                                data-sa-click="github"
                             >
                                 GitHub
                             </Link>
@@ -71,6 +73,7 @@ const PrivacyPage = () => {
                                 href={links.whatWeCollect}
                                 rel="noreferrer noopener"
                                 target="_blank"
+                                data-sa-click="privacy-what-we-collect"
                             >
                                 here
                             </Link>
@@ -82,6 +85,7 @@ const PrivacyPage = () => {
                                 href={links.metrics}
                                 rel="noreferrer noopener"
                                 target="_blank"
+                                data-sa-click="privacy-metrics"
                             >
                                 here
                             </Link>

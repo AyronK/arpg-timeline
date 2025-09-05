@@ -1,6 +1,6 @@
 import { HtmlEmbedManual } from "@/components/Manuals/HtmlEmbedManual";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { indexQuery, IndexQueryResult } from "@/queries/indexQuery";
 
 const HtmlEmbedManualPage = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
     const { gameSlug } = await params;
@@ -16,6 +16,8 @@ export default HtmlEmbedManualPage;
 export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
+        revalidate: 3600,
+        tags: ["game", "season"],
     });
 
     return data.games.map((g) => ({

@@ -1,9 +1,10 @@
 "use client";
 import { useHasMounted } from "@react-hooks-library/core";
-import { Eye, EyeOff, Filter, Lightbulb } from "lucide-react";
+import { Filter } from "lucide-react";
+import { SanityImageAssetDocument } from "next-sanity";
 import { forwardRef } from "react";
 
-import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { SanityImage } from "@/components/SanityImage";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
@@ -15,201 +16,203 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/ui/Dialog";
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/ui/Drawer";
 import { Switch } from "@/ui/Switch";
 
 export type FiltersDialogProps = {
-    filters: { value: string; label: string; group?: string | undefined }[];
+    filters: {
+        value: string;
+        label: string;
+        group?: string | undefined;
+        groupPriority?: number;
+        logo?: SanityImageAssetDocument;
+    }[];
     checked: string[];
     onCheckedChange: (value: string, checked: boolean) => void;
     onGroupCheckedChange: (group: string, checked: boolean) => void;
+    disabled?: boolean;
 };
 
-const title = "Which games would you like to see?";
+const title = "Choose your games";
 
 export const FiltersDialog = ({
     filters,
     checked,
     onCheckedChange,
     onGroupCheckedChange,
+    disabled = false,
 }: FiltersDialogProps) => {
-    const { isMd } = useBreakpoint("md");
-    const { is4xl } = useBreakpoint("4xl");
     const isMounted = useHasMounted();
 
-    if (!isMounted) {
-        return null;
-    }
+    const showIndicator = filters.length !== checked.length;
 
-    if (is4xl) {
-        return (
-            <Dialog>
-                <DialogTrigger asChild>
-                    <Trigger checked={checked} />
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogDescription className="sr-only">Filters dialog</DialogDescription>
-                    <DialogHeader>
-                        <DialogTitle>{title}</DialogTitle>
-                        <DialogDescription asChild>
-                            <Description />
-                        </DialogDescription>
-                    </DialogHeader>
-                    <Filters
-                        checked={checked}
-                        filters={filters}
-                        onCheckedChange={onCheckedChange}
-                        onGroupCheckedChange={onGroupCheckedChange}
-                    />
-                </DialogContent>
-            </Dialog>
-        );
+    if (!isMounted) {
+        return <Trigger showIndicator={showIndicator} />;
     }
 
     return (
-        <Drawer direction={isMd ? "right" : "bottom"}>
-            <DrawerTrigger asChild>
-                <Trigger checked={checked} />
-            </DrawerTrigger>
-            <DrawerContent className={!isMd ? "left-0" : undefined}>
-                <DrawerDescription className="sr-only">Filters dialog</DrawerDescription>
-                <DrawerHeader>
-                    <DrawerTitle>{title}</DrawerTitle>
-                    <DrawerDescription asChild>
-                        <Description />
-                    </DrawerDescription>
-                </DrawerHeader>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Trigger showIndicator={showIndicator && !disabled} disabled={disabled} />
+            </DialogTrigger>
+            <DialogContent className="max-h-[80vh] w-full max-w-7xl!">
+                <DialogDescription className="sr-only">Filters dialog</DialogDescription>
+                <DialogHeader>
+                    <DialogTitle>{title}</DialogTitle>
+                </DialogHeader>
                 <Filters
                     checked={checked}
                     filters={filters}
                     onCheckedChange={onCheckedChange}
                     onGroupCheckedChange={onGroupCheckedChange}
+                    disabled={disabled}
                 />
-                <DrawerFooter className="absolute right-0 bottom-0 md:relative">
-                    <div className="ml-auto md:mr-auto md:ml-0">
-                        <DrawerClose asChild>
-                            <Button
-                                className="shadow-md shadow-black md:shadow-none"
-                                variant="outline"
-                            >
-                                Close
-                            </Button>
-                        </DrawerClose>
-                    </div>
-                </DrawerFooter>
-            </DrawerContent>
-        </Drawer>
+            </DialogContent>
+        </Dialog>
     );
 };
 
-const Description = () => (
-    <div className="bg-muted mt-2 flex flex-row gap-2 rounded-md border p-4">
-        <Lightbulb className="mt-1 h-4 w-4 shrink-0" />
-        <span className="md:max-w-80">Bookmark this site to keep your setup!</span>
-    </div>
-);
-
 const Trigger = forwardRef<
     HTMLButtonElement,
-    React.ComponentPropsWithoutRef<typeof Button> & Pick<FiltersDialogProps, "checked">
->(({ checked, ...rest }, ref) => (
+    React.ComponentPropsWithoutRef<typeof Button> & { showIndicator?: boolean; disabled?: boolean }
+>(({ showIndicator, disabled = false, ...rest }, ref) => (
     <Button
         {...rest}
         ref={ref}
         variant="default"
-        size={"lg"}
+        size={"sm"}
+        disabled={disabled}
         onMouseDown={() => {
             sa_event("filters_opened");
         }}
-        className={
-            "group relative z-0 h-12 rounded-full px-4 shadow-md shadow-black transition-all ease-in-out"
-        }
+        className="inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
     >
-        <Filter className="h-4 w-4" />
-        <span className="max-w-0 overflow-hidden transition-all ease-in-out group-hover:ml-2 group-hover:max-w-20">
-            Filter games
-        </span>
-        <span className="absolute -top-2 -right-2 h-6 w-6 scale-75 motion-safe:flex motion-reduce:hidden">
-            <span className="bg-secondary font-ui text-primary-foreground relative grid h-6 w-6 place-content-center rounded-full font-semibold shadow-xs shadow-black">
-                {checked.length}
-            </span>
-        </span>
+        <div className="relative">
+            <Filter className="h-4 w-4" />
+            {showIndicator && (
+                <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-600"></div>
+            )}
+        </div>
+        <span className="text-center leading-0 whitespace-nowrap">Filter</span>
     </Button>
 ));
 
 Trigger.displayName = "Trigger";
 
-const Filters = ({
+export const Filters = ({
     filters,
     checked,
     onGroupCheckedChange,
     onCheckedChange,
+    disabled,
 }: FiltersDialogProps) => {
     const groups = filters.reduce(
         (prev, curr) => {
             const group = prev[curr.group ?? ""] ?? [];
-            group.push(curr);
+            group.push({ ...curr, groupPriority: curr.groupPriority ?? Number.MAX_SAFE_INTEGER });
             return { ...prev, [curr.group ?? ""]: group };
         },
-        {} as Record<string, { value: string; label: string }[]>,
+        {} as Record<
+            string,
+            {
+                value: string;
+                label: string;
+                logo?: SanityImageAssetDocument;
+                groupPriority: number;
+            }[]
+        >,
     );
 
     return (
-        <div className="flex flex-col gap-6 overflow-auto px-6 pb-6">
+        <div className="flex flex-col gap-6 overflow-x-visible px-6 pb-18 lg:px-0">
             {Object.keys(groups)
-                .sort()
+                .sort((a, b) => groups[a][0].groupPriority - groups[b][0].groupPriority)
                 .map((g) => {
                     const anyChecked = !!groups[g].find((f) => checked.includes(f.value));
+                    const checkedCount = groups[g].filter((f) => checked.includes(f.value)).length;
+                    const totalCount = groups[g].length;
                     return (
-                        <div className="flex flex-col gap-3" key={g}>
-                            <div className="flex flex-row items-center gap-2">
-                                <h3 className="font-lg font-semibold">
-                                    {g !== "" ? g : "Uncategorized"}
-                                </h3>
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    onClick={() => onGroupCheckedChange(g, !anyChecked)}
-                                >
-                                    {anyChecked ? (
-                                        <Eye className="h-4 w-4" />
-                                    ) : (
-                                        <EyeOff className="h-4 w-4" />
-                                    )}
-                                </Button>
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                {groups[g].map((f) => (
-                                    <div key={f.value} className="flex flex-row gap-2">
-                                        <div className="items-top flex space-x-2">
-                                            <Switch
-                                                id={`${f.value}-filter`}
-                                                onCheckedChange={(v) => onCheckedChange(f.value, v)}
-                                                checked={checked.includes(f.value)}
+                        <div className="flex flex-col gap-4" key={g}>
+                            <label className="flex cursor-pointer flex-col items-start">
+                                <div className="flex flex-row items-center gap-2">
+                                    <Switch
+                                        className="z-10!"
+                                        checked={anyChecked}
+                                        onCheckedChange={() => onGroupCheckedChange(g, !anyChecked)}
+                                        disabled={disabled}
+                                        aria-label={`Toggle all ${g !== "" ? g : "uncategorized"} games`}
+                                    />
+                                    <h3 className="text-lg font-semibold">
+                                        {g !== "" ? g : "Uncategorized"}
+                                    </h3>
+                                    <div className="text-muted-foreground text-sm font-normal">
+                                        | {checkedCount} of {totalCount} shown
+                                    </div>
+                                </div>
+                            </label>
+                            <div className="grid auto-rows-fr grid-cols-2 items-stretch gap-3 sm:grid-cols-4 xl:grid-cols-8">
+                                {groups[g].map((f) => {
+                                    const isChecked = checked.includes(f.value);
+                                    return (
+                                        <label
+                                            key={f.value}
+                                            className={cn(
+                                                "group relative col-span-1 flex h-28 cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-2 transition-all duration-200 md:h-36",
+                                                {
+                                                    "bg-card shadow-sm shadow-neutral-950/80":
+                                                        isChecked,
+                                                    "hover:border-foreground/10": !isChecked,
+                                                    "cursor-not-allowed opacity-50": disabled,
+                                                },
+                                            )}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={isChecked}
+                                                onChange={() =>
+                                                    onCheckedChange(f.value, !isChecked)
+                                                }
+                                                disabled={disabled}
+                                                className="sr-only"
                                             />
-                                            <label
+                                            <div className="absolute top-1 right-1 z-10">
+                                                <Switch
+                                                    checked={isChecked}
+                                                    className="data-[state=checked]:bg-muted-foreground z-10! origin-top-right scale-50"
+                                                    aria-label={`Toggle ${f.label} visibility`}
+                                                />
+                                            </div>
+                                            <div className="relative">
+                                                <div className="h-14 w-14 overflow-hidden rounded-md lg:h-20 lg:w-20">
+                                                    {f.logo ? (
+                                                        <SanityImage
+                                                            src={f.logo}
+                                                            alt={`${f.label} logo`}
+                                                            width={56}
+                                                            height={56}
+                                                            objectFit="contain"
+                                                            className="h-full w-full"
+                                                        />
+                                                    ) : (
+                                                        <div className="text-muted-foreground flex h-full w-full items-center justify-center text-xs">
+                                                            {f.label.charAt(0)}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <span
                                                 className={cn(
-                                                    "cursor-pointer transition-all duration-150 ease-in-out",
+                                                    "text-center text-xs leading-tight font-medium transition-all duration-200",
                                                     {
-                                                        "opacity-50": !checked.includes(f.value),
+                                                        "text-primary": isChecked,
+                                                        "text-muted-foreground": !isChecked,
                                                     },
                                                 )}
-                                                htmlFor={`${f.value}-filter`}
                                             >
                                                 {f.label}
-                                            </label>
-                                        </div>
-                                    </div>
-                                ))}
+                                            </span>
+                                        </label>
+                                    );
+                                })}
                             </div>
                         </div>
                     );

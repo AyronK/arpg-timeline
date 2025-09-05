@@ -1,5 +1,7 @@
 "use client";
 
+import { SanityImageAssetDocument } from "next-sanity";
+
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { FiltersDialog } from "@/components/FiltersDialog";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
@@ -9,10 +11,12 @@ export type GameFiltersProps = {
         label: string;
         value: string;
         group: string;
+        logo?: SanityImageAssetDocument;
     }[];
     toggleGameFilter: (slug: string, value: boolean) => void;
     toggleGroupFilter: (group: string, value: boolean) => void;
     activeFilters: string[];
+    disabled?: boolean;
 };
 
 export const GameFilters = ({
@@ -20,17 +24,17 @@ export const GameFilters = ({
     gameFilters,
     toggleGameFilter,
     toggleGroupFilter,
+    disabled = false,
 }: GameFiltersProps) => (
-    <div className="fixed right-8 bottom-8 z-50 xl:sticky xl:top-0 xl:order-first xl:col-span-full xl:h-0">
-        <div className="xl:absolute xl:top-6 xl:-right-16">
-            <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                <FiltersDialog
-                    checked={activeFilters}
-                    filters={gameFilters}
-                    onCheckedChange={toggleGameFilter}
-                    onGroupCheckedChange={toggleGroupFilter}
-                />
-            </ErrorBoundary>
-        </div>
+    <div className="">
+        <ErrorBoundary fallback={<WidgetDiedFallback />}>
+            <FiltersDialog
+                checked={activeFilters}
+                filters={gameFilters}
+                onCheckedChange={toggleGameFilter}
+                onGroupCheckedChange={toggleGroupFilter}
+                disabled={disabled}
+            />
+        </ErrorBoundary>
     </div>
 );

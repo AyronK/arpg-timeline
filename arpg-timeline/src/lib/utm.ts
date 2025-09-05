@@ -1,5 +1,5 @@
-interface UTMParameters {
-    utm_source: "arpg-timeline" | "obs";
+export interface UTMParameters {
+    utm_source: "arpg-timeline" | "obs" | "discord";
     utm_medium?: string;
     utm_campaign?: string;
     utm_term?: string;

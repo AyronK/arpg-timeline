@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const LookingForModeratorsPage = () => {
     return (
-        <div className="container mx-auto mb-20 min-h-[60vh] max-w-prose px-4">
+        <div className="relative container mx-auto mb-20 min-h-[60vh] max-w-prose">
             <h2 className="mt-12 mb-6 pt-2 pb-4 text-center text-2xl font-semibold">
                 Looking for Moderators
             </h2>
@@ -13,16 +13,18 @@ const LookingForModeratorsPage = () => {
                 community, please{" "}
                 <Link
                     className="font-semibold hover:opacity-75"
-                    href={process.env.DISCORD_URL!}
+                    href={process.env.NEXT_PUBLIC_DISCORD_URL}
                     rel="noopener noreferrer"
+                    data-sa-click="discord"
                 >
                     contact us on Discord
                 </Link>{" "}
                 or{" "}
                 <Link
                     className="font-semibold hover:opacity-75"
-                    href={`mailto:${process.env.CONTACT_EMAIL!}`}
+                    href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
                     rel="noopener noreferrer"
+                    data-sa-click="email"
                 >
                     send an email
                 </Link>

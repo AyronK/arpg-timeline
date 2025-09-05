@@ -26,21 +26,13 @@ const montserrat = Montserrat({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
-            <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col">
+            <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col overflow-x-hidden">
                 <SimpleAnalytics />
                 {process.env.SPEED_INSIGHTS_ENABLED && <SpeedInsights />}
                 <Toaster />
-                <Header
-                    githubUrl={`${process.env.GITHUB_URL!}/${process.env.GITHUB_REPO!}/issues`}
-                    patreonUrl={process.env.PATREON_URL!}
-                    discordUrl={process.env.DISCORD_URL!}
-                />
+                <Header />
                 <main className="flex flex-1 flex-col">{children}</main>
-                <Footer
-                    contactEmail={process.env.CONTACT_EMAIL!}
-                    githubUrl={process.env.GITHUB_URL!}
-                    discordUrl={process.env.DISCORD_URL!}
-                />
+                <Footer />
             </body>
             <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
         </html>
@@ -48,10 +40,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 
 export const metadata: Metadata = {
-    authors: [{ name: "Ayron", url: process.env.GITHUB_URL! }],
+    authors: [{ name: "Ayron", url: process.env.NEXT_PUBLIC_GITHUB_URL }],
     creator: "Ayron",
     metadataBase: process.env.SITE_URL ? new URL(process.env.SITE_URL) : null,
     verification: {
         google: process.env.GOOGLE_SITE_VERIFICATION,
+    },
+    other: {
+        "msapplication-TileColor": "#082f49",
+        "theme-color": "#082f49",
     },
 };

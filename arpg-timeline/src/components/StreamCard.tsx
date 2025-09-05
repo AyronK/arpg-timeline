@@ -1,4 +1,7 @@
+"use client";
 import { TimerReset, Twitch } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
@@ -8,6 +11,7 @@ import LocalDate from "@/components/LocalDate";
 import { ShareMenu } from "@/components/ShareMenu";
 import { GameStream } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
+import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
@@ -23,21 +27,17 @@ const StreamHeader = ({
     gameName: string;
 }) => (
     <div className="flex flex-row justify-between align-bottom">
-        <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis">
-            <span className="sr-only md:not-sr-only">{gameName} - </span>
+        <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis max-md:max-w-[25ch]">
+            <span className="max-md:sr-only">{gameName} - </span>
             {name}
         </h3>
-        <div className="hidden lg:block">
-            <ClientOnlyVisibleWrapper>
-                {Date.now() < new Date(date).getTime() && (
-                    <IconLabel icon={TimerReset}>
-                        <span className="font-semibold">
-                            <LocalDate longDate utcDate={date} />
-                        </span>
-                    </IconLabel>
-                )}
-            </ClientOnlyVisibleWrapper>
-        </div>
+        <ClientOnlyVisibleWrapper>
+            {Date.now() < new Date(date).getTime() && (
+                <IconLabel icon={TimerReset} className="text-xs font-semibold lg:text-sm">
+                    <LocalDate longDate utcDate={date} />
+                </IconLabel>
+            )}
+        </ClientOnlyVisibleWrapper>
     </div>
 );
 
@@ -47,30 +47,39 @@ const WatchNowAction = ({
 }: {
     twitchChannel: string;
     gameSlug: string;
-}) => (
-    <FramedAction
-        appendClassName="!bg-[#6441a5]"
-        append={
-            <Button
-                asChild
-                size="icon"
-                className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
-                variant="destructive"
-            >
-                <a
-                    target="_blank"
-                    rel="noopener"
-                    onClick={() => sa_event(`${gameSlug}-twitch-channel-click`)}
-                    href={`https://www.twitch.tv/${twitchChannel}`}
+}) => {
+    const addUTM = addUTMParameters({
+        utm_source: "arpg-timeline",
+        utm_medium: "link",
+        utm_campaign: "twitch-channel",
+        utm_content: gameSlug,
+    });
+
+    return (
+        <FramedAction
+            appendClassName="!bg-[#6441a5]"
+            append={
+                <Button
+                    asChild
+                    size="icon"
+                    className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
+                    variant="destructive"
                 >
-                    <Twitch className="h-4 w-4" />
-                </a>
-            </Button>
-        }
-    >
-        Watch now!
-    </FramedAction>
-);
+                    <a
+                        target="_blank"
+                        rel="noopener"
+                        onClick={() => sa_event(`${gameSlug}-twitch-channel-click`)}
+                        href={addUTM(`https://www.twitch.tv/${twitchChannel}`)}
+                    >
+                        <Twitch className="h-4 w-4" />
+                    </a>
+                </Button>
+            }
+        >
+            <span className="my-auto">Watch now!</span>
+        </FramedAction>
+    );
+};
 
 const CountdownAction = ({ stream }: { stream: GameStream }) => (
     <FramedAction
@@ -94,14 +103,29 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
 );
 
 export const StreamCard = ({ stream }: { stream: GameStream }) => {
-    const isLiveSoon = stream.date && Date.now() > new Date(stream.date).getTime() - 30 * 60 * 1000;
+    const router = useRouter();
+
+    useEffect(() => {
+        if (stream?.date) {
+            const startDate = new Date(stream.date);
+            const now = new Date();
+            if (startDate > now) {
+                const timeUntilStart = startDate.getTime() - now.getTime();
+                const timeoutId = setTimeout(() => {
+                    router.refresh();
+                }, timeUntilStart);
+
+                return () => clearTimeout(timeoutId);
+            }
+        }
+    }, [router, stream]);
 
     return (
         <section
-            className="text-card-foreground bg-card relative flex flex-row gap-3 rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
+            className="text-card-foreground bg-card relative flex flex-row gap-3 overflow-hidden rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
             key={stream.slug}
         >
-            <div className="flex h-14 w-14 md:h-16 md:w-16">
+            <div className="h-12 w-12 min-w-12 lg:h-16 lg:w-16">
                 <SanityImage
                     loading="lazy"
                     src={stream.gameLogo!}
@@ -121,7 +145,7 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
                 />
                 <ClientOnlyVisibleWrapper>
                     <div className="bg-card">
-                        {isLiveSoon && stream.twitchChannel ? (
+                        {stream.isLiveSoon && stream.twitchChannel ? (
                             <WatchNowAction
                                 twitchChannel={stream.twitchChannel}
                                 gameSlug={stream.gameSlug}
