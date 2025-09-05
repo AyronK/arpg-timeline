@@ -22,16 +22,18 @@ export const TopCarousel = ({ games, streams }: { games: Game[]; streams: GameSt
             .filter(
                 (s) =>
                     filteredGames.find((g) => g.slug === s.gameSlug) &&
-                    (s.isLiveSoon || new Date(s.date).getTime() < Date.now()),
+                    s.date &&
+                    (s.isLiveSoon ||
+                        (s?.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000)),
             );
     }, [filteredGames, streams]);
 
     return (
-        <div className="flex justify-center max-sm:-mx-4">
-            <div className="relative mx-auto max-w-full flex-1 md:max-w-3xl">
+        <div className="flex justify-center">
+            <div className="relative mx-auto max-w-screen flex-1 lg:max-w-3xl">
                 <h2 className="hidden">Streams</h2>
                 <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                    <div className="mx-auto max-w-3xl">
+                    <div className="mx-auto max-w-screen lg:max-w-3xl">
                         <Carousel
                             plugins={[
                                 Autoplay({
@@ -39,7 +41,7 @@ export const TopCarousel = ({ games, streams }: { games: Game[]; streams: GameSt
                                     stopOnMouseEnter: true,
                                 }),
                             ]}
-                            className="w-full max-w-3xl select-none"
+                            className="w-full max-w-screen select-none lg:max-w-3xl"
                             opts={{
                                 loop: true,
                                 active: filteredStreams.length > 0,

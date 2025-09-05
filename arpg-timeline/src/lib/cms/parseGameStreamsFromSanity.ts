@@ -5,7 +5,6 @@ import { isStreamSoon } from "./isStreamSoon";
 
 export const parseGameStreamsFromSanity = (data: IndexQueryResult): GameStream[] =>
     data?.liveStreamsOnTwitch
-        ?.filter((s) => s?.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000)
         .sort((a, b) => new Date(a?.date).getTime() - new Date(b?.date).getTime())
         .map((s) => {
             const game = data?.games?.find((g) => g?.slug === s?.game);
@@ -19,4 +18,9 @@ export const parseGameStreamsFromSanity = (data: IndexQueryResult): GameStream[]
                 isLiveSoon: isStreamSoon(s.date),
             } as GameStream;
         })
-        .filter((s) => s.date && (s.isLiveSoon || new Date(s.date).getTime() < Date.now()));
+        .filter(
+            (s) =>
+                s.date &&
+                (s.isLiveSoon ||
+                    (s?.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000)),
+        );

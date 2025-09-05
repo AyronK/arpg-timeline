@@ -27,8 +27,8 @@ const StreamHeader = ({
     gameName: string;
 }) => (
     <div className="flex flex-row justify-between align-bottom">
-        <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis">
-            <span>{gameName} - </span>
+        <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis max-md:max-w-[25ch]">
+            <span className="max-md:sr-only">{gameName} - </span>
             {name}
         </h3>
         <ClientOnlyVisibleWrapper>
@@ -122,10 +122,10 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
 
     return (
         <section
-            className="text-card-foreground bg-card relative flex flex-row gap-3 rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
+            className="text-card-foreground bg-card relative flex flex-row gap-3 overflow-hidden rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
             key={stream.slug}
         >
-            <div className="h-12 w-12 lg:h-16 lg:w-16">
+            <div className="h-12 w-12 min-w-12 lg:h-16 lg:w-16">
                 <SanityImage
                     loading="lazy"
                     src={stream.gameLogo!}

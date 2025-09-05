@@ -153,7 +153,7 @@ export const Content = ({
         const progress = getProgress(season.start?.startDate, season.end?.endDate ?? null);
         return (
             <>
-                <div className="flex flex-row flex-nowrap justify-between">
+                <div className="flex flex-row flex-wrap justify-between">
                     <ClientOnlyVisibleWrapper>
                         {getProgressStartContent(
                             season.start?.startDate,
@@ -163,10 +163,12 @@ export const Content = ({
                         )}
                     </ClientOnlyVisibleWrapper>
                     <ClientOnlyVisibleWrapper>
-                        {getProgressEndContent(
-                            season.end?.overrideText ?? null,
-                            season.end?.confirmed ? season.end?.endDate : null,
-                        )}
+                        <div className="ml-auto">
+                            {getProgressEndContent(
+                                season.end?.overrideText ?? null,
+                                season.end?.confirmed ? season.end?.endDate : null,
+                            )}
+                        </div>
                     </ClientOnlyVisibleWrapper>
                 </div>
                 {!game.isDormant && (
