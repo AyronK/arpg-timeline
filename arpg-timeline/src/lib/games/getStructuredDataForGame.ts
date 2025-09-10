@@ -11,48 +11,54 @@ export const getStructuredDataForGame = (game: Game) => {
         game.currentSeason.start?.startDate &&
         game.currentSeason.end?.endDate
     ) {
+        const currentSeasonName = game.currentSeason.name || `Current ${game.seasonKeyword}`;
         structuredData.push({
             "@context": "https://schema.org",
             "@type": "Event",
-            name: game.currentSeason.name || "Current Season",
+            name: `${game.name} - ${currentSeasonName}`,
+            description: `Current ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
             startDate: game.currentSeason.start.startDate,
-            endDate: game.currentSeason.end?.confirmed
-                ? game.currentSeason.end?.endDate || undefined
-                : undefined,
+            endDate: game.currentSeason.end.endDate,
             eventStatus: "https://schema.org/EventScheduled",
             eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
             location: {
                 "@type": "VirtualLocation",
                 name: game.name,
-                url: game.url
-            }
+                url: game.url || game.currentSeason.url
+            },
+            ...(game.currentSeason.url && { url: game.currentSeason.url }),
+            ...(game.logo?.url && { image: game.logo.url }),
+            category: "Gaming Event",
         });
     }
     
+    // Add next season as Event
     if (
         game.nextSeason &&
         game.nextSeason.start?.confirmed &&
         game.nextSeason.start?.startDate &&
         game.nextSeason.end?.endDate
     ) {
+        const nextSeasonName = game.nextSeason.name || `Next ${game.seasonKeyword}`;
         structuredData.push({
             "@context": "https://schema.org",
             "@type": "Event",
-            name: game.nextSeason.name || "Next Season",
+            name: `${game.name} - ${nextSeasonName}`,
+            description: `Next ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
             startDate: game.nextSeason.start.startDate,
-            endDate: game.nextSeason.end?.confirmed
-                ? game.nextSeason.end?.endDate || undefined
-                : undefined,
+            endDate: game.nextSeason.end.endDate,
             eventStatus: "https://schema.org/EventScheduled",
             eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
             location: {
                 "@type": "VirtualLocation",
                 name: game.name,
-                url: game.url
-            }
+                url: game.url || game.nextSeason.url
+            },
+            ...(game.nextSeason.url && { url: game.nextSeason.url }),
+            ...(game.logo?.url && { image: game.logo.url }),
+            category: "Gaming Event",
         });
     }
     
     return structuredData.length > 0 ? structuredData : null;
 };
-
