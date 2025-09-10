@@ -3,7 +3,7 @@ import { Game } from "@/lib/cms/games.types";
 export const getStructuredDataForGame = (game: Game) => {
     if (!game || !game.currentSeason || !game.nextSeason) return null;
 
-    const seasons = [];
+    const structuredData = [];
 
     if (
         game.currentSeason &&
@@ -11,7 +11,7 @@ export const getStructuredDataForGame = (game: Game) => {
         !!game.currentSeason.start?.startDate &&
         !!game.currentSeason.end?.endDate
     ) {
-        seasons.push({
+        structuredData.push({
             "@type": "Event",
             name: game.currentSeason.name || "Current Season",
             startDate: game.currentSeason.start?.confirmed
@@ -34,7 +34,7 @@ export const getStructuredDataForGame = (game: Game) => {
         !!game.nextSeason.start?.startDate &&
         !!game.nextSeason.end?.endDate
     ) {
-        seasons.push({
+        structuredData.push({
             "@type": "Event",
             name: game.nextSeason.name || "Next Season",
             startDate: game.nextSeason.start?.confirmed
@@ -49,14 +49,6 @@ export const getStructuredDataForGame = (game: Game) => {
         });
     }
 
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "VideoGame",
-        name: game.name,
-        url: game.url || null,
-        genre: "Action RPG",
-        seasons: seasons,
-    };
-
-    return structuredData;
+    return structuredData.length > 0 ? structuredData : null;
 };
+
