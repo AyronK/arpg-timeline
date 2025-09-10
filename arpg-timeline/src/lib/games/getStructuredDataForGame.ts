@@ -27,8 +27,6 @@ export const getStructuredDataForGame = (game: Game) => {
                 url: game.url || game.currentSeason.url
             },
             ...(game.currentSeason.url && { url: game.currentSeason.url }),
-            ...(game.logo?.url && { image: game.logo.url }),
-            category: "Gaming Event",
         });
     }
     
@@ -55,10 +53,9 @@ export const getStructuredDataForGame = (game: Game) => {
                 url: game.url || game.nextSeason.url
             },
             ...(game.nextSeason.url && { url: game.nextSeason.url }),
-            ...(game.logo?.url && { image: game.logo.url }),
-            category: "Gaming Event",
         });
     }
     
     return structuredData.length > 0 ? structuredData : null;
 };
+
