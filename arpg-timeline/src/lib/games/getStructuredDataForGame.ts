@@ -16,7 +16,9 @@ export const getStructuredDataForGame = (game: Game) => {
             "@type": "Event",
             name: game.currentSeason.name || "Current Season",
             startDate: game.currentSeason.start.startDate,
-            endDate: game.currentSeason.end.endDate,
+            endDate: game.currentSeason.end?.confirmed
+                ? game.currentSeason.end?.endDate || undefined
+                : undefined,
             eventStatus: "https://schema.org/EventScheduled",
             eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
             location: {
@@ -38,7 +40,9 @@ export const getStructuredDataForGame = (game: Game) => {
             "@type": "Event",
             name: game.nextSeason.name || "Next Season",
             startDate: game.nextSeason.start.startDate,
-            endDate: game.nextSeason.end.endDate,
+            endDate: game.nextSeason.end?.confirmed
+                ? game.nextSeason.end?.endDate || undefined
+                : undefined,
             eventStatus: "https://schema.org/EventScheduled",
             eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
             location: {
@@ -51,3 +55,4 @@ export const getStructuredDataForGame = (game: Game) => {
     
     return structuredData.length > 0 ? structuredData : null;
 };
+
