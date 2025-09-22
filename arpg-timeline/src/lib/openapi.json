@@ -51,7 +51,7 @@
                                 "example": {
                                     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
                                     "token_type": "Bearer",
-                                    "expires_in": 3600
+                                    "expires_in": 2592000
                                 }
                             }
                         }
@@ -348,7 +348,7 @@
                     "expires_in": {
                         "type": "integer",
                         "description": "Token expiration time in seconds",
-                        "example": 3600
+                        "example": 2592000
                     }
                 }
             },
