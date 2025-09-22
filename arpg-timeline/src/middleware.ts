@@ -11,11 +11,13 @@ const validRoutes = [
 const routePrefixes = [
     "/docs/html/",
     "/docs/obs/",
+    "/docs/api",
     "/embed/season-widget/",
     "/embed/countdown-widget/",
     "/dashboard/",
     "/game/",
     "/assets/",
+    "/api/v1/",
 ];
 
 function isValidRoute(pathname: string): boolean {

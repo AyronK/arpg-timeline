@@ -45,6 +45,16 @@ export const Footer = () => (
                 <div className="flex flex-row gap-1">
                     <Link
                         className="font-semibold transition-opacity duration-200 hover:opacity-75"
+                        href="/docs/api"
+                        data-sa-click="api-docs"
+                    >
+                        API Docs
+                    </Link>
+                </div>
+
+                <div className="flex flex-row gap-1">
+                    <Link
+                        className="font-semibold transition-opacity duration-200 hover:opacity-75"
                         href={process.env.NEXT_PUBLIC_DISCORD_URL}
                         rel="noopener noreferrer"
                         data-sa-click="discord"

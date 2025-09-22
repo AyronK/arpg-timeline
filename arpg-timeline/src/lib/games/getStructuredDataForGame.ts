@@ -2,9 +2,9 @@ import { Game } from "@/lib/cms/games.types";
 
 export const getStructuredDataForGame = (game: Game) => {
     if (!game) return null;
-    
+
     const structuredData = [];
-    
+
     if (
         game.currentSeason &&
         game.currentSeason.start?.confirmed &&
@@ -24,12 +24,12 @@ export const getStructuredDataForGame = (game: Game) => {
             location: {
                 "@type": "VirtualLocation",
                 name: game.name,
-                url: game.url || game.currentSeason.url
+                url: game.url || game.currentSeason.url,
             },
             ...(game.currentSeason.url && { url: game.currentSeason.url }),
         });
     }
-    
+
     // Add next season as Event
     if (
         game.nextSeason &&
@@ -50,12 +50,11 @@ export const getStructuredDataForGame = (game: Game) => {
             location: {
                 "@type": "VirtualLocation",
                 name: game.name,
-                url: game.url || game.nextSeason.url
+                url: game.url || game.nextSeason.url,
             },
             ...(game.nextSeason.url && { url: game.nextSeason.url }),
         });
     }
-    
+
     return structuredData.length > 0 ? structuredData : null;
 };
-
