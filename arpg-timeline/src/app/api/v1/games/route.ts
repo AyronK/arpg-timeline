@@ -1,10 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
+import { createAuthResponse, verifyToken } from "@/lib/auth/jwt";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { ApiErrorResponse, GamesApiResponse } from "@/types/api";
 
-export async function GET(): Promise<NextResponse<GamesApiResponse | ApiErrorResponse>> {
+export async function GET(
+    request: NextRequest,
+): Promise<NextResponse<GamesApiResponse | ApiErrorResponse>> {
+    const payload = await verifyToken(request);
+    if (!payload) {
+        return createAuthResponse();
+    }
     try {
         const data: IndexQueryResult = await sanityFetch({
             query: indexQuery,

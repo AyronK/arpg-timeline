@@ -20,12 +20,72 @@
         }
     ],
     "paths": {
+        "/token": {
+            "post": {
+                "summary": "Get access token",
+                "description": "Exchange client credentials for a JWT access token",
+                "operationId": "getToken",
+                "tags": ["Authentication"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRequest"
+                            },
+                            "example": {
+                                "clientId": "client_id_123",
+                                "clientSecret": "supersecret"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token generated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenResponse"
+                                },
+                                "example": {
+                                    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                    "token_type": "Bearer",
+                                    "expires_in": 3600
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - missing or invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/games": {
             "get": {
                 "summary": "Get all games",
                 "description": "Returns a list of all games with their basic information including slug, name, season keyword etc.",
                 "operationId": "getGames",
                 "tags": ["Games"],
+                "security": [{ "BearerAuth": [] }],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -65,6 +125,7 @@
                 "description": "Returns the current and next seasons for a specific game.",
                 "operationId": "getGameSeasons",
                 "tags": ["Seasons"],
+                "security": [{ "BearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "slug",
@@ -164,6 +225,7 @@
                 "description": "Returns current and next seasons for all games that have active seasons.",
                 "operationId": "getAllSeasons",
                 "tags": ["Seasons"],
+                "security": [{ "BearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "scope",
@@ -244,7 +306,52 @@
         }
     },
     "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Enter your JWT token obtained from /token endpoint"
+            }
+        },
         "schemas": {
+            "TokenRequest": {
+                "type": "object",
+                "required": ["clientId", "clientSecret"],
+                "properties": {
+                    "clientId": {
+                        "type": "string",
+                        "description": "Your client ID",
+                        "example": "client_id_123"
+                    },
+                    "clientSecret": {
+                        "type": "string",
+                        "description": "Your client secret",
+                        "example": "supersecret"
+                    }
+                }
+            },
+            "TokenResponse": {
+                "type": "object",
+                "required": ["access_token", "token_type", "expires_in"],
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "description": "JWT access token",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "description": "Token type",
+                        "example": "Bearer"
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "description": "Token expiration time in seconds",
+                        "example": 3600
+                    }
+                }
+            },
             "Game": {
                 "type": "object",
                 "required": ["slug", "name", "seasonKeyword"],
@@ -395,6 +502,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication and token management"
+        },
         {
             "name": "Games",
             "description": "Operations related to games"

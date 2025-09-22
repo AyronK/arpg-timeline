@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { createAuthResponse, verifyToken } from "@/lib/auth/jwt";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
@@ -9,6 +10,11 @@ export async function GET(
     request: NextRequest,
     { params }: { params: { slug: string } },
 ): Promise<NextResponse<GameSeasonsApiResponse | ApiErrorResponse>> {
+    const payload = await verifyToken(request);
+    if (!payload) {
+        return createAuthResponse();
+    }
+
     try {
         const { searchParams } = new URL(request.url);
         const scope = searchParams.get("scope");
