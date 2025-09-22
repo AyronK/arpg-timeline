@@ -6,7 +6,7 @@
         "version": "1.0.0",
         "contact": {
             "name": "aRPG Timeline",
-            "url": "https://arpg-timeline.com"
+            "url": "https://www.arpg-timeline.com"
         }
     },
     "servers": [
@@ -15,7 +15,7 @@
             "description": "Development server"
         },
         {
-            "url": "https://arpg-timeline.com/api/v1",
+            "url": "https://www.arpg-timeline.com/api/v1",
             "description": "Production server"
         }
     ],
