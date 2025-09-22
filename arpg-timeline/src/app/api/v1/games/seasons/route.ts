@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createAuthResponse, verifyToken } from "@/lib/auth/jwt";
+import { createAuthResponse, verifyTokenWithScopes } from "@/lib/auth/jwt";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
@@ -9,9 +9,19 @@ import { AllSeasonsApiResponse, ApiErrorResponse, GameSeasonEntry } from "@/type
 export async function GET(
     request: NextRequest,
 ): Promise<NextResponse<AllSeasonsApiResponse | ApiErrorResponse>> {
-    const payload = await verifyToken(request);
+    const { payload, hasAccess } = await verifyTokenWithScopes(request, [
+        "read_active_seasons",
+        "read_all_seasons", // TODO implement all seasons scope
+    ]);
+
     if (!payload) {
-        return createAuthResponse();
+        return createAuthResponse("Missing or invalid token");
+    }
+
+    if (!hasAccess) {
+        return createAuthResponse(
+            "Insufficient permissions. Required scope: read_active_seasons or read_all_seasons",
+        );
     }
 
     try {

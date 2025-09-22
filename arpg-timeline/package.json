@@ -27,6 +27,8 @@
         "@radix-ui/react-tooltip": "^1.2.8",
         "@react-hooks-library/core": "^0.6.2",
         "@sanity/image-url": "^1.2.0",
+        "@supabase/ssr": "^0.7.0",
+        "@supabase/supabase-js": "^2.57.4",
         "@types/swagger-ui-react": "^5.18.0",
         "@vercel/speed-insights": "^1.2.0",
         "class-variance-authority": "^0.7.1",

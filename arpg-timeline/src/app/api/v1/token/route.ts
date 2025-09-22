@@ -1,9 +1,7 @@
 import { SignJWT } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
-const CLIENTS = {
-    client_id_123: "supersecret",
-};
+import { getCachedClient } from "@/lib/auth/client-cache";
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "changeme");
 
@@ -15,12 +13,16 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Missing credentials" }, { status: 400 });
         }
 
-        const validSecret = CLIENTS[clientId as keyof typeof CLIENTS];
-        if (!validSecret || validSecret !== clientSecret) {
+        const apiClient = await getCachedClient(clientId, clientSecret);
+
+        if (!apiClient || !apiClient.is_active) {
             return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
         }
 
-        const token = await new SignJWT({ clientId })
+        const token = await new SignJWT({
+            clientId: apiClient.client_id,
+            scopes: apiClient.scopes,
+        })
             .setProtectedHeader({ alg: "HS256" })
             .setIssuedAt()
             .setExpirationTime("30d")
@@ -31,7 +33,8 @@ export async function POST(request: NextRequest) {
             token_type: "Bearer",
             expires_in: 2592000, // 30 days in seconds
         });
-    } catch {
+    } catch (e) {
+        console.error(e);
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createAuthResponse, verifyToken } from "@/lib/auth/jwt";
+import { createAuthResponse, verifyTokenWithScopes } from "@/lib/auth/jwt";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { ApiErrorResponse, GamesApiResponse } from "@/types/api";
@@ -8,10 +8,16 @@ import { ApiErrorResponse, GamesApiResponse } from "@/types/api";
 export async function GET(
     request: NextRequest,
 ): Promise<NextResponse<GamesApiResponse | ApiErrorResponse>> {
-    const payload = await verifyToken(request);
+    const { payload, hasAccess } = await verifyTokenWithScopes(request, ["read_games"]);
+
     if (!payload) {
-        return createAuthResponse();
+        return createAuthResponse("Missing or invalid token");
     }
+
+    if (!hasAccess) {
+        return createAuthResponse("Insufficient permissions. Required scope: read_games");
+    }
+
     try {
         const data: IndexQueryResult = await sanityFetch({
             query: indexQuery,

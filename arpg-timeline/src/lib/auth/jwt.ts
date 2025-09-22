@@ -1,7 +1,16 @@
-import { type JWTPayload, jwtVerify } from "jose";
+import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
+import { Scope } from "./scopes";
+
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "changeme");
+
+export interface JWTPayload {
+    clientId: string;
+    scopes: Scope[];
+    iat?: number;
+    exp?: number;
+}
 
 export async function verifyToken(request: NextRequest): Promise<JWTPayload | null> {
     try {
@@ -14,10 +23,25 @@ export async function verifyToken(request: NextRequest): Promise<JWTPayload | nu
         const token = authHeader.substring(7);
 
         const { payload } = await jwtVerify(token, JWT_SECRET);
-        return payload as JWTPayload;
+        return payload as unknown as JWTPayload;
     } catch {
         return null;
     }
+}
+
+export async function verifyTokenWithScopes(
+    request: NextRequest,
+    requiredScopes: string[],
+): Promise<{ payload: JWTPayload | null; hasAccess: boolean }> {
+    const payload = await verifyToken(request);
+
+    if (!payload) {
+        return { payload: null, hasAccess: false };
+    }
+
+    const hasAccess = requiredScopes.some((scope) => payload.scopes.includes(scope as Scope));
+
+    return { payload, hasAccess };
 }
 
 export function createAuthResponse(message: string = "Unauthorized") {
