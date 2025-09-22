@@ -49,7 +49,10 @@ export async function GET(
             return NextResponse.json({ error: "Game not found" }, { status: 404 });
         }
 
-        const response: GameSeasonsApiResponse = {};
+        const response: GameSeasonsApiResponse = {
+            current: null,
+            next: null,
+        };
 
         if (game.currentSeason && game.currentSeason.start?.confirmed) {
             response.current = {
@@ -57,13 +60,9 @@ export async function GET(
                 game: game.slug,
                 url: game.currentSeason.url || null,
                 patchNotesUrl: game.currentSeason.patchNotesUrl || null,
-                start: {
-                    startDate: game.currentSeason.start?.startDate || null,
-                },
+                start: game.currentSeason.start?.startDate || null,
                 end: game.currentSeason.end?.confirmed
-                    ? {
-                          endDate: game.currentSeason.end?.endDate || null,
-                      }
+                    ? game.currentSeason.end?.endDate || null
                     : null,
             };
         }
@@ -74,14 +73,8 @@ export async function GET(
                 game: game.slug,
                 url: game.nextSeason.url || null,
                 patchNotesUrl: game.nextSeason.patchNotesUrl || null,
-                start: {
-                    startDate: game.nextSeason.start?.startDate || null,
-                },
-                end: game.nextSeason.end?.confirmed
-                    ? {
-                          endDate: game.nextSeason.end?.endDate || null,
-                      }
-                    : null,
+                start: game.nextSeason.start?.startDate || null,
+                end: game.nextSeason.end?.confirmed ? game.nextSeason.end?.endDate || null : null,
             };
         }
 

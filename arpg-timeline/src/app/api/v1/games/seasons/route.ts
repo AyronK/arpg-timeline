@@ -48,6 +48,8 @@ export async function GET(
             .map((game) => {
                 const result: GameSeasonEntry = {
                     game: game.slug,
+                    current: null,
+                    next: null,
                 };
 
                 if (game.currentSeason && game.currentSeason.start?.confirmed) {
@@ -56,13 +58,9 @@ export async function GET(
                         game: game.slug,
                         url: game.currentSeason.url || null,
                         patchNotesUrl: game.currentSeason.patchNotesUrl || null,
-                        start: {
-                            startDate: game.currentSeason.start?.startDate || null,
-                        },
+                        start: game.currentSeason.start?.startDate || null,
                         end: game.currentSeason.end?.confirmed
-                            ? {
-                                  endDate: game.currentSeason.end?.endDate || null,
-                              }
+                            ? game.currentSeason.end?.endDate || null
                             : null,
                     };
                 }
@@ -73,13 +71,9 @@ export async function GET(
                         game: game.slug,
                         url: game.nextSeason.url || null,
                         patchNotesUrl: game.nextSeason.patchNotesUrl || null,
-                        start: {
-                            startDate: game.nextSeason.start?.startDate || null,
-                        },
+                        start: game.nextSeason.start?.startDate || null,
                         end: game.nextSeason.end?.confirmed
-                            ? {
-                                  endDate: game.nextSeason.end?.endDate || null,
-                              }
+                            ? game.nextSeason.end?.endDate || null
                             : null,
                     };
                 }

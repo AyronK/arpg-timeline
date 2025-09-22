@@ -28,6 +28,7 @@ export async function GET(
             slug: game.slug,
             name: game.name,
             seasonKeyword: game.seasonKeyword,
+            categories: game.categories,
         }));
 
         return NextResponse.json({ games });

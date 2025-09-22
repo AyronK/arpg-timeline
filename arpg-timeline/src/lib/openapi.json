@@ -99,7 +99,8 @@
                                         {
                                             "slug": "path-of-exile",
                                             "name": "Path of Exile",
-                                            "seasonKeyword": "league"
+                                            "seasonKeyword": "league",
+                                            "categories": ["seasonal"]
                                         }
                                     ]
                                 }
@@ -163,24 +164,16 @@
                                         "game": "path-of-exile",
                                         "url": "https://www.pathofexile.com/settlers",
                                         "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/3587981",
-                                        "start": {
-                                            "startDate": "2024-07-26T19:00:00Z"
-                                        },
-                                        "end": {
-                                            "endDate": "2024-12-06T21:00:00Z"
-                                        }
+                                        "start": "2024-07-26T19:00:00Z",
+                                        "end": "2024-12-06T21:00:00Z"
                                     },
                                     "next": {
                                         "name": "Next league",
                                         "game": "path-of-exile",
                                         "url": null,
                                         "patchNotesUrl": null,
-                                        "start": {
-                                            "startDate": "2024-12-06T21:00:00Z"
-                                        },
-                                        "end": {
-                                            "endDate": null
-                                        }
+                                        "start": "2024-12-06T21:00:00Z",
+                                        "end": null
                                     }
                                 }
                             }
@@ -256,24 +249,16 @@
                                                 "game": "path-of-exile-2",
                                                 "url": "https://www.pathofexile.com/pathofexile2",
                                                 "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/poe2-updates",
-                                                "start": {
-                                                    "startDate": "2025-07-15T19:00:00Z"
-                                                },
-                                                "end": {
-                                                    "endDate": "2025-09-30T19:00:00Z"
-                                                }
+                                                "start": "2025-07-15T19:00:00Z",
+                                                "end": "2025-09-30T19:00:00Z"
                                             },
                                             "next": {
                                                 "name": "Early Access League 4",
                                                 "game": "path-of-exile-2",
                                                 "url": null,
                                                 "patchNotesUrl": null,
-                                                "start": {
-                                                    "startDate": "2025-10-01T19:00:00Z"
-                                                },
-                                                "end": {
-                                                    "endDate": null
-                                                }
+                                                "start": "2025-10-01T19:00:00Z",
+                                                "end": null
                                             }
                                         }
                                     ]
@@ -352,6 +337,11 @@
                     }
                 }
             },
+            "GameCategory": {
+                "type": "string",
+                "enum": ["community", "seasonal", "early-access"],
+                "description": "Game category for dashboard visibility and categorization"
+            },
             "Game": {
                 "type": "object",
                 "required": ["slug", "name", "seasonKeyword"],
@@ -371,6 +361,14 @@
                         "nullable": true,
                         "description": "The term used for seasons in this game (e.g., 'league', 'season')",
                         "example": "league"
+                    },
+                    "categories": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GameCategory"
+                        },
+                        "description": "Game categories for dashboard visibility and categorization",
+                        "example": ["seasonal"]
                     }
                 }
             },
@@ -383,32 +381,6 @@
                         "items": {
                             "$ref": "#/components/schemas/Game"
                         }
-                    }
-                }
-            },
-            "SeasonDateInfo": {
-                "type": "object",
-                "required": ["startDate"],
-                "properties": {
-                    "startDate": {
-                        "type": "string",
-                        "nullable": true,
-                        "format": "date-time",
-                        "description": "ISO 8601 date string",
-                        "example": "2024-07-26T19:00:00Z"
-                    }
-                }
-            },
-            "SeasonEndDateInfo": {
-                "type": "object",
-                "required": ["endDate"],
-                "properties": {
-                    "endDate": {
-                        "type": "string",
-                        "nullable": true,
-                        "format": "date-time",
-                        "description": "ISO 8601 date string",
-                        "example": "2024-12-06T21:00:00Z"
                     }
                 }
             },
@@ -441,10 +413,18 @@
                         "example": "https://www.pathofexile.com/forum/view-thread/3587981"
                     },
                     "start": {
-                        "$ref": "#/components/schemas/SeasonDateInfo"
+                        "type": "string",
+                        "nullable": true,
+                        "format": "date-time",
+                        "description": "ISO 8601 date string for season start",
+                        "example": "2024-07-26T19:00:00Z"
                     },
                     "end": {
-                        "$ref": "#/components/schemas/SeasonEndDateInfo"
+                        "type": "string",
+                        "nullable": true,
+                        "format": "date-time",
+                        "description": "ISO 8601 date string for season end",
+                        "example": "2024-12-06T21:00:00Z"
                     }
                 }
             },

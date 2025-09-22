@@ -1,19 +1,14 @@
+import { GameCategory } from "@/lib/cms/gameTags";
+
 export interface GameResponse {
     slug: string;
     name: string;
     seasonKeyword: string | undefined;
+    categories?: GameCategory[];
 }
 
 export interface GamesApiResponse {
     games: GameResponse[];
-}
-
-export interface SeasonDateInfo {
-    startDate: string | null;
-}
-
-export interface SeasonEndDateInfo {
-    endDate: string | null;
 }
 
 export interface SeasonInfo {
@@ -21,19 +16,19 @@ export interface SeasonInfo {
     game: string;
     url: string | null;
     patchNotesUrl: string | null;
-    start: SeasonDateInfo;
-    end: SeasonEndDateInfo | null;
+    start: string | null;
+    end: string | null;
 }
 
 export interface GameSeasonsApiResponse {
-    current?: SeasonInfo;
-    next?: SeasonInfo;
+    current?: SeasonInfo | null;
+    next?: SeasonInfo | null;
 }
 
 export interface GameSeasonEntry {
     game: string;
-    current?: SeasonInfo;
-    next?: SeasonInfo;
+    current?: SeasonInfo | null;
+    next?: SeasonInfo | null;
 }
 
 export interface AllSeasonsApiResponse {
