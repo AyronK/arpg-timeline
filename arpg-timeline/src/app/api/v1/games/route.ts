@@ -1,0 +1,27 @@
+import { NextResponse } from "next/server";
+
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
+import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { ApiErrorResponse, GamesApiResponse } from "@/types/api";
+
+export async function GET(): Promise<NextResponse<GamesApiResponse | ApiErrorResponse>> {
+    try {
+        const data: IndexQueryResult = await sanityFetch({
+            query: indexQuery,
+            revalidate: 3600,
+        });
+
+        const games = data.games.map((game) => ({
+            slug: game.slug,
+            name: game.name,
+            seasonKeyword: game.seasonKeyword,
+        }));
+
+        return NextResponse.json({ games });
+    } catch (error) {
+        console.error("Error fetching games:", error);
+        return NextResponse.json({ error: "Failed to fetch games" }, { status: 500 });
+    }
+}
+
+export const revalidate = 3600;

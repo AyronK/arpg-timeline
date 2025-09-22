@@ -1,0 +1,407 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "aRPG Timeline API",
+        "description": "API for aRPG Timeline content",
+        "version": "1.0.0",
+        "contact": {
+            "name": "aRPG Timeline",
+            "url": "https://arpg-timeline.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/api/v1",
+            "description": "Development server"
+        },
+        {
+            "url": "https://arpg-timeline.com/api/v1",
+            "description": "Production server"
+        }
+    ],
+    "paths": {
+        "/games": {
+            "get": {
+                "summary": "Get all games",
+                "description": "Returns a list of all games with their basic information including slug, name, season keyword etc.",
+                "operationId": "getGames",
+                "tags": ["Games"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GamesResponse"
+                                },
+                                "example": {
+                                    "games": [
+                                        {
+                                            "slug": "path-of-exile",
+                                            "name": "Path of Exile",
+                                            "seasonKeyword": "league"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/games/{slug}/seasons": {
+            "get": {
+                "summary": "Get game seasons",
+                "description": "Returns the current and next seasons for a specific game.",
+                "operationId": "getGameSeasons",
+                "tags": ["Seasons"],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "description": "The game slug",
+                        "schema": {
+                            "type": "string",
+                            "example": "path-of-exile"
+                        }
+                    },
+                    {
+                        "name": "scope",
+                        "in": "query",
+                        "required": true,
+                        "description": "The scope of seasons to return",
+                        "schema": {
+                            "type": "string",
+                            "enum": ["active"],
+                            "default": "active"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameSeasonsResponse"
+                                },
+                                "example": {
+                                    "current": {
+                                        "name": "Settlers of Kalguur",
+                                        "game": "path-of-exile",
+                                        "url": "https://www.pathofexile.com/settlers",
+                                        "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/3587981",
+                                        "start": {
+                                            "startDate": "2024-07-26T19:00:00Z"
+                                        },
+                                        "end": {
+                                            "endDate": "2024-12-06T21:00:00Z"
+                                        }
+                                    },
+                                    "next": {
+                                        "name": "Next league",
+                                        "game": "path-of-exile",
+                                        "url": null,
+                                        "patchNotesUrl": null,
+                                        "start": {
+                                            "startDate": "2024-12-06T21:00:00Z"
+                                        },
+                                        "end": {
+                                            "endDate": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - invalid scope",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Game not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/games/seasons": {
+            "get": {
+                "summary": "Get all active seasons",
+                "description": "Returns current and next seasons for all games that have active seasons.",
+                "operationId": "getAllSeasons",
+                "tags": ["Seasons"],
+                "parameters": [
+                    {
+                        "name": "scope",
+                        "in": "query",
+                        "required": true,
+                        "description": "The scope of seasons to return",
+                        "schema": {
+                            "type": "string",
+                            "enum": ["active"],
+                            "default": "active"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AllSeasonsResponse"
+                                },
+                                "example": {
+                                    "seasons": [
+                                        {
+                                            "game": "path-of-exile-2",
+                                            "current": {
+                                                "name": "Early Access League 3",
+                                                "game": "path-of-exile-2",
+                                                "url": "https://www.pathofexile.com/pathofexile2",
+                                                "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/poe2-updates",
+                                                "start": {
+                                                    "startDate": "2025-07-15T19:00:00Z"
+                                                },
+                                                "end": {
+                                                    "endDate": "2025-09-30T19:00:00Z"
+                                                }
+                                            },
+                                            "next": {
+                                                "name": "Early Access League 4",
+                                                "game": "path-of-exile-2",
+                                                "url": null,
+                                                "patchNotesUrl": null,
+                                                "start": {
+                                                    "startDate": "2025-10-01T19:00:00Z"
+                                                },
+                                                "end": {
+                                                    "endDate": null
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - invalid scope",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Game": {
+                "type": "object",
+                "required": ["slug", "name", "seasonKeyword"],
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "description": "Unique identifier for the game",
+                        "example": "path-of-exile"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Display name of the game",
+                        "example": "Path of Exile"
+                    },
+                    "seasonKeyword": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The term used for seasons in this game (e.g., 'league', 'season')",
+                        "example": "league"
+                    }
+                }
+            },
+            "GamesResponse": {
+                "type": "object",
+                "required": ["games"],
+                "properties": {
+                    "games": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Game"
+                        }
+                    }
+                }
+            },
+            "SeasonDateInfo": {
+                "type": "object",
+                "required": ["startDate"],
+                "properties": {
+                    "startDate": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "date-time",
+                        "description": "ISO 8601 date string",
+                        "example": "2024-07-26T19:00:00Z"
+                    }
+                }
+            },
+            "SeasonEndDateInfo": {
+                "type": "object",
+                "required": ["endDate"],
+                "properties": {
+                    "endDate": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "date-time",
+                        "description": "ISO 8601 date string",
+                        "example": "2024-12-06T21:00:00Z"
+                    }
+                }
+            },
+            "SeasonInfo": {
+                "type": "object",
+                "required": ["name", "game", "url", "patchNotesUrl", "start", "end"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the season",
+                        "example": "Settlers of Kalguur"
+                    },
+                    "game": {
+                        "type": "string",
+                        "description": "Game slug this season belongs to",
+                        "example": "path-of-exile"
+                    },
+                    "url": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "description": "Official URL for the season",
+                        "example": "https://www.pathofexile.com/settlers"
+                    },
+                    "patchNotesUrl": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "description": "URL to patch notes for the season",
+                        "example": "https://www.pathofexile.com/forum/view-thread/3587981"
+                    },
+                    "start": {
+                        "$ref": "#/components/schemas/SeasonDateInfo"
+                    },
+                    "end": {
+                        "$ref": "#/components/schemas/SeasonEndDateInfo"
+                    }
+                }
+            },
+            "GameSeasonsResponse": {
+                "type": "object",
+                "properties": {
+                    "current": {
+                        "$ref": "#/components/schemas/SeasonInfo"
+                    },
+                    "next": {
+                        "$ref": "#/components/schemas/SeasonInfo"
+                    }
+                }
+            },
+            "GameSeasonEntry": {
+                "type": "object",
+                "required": ["game"],
+                "properties": {
+                    "game": {
+                        "type": "string",
+                        "description": "Game slug",
+                        "example": "path-of-exile-2"
+                    },
+                    "current": {
+                        "$ref": "#/components/schemas/SeasonInfo"
+                    },
+                    "next": {
+                        "$ref": "#/components/schemas/SeasonInfo"
+                    }
+                }
+            },
+            "AllSeasonsResponse": {
+                "type": "object",
+                "required": ["seasons"],
+                "properties": {
+                    "seasons": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GameSeasonEntry"
+                        }
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "required": ["error"],
+                "properties": {
+                    "error": {
+                        "type": "string",
+                        "description": "Error message",
+                        "example": "Game not found"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Games",
+            "description": "Operations related to games"
+        },
+        {
+            "name": "Seasons",
+            "description": "Operations related to game seasons"
+        }
+    ]
+}
