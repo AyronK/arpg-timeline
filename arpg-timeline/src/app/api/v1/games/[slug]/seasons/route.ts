@@ -8,7 +8,7 @@ import { ApiErrorResponse, GameSeasonsApiResponse } from "@/types/api";
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { slug: string } },
+    { params }: { params: Promise<{ slug: string }> },
 ): Promise<NextResponse<GameSeasonsApiResponse | ApiErrorResponse>> {
     const { payload, hasAccess } = await verifyTokenWithScopes(request, [
         "read_active_seasons",
@@ -36,6 +36,7 @@ export async function GET(
             );
         }
 
+        const resolvedParams = await params;
         const data: IndexQueryResult = await sanityFetch({
             query: indexQuery,
             revalidate: 3600,
@@ -43,7 +44,7 @@ export async function GET(
         });
 
         const games = parseGamesFromSanity(data);
-        const game = games.find((g) => g.slug === params.slug);
+        const game = games.find((g) => g.slug === resolvedParams.slug);
 
         if (!game) {
             return NextResponse.json({ error: "Game not found" }, { status: 404 });
