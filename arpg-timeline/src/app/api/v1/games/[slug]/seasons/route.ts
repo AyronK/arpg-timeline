@@ -26,7 +26,7 @@ export async function GET(
         );
     }
 
-    await logApiUsage(payload.clientId, payload.userId);
+    await logApiUsage(payload.clientId);
 
     try {
         const { searchParams } = new URL(request.url);

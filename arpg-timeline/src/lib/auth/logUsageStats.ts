@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/client";
 
-export async function logApiUsage(clientId: string, userId: string) {
+export async function logApiUsage(clientId: string) {
     try {
         const supabase = createClient();
         const today = new Date().toISOString().split("T")[0];
@@ -8,7 +8,6 @@ export async function logApiUsage(clientId: string, userId: string) {
         const { data: existingRecord, error: selectError } = await supabase
             .from("usage_stats_daily")
             .select("count")
-            .eq("user_id", userId)
             .eq("client_id", clientId)
             .eq("usage_date", today)
             .single();
@@ -22,7 +21,6 @@ export async function logApiUsage(clientId: string, userId: string) {
             const { error: updateError } = await supabase
                 .from("usage_stats_daily")
                 .update({ count: existingRecord.count + 1 })
-                .eq("user_id", userId)
                 .eq("client_id", clientId)
                 .eq("usage_date", today);
 
@@ -31,7 +29,6 @@ export async function logApiUsage(clientId: string, userId: string) {
             }
         } else {
             const { error: insertError } = await supabase.from("usage_stats_daily").insert({
-                user_id: userId,
                 client_id: clientId,
                 usage_date: today,
                 count: 1,

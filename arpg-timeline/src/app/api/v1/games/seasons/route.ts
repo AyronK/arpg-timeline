@@ -36,7 +36,7 @@ export async function GET(
             );
         }
 
-        await logApiUsage(payload.clientId, payload.userId);
+        await logApiUsage(payload.clientId);
 
         const data: IndexQueryResult = await sanityFetch({
             query: indexQuery,

@@ -19,7 +19,7 @@ export async function GET(
         return createAuthResponse("Insufficient permissions. Required scope: read_games");
     }
 
-    await logApiUsage(payload.clientId, payload.userId);
+    await logApiUsage(payload.clientId);
 
     try {
         const data: IndexQueryResult = await sanityFetch({
