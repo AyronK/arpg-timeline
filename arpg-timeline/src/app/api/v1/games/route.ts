@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createAuthResponse, verifyTokenWithScopes } from "@/lib/auth/jwt";
+import { logApiUsage } from "@/lib/auth/logUsageStats";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { ApiErrorResponse, GamesApiResponse } from "@/types/api";
@@ -17,6 +18,8 @@ export async function GET(
     if (!hasAccess) {
         return createAuthResponse("Insufficient permissions. Required scope: read_games");
     }
+
+    await logApiUsage(payload.clientId, payload.userId);
 
     try {
         const data: IndexQueryResult = await sanityFetch({

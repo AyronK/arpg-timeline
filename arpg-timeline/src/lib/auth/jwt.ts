@@ -7,6 +7,7 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "changeme"
 
 export interface JWTPayload {
     clientId: string;
+    userId: string;
     scopes: Scope[];
     iat?: number;
     exp?: number;

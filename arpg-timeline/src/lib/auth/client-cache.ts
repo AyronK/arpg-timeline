@@ -7,7 +7,6 @@ import { Scope } from "./scopes";
 type ApiClient = {
     client_id: string;
     client_name: string;
-    client_secret: string;
     user_id: string;
     is_active: boolean;
     scopes: Scope[];
@@ -20,7 +19,7 @@ async function fetchClientFromDatabase(
     const supabase = createClient();
     const { data, error } = await supabase
         .from("api_clients")
-        .select("client_id, client_name, client_secret, user_id, is_active, scopes")
+        .select("client_id, client_name, user_id, is_active, scopes")
         .eq("client_name", clientName)
         .eq("client_secret", clientSecret)
         .single();
@@ -38,7 +37,13 @@ export async function getCachedClient(
 ): Promise<ApiClient | null> {
     const cachedClient = unstable_cache(
         async () => {
-            return await fetchClientFromDatabase(clientName, clientSecret);
+            const result = await fetchClientFromDatabase(clientName, clientSecret);
+
+            if (result === null) {
+                throw new Error("Client not found");
+            }
+
+            return result;
         },
         [`api-client-${clientName}`],
         {
@@ -47,5 +52,9 @@ export async function getCachedClient(
         },
     );
 
-    return await cachedClient();
+    try {
+        return await cachedClient();
+    } catch {
+        return null;
+    }
 }

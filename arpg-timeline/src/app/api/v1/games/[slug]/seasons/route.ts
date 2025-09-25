@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createAuthResponse, verifyTokenWithScopes } from "@/lib/auth/jwt";
+import { logApiUsage } from "@/lib/auth/logUsageStats";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
@@ -24,6 +25,8 @@ export async function GET(
             "Insufficient permissions. Required scope: read_active_seasons or read_all_seasons",
         );
     }
+
+    await logApiUsage(payload.clientId, payload.userId);
 
     try {
         const { searchParams } = new URL(request.url);

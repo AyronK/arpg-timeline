@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createAuthResponse, verifyTokenWithScopes } from "@/lib/auth/jwt";
+import { logApiUsage } from "@/lib/auth/logUsageStats";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
@@ -34,6 +35,8 @@ export async function GET(
                 { status: 400 },
             );
         }
+
+        await logApiUsage(payload.clientId, payload.userId);
 
         const data: IndexQueryResult = await sanityFetch({
             query: indexQuery,
