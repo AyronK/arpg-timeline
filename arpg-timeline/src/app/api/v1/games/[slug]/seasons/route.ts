@@ -5,7 +5,13 @@ import { logApiUsage } from "@/lib/auth/logUsageStats";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { addUTMParameters } from "@/lib/utm";
 import { ApiErrorResponse, GameSeasonsApiResponse } from "@/types/api";
+
+const addUTM = addUTMParameters({
+    utm_source: "arpg-timeline",
+    utm_medium: "api",
+});
 
 export async function GET(
     request: NextRequest,
@@ -62,8 +68,10 @@ export async function GET(
             response.current = {
                 name: game.currentSeason.name || "",
                 game: game.slug,
-                url: game.currentSeason.url || null,
-                patchNotesUrl: game.currentSeason.patchNotesUrl || null,
+                url: game.currentSeason.url ? addUTM(game.currentSeason.url) : null,
+                patchNotesUrl: game.currentSeason.patchNotesUrl
+                    ? addUTM(game.currentSeason.patchNotesUrl)
+                    : null,
                 start: game.currentSeason.start?.startDate || null,
                 end: game.currentSeason.end?.confirmed
                     ? game.currentSeason.end?.endDate || null
@@ -75,8 +83,10 @@ export async function GET(
             response.next = {
                 name: game.nextSeason.name || "",
                 game: game.slug,
-                url: game.nextSeason.url || null,
-                patchNotesUrl: game.nextSeason.patchNotesUrl || null,
+                url: game.nextSeason.url ? addUTM(game.nextSeason.url) : null,
+                patchNotesUrl: game.nextSeason.patchNotesUrl
+                    ? addUTM(game.nextSeason.patchNotesUrl)
+                    : null,
                 start: game.nextSeason.start?.startDate || null,
                 end: game.nextSeason.end?.confirmed ? game.nextSeason.end?.endDate || null : null,
             };
