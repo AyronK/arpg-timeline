@@ -9,19 +9,13 @@ export const getStructuredDataForGame = (game: Game) => {
         "@context": "https://schema.org",
         "@type": ["VideoGame", "SoftwareApplication"],
         name: game.name,
-        description: `${game.name} - Action RPG game${game.currentSeason ? ` currently in ${game.currentSeason.name || 'season'}` : ''}`,
+        description: `${game.name} - ${game.currentSeason ? ` currently in ${game.currentSeason.name} ${game.seasonKeyword}` : ''}`,
         applicationCategory: "GameApplication",
         genre: "Action RPG",
         ...(game.url && { url: game.url }),
         ...(game.logo && {
             image: game.logo.url || `${game.logo._ref ? `https://cdn.sanity.io/images/your-project-id/production/${game.logo._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}` : ''}`
         }),
-        offers: {
-            "@type": "Offer",
-            price: 0, // Assuming free-to-play, adjust as needed
-            priceCurrency: "USD",
-            availability: "https://schema.org/InStock"
-        },
         ...(game.categories && game.categories.length > 0 && {
             keywords: game.categories.map(cat => cat.name).join(", ")
         })
@@ -29,7 +23,6 @@ export const getStructuredDataForGame = (game: Game) => {
     
     structuredData.push(gameStructuredData);
     
-    // Current season as CreativeWorkSeason
     if (
         game.currentSeason &&
         game.currentSeason.start?.confirmed &&
@@ -45,7 +38,7 @@ export const getStructuredDataForGame = (game: Game) => {
                 "@type": "CreativeWorkSeries",
                 name: game.name
             },
-            description: `Current ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
+            description: `Current ${game.seasonKeyword} of ${game.name}`,
             startDate: game.currentSeason.start.startDate,
             endDate: game.currentSeason.end.endDate,
             ...(game.currentSeason.url && { url: game.currentSeason.url }),
@@ -56,10 +49,6 @@ export const getStructuredDataForGame = (game: Game) => {
                     url: game.currentSeason.patchNotesUrl
                 }
             }),
-            publisher: {
-                "@type": "Organization",
-                name: game.group || "Game Publisher"
-            }
         });
     }
     
@@ -78,7 +67,7 @@ export const getStructuredDataForGame = (game: Game) => {
                 "@type": "CreativeWorkSeries",
                 name: game.name
             },
-            description: `Upcoming ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
+            description: `Upcoming ${game.seasonKeyword} of ${game.name}`,
             startDate: game.nextSeason.start.startDate,
             endDate: game.nextSeason.end.endDate,
             ...(game.nextSeason.url && { url: game.nextSeason.url }),
@@ -89,12 +78,9 @@ export const getStructuredDataForGame = (game: Game) => {
                     url: game.nextSeason.patchNotesUrl
                 }
             }),
-            publisher: {
-                "@type": "Organization",
-                name: game.group || "Game Publisher"
-            }
         });
     }
     
     return structuredData.length > 0 ? structuredData : null;
 };
+
