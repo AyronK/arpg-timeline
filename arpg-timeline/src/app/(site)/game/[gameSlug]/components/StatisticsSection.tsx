@@ -1,3 +1,6 @@
+import ClientOnlyVisibleWrapper from "@/components/ClientOnlyVisibleWrapper";
+import LocalTime from "@/components/LocalTime";
+
 import { StatisticsSectionProps } from "../types";
 import { StatisticsCard } from "./StatisticsCard";
 
@@ -17,7 +20,19 @@ export const StatisticsSection = ({
                 <StatisticsCard value={statistics.averagePerYear} label="Average Per Year" />
                 <StatisticsCard
                     className="col-span-full md:col-span-1"
-                    value={statistics.usualStartTime}
+                    value={
+                        statistics.usualStartTime === "N/A" ? (
+                            "N/A"
+                        ) : (
+                            <div className="mx-auto h-8 max-w-1/3">
+                                <ClientOnlyVisibleWrapper>
+                                    <div>
+                                        <LocalTime utcTime={statistics.usualStartTime} />
+                                    </div>
+                                </ClientOnlyVisibleWrapper>
+                            </div>
+                        )
+                    }
                     label="Usual Start Time"
                 />
                 <StatisticsCard

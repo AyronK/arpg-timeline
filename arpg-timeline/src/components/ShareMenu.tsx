@@ -22,8 +22,8 @@ export const ShareMenu = ({ title, startDate }: { title: string; startDate: stri
 
     const handleNativeShare = () => {
         handleShare({
-            title: `${title} Season`,
-            text: `Check out the ${title} season starting ${new Date(startDate).toLocaleDateString()}`,
+            title: title,
+            text: `Check out the ${title} starting ${new Date(startDate).toLocaleDateString()}`,
             url: window.location.href,
         });
     };

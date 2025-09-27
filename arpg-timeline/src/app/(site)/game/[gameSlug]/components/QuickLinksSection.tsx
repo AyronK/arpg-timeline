@@ -39,7 +39,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                     rel="noopener"
                     data-sa-click={`${gameSlug}-current-season-details`}
                 >
-                    Current Season Details
+                    Current {game.seasonKeyword} details
                 </MaybeLinkWrapper>
             )}
             {game.nextSeason?.url && (
@@ -49,7 +49,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                     rel="noopener"
                     data-sa-click={`${gameSlug}-next-season-details`}
                 >
-                    Next Season Details
+                    Next {game.seasonKeyword} details
                 </MaybeLinkWrapper>
             )}
 

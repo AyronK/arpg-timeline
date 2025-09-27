@@ -49,8 +49,8 @@ export const calculateUsualStartTime = (gameSeasons: LocalSeason[]): string => {
         .map((s) => s?.start?.startDate)
         .filter((d): d is string => typeof d === "string")
         .map((d) => {
-            const date = new Date(d);
-            return date.getHours();
+            const utcDate = new Date(d);
+            return utcDate.getUTCHours();
         });
 
     const hourCounts = startHours.reduce(
@@ -65,10 +65,10 @@ export const calculateUsualStartTime = (gameSeasons: LocalSeason[]): string => {
 
     if (!mostCommonHour) return "N/A";
 
-    const hour = parseInt(mostCommonHour[0]);
-    const date = new Date();
-    date.setHours(hour, 0, 0, 0);
-    return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    const utcHour = parseInt(mostCommonHour[0]);
+    const utcDate = new Date();
+    utcDate.setUTCHours(utcHour, 0, 0, 0);
+    return utcDate.toISOString();
 };
 
 export const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDuration[] => {

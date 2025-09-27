@@ -8,6 +8,7 @@ import {
     INTL_UTC_DATETIME,
     INTL_UTC_DATETIME_LONG,
 } from "@/lib/date";
+import { cn } from "@/lib/utils";
 
 interface LocalDateProps {
     utcDate: string;
@@ -30,7 +31,7 @@ const LocalDate: React.FC<LocalDateProps> = ({ utcDate, dateOnly, longDate }) =>
     }, [dateOnly, longDate, utcDate]);
 
     return (
-        <span className="text-nowrap" suppressHydrationWarning>
+        <span className={cn("text-nowrap", { "sr-only": !localDate })} suppressHydrationWarning>
             {localDate
                 ? localDate
                 : `${longDate ? INTL_UTC_DATETIME_LONG.format(new Date(utcDate)) : INTL_UTC_DATETIME.format(new Date(utcDate))} UTC`}
