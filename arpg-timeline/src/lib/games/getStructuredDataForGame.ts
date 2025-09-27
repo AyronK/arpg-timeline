@@ -2,9 +2,34 @@ import { Game } from "@/lib/cms/games.types";
 
 export const getStructuredDataForGame = (game: Game) => {
     if (!game) return null;
-
+    
     const structuredData = [];
-
+    
+    const gameStructuredData = {
+        "@context": "https://schema.org",
+        "@type": ["VideoGame", "SoftwareApplication"],
+        name: game.name,
+        description: `${game.name} - Action RPG game${game.currentSeason ? ` currently in ${game.currentSeason.name || 'season'}` : ''}`,
+        applicationCategory: "GameApplication",
+        genre: "Action RPG",
+        ...(game.url && { url: game.url }),
+        ...(game.logo && {
+            image: game.logo.url || `${game.logo._ref ? `https://cdn.sanity.io/images/your-project-id/production/${game.logo._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}` : ''}`
+        }),
+        offers: {
+            "@type": "Offer",
+            price: 0, // Assuming free-to-play, adjust as needed
+            priceCurrency: "USD",
+            availability: "https://schema.org/InStock"
+        },
+        ...(game.categories && game.categories.length > 0 && {
+            keywords: game.categories.map(cat => cat.name).join(", ")
+        })
+    };
+    
+    structuredData.push(gameStructuredData);
+    
+    // Current season as CreativeWorkSeason
     if (
         game.currentSeason &&
         game.currentSeason.start?.confirmed &&
@@ -14,23 +39,30 @@ export const getStructuredDataForGame = (game: Game) => {
         const currentSeasonName = game.currentSeason.name || `Current ${game.seasonKeyword}`;
         structuredData.push({
             "@context": "https://schema.org",
-            "@type": "Event",
-            name: `${game.name} - ${currentSeasonName}`,
+            "@type": "CreativeWorkSeason",
+            name: currentSeasonName,
+            partOfSeries: {
+                "@type": "CreativeWorkSeries",
+                name: game.name
+            },
             description: `Current ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
             startDate: game.currentSeason.start.startDate,
             endDate: game.currentSeason.end.endDate,
-            eventStatus: "https://schema.org/EventScheduled",
-            eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-            location: {
-                "@type": "VirtualLocation",
-                name: game.name,
-                url: game.url || game.currentSeason.url,
-            },
             ...(game.currentSeason.url && { url: game.currentSeason.url }),
+            ...(game.currentSeason.patchNotesUrl && {
+                mainEntity: {
+                    "@type": "WebPage",
+                    name: "Patch Notes",
+                    url: game.currentSeason.patchNotesUrl
+                }
+            }),
+            publisher: {
+                "@type": "Organization",
+                name: game.group || "Game Publisher"
+            }
         });
     }
-
-    // Add next season as Event
+    
     if (
         game.nextSeason &&
         game.nextSeason.start?.confirmed &&
@@ -40,21 +72,29 @@ export const getStructuredDataForGame = (game: Game) => {
         const nextSeasonName = game.nextSeason.name || `Next ${game.seasonKeyword}`;
         structuredData.push({
             "@context": "https://schema.org",
-            "@type": "Event",
-            name: `${game.name} - ${nextSeasonName}`,
-            description: `Next ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
+            "@type": "CreativeWorkSeason",
+            name: nextSeasonName,
+            partOfSeries: {
+                "@type": "CreativeWorkSeries",
+                name: game.name
+            },
+            description: `Upcoming ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
             startDate: game.nextSeason.start.startDate,
             endDate: game.nextSeason.end.endDate,
-            eventStatus: "https://schema.org/EventScheduled",
-            eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-            location: {
-                "@type": "VirtualLocation",
-                name: game.name,
-                url: game.url || game.nextSeason.url,
-            },
             ...(game.nextSeason.url && { url: game.nextSeason.url }),
+            ...(game.nextSeason.patchNotesUrl && {
+                mainEntity: {
+                    "@type": "WebPage",
+                    name: "Patch Notes",
+                    url: game.nextSeason.patchNotesUrl
+                }
+            }),
+            publisher: {
+                "@type": "Organization",
+                name: game.group || "Game Publisher"
+            }
         });
     }
-
+    
     return structuredData.length > 0 ? structuredData : null;
 };
