@@ -74,7 +74,7 @@ export const getStructuredDataForGame = (game: Game) => {
       },
       image: {
         "@type": "ImageObject",
-        url: game.logo?.url || ""
+        url: "https://www.arpg-timeline.com/assets/seoimage.png"
       }
     };
   };
@@ -122,3 +122,4 @@ export const getStructuredDataForGame = (game: Game) => {
     "@graph": graph
   };
 };
+
