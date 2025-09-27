@@ -1,47 +1,77 @@
 import { Game } from "@/lib/cms/games.types";
 
-export const getStructuredDataForGame = (game: Game) => {
-  if (!game) return null;
-
-  type Article = {
-    "@type": "NewsArticle";
-    "@id": string;
-    headline: string;
-    description: string;
-    mainEntityOfPage: {
-      "@type": "WebPage";
-      "@id": string;
-    };
+type SoftwareApplicationNode = {
+  "@type": ["SoftwareApplication", "VideoGame"];
+  "@id": string;
+  name: string;
+  url: string;
+  applicationCategory: string;
+  operatingSystem: string;
+  image: {
+    "@type": "ImageObject";
     url: string;
-    datePublished: string;
-    dateModified: string;
-    author: {
-      "@type": "Organization";
-      name: string;
-      url: string;
-    };
-    publisher: {
-      "@type": "Organization";
-      name: string;
-      logo: {
-        "@type": "ImageObject";
-        url: string;
-      };
-    };
-    image: {
+  };
+};
+
+type NewsArticleNode = {
+  "@type": "NewsArticle";
+  "@id": string;
+  headline: string;
+  description: string;
+  mainEntityOfPage: {
+    "@type": "WebPage";
+    "@id": string;
+  };
+  url: string;
+  datePublished: string;
+  dateModified: string;
+  author: {
+    "@type": "Organization";
+    name: string;
+    url: string;
+  };
+  publisher: {
+    "@type": "Organization";
+    name: string;
+    logo: {
       "@type": "ImageObject";
       url: string;
     };
   };
+  image: {
+    "@type": "ImageObject";
+    url: string;
+  };
+};
 
-  const articles: Article[] = [];
+type FAQNode = {
+  "@type": "FAQPage";
+  "@id": string;
+  mainEntity: {
+    "@type": "Question";
+    name: string;
+    acceptedAnswer: {
+      "@type": "Answer";
+      text: string;
+    };
+  }[];
+};
+
+type StructuredData = {
+  "@context": "https://schema.org";
+  "@graph": (SoftwareApplicationNode | NewsArticleNode | FAQNode)[];
+};
+
+export const getStructuredDataForGame = (game: Game): StructuredData | null => {
+  if (!game) return null;
+
+  const articles: NewsArticleNode[] = [];
 
   const buildArticle = (
     season: Game["currentSeason"] | Game["nextSeason"],
     label: string
-  ): Article | null => {
-    if (!season) return null;
-    if (!season.start?.confirmed || !season.start.startDate) return null;
+  ): NewsArticleNode | null => {
+    if (!season || !season.start?.confirmed || !season.start.startDate) return null;
 
     const seasonName = season.name || label;
     const gameUrl = `https://www.arpg-timeline.com/game/${game.slug}`;
@@ -54,7 +84,7 @@ export const getStructuredDataForGame = (game: Game) => {
       description: `${label} ${game.seasonKeyword.toLowerCase()} of ${game.name}. Starts on ${season.start.startDate}.`,
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": gameUrl
+        "@id": gameUrl,
       },
       url: gameUrl,
       datePublished: now,
@@ -62,7 +92,7 @@ export const getStructuredDataForGame = (game: Game) => {
       author: {
         "@type": "Organization",
         name: "aRPG Timeline",
-        url: "https://www.arpg-timeline.com"
+        url: "https://www.arpg-timeline.com",
       },
       publisher: {
         "@type": "Organization",
@@ -70,12 +100,12 @@ export const getStructuredDataForGame = (game: Game) => {
         logo: {
           "@type": "ImageObject",
           url: "https://www.arpg-timeline.com/assets/seoimage.png"
-        }
+        },
       },
       image: {
         "@type": "ImageObject",
-        url: game.logo?.url || ""
-      }
+        url: game.logo?.url || "",
+      },
     };
   };
 
@@ -84,26 +114,45 @@ export const getStructuredDataForGame = (game: Game) => {
   if (current) articles.push(current);
   if (next) articles.push(next);
 
-  if (!articles.length) return null;
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": ["SoftwareApplication", "VideoGame"],
-        "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
-        name: game.name,
-        url: `https://www.arpg-timeline.com/game/${game.slug}`,
-        applicationCategory: "GameApplication",
-        operatingSystem: "Windows",
-        image: {
-          "@type": "ImageObject",
-          url: game.logo?.url || ""
+  const faq: FAQNode | null =
+    game.nextSeason && game.nextSeason.start?.startDate && game.nextSeason.start.confirmed
+      ? {
+          "@type": "FAQPage",
+          "@id": `https://www.arpg-timeline.com/game/${game.slug}#faq`,
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: `When is the next ${game.name} ${game.seasonKeyword}?`,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: `The next ${game.seasonKeyword.toLowerCase()} starts on ${game.nextSeason.start.startDate}.`,
+              },
+            },
+          ],
         }
-      },
-      ...articles
-    ]
-  };
+      : null;
 
-  return structuredData;
+  const graph: StructuredData["@graph"] = [
+    {
+      "@type": ["SoftwareApplication", "VideoGame"],
+      "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
+      name: game.name,
+      url: `https://www.arpg-timeline.com/game/${game.slug}`,
+      applicationCategory: "GameApplication",
+      operatingSystem: "Windows",
+      image: {
+        "@type": "ImageObject",
+        url: game.logo?.url || "",
+      },
+    },
+    ...articles,
+  ];
+
+  if (faq) graph.push(faq);
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
 };
+
