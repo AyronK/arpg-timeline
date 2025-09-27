@@ -18,7 +18,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
     const widgetUrl = addUTM(`https://arpg-timeline.com/embed/countdown-widget/${game}`);
     const customCss = `body { 
   margin: 0; 
-  background-color: rgba(0,0,0,0); 
+  background-color: rgba(0,0,0,0.5); 
 }`;
 
     const handleCopyUrl = async () => {
@@ -136,7 +136,8 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                             <h3 className="font-semibold">Add Custom CSS (Optional)</h3>
                         </div>
                         <p className="text-muted-foreground mb-3 ml-8 text-sm">
-                            For transparent background, add this CSS in the{" "}
+                            You can leave the background transparent, but it is recommended to add
+                            some kind of semi-transparent background CSS in the{" "}
                             <strong>Custom CSS</strong> field:
                         </p>
                         <div className="relative ml-8">
