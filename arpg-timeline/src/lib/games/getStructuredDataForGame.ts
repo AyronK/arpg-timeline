@@ -99,7 +99,7 @@ export const getStructuredDataForGame = (game: Game): StructuredData | null => {
         name: "aRPG Timeline",
         logo: {
           "@type": "ImageObject",
-          url: game.logo?.url || "",
+          url: "https://www.arpg-timeline.com/assets/seoimage.png"
         },
       },
       image: {
@@ -155,3 +155,4 @@ export const getStructuredDataForGame = (game: Game): StructuredData | null => {
     "@graph": graph,
   };
 };
+
