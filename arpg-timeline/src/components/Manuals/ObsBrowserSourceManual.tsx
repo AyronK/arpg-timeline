@@ -273,7 +273,7 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                                     >
                                         <iframe
                                             style={{
-                                                background: "transparent",
+                                                background: "rgba(0,0,0,0.5)",
                                                 width: 360,
                                                 height: 300,
                                             }}
