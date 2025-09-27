@@ -3,7 +3,7 @@ import { Game } from "@/lib/cms/games.types";
 export const getStructuredDataForGame = (game: Game) => {
   if (!game) return null;
 
-  const events: any[] = [];
+  const events = [];
 
   const buildEvent = (
     season: Game["currentSeason"] | Game["nextSeason"],
@@ -76,3 +76,4 @@ export const getStructuredDataForGame = (game: Game) => {
 
   return structuredData;
 };
+
