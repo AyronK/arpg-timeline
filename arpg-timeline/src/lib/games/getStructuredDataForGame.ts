@@ -99,7 +99,7 @@ export const getStructuredDataForGame = (game: Game) => {
     ]
   } : null;
 
-  const graph: any[] = [
+  const graph = [
     {
       "@type": ["SoftwareApplication", "VideoGame"],
       "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
@@ -122,6 +122,7 @@ export const getStructuredDataForGame = (game: Game) => {
     "@graph": graph
   };
 };
+
 
 
 
