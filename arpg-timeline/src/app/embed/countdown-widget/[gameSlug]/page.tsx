@@ -21,8 +21,6 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
         return notFound();
     }
 
-    console.log(game.nextSeason?.logo);
-
     return (
         <div className="min-h-[300px] min-w-[360px] overflow-hidden">
             <ErrorBoundary fallback={<WidgetDiedFallback />}>

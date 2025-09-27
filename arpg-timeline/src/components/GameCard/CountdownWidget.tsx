@@ -11,7 +11,7 @@ export const CountdownWidget = ({ game, gameLogo }: { game: Game; gameLogo: Reac
         return null;
     }
     return (
-        <section className="text-foreground flex max-w-[720px] min-w-[360px] flex-1 flex-col gap-1 rounded-lg bg-transparent px-4 pt-2 pb-6 shadow-xl">
+        <section className="text-foreground flex max-w-[720px] min-w-[360px] flex-1 flex-col gap-1 bg-transparent px-4 pt-2 pb-6">
             <div className="relative flex flex-1 flex-col items-center">
                 <div className="h-[140px] min-h-[140px]">{gameLogo}</div>
                 <div className="text-foreground flex flex-row items-center gap-2">
