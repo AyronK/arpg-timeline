@@ -84,7 +84,7 @@ export const getStructuredDataForGame = (game: Game) => {
   if (current) articles.push(current);
   if (next) articles.push(next);
 
-  const faq = game.nextSeason && game.nextSeason.start?.startDate ? {
+  const faq = game.nextSeason && game.nextSeason.start?.startDate && game.nextSeason.start.confirmed ? {
     "@type": "FAQPage",
     "@id": `https://www.arpg-timeline.com/game/${game.slug}#faq`,
     mainEntity: [
@@ -122,5 +122,6 @@ export const getStructuredDataForGame = (game: Game) => {
     "@graph": graph
   };
 };
+
 
 
