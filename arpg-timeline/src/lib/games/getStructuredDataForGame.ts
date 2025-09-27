@@ -69,12 +69,12 @@ export const getStructuredDataForGame = (game: Game) => {
         name: "aRPG Timeline",
         logo: {
           "@type": "ImageObject",
-          url: game.logo?.url || ""
+          url: "https://www.arpg-timeline.com/assets/seoimage.png"
         }
       },
       image: {
         "@type": "ImageObject",
-        url: "https://www.arpg-timeline.com/assets/seoimage.png"
+        url: game.logo?.url || ""
       }
     };
   };
@@ -122,4 +122,5 @@ export const getStructuredDataForGame = (game: Game) => {
     "@graph": graph
   };
 };
+
 
