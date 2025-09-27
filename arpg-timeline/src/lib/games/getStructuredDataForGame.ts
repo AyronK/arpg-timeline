@@ -69,7 +69,7 @@ export const getStructuredDataForGame = (game: Game) => {
         name: "aRPG Timeline",
         logo: {
           "@type": "ImageObject",
-          url: "https://www.arpg-timeline.com/assets/seoimage.png"
+          url: game.logo?.url || ""
         }
       },
       image: {
@@ -84,26 +84,41 @@ export const getStructuredDataForGame = (game: Game) => {
   if (current) articles.push(current);
   if (next) articles.push(next);
 
-  if (!articles.length) return null;
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
+  const faq = game.nextSeason && game.nextSeason.start?.startDate ? {
+    "@type": "FAQPage",
+    "@id": `https://www.arpg-timeline.com/game/${game.slug}#faq`,
+    mainEntity: [
       {
-        "@type": ["SoftwareApplication", "VideoGame"],
-        "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
-        name: game.name,
-        url: `https://www.arpg-timeline.com/game/${game.slug}`,
-        applicationCategory: "GameApplication",
-        operatingSystem: "Windows",
-        image: {
-          "@type": "ImageObject",
-          url: game.logo?.url || ""
+        "@type": "Question",
+        name: `When is the next ${game.name} ${game.seasonKeyword}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `The next ${game.seasonKeyword.toLowerCase()} starts on ${game.nextSeason.start.startDate}.`
         }
-      },
-      ...articles
+      }
     ]
-  };
+  } : null;
 
-  return structuredData;
+  const graph: any[] = [
+    {
+      "@type": ["SoftwareApplication", "VideoGame"],
+      "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
+      name: game.name,
+      url: `https://www.arpg-timeline.com/game/${game.slug}`,
+      applicationCategory: "GameApplication",
+      operatingSystem: "Windows",
+      image: {
+        "@type": "ImageObject",
+        url: game.logo?.url || ""
+      }
+    },
+    ...articles
+  ];
+
+  if (faq) graph.push(faq);
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph
+  };
 };
