@@ -1,60 +1,109 @@
 import { Game } from "@/lib/cms/games.types";
 
 export const getStructuredDataForGame = (game: Game) => {
-    if (!game) return null;
+  if (!game) return null;
 
-    const structuredData = [];
+  type Article = {
+    "@type": "NewsArticle";
+    "@id": string;
+    headline: string;
+    description: string;
+    mainEntityOfPage: {
+      "@type": "WebPage";
+      "@id": string;
+    };
+    url: string;
+    datePublished: string;
+    dateModified: string;
+    author: {
+      "@type": "Organization";
+      name: string;
+      url: string;
+    };
+    publisher: {
+      "@type": "Organization";
+      name: string;
+      logo: {
+        "@type": "ImageObject";
+        url: string;
+      };
+    };
+    image: {
+      "@type": "ImageObject";
+      url: string;
+    };
+  };
 
-    if (
-        game.currentSeason &&
-        game.currentSeason.start?.confirmed &&
-        game.currentSeason.start?.startDate &&
-        game.currentSeason.end?.endDate
-    ) {
-        const currentSeasonName = game.currentSeason.name || `Current ${game.seasonKeyword}`;
-        structuredData.push({
-            "@context": "https://schema.org",
-            "@type": "Event",
-            name: `${game.name} - ${currentSeasonName}`,
-            description: `Current ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
-            startDate: game.currentSeason.start.startDate,
-            endDate: game.currentSeason.end.endDate,
-            eventStatus: "https://schema.org/EventScheduled",
-            eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-            location: {
-                "@type": "VirtualLocation",
-                name: game.name,
-                url: game.url || game.currentSeason.url,
-            },
-            ...(game.currentSeason.url && { url: game.currentSeason.url }),
-        });
-    }
+  const articles: Article[] = [];
 
-    // Add next season as Event
-    if (
-        game.nextSeason &&
-        game.nextSeason.start?.confirmed &&
-        game.nextSeason.start?.startDate &&
-        game.nextSeason.end?.endDate
-    ) {
-        const nextSeasonName = game.nextSeason.name || `Next ${game.seasonKeyword}`;
-        structuredData.push({
-            "@context": "https://schema.org",
-            "@type": "Event",
-            name: `${game.name} - ${nextSeasonName}`,
-            description: `Next ${game.seasonKeyword.toLowerCase()} of ${game.name}`,
-            startDate: game.nextSeason.start.startDate,
-            endDate: game.nextSeason.end.endDate,
-            eventStatus: "https://schema.org/EventScheduled",
-            eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-            location: {
-                "@type": "VirtualLocation",
-                name: game.name,
-                url: game.url || game.nextSeason.url,
-            },
-            ...(game.nextSeason.url && { url: game.nextSeason.url }),
-        });
-    }
+  const buildArticle = (
+    season: Game["currentSeason"] | Game["nextSeason"],
+    label: string
+  ): Article | null => {
+    if (!season) return null;
+    if (!season.start?.confirmed || !season.start.startDate) return null;
 
-    return structuredData.length > 0 ? structuredData : null;
+    const seasonName = season.name || label;
+    const gameUrl = `https://www.arpg-timeline.com/game/${game.slug}`;
+    const now = new Date().toISOString();
+
+    return {
+      "@type": "NewsArticle",
+      "@id": `${gameUrl}#${label.toLowerCase()}-season`,
+      headline: `${game.name} - ${seasonName}`,
+      description: `${label} ${game.seasonKeyword.toLowerCase()} of ${game.name}. Starts on ${season.start.startDate}.`,
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": gameUrl
+      },
+      url: gameUrl,
+      datePublished: now,
+      dateModified: now,
+      author: {
+        "@type": "Organization",
+        name: "aRPG Timeline",
+        url: "https://www.arpg-timeline.com"
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "aRPG Timeline",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://www.arpg-timeline.com/assets/seoimage.png"
+        }
+      },
+      image: {
+        "@type": "ImageObject",
+        url: game.logo?.url || ""
+      }
+    };
+  };
+
+  const current = buildArticle(game.currentSeason, "Current");
+  const next = buildArticle(game.nextSeason, "Next");
+  if (current) articles.push(current);
+  if (next) articles.push(next);
+
+  if (!articles.length) return null;
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["SoftwareApplication", "VideoGame"],
+        "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
+        name: game.name,
+        url: `https://www.arpg-timeline.com/game/${game.slug}`,
+        applicationCategory: "GameApplication",
+        operatingSystem: "Windows",
+        image: {
+          "@type": "ImageObject",
+          url: game.logo?.url || ""
+        }
+      },
+      ...articles
+    ]
+  };
+
+  return structuredData;
 };
