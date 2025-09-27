@@ -16,9 +16,6 @@ export const getStructuredDataForGame = (game: Game) => {
         ...(game.logo && {
             image: game.logo.url || `${game.logo._ref ? `https://cdn.sanity.io/images/your-project-id/production/${game.logo._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}` : ''}`
         }),
-        ...(game.categories && game.categories.length > 0 && {
-            keywords: game.categories.map(cat => cat.name).join(", ")
-        })
     };
     
     structuredData.push(gameStructuredData);
@@ -83,4 +80,5 @@ export const getStructuredDataForGame = (game: Game) => {
     
     return structuredData.length > 0 ? structuredData : null;
 };
+
 
