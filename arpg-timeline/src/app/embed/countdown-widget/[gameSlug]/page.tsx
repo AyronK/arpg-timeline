@@ -21,6 +21,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
         return notFound();
     }
 
+    console.log(game.nextSeason?.logo);
+
     return (
         <div className="min-h-[300px] min-w-[360px] overflow-hidden">
             <ErrorBoundary fallback={<WidgetDiedFallback />}>
@@ -29,10 +31,10 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                     gameLogo={
                         <SanityImage
                             loading="lazy"
-                            src={game.logo!}
+                            src={game.nextSeason?.logo ?? game.currentSeason?.logo ?? game.logo!}
                             alt={`${game.name} logo`}
-                            className="my-auto"
-                            width={160}
+                            className="my-auto drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]"
+                            width={340}
                             height={140}
                             objectFit="contain"
                         />

@@ -102,7 +102,8 @@ export const Content = ({
                                 >
                                     <FramedAction
                                         className={cn({
-                                            "bg-transparent! shadow-none!": compactEmbed,
+                                            "bg-transparent! shadow-none! [text-shadow:_0_1px_1px_rgba(0,0,0,0.4)]":
+                                                compactEmbed,
                                             "p-1": !compactEmbed,
                                         })}
                                     >

@@ -11,22 +11,26 @@ export const CountdownWidget = ({ game, gameLogo }: { game: Game; gameLogo: Reac
         return null;
     }
     return (
-        <section className="text-foreground flex max-w-[720px] min-w-[360px] flex-1 flex-col gap-1 rounded-lg bg-black/50 px-4 py-6 shadow-xl">
-            <div className="flex flex-col">
-                <div className="relative flex flex-1 flex-col items-center">
-                    <div className="h-[120px] min-h-[120px] w-[240px]">{gameLogo}</div>
-                    <div className="font-heading line-clamp-2 text-center text-lg font-bold text-pretty">
-                        {isInGracePeriod ? game?.currentSeason?.name : game?.nextSeason?.name}
-                    </div>
-                    <div className="font-heading flex flex-row items-center gap-2 opacity-50">
-                        <Logo className="h-6 w-6" />
-                        <span className="text-nowrap">arpg-timeline.com</span>
+        <section className="text-foreground flex max-w-[720px] min-w-[360px] flex-1 flex-col gap-1 rounded-lg bg-black/50 px-4 pt-2 pb-6 shadow-xl">
+            <div className="relative flex flex-1 flex-col items-center">
+                <div className="h-[140px] min-h-[140px]">{gameLogo}</div>
+                <div className="text-foreground flex flex-row items-center gap-2">
+                    <Logo className="h-12 w-12 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]" />
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="font-heading line-clamp-2 text-center text-lg font-bold text-pretty [text-shadow:_0_1px_1px_rgba(0,0,0,0.4)]">
+                            {isInGracePeriod ? game?.currentSeason?.name : game?.nextSeason?.name}
+                        </div>
+                        <div className="flex flex-row items-center gap-2 leading-3">
+                            <span className="text-nowrap [text-shadow:_0_1px_1px_rgba(0,0,0,0.4)]">
+                                arpg-timeline.com
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="flex flex-1 flex-col gap-3">
+            <div className="mt-2 flex flex-1 scale-125 flex-col gap-3">
                 {isInGracePeriod ? (
-                    <FramedAction className="animate-bounce bg-transparent! font-bold shadow-none!">
+                    <FramedAction className="animate-bounce bg-transparent! font-bold shadow-none! [text-shadow:_0_1px_1px_rgba(0,0,0,0.4)]">
                         Play now!
                     </FramedAction>
                 ) : game?.nextSeason?.start?.confirmed ? (

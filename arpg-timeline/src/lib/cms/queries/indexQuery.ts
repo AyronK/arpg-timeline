@@ -24,6 +24,10 @@ export const indexQuery = `{
     name,
     "game": game->slug.current,
     url,
+    "logo": logo.asset->{
+      _id,
+      url      
+    },
     patchNotesUrl,
     start {
       startDate,
@@ -87,16 +91,15 @@ export interface SeasonEndDateInfo {
     overrideText?: string;
     additionalText?: string;
 }
-
 export interface Season {
     name: string;
     game: string;
     url?: string;
+    logo?: SanityImageAssetDocument;
     patchNotesUrl?: string;
     start?: SeasonStartDateInfo;
     end?: SeasonEndDateInfo;
 }
-
 export interface LiveStreamOnTwitch {
     game: string;
     platform: string;
@@ -104,13 +107,11 @@ export interface LiveStreamOnTwitch {
     name: string;
     slug: string;
 }
-
 export interface TwitchChannel {
     game: string;
     category?: string;
     channel?: string;
 }
-
 export interface Toast {
     title: string;
     description?: PortableTextBlock[];
@@ -118,7 +119,6 @@ export interface Toast {
     duration?: number;
     order: number;
 }
-
 export interface IndexQueryResult {
     games: Game[];
     seasons: Season[];
@@ -126,7 +126,6 @@ export interface IndexQueryResult {
     twitchChannels: TwitchChannel[];
     toast?: Toast;
 }
-
 export interface SteamData {
     appId?: number | null;
 }

@@ -29,6 +29,14 @@ export default {
             type: "url",
         },
         {
+            name: "logo",
+            title: "Logo",
+            type: "image",
+            options: {
+                hotspot: true,
+            },
+        },
+        {
             name: "start",
             title: "Start",
             type: "object",
