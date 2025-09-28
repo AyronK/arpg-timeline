@@ -2,7 +2,7 @@
     "crons": [
         {
             "path": "/api/cron/steam-news",
-            "schedule": "0 0 * * *"
+            "schedule": "0 0,6,12,18 * * *"
         }
     ]
 }
