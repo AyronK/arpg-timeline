@@ -35,6 +35,7 @@ export const CalendarMenu = ({ title, startDate }: { title: string; startDate: s
                 aria-label="Add to Google calendar"
             >
                 <Image
+                    loading="lazy"
                     className="mr-2 h-4 w-4"
                     width="24"
                     height="24"
@@ -49,6 +50,7 @@ export const CalendarMenu = ({ title, startDate }: { title: string; startDate: s
                 aria-label="Add to iCloud calendar"
             >
                 <Image
+                    loading="lazy"
                     className="mr-2 h-4 w-4"
                     width="24"
                     height="24"
@@ -66,6 +68,7 @@ export const CalendarMenu = ({ title, startDate }: { title: string; startDate: s
                 aria-label="Add to TickTick Calendar"
             >
                 <Image
+                    loading="lazy"
                     className="mr-2 h-4 w-4"
                     width="24"
                     height="24"

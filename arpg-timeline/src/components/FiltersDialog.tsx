@@ -185,6 +185,7 @@ export const Filters = ({
                                                 <div className="h-14 w-14 overflow-hidden rounded-md lg:h-20 lg:w-20">
                                                     {f.logo ? (
                                                         <SanityImage
+                                                            loading="lazy"
                                                             src={f.logo}
                                                             alt={`${f.label} logo`}
                                                             width={56}

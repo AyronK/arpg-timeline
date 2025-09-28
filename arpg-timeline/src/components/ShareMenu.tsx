@@ -56,6 +56,7 @@ export const ShareMenu = ({ title, startDate }: { title: string; startDate: stri
                     data-sa-click="discord"
                 >
                     <Image
+                        loading="lazy"
                         className="mr-2 h-4 w-4"
                         width="24"
                         height="24"

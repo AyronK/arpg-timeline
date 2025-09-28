@@ -48,7 +48,7 @@ export const TopCarousel = ({ games, streams }: { games: Game[]; streams: GameSt
                             }}
                         >
                             <CarouselContent>
-                                {filteredStreams.map((s) => (
+                                {filteredStreams.map((s, idx) => (
                                     <CarouselItem
                                         key={s.slug}
                                         className={cn("h-28 pr-4 pl-8", {
@@ -57,7 +57,7 @@ export const TopCarousel = ({ games, streams }: { games: Game[]; streams: GameSt
                                     >
                                         <div className="relative pt-3">
                                             <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
-                                            <StreamCard stream={s} />
+                                            <StreamCard stream={s} priority={idx === 0} />
                                         </div>
                                     </CarouselItem>
                                 ))}

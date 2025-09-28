@@ -102,7 +102,7 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
     </FramedAction>
 );
 
-export const StreamCard = ({ stream }: { stream: GameStream }) => {
+export const StreamCard = ({ stream, priority }: { stream: GameStream; priority: boolean }) => {
     const router = useRouter();
 
     useEffect(() => {
@@ -127,7 +127,8 @@ export const StreamCard = ({ stream }: { stream: GameStream }) => {
         >
             <div className="h-12 w-12 min-w-12 lg:h-16 lg:w-16">
                 <SanityImage
-                    loading="lazy"
+                    priority={priority}
+                    loading={priority ? "eager" : "lazy"}
                     src={stream.gameLogo!}
                     alt={`${stream.gameName} logo`}
                     className="my-auto"

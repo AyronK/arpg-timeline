@@ -8,6 +8,7 @@ import { FramedAction } from "@/components/FramedAction/FramedAction";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
+import { useDashboardImageLoadingOptimization } from "@/hooks/useDashboardImageLoadingOptimization";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,8 @@ export const Games = ({
     games: Game[];
     statistics?: Record<string, GameStatistics>;
 }) => {
+    const { shouldLoadImage } = useDashboardImageLoadingOptimization();
+
     return (
         <>
             {games.map((game, idx) => (
@@ -41,10 +44,16 @@ export const Games = ({
                             name={game.name}
                             gameLogo={
                                 <SanityImage
-                                    loading="lazy"
-                                    src={game.nextSeason?.logo ?? game.currentSeason?.logo ?? game.logo!}
+                                    loading={shouldLoadImage(idx) ? "eager" : "lazy"}
+                                    priority={shouldLoadImage(idx)}
+                                    src={
+                                        game.nextSeason?.logo ??
+                                        game.currentSeason?.logo ??
+                                        game.logo!
+                                    }
                                     alt={`${game.name} logo`}
                                     className="my-auto"
+                                    quality={50}
                                     width={160}
                                     height={140}
                                     objectFit="contain"
