@@ -9,12 +9,21 @@ import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { Game, GameStream } from "@/lib/cms/games.types";
+import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { isStreamSoon } from "@/lib/cms/isStreamSoon";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
-export const TopCarousel = ({ games, streams }: { games: Game[]; streams: GameStream[] }) => {
-    const { filteredGames } = useGameFilters(games);
+export const TopCarousel = ({
+    games,
+    streams,
+    category = "featured",
+}: {
+    games: Game[];
+    streams: GameStream[];
+    category?: GameFilterCategory;
+}) => {
+    const { filteredGames } = useGameFilters(games, category);
 
     const filteredStreams = useMemo(() => {
         return streams

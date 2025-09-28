@@ -111,4 +111,41 @@ export class SteamNewsService {
             await this.insertSteamNews(batch);
         }
     }
+
+    async getLatestNewsForGames(
+        gameSlugs: string[],
+    ): Promise<Array<{ gameSlug: string; news: SteamNewsDbEntry | null }>> {
+        if (gameSlugs.length === 0) return [];
+
+        const { data, error } = await this.supabase
+            .from("steam_news")
+            .select("*")
+            .in("game_slug", gameSlugs)
+            .order("pub_date", { ascending: false });
+
+        if (error) {
+            console.error("Error fetching latest news for games:", error);
+            throw new Error(`Failed to fetch latest news for games: ${error.message}`);
+        }
+
+        // Group by game_slug and get the most recent for each
+        const newsByGame = new Map<string, SteamNewsDbEntry>();
+        data?.forEach((news) => {
+            if (!newsByGame.has(news.game_slug)) {
+                newsByGame.set(news.game_slug, news);
+            }
+        });
+
+        // Return results ordered by publication date (most recent first)
+        return gameSlugs
+            .map((gameSlug) => ({
+                gameSlug,
+                news: newsByGame.get(gameSlug) || null,
+            }))
+            .filter((item) => item.news !== null)
+            .sort(
+                (a, b) =>
+                    new Date(b.news!.pub_date).getTime() - new Date(a.news!.pub_date).getTime(),
+            );
+    }
 }
