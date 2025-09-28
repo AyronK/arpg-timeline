@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { SanityImageAssetDocument } from "next-sanity";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, Suspense, useContext } from "react";
 import { useMemo } from "react";
 
 import { useGameFiltersAnalytics } from "@/hooks/useGameFiltersAnalytics";
@@ -68,7 +68,17 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
         category,
     };
 
-    return <GameFilterContext.Provider value={value}>{children}</GameFilterContext.Provider>;
+    return (
+        <Suspense
+            fallback={
+                <div className="after:bg-background relative animate-pulse after:absolute after:inset-0 after:rounded-md">
+                    {children}
+                </div>
+            }
+        >
+            <GameFilterContext.Provider value={value}>{children}</GameFilterContext.Provider>
+        </Suspense>
+    );
 };
 
 export const useGameFilterContext = () => {
