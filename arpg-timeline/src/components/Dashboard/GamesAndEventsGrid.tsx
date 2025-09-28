@@ -3,11 +3,10 @@
 import { useState } from "react";
 
 import { GameFilters } from "@/components/GameFilters";
+import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useGameCategories } from "@/hooks/useGameCategories";
-import { useGameFilters } from "@/hooks/useGameFilters";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
-import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { cn } from "@/lib/utils";
 
 import { CantFindGame } from "./CantFindGame";
@@ -18,19 +17,13 @@ import { Games } from "./Games";
 import { MobileBottomMenu } from "./MobileBottomMenu";
 
 export const GamesAndEventsGrid = ({
-    games,
     statistics,
-    category = "featured",
 }: {
-    games: Game[];
     statistics: Record<string, GameStatistics>;
-    category?: GameFilterCategory;
 }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const { filteredGames, totalGames, shownGames, ...filtersProps } = useGameFilters(
-        games,
-        category,
-    );
+    const { filteredGames, totalGames, shownGames, category, ...filtersProps } =
+        useGameFilterContext();
     const events = useTimelineEvents(filteredGames);
     const { allGames } = useGameCategories(filteredGames);
 

@@ -4,7 +4,6 @@ import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { SupportButtons } from "@/components/SupportButtons";
 import { GameStatistics } from "@/lib/cms/games.types";
-import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
@@ -12,13 +11,7 @@ import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
 
-import ClientOnlyVisibleWrapper from "../ClientOnlyVisibleWrapper";
-
-interface DashboardPageProps {
-    category: GameFilterCategory;
-}
-
-export const DashboardPage = async ({ category }: DashboardPageProps) => {
+export const DashboardPage = async () => {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
         revalidate: 24 * 60 * 60,
@@ -97,13 +90,11 @@ export const DashboardPage = async ({ category }: DashboardPageProps) => {
         <>
             {data.toast && <SingleToast data={data.toast} />}
             <div className="relative container mx-auto mb-8">
-                <Main games={games} statistics={statistics} category={category} />
+                <Main games={games} statistics={statistics} />
             </div>
             {gamesNews.length > 0 && (
                 <div className="container mx-auto mb-8">
-                    <ClientOnlyVisibleWrapper>
-                        <GameNewsSection gamesNews={gamesNews} games={games} category={category} />
-                    </ClientOnlyVisibleWrapper>
+                    <GameNewsSection gamesNews={gamesNews} />
                 </div>
             )}
             <StructuredDataScripts games={games} />

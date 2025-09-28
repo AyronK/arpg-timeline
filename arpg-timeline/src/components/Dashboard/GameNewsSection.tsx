@@ -5,7 +5,7 @@ import { SanityImageAssetDocument } from "next-sanity";
 import { useMemo } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
-import { useGameFilters } from "@/hooks/useGameFilters";
+import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
@@ -35,10 +35,14 @@ const addUTM = addUTMParameters({
 export const GameNewsSection = ({
     gamesNews,
     className,
-    games,
-    category,
-}: SteamNewsSectionProps) => {
-    const { filteredGames } = useGameFilters(games, category);
+}: Omit<SteamNewsSectionProps, "games" | "category">) => {
+    const { filteredGames, category } = useGameFilterContext();
+
+    console.log("GameNewsSection render:", {
+        category,
+        filteredGamesCount: filteredGames.length,
+        gamesNewsCount: gamesNews.length,
+    });
 
     const filteredGamesNews = useMemo(
         () =>

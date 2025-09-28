@@ -7,23 +7,14 @@ import { useMemo } from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
-import { useGameFilters } from "@/hooks/useGameFilters";
-import { Game, GameStream } from "@/lib/cms/games.types";
-import { GameFilterCategory } from "@/lib/cms/gameTags";
+import { useGameFilterContext } from "@/contexts/GameFilterContext";
+import { GameStream } from "@/lib/cms/games.types";
 import { isStreamSoon } from "@/lib/cms/isStreamSoon";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
-export const TopCarousel = ({
-    games,
-    streams,
-    category = "featured",
-}: {
-    games: Game[];
-    streams: GameStream[];
-    category?: GameFilterCategory;
-}) => {
-    const { filteredGames } = useGameFilters(games, category);
+export const TopCarousel = ({ streams }: { streams: GameStream[] }) => {
+    const { filteredGames } = useGameFilterContext();
 
     const filteredStreams = useMemo(() => {
         return streams
