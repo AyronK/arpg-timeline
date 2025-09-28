@@ -41,7 +41,20 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
         <Suspense
             fallback={
                 <div className="after:bg-background relative animate-pulse after:absolute after:inset-0 after:rounded-md">
-                    {children}
+                    <GameFilterContext.Provider
+                        value={{
+                            gameFilters: [],
+                            toggleGameFilter: () => {},
+                            toggleGroupFilter: () => {},
+                            activeFilters: [],
+                            filteredGames: games,
+                            totalGames: games.length,
+                            shownGames: games.length,
+                            category,
+                        }}
+                    >
+                        {children}
+                    </GameFilterContext.Provider>
                 </div>
             }
         >
@@ -89,5 +102,8 @@ const UnsafeGameFilterProvider = ({ children, games, category }: GameFilterProvi
 
 export const useGameFilterContext = () => {
     const context = useContext(GameFilterContext);
+    if (context === undefined) {
+        throw new Error("useGameFilterContext must be used within a GameFilterProvider");
+    }
     return context;
 };
