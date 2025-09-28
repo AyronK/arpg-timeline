@@ -4,6 +4,7 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getSteamNews } from "@/lib/steam/getSteamNews";
 import { SteamNewsService } from "@/lib/steam/steamNewsService";
+import { SteamNewsInsert } from "@/types/steam-news";
 
 export async function GET(request: NextRequest) {
     const authHeader = request.headers.get("authorization");
@@ -38,6 +39,8 @@ export async function GET(request: NextRequest) {
             totalNewsItems: 0,
         };
 
+        const allNewsEntries: SteamNewsInsert[] = [];
+
         for (const game of gamesWithSteam) {
             const steamAppId = game.steam?.appId;
             if (!steamAppId) continue;
@@ -51,10 +54,9 @@ export async function GET(request: NextRequest) {
                     const dbEntries = steamNews.map((newsItem) =>
                         steamNewsService.convertToDbEntry(game.slug, steamAppId, newsItem),
                     );
-
-                    await steamNewsService.insertSteamNews(dbEntries);
+                    allNewsEntries.push(...dbEntries);
                     results.totalNewsItems += steamNews.length;
-                    console.log(`Stored ${steamNews.length} news items for ${game.name}`);
+                    console.log(`Collected ${steamNews.length} news items for ${game.name}`);
                 } else {
                     console.log(`No news items found for ${game.name}`);
                 }
@@ -65,6 +67,12 @@ export async function GET(request: NextRequest) {
                 console.error(errorMessage);
                 results.errors.push(errorMessage);
             }
+        }
+
+        if (allNewsEntries.length > 0) {
+            console.log(`Processing ${allNewsEntries.length} total news entries in batches`);
+            await steamNewsService.insertSteamNewsBatch(allNewsEntries);
+            console.log(`Successfully processed all news entries`);
         }
 
         await steamNewsService.deleteOldNews(30);

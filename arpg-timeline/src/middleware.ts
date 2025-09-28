@@ -18,6 +18,7 @@ const routePrefixes = [
     "/game/",
     "/assets/",
     "/api/v1/",
+    "/api/cron/",
 ];
 
 function isValidRoute(pathname: string): boolean {

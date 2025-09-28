@@ -7,15 +7,38 @@ export class SteamNewsService {
     async insertSteamNews(entries: SteamNewsInsert[]): Promise<void> {
         if (entries.length === 0) return;
 
-        const { error } = await this.supabase.from("steam_news").upsert(entries, {
-            onConflict: "link",
-            ignoreDuplicates: false,
-        });
+        const existingLinks = await this.getExistingLinks(entries.map((e) => e.link));
+        const newEntries = entries.filter((entry) => !existingLinks.has(entry.link));
+
+        if (newEntries.length === 0) {
+            console.log("All Steam news entries already exist, skipping insert");
+            return;
+        }
+
+        console.log(
+            `Inserting ${newEntries.length} new Steam news entries (${entries.length - newEntries.length} already exist)`,
+        );
+
+        const { error } = await this.supabase.from("steam_news").insert(newEntries);
 
         if (error) {
             console.error("Error inserting Steam news:", error);
             throw new Error(`Failed to insert Steam news: ${error.message}`);
         }
+    }
+
+    private async getExistingLinks(links: string[]): Promise<Set<string>> {
+        const { data, error } = await this.supabase
+            .from("steam_news")
+            .select("link")
+            .in("link", links);
+
+        if (error) {
+            console.error("Error checking existing links:", error);
+            return new Set();
+        }
+
+        return new Set(data?.map((item) => item.link) || []);
     }
 
     async getSteamNewsByGame(gameSlug: string, limit = 10): Promise<SteamNewsDbEntry[]> {
@@ -78,5 +101,14 @@ export class SteamNewsService {
             description: newsItem.description,
             pub_date: newsItem.pubDate,
         };
+    }
+
+    async insertSteamNewsBatch(entries: SteamNewsInsert[], batchSize = 100): Promise<void> {
+        if (entries.length === 0) return;
+
+        for (let i = 0; i < entries.length; i += batchSize) {
+            const batch = entries.slice(i, i + batchSize);
+            await this.insertSteamNews(batch);
+        }
     }
 }
