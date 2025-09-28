@@ -13,6 +13,8 @@ import { isStreamSoon } from "@/lib/cms/isStreamSoon";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
+import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
+
 export const TopCarousel = ({ streams }: { streams: GameStream[] }) => {
     const { filteredGames } = useGameFilterContext();
 
@@ -29,54 +31,56 @@ export const TopCarousel = ({ streams }: { streams: GameStream[] }) => {
     }, [filteredGames, streams]);
 
     return (
-        <div className="flex justify-center">
-            <div className="relative mx-auto max-w-screen flex-1 lg:max-w-3xl">
-                <h2 className="hidden">Streams</h2>
-                <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                    <div className="mx-auto max-w-screen lg:max-w-3xl">
-                        <Carousel
-                            plugins={[
-                                Autoplay({
-                                    delay: 10_000,
-                                    stopOnMouseEnter: true,
-                                }),
-                            ]}
-                            className="w-full max-w-screen select-none lg:max-w-3xl"
-                            opts={{
-                                loop: true,
-                                active: filteredStreams.length > 0,
-                            }}
-                        >
-                            <CarouselContent>
-                                {filteredStreams.map((s, idx) => (
+        <ClientOnlyVisibleWrapper>
+            <div className="flex justify-center">
+                <div className="relative mx-auto max-w-screen flex-1 lg:max-w-3xl">
+                    <h2 className="hidden">Streams</h2>
+                    <ErrorBoundary fallback={<WidgetDiedFallback />}>
+                        <div className="mx-auto max-w-screen lg:max-w-3xl">
+                            <Carousel
+                                plugins={[
+                                    Autoplay({
+                                        delay: 10_000,
+                                        stopOnMouseEnter: true,
+                                    }),
+                                ]}
+                                className="w-full max-w-screen select-none lg:max-w-3xl"
+                                opts={{
+                                    loop: true,
+                                    active: filteredStreams.length > 0,
+                                }}
+                            >
+                                <CarouselContent>
+                                    {filteredStreams.map((s, idx) => (
+                                        <CarouselItem
+                                            key={s.slug}
+                                            className={cn("h-28 pr-4 pl-8", {
+                                                "cursor-all-scroll": filteredStreams.length > 0,
+                                            })}
+                                        >
+                                            <div className="relative pt-3">
+                                                <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
+                                                <StreamCard stream={s} priority={idx === 0} />
+                                            </div>
+                                        </CarouselItem>
+                                    ))}
                                     <CarouselItem
-                                        key={s.slug}
-                                        className={cn("h-28 pr-4 pl-8", {
-                                            "cursor-all-scroll": filteredStreams.length > 0,
-                                        })}
+                                        className={cn(
+                                            "flex h-28 items-center justify-center pr-4 pl-8",
+                                            {
+                                                "cursor-all-scroll": filteredStreams.length > 0,
+                                            },
+                                        )}
                                     >
-                                        <div className="relative pt-3">
-                                            <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
-                                            <StreamCard stream={s} priority={idx === 0} />
-                                        </div>
+                                        <Kicker />
                                     </CarouselItem>
-                                ))}
-                                <CarouselItem
-                                    className={cn(
-                                        "flex h-28 items-center justify-center pr-4 pl-8",
-                                        {
-                                            "cursor-all-scroll": filteredStreams.length > 0,
-                                        },
-                                    )}
-                                >
-                                    <Kicker />
-                                </CarouselItem>
-                            </CarouselContent>
-                        </Carousel>
-                    </div>
-                </ErrorBoundary>
+                                </CarouselContent>
+                            </Carousel>
+                        </div>
+                    </ErrorBoundary>
+                </div>
             </div>
-        </div>
+        </ClientOnlyVisibleWrapper>
     );
 };
 
