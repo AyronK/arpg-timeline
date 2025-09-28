@@ -46,7 +46,7 @@ export const useGameFilters = (
     const activeFilters = useMemo(() => {
         return games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
     }, [games, excludedSlugs]);
-
+    
     return {
         gameFilters,
         toggleGameFilter,

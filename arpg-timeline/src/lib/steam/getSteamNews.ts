@@ -34,7 +34,7 @@ export async function getSteamNews(appId: number): Promise<SteamNewsItem[]> {
         const xmlText = await response.text();
         return parseSteamRss(xmlText);
     } catch (error) {
-        console.error("Error fetching Steam news:", error);
+        console.error("Error fetching Game news:", error);
         return [];
     }
 }
@@ -76,7 +76,7 @@ function parseSteamRss(xmlText: string): SteamNewsItem[] {
             }
         }
 
-        return items.slice(0, 4);
+        return items.slice(0, 10);
     } catch (error) {
         console.error("Error parsing Steam RSS:", error);
         return [];

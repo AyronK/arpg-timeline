@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 
-import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 
+import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 import { CarouselFallback, TopCarousel } from "./TopCarousel";
 
 const CarouselData = async () => {
@@ -14,10 +14,13 @@ const CarouselData = async () => {
         tags: ["liveStreamTwitch", "game"],
     });
 
-    const games = parseGamesFromSanity(data);
     const streams = parseGameStreamsFromSanity(data);
 
-    return <TopCarousel games={games} streams={streams} />;
+    return (
+        <ClientOnlyVisibleWrapper>
+            <TopCarousel streams={streams} />
+        </ClientOnlyVisibleWrapper>
+    );
 };
 
 export const LayoutCarousel = () => {

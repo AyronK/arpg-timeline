@@ -4,17 +4,34 @@ import { notFound } from "next/navigation";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
+import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { getSteamNews } from "@/lib/steam/getSteamNews";
 
 import {
     ArchivalSeasonsSection,
     GameHeaderSection,
+    PlatformIntegrationSection,
     StatisticsSection,
-    SteamIntegrationSection,
 } from "./components";
 import { GamePageProps } from "./types";
 import { calculateGameStatistics, getArchivalSeasons, getOldestSeasonInfo } from "./utils";
+
+async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
+    try {
+        const steamNewsService = new GameNewsService();
+        const dbNews = await steamNewsService.getGameNewsByGame(gameSlug, limit);
+
+        return dbNews.map((news) => ({
+            title: news.title,
+            link: news.link,
+            description: news.description,
+            pubDate: news.pub_date,
+        }));
+    } catch (error) {
+        console.error("Error fetching Game news from database:", error);
+        return [];
+    }
+}
 
 const GamePage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
@@ -33,7 +50,7 @@ const GamePage = async ({ params }: GamePageProps) => {
     }
 
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
-    const steamNews = steamAppId ? await getSteamNews(steamAppId) : [];
+    const gameNews = await getSteamNewsFromDb(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
     const oldestSeasonInfo = getOldestSeasonInfo(data, gameSlug);
     const archivalSeasons = getArchivalSeasons(data, gameSlug);
@@ -53,9 +70,10 @@ const GamePage = async ({ params }: GamePageProps) => {
                 />
 
                 <div className="mb-6 md:mb-8">
-                    {steamAppId && (
-                        <SteamIntegrationSection steamAppId={steamAppId} steamNews={steamNews} />
-                    )}
+                    <PlatformIntegrationSection
+                        steamAppId={steamAppId}
+                        gameNews={gameNews.slice(0, 4)}
+                    />
                 </div>
 
                 <ArchivalSeasonsSection seasons={archivalSeasons} />
