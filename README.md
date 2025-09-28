@@ -7,7 +7,8 @@
   <h1>aRPG Timeline</h1>
   <a href="https://discord.gg/39mTbjkePg"><img src="https://img.shields.io/badge/discord-grey.svg?&logo=discord&style=for-the-badge" alt="aRPG Timeline Discord"></a>
   <a href="https://www.patreon.com/AyronK"><img src="https://img.shields.io/badge/Support_on_Patreon-test2?style=for-the-badge&color=grey&logo=patreon" alt="Support on Patreon"></a>  
-  <a href="https://coff.ee/ayron"><img src="https://img.shields.io/badge/Buy_me_a_coffee-test2?style=for-the-badge&color=grey&logo=buymeacoffee" alt="Buy me a coffee"></a>  
+  <a href="https://coff.ee/ayron"><img src="https://img.shields.io/badge/Buy_me_a_coffee-test2?style=for-the-badge&color=grey&logo=buymeacoffee" alt="Buy me a coffee"></a>
+  <a href="https://www.figma.com/design/AegexktO8bsR2eeiqnaVcY/aRPG-Timeline?node-id=0-1&p=f&t=7yhgc7JjgHDJxUCd-0"><img src="https://img.shields.io/badge/Figma-test2?style=for-the-badge&color=grey&logo=figma" alt="Figma"></a>
 </div>
 <br/>
 <div align="center">
@@ -250,3 +251,4 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
