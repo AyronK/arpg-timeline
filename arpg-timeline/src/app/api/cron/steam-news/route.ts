@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
+import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getSteamNews } from "@/lib/steam/getSteamNews";
-import { SteamNewsService } from "@/lib/steam/steamNewsService";
-import { SteamNewsInsert } from "@/types/steam-news";
+import { GameNewsInsert } from "@/types/game-news";
 
 export async function GET(request: NextRequest) {
     const authHeader = request.headers.get("authorization");
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        console.log("Starting Steam news cron job...");
+        console.log("Starting Game news cron job...");
 
         const data: IndexQueryResult = await sanityFetch({
             query: indexQuery,
@@ -32,21 +32,21 @@ export async function GET(request: NextRequest) {
             });
         }
 
-        const steamNewsService = new SteamNewsService();
+        const steamNewsService = new GameNewsService();
         const results = {
             processed: 0,
             errors: [] as string[],
             totalNewsItems: 0,
         };
 
-        const allNewsEntries: SteamNewsInsert[] = [];
+        const allNewsEntries: GameNewsInsert[] = [];
 
         for (const game of gamesWithSteam) {
             const steamAppId = game.steam?.appId;
             if (!steamAppId) continue;
 
             try {
-                console.log(`Fetching Steam news for ${game.name} (App ID: ${steamAppId})`);
+                console.log(`Fetching Game news for ${game.name} (App ID: ${steamAppId})`);
 
                 const steamNews = await getSteamNews(steamAppId);
 
@@ -71,25 +71,25 @@ export async function GET(request: NextRequest) {
 
         if (allNewsEntries.length > 0) {
             console.log(`Processing ${allNewsEntries.length} total news entries in batches`);
-            await steamNewsService.insertSteamNewsBatch(allNewsEntries);
+            await steamNewsService.insertGameNewsBatch(allNewsEntries);
             console.log(`Successfully processed all news entries`);
         }
 
         await steamNewsService.deleteOldNews(30);
 
         console.log(
-            `Steam news cron job completed. Processed: ${results.processed}, Total news items: ${results.totalNewsItems}, Errors: ${results.errors.length}`,
+            `Game news cron job completed. Processed: ${results.processed}, Total news items: ${results.totalNewsItems}, Errors: ${results.errors.length}`,
         );
 
         return NextResponse.json({
-            message: "Steam news cron job completed",
+            message: "Game news cron job completed",
             ...results,
         });
     } catch (error) {
-        console.error("Steam news cron job failed:", error);
+        console.error("Game news cron job failed:", error);
         return NextResponse.json(
             {
-                error: "Steam news cron job failed",
+                error: "Game news cron job failed",
                 message: error instanceof Error ? error.message : "Unknown error",
             },
             { status: 500 },

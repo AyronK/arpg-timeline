@@ -1,11 +1,11 @@
-export interface SteamNewsItem {
+export interface GameNewsItem {
     title: string;
     link: string;
     description: string;
     pubDate: string;
 }
 
-export interface SteamNewsDbEntry {
+export interface GameNewsDbEntry {
     id: string;
     game_slug: string;
     steam_app_id: number;
@@ -17,7 +17,7 @@ export interface SteamNewsDbEntry {
     updated_at: string;
 }
 
-export interface SteamNewsInsert {
+export interface GameNewsInsert {
     game_slug: string;
     steam_app_id: number;
     title: string;

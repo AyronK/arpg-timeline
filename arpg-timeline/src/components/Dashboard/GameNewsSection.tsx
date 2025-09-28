@@ -1,6 +1,7 @@
 "use client";
 
 import { Calendar, ExternalLink } from "lucide-react";
+import { SanityImageAssetDocument } from "next-sanity";
 import { useMemo } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
@@ -10,7 +11,6 @@ import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
 import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
-import { SanityImageAssetDocument } from "next-sanity";
 
 interface GameNewsItem {
     gameSlug: string;
@@ -32,7 +32,7 @@ const addUTM = addUTMParameters({
     utm_content: "dashboard_steam_news",
 });
 
-export const SteamNewsSection = ({
+export const GameNewsSection = ({
     gamesNews,
     className,
     games,
@@ -60,26 +60,27 @@ export const SteamNewsSection = ({
     return (
         <div className={cn("bg-card text-card-foreground rounded-lg border p-6", className)}>
             <h2 className="font-heading mb-6 text-2xl">Latest News</h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredGamesNews.map((gameNews) => (
                     <article key={gameNews.gameSlug} className="group">
                         <a
                             href={addUTM(gameNews.news.link)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-muted/20 hover:bg-muted/40 hover:border-border block rounded-md border border-transparent p-4 transition-all hover:shadow-lg"
+                            className="bg-muted/20 hover:bg-muted/40 hover:border-border block rounded-md border border-transparent p-3 transition-all hover:shadow-lg sm:p-4"
                         >
                             <div className="space-y-3">
-                                <div className="flex items-center justify-center gap-3">
+                                <div className="flex items-center gap-3 sm:items-center">
                                     {gameNews.gameLogo && (
-                                        <div className="flex-shrink-0">
+                                        <div className="flex-shrink-0 rounded sm:h-10 sm:w-10 lg:h-12 lg:w-12">
                                             <SanityImage
+                                                loading="lazy"
                                                 src={gameNews.gameLogo}
                                                 alt={`${gameNews.gameName} logo`}
-                                                width={40}
-                                                height={40}
+                                                width={56}
+                                                height={56}
                                                 objectFit="contain"
-                                                className="rounded"
+                                                className="h-full w-full"
                                             />
                                         </div>
                                     )}

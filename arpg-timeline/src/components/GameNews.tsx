@@ -6,8 +6,8 @@ import { addUTMParameters } from "@/lib/utm";
 
 import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
-interface SteamNewsProps {
-    steamAppId: number;
+interface GameNewsProps {
+    steamAppId?: number | null;
     news: SteamNewsItem[];
     className?: string;
 }
@@ -17,12 +17,12 @@ const addUTM = addUTMParameters({
     utm_content: "steam_news",
 });
 
-export const SteamNews = ({ steamAppId, news, className }: SteamNewsProps) => {
+export const GameNews = ({ steamAppId, news, className }: GameNewsProps) => {
     if (news.length === 0) {
         return (
             <div className={cn("bg-card text-card-foreground rounded-lg border p-4", className)}>
                 <div className="border-border mb-4 flex items-center gap-2 border-b pb-2">
-                    <h3 className="font-heading text-foreground text-lg">Steam News</h3>
+                    <h3 className="font-heading text-foreground text-lg">Game news</h3>
                 </div>
                 <p className="text-muted-foreground text-sm">No recent news available.</p>
             </div>
@@ -37,7 +37,7 @@ export const SteamNews = ({ steamAppId, news, className }: SteamNewsProps) => {
             )}
         >
             <div className="border-border mb-4 flex items-center gap-2 border-b pb-2">
-                <h3 className="font-heading text-foreground text-lg">Steam News</h3>
+                <h3 className="font-heading text-foreground text-lg">Game news</h3>
             </div>
             <div className="space-y-3">
                 {news.map((item, index) => (
@@ -81,16 +81,18 @@ export const SteamNews = ({ steamAppId, news, className }: SteamNewsProps) => {
                 ))}
             </div>
 
-            <div className="border-border mt-auto flex w-full justify-end border-t pt-3">
-                <MaybeLinkWrapper
-                    href={addUTM(`https://store.steampowered.com/news/app/${steamAppId}`)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:text-primary/80 text-sm"
-                >
-                    View all news
-                </MaybeLinkWrapper>
-            </div>
+            {steamAppId && (
+                <div className="border-border mt-auto flex w-full justify-end border-t pt-3">
+                    <MaybeLinkWrapper
+                        href={addUTM(`https://store.steampowered.com/news/app/${steamAppId}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:text-primary/80 text-sm"
+                    >
+                        View all news
+                    </MaybeLinkWrapper>
+                </div>
+            )}
         </div>
     );
 };
