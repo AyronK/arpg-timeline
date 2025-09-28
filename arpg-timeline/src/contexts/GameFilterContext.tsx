@@ -37,6 +37,22 @@ interface GameFilterProviderProps {
 }
 
 export const GameFilterProvider = ({ children, games, category }: GameFilterProviderProps) => {
+    return (
+        <Suspense
+            fallback={
+                <div className="after:bg-background relative animate-pulse after:absolute after:inset-0 after:rounded-md">
+                    {children}
+                </div>
+            }
+        >
+            <UnsafeGameFilterProvider games={games} category={category}>
+                {children}
+            </UnsafeGameFilterProvider>
+        </Suspense>
+    );
+};
+
+const UnsafeGameFilterProvider = ({ children, games, category }: GameFilterProviderProps) => {
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
 
@@ -68,17 +84,7 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
         category,
     };
 
-    return (
-        <Suspense
-            fallback={
-                <div className="after:bg-background relative animate-pulse after:absolute after:inset-0 after:rounded-md">
-                    {children}
-                </div>
-            }
-        >
-            <GameFilterContext.Provider value={value}>{children}</GameFilterContext.Provider>
-        </Suspense>
-    );
+    return <GameFilterContext.Provider value={value}>{children}</GameFilterContext.Provider>;
 };
 
 export const useGameFilterContext = () => {
