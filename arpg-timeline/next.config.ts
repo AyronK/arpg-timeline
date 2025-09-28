@@ -205,6 +205,19 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
+                source: "/dashboard/:path",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=300",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=3600, stale-while-revalidate=300",
+                    },
+                ],
+            },
+            {
                 source: "/game/:path",
                 headers: [
                     {
@@ -261,3 +274,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
