@@ -89,8 +89,5 @@ const UnsafeGameFilterProvider = ({ children, games, category }: GameFilterProvi
 
 export const useGameFilterContext = () => {
     const context = useContext(GameFilterContext);
-    if (context === undefined) {
-        throw new Error("useGameFilterContext must be used within a GameFilterProvider");
-    }
     return context;
 };
