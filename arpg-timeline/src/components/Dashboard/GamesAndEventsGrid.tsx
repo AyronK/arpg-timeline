@@ -35,7 +35,7 @@ export const GamesAndEventsGrid = ({
         <>
             <article className="relative mt-2 flex flex-col gap-4 lg:mt-0 lg:gap-0">
                 <h2 className="sr-only">Seasons</h2>
-                <div className="lg:bg-background relative -mt-4 flex flex-col gap-1 lg:sticky lg:top-0 lg:z-10 lg:-mt-4 lg:py-4">
+                <div className="lg:bg-background relative -mt-4 flex flex-col gap-1 lg:sticky lg:top-0 lg:z-10 lg:-mt-2 lg:py-4">
                     <div className="hidden lg:block">
                         <GameCountDisplay shownGames={shownGames} totalGames={totalGames} />
                     </div>
