@@ -77,6 +77,7 @@ export const DashboardPage = async ({ category }: DashboardPageProps) => {
                     gameSlug: item.gameSlug,
                     gameName: game?.name || item.gameSlug,
                     steamAppId: game?.steam?.appId || 0,
+                    gameLogo: game?.logo,
                     news: {
                         title: item.news!.title,
                         link: item.news!.link,

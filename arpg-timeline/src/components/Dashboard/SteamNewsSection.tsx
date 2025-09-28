@@ -3,18 +3,21 @@
 import { Calendar, ExternalLink } from "lucide-react";
 import { useMemo } from "react";
 
+import { SanityImage } from "@/components/SanityImage";
 import { useGameFilters } from "@/hooks/useGameFilters";
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
 import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
+import { SanityImageAssetDocument } from "next-sanity";
 
 interface GameNewsItem {
     gameSlug: string;
     gameName: string;
     steamAppId: number;
     news: SteamNewsItem;
+    gameLogo?: SanityImageAssetDocument;
 }
 
 interface SteamNewsSectionProps {
@@ -48,7 +51,7 @@ export const SteamNewsSection = ({
     if (filteredGamesNews.length === 0) {
         return (
             <div className={cn("bg-card text-card-foreground rounded-lg border p-6", className)}>
-                <h2 className="font-heading mb-4 text-2xl">Latest Steam News</h2>
+                <h2 className="font-heading mb-4 text-2xl">Latest News</h2>
                 <p className="text-muted-foreground">No recent news available for any games.</p>
             </div>
         );
@@ -56,7 +59,7 @@ export const SteamNewsSection = ({
 
     return (
         <div className={cn("bg-card text-card-foreground rounded-lg border p-6", className)}>
-            <h2 className="font-heading mb-6 text-2xl">Latest Steam News</h2>
+            <h2 className="font-heading mb-6 text-2xl">Latest News</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {filteredGamesNews.map((gameNews) => (
                     <article key={gameNews.gameSlug} className="group">
@@ -67,19 +70,35 @@ export const SteamNewsSection = ({
                             className="bg-muted/20 hover:bg-muted/40 hover:border-border block rounded-md border border-transparent p-4 transition-all hover:shadow-lg"
                         >
                             <div className="space-y-3">
-                                <div className="flex items-start justify-between gap-2">
-                                    <div className="flex-1">
-                                        <h3 className="text-foreground group-hover:text-primary mb-1 text-sm font-semibold">
-                                            {gameNews.gameName}
-                                        </h3>
-                                        <h4
-                                            className="text-foreground group-hover:text-primary line-clamp-2 text-sm leading-tight font-medium transition-colors"
-                                            dangerouslySetInnerHTML={{
-                                                __html: gameNews.news.title,
-                                            }}
-                                        />
+                                <div className="flex items-center justify-center gap-3">
+                                    {gameNews.gameLogo && (
+                                        <div className="flex-shrink-0">
+                                            <SanityImage
+                                                src={gameNews.gameLogo}
+                                                alt={`${gameNews.gameName} logo`}
+                                                width={40}
+                                                height={40}
+                                                objectFit="contain"
+                                                className="rounded"
+                                            />
+                                        </div>
+                                    )}
+                                    <div className="min-w-0 flex-1">
+                                        <div className="flex items-start justify-between gap-2">
+                                            <div className="min-w-0 flex-1">
+                                                <h3 className="text-foreground group-hover:text-primary mb-1 text-sm font-semibold">
+                                                    {gameNews.gameName}
+                                                </h3>
+                                                <h4
+                                                    className="text-foreground group-hover:text-primary line-clamp-2 text-sm leading-tight font-medium transition-colors"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: gameNews.news.title,
+                                                    }}
+                                                />
+                                            </div>
+                                            <ExternalLink className="text-muted-foreground mt-0.5 h-4 w-4 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
+                                        </div>
                                     </div>
-                                    <ExternalLink className="text-muted-foreground mt-0.5 h-4 w-4 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
                                 </div>
 
                                 <div className="text-muted-foreground flex items-center gap-2 text-xs">
