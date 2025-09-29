@@ -43,35 +43,29 @@ function parseSteamRss(xmlText: string): SteamNewsItem[] {
     try {
         const items: SteamNewsItem[] = [];
 
-        const titleMatch = xmlText.match(/<title>(.*?)<\/title>/g);
-        const linkMatch = xmlText.match(/<link>(.*?)<\/link>/g);
-        const descriptionMatch = xmlText.match(/<description>(.*?)<\/description>/g);
-        const pubDateMatch = xmlText.match(/<pubDate>(.*?)<\/pubDate>/g);
+        const itemMatches = xmlText.match(/<item>[\s\S]*?<\/item>/g);
 
-        if (titleMatch && linkMatch && descriptionMatch && pubDateMatch) {
-            const maxItems = Math.min(
-                titleMatch.length,
-                linkMatch.length,
-                descriptionMatch.length,
-                pubDateMatch.length,
-            );
+        if (itemMatches) {
+            for (const itemXml of itemMatches) {
+                const titleMatch = itemXml.match(/<title>(.*?)<\/title>/);
+                const linkMatch = itemXml.match(/<link>(.*?)<\/link>/);
+                const descriptionMatch = itemXml.match(/<description>(.*?)<\/description>/);
+                const pubDateMatch = itemXml.match(/<pubDate>(.*?)<\/pubDate>/);
 
-            for (let i = 1; i < maxItems; i++) {
-                const title = titleMatch[i].replace(/<\/?title>/g, "").trim();
-                const link = linkMatch[i]
-                    .replace(/<\/?link>/g, "")
-                    .replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
-                    .trim();
-                const description = descriptionMatch[i].replace(/<\/?description>/g, "").trim();
-                const pubDate = pubDateMatch[i].replace(/<\/?pubDate>/g, "").trim();
+                if (titleMatch && linkMatch && descriptionMatch && pubDateMatch) {
+                    const title = titleMatch[1].trim();
+                    const link = linkMatch[1].replace(/<!\[CDATA\[(.*?)\]\]>/, "$1").trim();
+                    const description = descriptionMatch[1].trim();
+                    const pubDate = pubDateMatch[1].trim();
 
-                if (title && link && description && pubDate) {
-                    items.push({
-                        title: cleanPlainText(title),
-                        link: cleanPlainText(link),
-                        description: cleanPlainText(description),
-                        pubDate,
-                    });
+                    if (title && link && description && pubDate) {
+                        items.push({
+                            title: cleanPlainText(title),
+                            link: cleanPlainText(link),
+                            description: cleanPlainText(description),
+                            pubDate,
+                        });
+                    }
                 }
             }
         }
