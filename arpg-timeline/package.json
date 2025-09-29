@@ -46,7 +46,7 @@
         "react-is": "^19.1.1",
         "react-responsive": "^10.0.1",
         "styled-components": "^6.1.19",
-        "swagger-ui-react": "^5.29.0",
+        "swagger-ui-react": "^5.29.1",
         "tailwind-merge": "^3.3.1",
         "tailwind-scrollbar": "^4.0.2",
         "tailwindcss-animate": "^1.0.7",
@@ -68,6 +68,6 @@
         "prettier-plugin-tailwindcss": "^0.6.14",
         "tailwindcss": "^4",
         "typescript": "^5",
-        "typescript-eslint": "^8.44.1"
+        "typescript-eslint": "^8.45.0"
     }
 }
