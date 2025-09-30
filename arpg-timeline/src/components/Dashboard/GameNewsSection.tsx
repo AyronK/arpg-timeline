@@ -36,7 +36,7 @@ export const GameNewsSection = ({
     gamesNews,
     className,
 }: Omit<SteamNewsSectionProps, "games" | "category">) => {
-    const { filteredGames, category } = useGameFilterContext();
+    const { filteredGames } = useGameFilterContext();
 
     const filteredGamesNews = useMemo(
         () =>

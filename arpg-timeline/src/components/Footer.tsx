@@ -4,9 +4,11 @@ export const Footer = () => (
     <footer className="mt-4">
         <div className="border-foreground bg-card flex flex-col gap-4 border-t px-4 py-4">
             <p className="text-muted-foreground mx-auto max-w-4xl text-center text-balance italic">
-                This site is independently developed, primarily by a solo developer with occasional community contributions, 
-                and maintained through Patreon support. It is not affiliated with any game studio, publisher, or official entity in the gaming industry. 
-                Data on the website may not always be accurate, and updates could be delayed up to 48 hours.
+                This site is independently developed, primarily by a solo developer with occasional
+                community contributions, and maintained through Patreon support. It is not
+                affiliated with any game studio, publisher, or official entity in the gaming
+                industry. Data on the website may not always be accurate, and updates could be
+                delayed up to 48 hours.
             </p>
             <div className="flex flex-col justify-evenly gap-6 md:flex-row">
                 <div className="flex flex-row gap-1">
@@ -89,4 +91,3 @@ export const Footer = () => (
         </div>
     </footer>
 );
-
