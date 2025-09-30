@@ -1,6 +1,7 @@
 import { GameCategory } from "@/lib/cms/gameTags";
 
 export interface GameResponse {
+    lastModified: string;
     slug: string;
     name: string;
     seasonKeyword: string | undefined;
@@ -12,6 +13,7 @@ export interface GamesApiResponse {
 }
 
 export interface SeasonInfo {
+    lastModified: string;
     name: string;
     game: string;
     url: string | null;

@@ -17,6 +17,7 @@ export type GameStatistics = {
     steam?: { currentPlayers: number; appId: number; isComingSoon?: boolean } | null;
 };
 export type Game = {
+    _updatedAt: string;
     name: string;
     shortName: string | null | undefined;
     isDormant: boolean;
@@ -35,6 +36,7 @@ export type Game = {
 };
 
 export type Season = {
+    _updatedAt: string;
     start?: SeasonStart | null | undefined;
     end?: SeasonEnd | null | undefined;
     url?: string | null | undefined;

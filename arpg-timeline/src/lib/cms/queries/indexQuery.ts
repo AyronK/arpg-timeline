@@ -4,6 +4,8 @@ import { GameCategory, GameTag } from "../gameTags";
 
 export const indexQuery = `{
   "games": *[_type == "game"]{
+    _updatedAt,
+    _createdAt,
     "slug":slug.current,
     name,
     shortName,
@@ -21,6 +23,8 @@ export const indexQuery = `{
     steam
   },
   "seasons": *[_type == "season"]{
+    _updatedAt,
+    _createdAt,
     name,
     "game": game->slug.current,
     url,
@@ -44,6 +48,8 @@ export const indexQuery = `{
   },
 
   "liveStreamsOnTwitch": *[_type == "liveStreamTwitch"]{
+    _updatedAt,
+    _createdAt,
     "game": game->slug.current,
     "platform": platform->_id,
     date,
@@ -64,7 +70,12 @@ export const indexQuery = `{
   }
 }`;
 
-export interface Game {
+export interface SanityDocumentBase {
+    _updatedAt: string;
+    _createdAt: string;
+}
+
+export interface Game extends SanityDocumentBase {
     slug: string;
     name: string;
     shortName?: string;
@@ -91,7 +102,7 @@ export interface SeasonEndDateInfo {
     overrideText?: string;
     additionalText?: string;
 }
-export interface Season {
+export interface Season extends SanityDocumentBase {
     name: string;
     game: string;
     url?: string;
@@ -100,7 +111,7 @@ export interface Season {
     start?: SeasonStartDateInfo;
     end?: SeasonEndDateInfo;
 }
-export interface LiveStreamOnTwitch {
+export interface LiveStreamOnTwitch extends SanityDocumentBase {
     game: string;
     platform: string;
     date: string;

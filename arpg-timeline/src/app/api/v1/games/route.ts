@@ -28,6 +28,7 @@ export async function GET(
         });
 
         const games = data.games.map((game) => ({
+            lastModified: game._updatedAt,
             slug: game.slug,
             name: game.name,
             seasonKeyword: game.seasonKeyword,

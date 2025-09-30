@@ -66,6 +66,7 @@ export async function GET(
 
         if (game.currentSeason && game.currentSeason.start?.confirmed) {
             response.current = {
+                lastModified: game.currentSeason._updatedAt,
                 name: game.currentSeason.name || "",
                 game: game.slug,
                 url: game.currentSeason.url ? addUTM(game.currentSeason.url) : null,
@@ -81,6 +82,7 @@ export async function GET(
 
         if (game.nextSeason && game.nextSeason.start?.confirmed) {
             response.next = {
+                lastModified: game.nextSeason._updatedAt,
                 name: game.nextSeason.name || "",
                 game: game.slug,
                 url: game.nextSeason.url ? addUTM(game.nextSeason.url) : null,
