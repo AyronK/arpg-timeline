@@ -38,12 +38,6 @@ export const GameNewsSection = ({
 }: Omit<SteamNewsSectionProps, "games" | "category">) => {
     const { filteredGames, category } = useGameFilterContext();
 
-    console.log("GameNewsSection render:", {
-        category,
-        filteredGamesCount: filteredGames.length,
-        gamesNewsCount: gamesNews.length,
-    });
-
     const filteredGamesNews = useMemo(
         () =>
             gamesNews.filter((gameNews) =>
