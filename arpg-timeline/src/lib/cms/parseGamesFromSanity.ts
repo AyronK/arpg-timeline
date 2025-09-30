@@ -102,6 +102,7 @@ export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
 
         game.nextSeason = hasLatestSeasonStarted
             ? {
+                  _updatedAt: game.currentSeason._updatedAt,
                   name: `Next ${g.seasonKeyword}`,
                   start: {
                       confirmed: false,

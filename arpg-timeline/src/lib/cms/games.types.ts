@@ -18,6 +18,7 @@ export type GameStatistics = {
 };
 export type Game = {
     _updatedAt: string;
+    _createdAt: string;
     name: string;
     shortName: string | null | undefined;
     isDormant: boolean;
