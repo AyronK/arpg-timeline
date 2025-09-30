@@ -344,7 +344,7 @@
             },
             "Game": {
                 "type": "object",
-                "required": ["slug", "name", "seasonKeyword"],
+                "required": ["slug", "name", "seasonKeyword", "lastModified"],
                 "properties": {
                     "slug": {
                         "type": "string",
@@ -369,6 +369,12 @@
                         },
                         "description": "Game categories for dashboard visibility and categorization",
                         "example": ["seasonal"]
+                    },
+                    "lastModified": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ISO 8601 date string for when the game was last modified",
+                        "example": "2024-12-06T21:00:00Z"
                     }
                 }
             },
@@ -386,7 +392,15 @@
             },
             "SeasonInfo": {
                 "type": "object",
-                "required": ["name", "game", "url", "patchNotesUrl", "start", "end"],
+                "required": [
+                    "name",
+                    "game",
+                    "url",
+                    "patchNotesUrl",
+                    "start",
+                    "end",
+                    "lastModified"
+                ],
                 "properties": {
                     "name": {
                         "type": "string",
@@ -424,6 +438,12 @@
                         "nullable": true,
                         "format": "date-time",
                         "description": "ISO 8601 date string for season end",
+                        "example": "2024-12-06T21:00:00Z"
+                    },
+                    "lastModified": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "ISO 8601 date string for when the season was last modified",
                         "example": "2024-12-06T21:00:00Z"
                     }
                 }
