@@ -18,14 +18,14 @@
   },
   "devDependencies": {
     "@types/he": "^1.2.3",
-    "@types/node": "^20.19.18",
+    "@types/node": "^20.19.19",
     "fast-xml-parser": "^4.5.3",
     "node-fetch": "^3.3.2",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "to-vfile": "^8.0.0",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "unified": "^11.0.5",
     "vfile-matter": "^5.0.1"
   },
