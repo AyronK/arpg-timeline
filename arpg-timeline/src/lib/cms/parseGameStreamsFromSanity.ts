@@ -3,7 +3,9 @@ import { IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 
 import { isStreamSoon } from "./isStreamSoon";
 
-export const parseGameStreamsFromSanity = (data: IndexQueryResult): GameStream[] =>
+export const parseGameStreamsFromSanity = (
+    data: Pick<IndexQueryResult, "liveStreamsOnTwitch" | "games" | "twitchChannels">,
+): GameStream[] =>
     data?.liveStreamsOnTwitch
         .sort((a, b) => new Date(a?.date).getTime() - new Date(b?.date).getTime())
         .map((s) => {

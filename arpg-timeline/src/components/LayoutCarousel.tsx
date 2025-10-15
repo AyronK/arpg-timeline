@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 
-import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 
@@ -14,11 +13,18 @@ const CarouselData = async () => {
         tags: ["liveStreamTwitch", "game"],
     });
 
-    const streams = parseGameStreamsFromSanity(data);
-
     return (
         <ClientOnlyVisibleWrapper>
-            <TopCarousel streams={streams} />
+            <TopCarousel
+                games={data.games}
+                twitchChannels={data.twitchChannels}
+                streams={
+                    data.liveStreamsOnTwitch?.filter(
+                        (s) =>
+                            s.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000,
+                    ) ?? []
+                }
+            />
         </ClientOnlyVisibleWrapper>
     );
 };

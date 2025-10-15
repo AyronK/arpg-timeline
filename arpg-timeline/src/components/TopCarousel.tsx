@@ -7,19 +7,51 @@ import { useMemo } from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
-import { useGameFilterContext } from "@/contexts/GameFilterContext";
-import { GameStream } from "@/lib/cms/games.types";
+import { useGameFilterContext, useTimeBasedKey } from "@/contexts/GameFilterContext";
 import { isStreamSoon } from "@/lib/cms/isStreamSoon";
+import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
+import {
+    SanityGame,
+    SanityLiveStreamOnTwitch,
+    SanityTwitchChannel,
+} from "@/lib/cms/queries/indexQuery";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 
-export const TopCarousel = ({ streams }: { streams: GameStream[] }) => {
+export const TopCarousel = ({
+    streams,
+    games,
+    twitchChannels,
+}: {
+    streams: SanityLiveStreamOnTwitch[];
+    games: SanityGame[];
+    twitchChannels: SanityTwitchChannel[];
+}) => {
+    const nextDate = useMemo(
+        () =>
+            streams
+                .map((s) => s.date)
+                .filter(
+                    (d) =>
+                        !!d && new Date(d).getTime() >= new Date().getTime() - 2 * 60 * 60 * 1000,
+                )
+                .sort((a, b) => new Date(a!).getTime() - new Date(b!).getTime())[0],
+        [streams],
+    );
+
+    const key = useTimeBasedKey(nextDate ? new Date(nextDate) : new Date());
+
+    const parsedStreams = parseGameStreamsFromSanity({
+        liveStreamsOnTwitch: streams,
+        games,
+        twitchChannels,
+    });
     const { filteredGames } = useGameFilterContext();
 
     const filteredStreams = useMemo(() => {
-        return streams
+        return parsedStreams
             .map((s) => ({ ...s, isLiveSoon: isStreamSoon(s.date) }))
             .filter(
                 (s) =>
@@ -28,10 +60,10 @@ export const TopCarousel = ({ streams }: { streams: GameStream[] }) => {
                     (s.isLiveSoon ||
                         (s?.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000)),
             );
-    }, [filteredGames, streams]);
+    }, [filteredGames, parsedStreams]);
 
     return (
-        <ClientOnlyVisibleWrapper>
+        <ClientOnlyVisibleWrapper key={key}>
             <div className="flex justify-center">
                 <div className="relative mx-auto max-w-screen flex-1 lg:max-w-3xl">
                     <h2 className="hidden">Streams</h2>
