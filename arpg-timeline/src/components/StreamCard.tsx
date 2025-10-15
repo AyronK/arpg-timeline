@@ -1,7 +1,5 @@
 "use client";
 import { TimerReset, Twitch } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
@@ -103,23 +101,6 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
 );
 
 export const StreamCard = ({ stream, priority }: { stream: GameStream; priority: boolean }) => {
-    const router = useRouter();
-
-    useEffect(() => {
-        if (stream?.date) {
-            const startDate = new Date(stream.date);
-            const now = new Date();
-            if (startDate > now) {
-                const timeUntilStart = startDate.getTime() - now.getTime();
-                const timeoutId = setTimeout(() => {
-                    router.refresh();
-                }, timeUntilStart);
-
-                return () => clearTimeout(timeoutId);
-            }
-        }
-    }, [router, stream]);
-
     return (
         <section
             className="text-card-foreground bg-card relative flex flex-row gap-3 overflow-hidden rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"

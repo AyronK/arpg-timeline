@@ -75,7 +75,7 @@ export interface SanityDocumentBase {
     _createdAt: string;
 }
 
-export interface Game extends SanityDocumentBase {
+export interface SanityGame extends SanityDocumentBase {
     slug: string;
     name: string;
     shortName?: string;
@@ -102,7 +102,7 @@ export interface SeasonEndDateInfo {
     overrideText?: string;
     additionalText?: string;
 }
-export interface Season extends SanityDocumentBase {
+export interface SanitySeason extends SanityDocumentBase {
     name: string;
     game: string;
     url?: string;
@@ -111,19 +111,19 @@ export interface Season extends SanityDocumentBase {
     start?: SeasonStartDateInfo;
     end?: SeasonEndDateInfo;
 }
-export interface LiveStreamOnTwitch extends SanityDocumentBase {
+export interface SanityLiveStreamOnTwitch extends SanityDocumentBase {
     game: string;
     platform: string;
     date: string;
     name: string;
     slug: string;
 }
-export interface TwitchChannel {
+export interface SanityTwitchChannel {
     game: string;
     category?: string;
     channel?: string;
 }
-export interface Toast {
+export interface SanityToast {
     title: string;
     description?: PortableTextBlock[];
     withLogo?: boolean;
@@ -131,11 +131,11 @@ export interface Toast {
     order: number;
 }
 export interface IndexQueryResult {
-    games: Game[];
-    seasons: Season[];
-    liveStreamsOnTwitch: LiveStreamOnTwitch[];
-    twitchChannels: TwitchChannel[];
-    toast?: Toast;
+    games: SanityGame[];
+    seasons: SanitySeason[];
+    liveStreamsOnTwitch: SanityLiveStreamOnTwitch[];
+    twitchChannels: SanityTwitchChannel[];
+    toast?: SanityToast;
 }
 export interface SteamData {
     appId?: number | null;

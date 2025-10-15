@@ -2,14 +2,24 @@
 
 import { useSearchParams } from "next/navigation";
 import { SanityImageAssetDocument } from "next-sanity";
-import { createContext, ReactNode, Suspense, useContext } from "react";
-import { useMemo } from "react";
+import {
+    createContext,
+    ReactNode,
+    Suspense,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 
 import { useGameFiltersAnalytics } from "@/hooks/useGameFiltersAnalytics";
 import { useGameFiltersData } from "@/hooks/useGameFiltersData";
 import { useGameFilterState } from "@/hooks/useGameFilterState";
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
+import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
+import { SanityGame, SanitySeason, SanityTwitchChannel } from "@/lib/cms/queries/indexQuery";
 
 interface GameFilterContextType {
     gameFilters: {
@@ -32,13 +42,63 @@ const GameFilterContext = createContext<GameFilterContextType | undefined>(undef
 
 interface GameFilterProviderProps {
     children: ReactNode;
-    games: Game[];
+    games: SanityGame[];
+    seasons: SanitySeason[];
+    twitchChannels: SanityTwitchChannel[];
     category: GameFilterCategory;
 }
 
-export const GameFilterProvider = ({ children, games, category }: GameFilterProviderProps) => {
+export const useTimeBasedKey = (targetDate: Date) => {
+    const [key, setKey] = useState(0);
+    const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        const now = new Date();
+        const timeUntilRefresh = targetDate.getTime() - now.getTime();
+
+        if (timeUntilRefresh <= 0) {
+            return;
+        }
+
+        refreshTimeoutRef.current = setTimeout(() => {
+            setKey((v) => v + 1);
+        }, timeUntilRefresh);
+
+        return () => {
+            if (refreshTimeoutRef.current) {
+                clearTimeout(refreshTimeoutRef.current);
+            }
+        };
+    }, [targetDate]);
+
+    return key;
+};
+
+export const GameFilterProvider = ({
+    children,
+    games,
+    category,
+    seasons,
+    twitchChannels,
+}: GameFilterProviderProps) => {
+    const parsedGames = useMemo(
+        () => parseGamesFromSanity({ games, seasons, twitchChannels }),
+        [games, seasons, twitchChannels],
+    );
+
+    const nextDate = useMemo(
+        () =>
+            [...seasons.map((s) => s.start?.startDate), ...seasons.map((s) => s.end?.endDate)]
+                .filter((d) => !!d && new Date(d).getTime() >= new Date().getTime())
+                .sort((a, b) => new Date(a!).getTime() - new Date(b!).getTime())[0],
+        [seasons],
+    );
+
+    const key = useTimeBasedKey(nextDate ? new Date(nextDate) : new Date());
+
     return (
         <Suspense
+            key={key}
             fallback={
                 <div className="after:bg-background relative animate-pulse after:absolute after:inset-0 after:rounded-md">
                     <GameFilterContext.Provider
@@ -47,7 +107,7 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
                             toggleGameFilter: () => {},
                             toggleGroupFilter: () => {},
                             activeFilters: [],
-                            filteredGames: games,
+                            filteredGames: parsedGames,
                             totalGames: games.length,
                             shownGames: games.length,
                             category,
@@ -58,14 +118,21 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
                 </div>
             }
         >
-            <UnsafeGameFilterProvider games={games} category={category}>
+            <UnsafeGameFilterProvider games={parsedGames} category={category}>
                 {children}
             </UnsafeGameFilterProvider>
         </Suspense>
     );
 };
 
-const UnsafeGameFilterProvider = ({ children, games, category }: GameFilterProviderProps) => {
+type UnsafeGameFilterProviderProps = Omit<
+    GameFilterProviderProps,
+    "games" | "seasons" | "twitchChannels"
+> & {
+    games: Game[];
+};
+
+const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilterProviderProps) => {
     const searchParams = useSearchParams();
     const searchParam = searchParams.getAll("exclude");
 

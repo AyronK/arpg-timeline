@@ -1,11 +1,11 @@
 import { Game, SeasonEnd } from "@/lib/cms/games.types";
-import { IndexQueryResult, Season } from "@/lib/cms/queries/indexQuery";
+import { IndexQueryResult, SanitySeason } from "@/lib/cms/queries/indexQuery";
 
 import { processGamesWithGracePeriodAndSort } from "./processGamesWithGracePeriodAndSort";
 
 const DEFAULT_SEASON_OFFSET = 120 * 24 * 50 * 60 * 1000;
 
-const getAverageSeasonDuration = (seasons: Season[]): number | null => {
+const getAverageSeasonDuration = (seasons: SanitySeason[]): number | null => {
     const validDurations: number[] = [];
 
     for (const season of seasons) {
@@ -70,7 +70,9 @@ const adjustDateIfTooSoon = (date: string | undefined | null, offset: number): s
     return new Date(time + adjustedOffset).toISOString();
 };
 
-export const parseGamesFromSanity = (data: IndexQueryResult): Game[] => {
+export const parseGamesFromSanity = (
+    data: Pick<IndexQueryResult, "games" | "seasons" | "twitchChannels">,
+): Game[] => {
     const games = data.games.map((g) => {
         const game = { ...g } as Game;
         const gameTwitch = data.twitchChannels.find((e) => e?.game === g.slug);

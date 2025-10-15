@@ -31,7 +31,18 @@ const DashboardLayout = async ({ children, params }: PropsWithChildren<Dashboard
     const games = parseGamesFromSanity(data);
 
     return (
-        <GameFilterProvider games={games} category={dashboard}>
+        <GameFilterProvider
+            games={data.games}
+            seasons={data.seasons.filter((s) =>
+                games.some(
+                    (g) =>
+                        g.slug === s.game &&
+                        (g.currentSeason?.name === s.name || g.nextSeason?.name === s.name),
+                ),
+            )}
+            twitchChannels={data.twitchChannels}
+            category={dashboard}
+        >
             <LayoutCarousel />
             {children}
         </GameFilterProvider>
