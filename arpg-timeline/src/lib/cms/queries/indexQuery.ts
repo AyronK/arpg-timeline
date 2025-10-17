@@ -61,6 +61,31 @@ export const indexQuery = `{
       channel
     }
   },
+  "seasons": *[_type == "season"]{
+    _id,
+    _updatedAt,
+    _createdAt,
+    name,
+    "game": game->slug.current,
+    url,
+    "logo": logo.asset->{
+      _id,
+      url      
+    },
+    patchNotesUrl,
+    start {
+      startDate,
+      confirmed,
+      overrideText,
+      additionalText
+    },
+    end {
+      endDate,
+      confirmed,
+      overrideText,
+      additionalText
+    }
+  },
   "toast": *[_type == "toast"] | order(order asc)[0]{
     title,
     description,
@@ -165,11 +190,12 @@ export interface SanityGame extends SanityDocumentBase {
     group?: string;
     categories?: GameCategory[];
     tags?: GameTag[];
-    logo?: SanityImageAssetDocument;
+    logo: SanityImageAssetDocument;
     steam?: SteamData;
     recentSeasons: SanitySeason[];
     latestLiveStream?: SanityLiveStreamOnTwitch | null;
     twitchChannel?: SanityTwitchChannel | null;
+    averageSeasonDuration?: number;
 }
 
 export interface SeasonStartDateInfo {
@@ -214,6 +240,7 @@ export interface SanityToast {
 }
 export interface IndexQueryResult {
     games: SanityGame[];
+    seasons: SanitySeason[];
     toast?: SanityToast;
 }
 export interface SteamData {

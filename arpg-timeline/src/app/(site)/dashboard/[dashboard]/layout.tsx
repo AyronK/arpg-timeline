@@ -4,6 +4,7 @@ import { PropsWithChildren } from "react";
 import { LayoutCarousel } from "@/components/LayoutCarousel";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
 import { isGameFilterCategory } from "@/lib/cms/gameTags";
+import { getAverageSeasonDuration } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 interface DashboardPageProps {
@@ -27,8 +28,16 @@ const DashboardLayout = async ({ children, params }: PropsWithChildren<Dashboard
         tags: ["season", "liveStreamTwitch", "game", "toast"],
     });
 
+    const sanityGames = data.games;
+
+    sanityGames.forEach((game) => {
+        game.averageSeasonDuration = getAverageSeasonDuration(
+            data.seasons.filter((s) => s.game === game.slug),
+        );
+    });
+
     return (
-        <GameFilterProvider games={data.games} category={dashboard}>
+        <GameFilterProvider games={sanityGames} category={dashboard}>
             <LayoutCarousel />
             {children}
         </GameFilterProvider>

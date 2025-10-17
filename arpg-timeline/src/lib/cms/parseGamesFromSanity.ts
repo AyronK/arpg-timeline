@@ -5,32 +5,6 @@ import { processGamesWithGracePeriodAndSort } from "./processGamesWithGracePerio
 
 const DEFAULT_SEASON_OFFSET = 120 * 24 * 50 * 60 * 1000;
 
-const getAverageSeasonDuration = (seasons: SanitySeason[]): number | null => {
-    const validDurations: number[] = [];
-
-    for (const season of seasons) {
-        if (season.start?.startDate && season.end?.endDate) {
-            const startDate = new Date(season.start.startDate);
-            const endDate = new Date(season.end.endDate);
-
-            if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
-                const durationMs = endDate.getTime() - startDate.getTime();
-
-                if (durationMs > 0) {
-                    validDurations.push(durationMs);
-                }
-            }
-        }
-    }
-
-    if (validDurations.length < 3) {
-        return null;
-    }
-
-    const totalDuration = validDurations.reduce((sum, duration) => sum + duration, 0);
-    return totalDuration / validDurations.length;
-};
-
 const roundToNearest7Or30 = (value: number) => {
     const roundToNearest = (val: number, multiple: number) => Math.round(val / multiple) * multiple;
     const diffTo7 = Math.abs(value - roundToNearest(value, 7));
@@ -70,24 +44,70 @@ const adjustDateIfTooSoon = (date: string | undefined | null, offset: number): s
     return new Date(time + adjustedOffset).toISOString();
 };
 
+export const getAverageSeasonDuration = (seasons: SanitySeason[]): number | undefined => {
+    const validDurations: number[] = [];
+
+    for (const season of seasons) {
+        if (season.start?.startDate && season.end?.endDate) {
+            const startDate = new Date(season.start.startDate);
+            const endDate = new Date(season.end.endDate);
+
+            if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+                const durationMs = endDate.getTime() - startDate.getTime();
+
+                if (durationMs > 0) {
+                    validDurations.push(durationMs);
+                }
+            }
+        }
+    }
+
+    if (validDurations.length < 3) {
+        return undefined;
+    }
+
+    const totalDuration = validDurations.reduce((sum, duration) => sum + duration, 0);
+    return totalDuration / validDurations.length;
+};
+
 export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Game[] => {
     const games = data.games.map((g) => {
-        const game = { ...g } as Game;
+        const game: Game = {
+            _id: g._id,
+            _updatedAt: g._updatedAt,
+            _createdAt: g._createdAt,
+            name: g.name,
+            slug: g.slug,
+            seasonKeyword: g.seasonKeyword ?? "",
+            url: g.url ?? "",
+            group: g.group ?? "",
+            logo: g.logo,
+            currentSeason: undefined,
+            nextSeason: undefined,
+            twitchCategory: undefined,
+            averageSeasonDuration: undefined,
+            categories: g.categories ?? [],
+            tags: g.tags ?? [],
+            shortName: g.shortName ?? "",
+            isDormant: g.isDormant ?? false,
+            isComingSoon: g.isComingSoon ?? false,
+        };
         const gameTwitch = g.twitchChannel;
 
         game.twitchCategory = gameTwitch?.category ?? null;
 
-        const gameSeasons = g.recentSeasons;
+        const gameSeasons = g.recentSeasons.sort(
+            (a, b) => b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0,
+        );
 
         const hasLatestSeasonStarted =
             new Date().getTime() > new Date(gameSeasons[0]?.start?.startDate ?? "").getTime();
 
         game.currentSeason = hasLatestSeasonStarted ? gameSeasons[0] : gameSeasons[1];
 
-        const averageSeasonDuration = getAverageSeasonDuration(gameSeasons);
-        const defaultSeasonOffset = averageSeasonDuration ?? DEFAULT_SEASON_OFFSET;
+        const defaultSeasonOffset = g.averageSeasonDuration ?? DEFAULT_SEASON_OFFSET;
         const days =
-            averageSeasonDuration && Math.ceil(averageSeasonDuration / (1000 * 60 * 60 * 24));
+            g.averageSeasonDuration && Math.ceil(g.averageSeasonDuration / (1000 * 60 * 60 * 24));
         game.averageSeasonDuration = days && roundToNearest7Or30(days);
 
         if (game.currentSeason && !game.currentSeason.end?.endDate) {
