@@ -17,6 +17,7 @@ export type GameStatistics = {
     steam?: { currentPlayers: number; appId: number; isComingSoon?: boolean } | null;
 };
 export type Game = {
+    _id: string;
     _updatedAt: string;
     _createdAt: string;
     name: string;
@@ -30,13 +31,14 @@ export type Game = {
     logo: SanityImageAssetDocument;
     currentSeason?: Season | null | undefined;
     nextSeason?: Season | null | undefined;
-    twitchCategory: string | null | undefined;
-    averageSeasonDuration: number | null;
+    twitchCategory?: string | null | undefined;
+    averageSeasonDuration?: number | null;
     categories?: GameCategory[];
     tags?: GameTag[];
 };
 
 export type Season = {
+    _id: string;
     _updatedAt: string;
     start?: SeasonStart | null | undefined;
     end?: SeasonEnd | null | undefined;

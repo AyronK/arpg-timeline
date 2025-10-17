@@ -3,7 +3,12 @@ import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
-import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
+import {
+    gameDetailsQuery,
+    GameDetailsQueryResult,
+    indexQuery,
+    IndexQueryResult,
+} from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 
@@ -36,8 +41,8 @@ async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
 const GamePage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
 
-    const data: IndexQueryResult = await sanityFetch({
-        query: indexQuery,
+    const data: GameDetailsQueryResult = await sanityFetch({
+        query: gameDetailsQuery,
         revalidate: 24 * 60 * 60,
         tags: ["season", "game"],
     });

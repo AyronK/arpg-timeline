@@ -3,21 +3,23 @@ import { IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 
 import { isStreamSoon } from "./isStreamSoon";
 
-export const parseGameStreamsFromSanity = (
-    data: Pick<IndexQueryResult, "liveStreamsOnTwitch" | "games" | "twitchChannels">,
-): GameStream[] =>
-    data?.liveStreamsOnTwitch
-        .sort((a, b) => new Date(a?.date).getTime() - new Date(b?.date).getTime())
-        .map((s) => {
-            const game = data?.games?.find((g) => g?.slug === s?.game);
-            const twitch = data?.twitchChannels?.find((c) => c?.game === s?.game);
+export const parseGameStreamsFromSanity = (data: Pick<IndexQueryResult, "games">): GameStream[] =>
+    data?.games
+        .filter((g) => g.latestLiveStream && g.twitchChannel)
+        .sort(
+            (a, b) =>
+                new Date(a!.latestLiveStream!.date!).getTime() -
+                new Date(b!.latestLiveStream!.date!).getTime(),
+        )
+        .map((g) => {
+            const twitch = g.twitchChannel;
             return {
-                ...s,
-                gameName: game?.name ?? s?.game,
-                gameSlug: s?.game,
-                gameLogo: game?.logo,
+                ...g.latestLiveStream,
+                gameName: g.name,
+                gameSlug: g.slug,
+                gameLogo: g.logo,
                 twitchChannel: twitch?.channel,
-                isLiveSoon: isStreamSoon(s.date),
+                isLiveSoon: isStreamSoon(g.latestLiveStream!.date),
             } as GameStream;
         })
         .filter(

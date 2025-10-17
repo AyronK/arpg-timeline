@@ -1,4 +1,4 @@
-import { IndexQueryResult } from "@/lib/cms/queries/indexQuery";
+import { GameDetailsQueryResult } from "@/lib/cms/queries/indexQuery";
 
 import { ArchivalSeason, GameStatistics, LocalSeason, SeasonDuration } from "./types";
 
@@ -90,7 +90,7 @@ export const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDura
 };
 
 export const calculateGameStatistics = (
-    data: IndexQueryResult,
+    data: GameDetailsQueryResult,
     gameSlug: string,
 ): GameStatistics => {
     const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
@@ -122,7 +122,7 @@ export const calculateGameStatistics = (
     };
 };
 
-export const getOldestSeasonInfo = (data: IndexQueryResult, gameSlug: string): string => {
+export const getOldestSeasonInfo = (data: GameDetailsQueryResult, gameSlug: string): string => {
     const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
     if (gameSeasons.length === 0) return "No season data available";
 
@@ -151,7 +151,10 @@ export const getOldestSeasonInfo = (data: IndexQueryResult, gameSlug: string): s
     return `Calculations based on ${seasonsWithConfirmedStartDates.length} confirmed historical entries. Oldest season in aRPG Timeline's archive started ${formattedOldestDate}.`;
 };
 
-export const getArchivalSeasons = (data: IndexQueryResult, gameSlug: string): ArchivalSeason[] => {
+export const getArchivalSeasons = (
+    data: GameDetailsQueryResult,
+    gameSlug: string,
+): ArchivalSeason[] => {
     const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
 
     return gameSeasons

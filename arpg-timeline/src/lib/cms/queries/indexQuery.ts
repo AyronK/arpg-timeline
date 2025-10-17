@@ -4,6 +4,7 @@ import { GameCategory, GameTag } from "../gameTags";
 
 export const indexQuery = `{
   "games": *[_type == "game"]{
+    _id,
     _updatedAt,
     _createdAt,
     "slug":slug.current,
@@ -20,9 +21,48 @@ export const indexQuery = `{
       _id,
       url      
     },
-    steam
+    steam,
+    "latestLiveStream": *[_type == "liveStreamTwitch" && ^._id == game._ref]
+      | order(date desc)[0]{
+      _updatedAt,
+      _createdAt,
+      "platform": platform->_id,
+      date,
+      name,
+      "slug": slug.current
+    },
+    "recentSeasons": *[_type == "season" && ^._id == game._ref] 
+      | order(start.startDate desc)[0..1]{
+      _id,
+      _updatedAt,
+      _createdAt,
+      name,
+      url,
+      "logo": logo.asset->{
+        _id,
+        url      
+      },
+      patchNotesUrl,
+      start {
+        startDate,
+        confirmed,
+        overrideText,
+        additionalText
+      },
+      end {
+        endDate,
+        confirmed,
+        overrideText,
+        additionalText
+      } 
+    },
+    "twitchChannel": *[_type == "liveStreamPlatformTwitch" && ^._id == game._ref]{
+      category,
+      channel
+    }
   },
   "seasons": *[_type == "season"]{
+    _id,
     _updatedAt,
     _createdAt,
     name,
@@ -46,21 +86,6 @@ export const indexQuery = `{
       additionalText
     }
   },
-
-  "liveStreamsOnTwitch": *[_type == "liveStreamTwitch"]{
-    _updatedAt,
-    _createdAt,
-    "game": game->slug.current,
-    "platform": platform->_id,
-    date,
-    name,
-    "slug": slug.current
-  },
-  "twitchChannels": *[_type == "liveStreamPlatformTwitch"]{
-    "game": game->slug.current,
-    category,
-    channel
-  },
   "toast": *[_type == "toast"] | order(order asc)[0]{
     title,
     description,
@@ -70,7 +95,86 @@ export const indexQuery = `{
   }
 }`;
 
+export const gameDetailsQuery = `{
+  "games": *[_type == "game"]{
+    _id,
+    _updatedAt,
+    _createdAt,
+    "slug":slug.current,
+    name,
+    shortName,
+    isDormant,
+    isComingSoon,
+    seasonKeyword,
+    url,
+    group,
+    "categories": coalesce(categories, []),
+    "tags": coalesce(tags, []),
+    "logo": logo.asset->{
+      _id,
+      url      
+    },
+    steam,
+    "recentSeasons": *[_type == "season" && ^._id == game._ref] 
+      | order(start.startDate desc)[0..1]{
+      _id,
+      _updatedAt,
+      _createdAt,
+      name,
+      url,
+      "logo": logo.asset->{
+        _id,
+        url      
+      },
+      patchNotesUrl,
+      start {
+        startDate,
+        confirmed,
+        overrideText,
+        additionalText
+      },
+      end {
+        endDate,
+        confirmed,
+        overrideText,
+        additionalText
+      }
+    }
+  },
+  "seasons": *[_type == "season"]{
+    _id,
+    _updatedAt,
+    _createdAt,
+    name,
+    "game": game->slug.current,
+    url,
+    "logo": logo.asset->{
+      _id,
+      url      
+    },
+    patchNotesUrl,
+    start {
+      startDate,
+      confirmed,
+      overrideText,
+      additionalText
+    },
+    end {
+      endDate,
+      confirmed,
+      overrideText,
+      additionalText
+    }
+  },
+  "twitchChannels": *[_type == "liveStreamPlatformTwitch"] {
+    "game": game->slug.current,
+    category,
+    channel
+  },
+}`;
+
 export interface SanityDocumentBase {
+    _id: string;
     _updatedAt: string;
     _createdAt: string;
 }
@@ -86,8 +190,12 @@ export interface SanityGame extends SanityDocumentBase {
     group?: string;
     categories?: GameCategory[];
     tags?: GameTag[];
-    logo?: SanityImageAssetDocument;
+    logo: SanityImageAssetDocument;
     steam?: SteamData;
+    recentSeasons: SanitySeason[];
+    latestLiveStream?: SanityLiveStreamOnTwitch | null;
+    twitchChannel?: SanityTwitchChannel | null;
+    averageSeasonDuration?: number;
 }
 
 export interface SeasonStartDateInfo {
@@ -133,10 +241,14 @@ export interface SanityToast {
 export interface IndexQueryResult {
     games: SanityGame[];
     seasons: SanitySeason[];
-    liveStreamsOnTwitch: SanityLiveStreamOnTwitch[];
-    twitchChannels: SanityTwitchChannel[];
     toast?: SanityToast;
 }
 export interface SteamData {
     appId?: number | null;
+}
+
+export interface GameDetailsQueryResult {
+    games: SanityGame[];
+    seasons: SanitySeason[];
+    twitchChannels: SanityTwitchChannel[];
 }

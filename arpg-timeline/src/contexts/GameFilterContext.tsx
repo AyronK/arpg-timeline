@@ -19,7 +19,7 @@ import { useGameFilterState } from "@/hooks/useGameFilterState";
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
-import { SanityGame, SanitySeason, SanityTwitchChannel } from "@/lib/cms/queries/indexQuery";
+import { SanityGame } from "@/lib/cms/queries/indexQuery";
 
 interface GameFilterContextType {
     gameFilters: {
@@ -43,8 +43,6 @@ const GameFilterContext = createContext<GameFilterContextType | undefined>(undef
 interface GameFilterProviderProps {
     children: ReactNode;
     games: SanityGame[];
-    seasons: SanitySeason[];
-    twitchChannels: SanityTwitchChannel[];
     category: GameFilterCategory;
 }
 
@@ -74,17 +72,12 @@ export const useTimeBasedKey = (targetDate: Date) => {
     return key;
 };
 
-export const GameFilterProvider = ({
-    children,
-    games,
-    category,
-    seasons,
-    twitchChannels,
-}: GameFilterProviderProps) => {
-    const parsedGames = useMemo(
-        () => parseGamesFromSanity({ games, seasons, twitchChannels }),
-        [games, seasons, twitchChannels],
-    );
+export const GameFilterProvider = ({ children, games, category }: GameFilterProviderProps) => {
+    const parsedGames = useMemo(() => parseGamesFromSanity({ games }), [games]);
+
+    const seasons = useMemo(() => {
+        return games.flatMap((g) => g.recentSeasons);
+    }, [games]);
 
     const nextDate = useMemo(
         () =>

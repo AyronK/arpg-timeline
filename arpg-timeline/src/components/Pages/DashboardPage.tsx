@@ -4,7 +4,7 @@ import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
 import { SupportButtons } from "@/components/SupportButtons";
 import { GameStatistics } from "@/lib/cms/games.types";
-import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
+import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
@@ -17,7 +17,16 @@ export const DashboardPage = async () => {
         revalidate: 24 * 60 * 60,
         tags: ["season", "liveStreamTwitch", "game", "toast"],
     });
-    const games = parseGamesFromSanity(data);
+
+    const sanityGames = data.games;
+
+    sanityGames.forEach((game) => {
+        game.averageSeasonDuration = getAverageSeasonDuration(
+            data.seasons.filter((s) => s.game === game.slug),
+        );
+    });
+
+    const games = parseGamesFromSanity({ games: sanityGames });
 
     const steamApps = data.games
         .map((g) => g.steam?.appId)
