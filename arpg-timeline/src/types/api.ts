@@ -13,6 +13,7 @@ export interface GamesApiResponse {
 }
 
 export interface SeasonInfo {
+    id: string;
     lastModified: string;
     name: string;
     game: string;

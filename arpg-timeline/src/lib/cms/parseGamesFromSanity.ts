@@ -70,18 +70,14 @@ const adjustDateIfTooSoon = (date: string | undefined | null, offset: number): s
     return new Date(time + adjustedOffset).toISOString();
 };
 
-export const parseGamesFromSanity = (
-    data: Pick<IndexQueryResult, "games" | "seasons" | "twitchChannels">,
-): Game[] => {
+export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Game[] => {
     const games = data.games.map((g) => {
         const game = { ...g } as Game;
-        const gameTwitch = data.twitchChannels.find((e) => e?.game === g.slug);
+        const gameTwitch = g.twitchChannel;
 
         game.twitchCategory = gameTwitch?.category ?? null;
 
-        const gameSeasons = data.seasons
-            .filter((e) => e?.game === g.slug)
-            .sort((a, b) => b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0);
+        const gameSeasons = g.recentSeasons;
 
         const hasLatestSeasonStarted =
             new Date().getTime() > new Date(gameSeasons[0]?.start?.startDate ?? "").getTime();
@@ -104,6 +100,7 @@ export const parseGamesFromSanity = (
 
         game.nextSeason = hasLatestSeasonStarted
             ? {
+                  _id: game.currentSeason._id,
                   _updatedAt: game.currentSeason._updatedAt,
                   name: `Next ${g.seasonKeyword}`,
                   start: {

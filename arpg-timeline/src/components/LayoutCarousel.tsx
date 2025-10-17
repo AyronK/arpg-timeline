@@ -15,16 +15,7 @@ const CarouselData = async () => {
 
     return (
         <ClientOnlyVisibleWrapper>
-            <TopCarousel
-                games={data.games}
-                twitchChannels={data.twitchChannels}
-                streams={
-                    data.liveStreamsOnTwitch?.filter(
-                        (s) =>
-                            s.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000,
-                    ) ?? []
-                }
-            />
+            <TopCarousel games={data.games} />
         </ClientOnlyVisibleWrapper>
     );
 };

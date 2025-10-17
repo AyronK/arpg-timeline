@@ -4,7 +4,6 @@ import { PropsWithChildren } from "react";
 import { LayoutCarousel } from "@/components/LayoutCarousel";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
 import { isGameFilterCategory } from "@/lib/cms/gameTags";
-import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 interface DashboardPageProps {
@@ -28,21 +27,8 @@ const DashboardLayout = async ({ children, params }: PropsWithChildren<Dashboard
         tags: ["season", "liveStreamTwitch", "game", "toast"],
     });
 
-    const games = parseGamesFromSanity(data);
-
     return (
-        <GameFilterProvider
-            games={data.games}
-            seasons={data.seasons.filter((s) =>
-                games.some(
-                    (g) =>
-                        g.slug === s.game &&
-                        (g.currentSeason?.name === s.name || g.nextSeason?.name === s.name),
-                ),
-            )}
-            twitchChannels={data.twitchChannels}
-            category={dashboard}
-        >
+        <GameFilterProvider games={data.games} category={dashboard}>
             <LayoutCarousel />
             {children}
         </GameFilterProvider>

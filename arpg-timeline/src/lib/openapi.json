@@ -402,6 +402,11 @@
                     "lastModified"
                 ],
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique identifier for the season",
+                        "example": "2eab3b20-c72f-45ed-8690-081e55524b40"
+                    },
                     "name": {
                         "type": "string",
                         "description": "Name of the season",

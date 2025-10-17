@@ -10,43 +10,31 @@ import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { useGameFilterContext, useTimeBasedKey } from "@/contexts/GameFilterContext";
 import { isStreamSoon } from "@/lib/cms/isStreamSoon";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
-import {
-    SanityGame,
-    SanityLiveStreamOnTwitch,
-    SanityTwitchChannel,
-} from "@/lib/cms/queries/indexQuery";
+import { SanityGame } from "@/lib/cms/queries/indexQuery";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 
-export const TopCarousel = ({
-    streams,
-    games,
-    twitchChannels,
-}: {
-    streams: SanityLiveStreamOnTwitch[];
-    games: SanityGame[];
-    twitchChannels: SanityTwitchChannel[];
-}) => {
+export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
     const nextDate = useMemo(
         () =>
-            streams
-                .map((s) => s.date)
+            games
+                .map((g) => g.latestLiveStream)
+                .filter((s) => s)
+                .map((s) => s!.date)
                 .filter(
                     (d) =>
                         !!d && new Date(d).getTime() >= new Date().getTime() - 2 * 60 * 60 * 1000,
                 )
                 .sort((a, b) => new Date(a!).getTime() - new Date(b!).getTime())[0],
-        [streams],
+        [games],
     );
 
     const key = useTimeBasedKey(nextDate ? new Date(nextDate) : new Date());
 
     const parsedStreams = parseGameStreamsFromSanity({
-        liveStreamsOnTwitch: streams,
         games,
-        twitchChannels,
     });
     const { filteredGames } = useGameFilterContext();
 

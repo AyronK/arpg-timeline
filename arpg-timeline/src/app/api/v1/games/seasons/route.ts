@@ -63,6 +63,7 @@ export async function GET(
 
                 if (game.currentSeason && game.currentSeason.start?.confirmed) {
                     result.current = {
+                        id: game.currentSeason._id,
                         lastModified: game.currentSeason._updatedAt,
                         name: game.currentSeason.name || "",
                         game: game.slug,
@@ -79,6 +80,7 @@ export async function GET(
 
                 if (game.nextSeason && game.nextSeason.start?.confirmed) {
                     result.next = {
+                        id: game.nextSeason._id,
                         lastModified: game.nextSeason._updatedAt,
                         name: game.nextSeason.name || "",
                         game: game.slug,
