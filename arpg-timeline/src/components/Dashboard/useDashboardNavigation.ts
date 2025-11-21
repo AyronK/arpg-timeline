@@ -20,9 +20,9 @@ export const useDashboardNavigation = (onLoadingChange: (loading: boolean) => vo
             router.push(newUrl);
         } else if (value === "news") {
             const currentParams = searchParams.toString();
-            const newUrl = currentParams ? `/news?${currentParams}` : "/news";
+            const newUrl = currentParams ? `/games/news?${currentParams}` : "/games/news";
 
-            if (pathname === "/news") {
+            if (pathname === "/games/news") {
                 return;
             }
 
