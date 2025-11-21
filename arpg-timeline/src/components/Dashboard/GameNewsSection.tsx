@@ -40,7 +40,7 @@ export const GameNewsSection = ({
                 {gamesNews.map((gameNews) => (
                     <article
                         key={gameNews.gameSlug + gameNews.news.title + gameNews.news.pubDate}
-                        className="group bg-card text-card-foreground hover:border-border rounded-lg border p-2 hover:shadow-lg sm:p-4 md:p-4"
+                        className="group bg-card text-card-foreground hover:border-border rounded-lg border p-2 hover:shadow-lg md:p-4"
                     >
                         <a
                             href={addUTM(gameNews.news.link)}
@@ -49,9 +49,9 @@ export const GameNewsSection = ({
                             className="bg-muted/20 block rounded-md border border-transparent p-3 transition-all"
                         >
                             <div className="space-y-3">
-                                <div className="flex items-center gap-3 sm:items-center md:gap-4">
+                                <div className="flex items-center gap-3 md:gap-4">
                                     {gameNews.gameLogo && (
-                                        <div className="flex-shrink-0 rounded sm:h-10 sm:w-10 lg:h-16 lg:w-16">
+                                        <div className="h-12 w-12 flex-shrink-0 rounded lg:h-16 lg:w-16">
                                             <SanityImage
                                                 loading="lazy"
                                                 src={gameNews.gameLogo}

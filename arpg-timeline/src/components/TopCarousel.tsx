@@ -127,7 +127,7 @@ const PatreonFunding = () => (
         rel="noopener"
         target="_blank"
         data-sa-click="patreon"
-        className="text-card-foreground bg-card group relative flex h-full w-full items-center justify-between gap-4 overflow-hidden rounded-lg border-2 border-orange-500/30 p-4 transition-all hover:border-orange-500/50 hover:shadow-md md:p-6"
+        className="text-card-foreground bg-card group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-lg border-2 border-orange-500/30 p-4 transition-all hover:border-orange-500/50 hover:shadow-md md:p-6"
     >
         <div className="flex flex-1 items-center gap-3">
             <div className="bg-muted/50 grid h-10 w-10 shrink-0 place-content-center rounded-full md:h-12 md:w-12">
@@ -149,7 +149,9 @@ const PatreonFunding = () => (
             </div>
         </div>
         <div className="border-border text-secondary-foreground flex shrink-0 items-center gap-1.5 rounded-md border bg-orange-500/30 px-3 py-1.5 transition-colors group-hover:bg-orange-500/50 md:px-4 md:py-2">
-            <div className="font-heading text-xs leading-none font-medium md:text-sm">Support</div>
+            <div className="font-heading sr-only text-xs leading-none font-medium md:not-sr-only md:text-sm">
+                Support
+            </div>
             <svg
                 className="h-3 w-3 md:h-3.5 md:w-3.5"
                 fill="none"
