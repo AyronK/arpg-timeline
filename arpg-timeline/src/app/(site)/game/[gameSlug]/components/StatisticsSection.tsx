@@ -14,7 +14,11 @@ export const StatisticsSection = ({
             <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Statistics</h2>
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
                 <StatisticsCard
-                    value={`${game.averageSeasonDuration || "N/A"} days`}
+                    value={
+                        typeof game.averageSeasonDuration === "number"
+                            ? `${Math.round(game.averageSeasonDuration / (1000 * 60 * 60 * 24))} days`
+                            : "N/A"
+                    }
                     label="Average Duration"
                 />
                 <StatisticsCard value={statistics.averagePerYear} label="Average Per Year" />
