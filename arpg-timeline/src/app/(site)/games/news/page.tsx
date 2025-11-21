@@ -8,6 +8,7 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "Latest Game News | ARPG Timeline",
@@ -63,13 +64,15 @@ const NewsPage = async () => {
     }
 
     return (
-        <GameFilterProvider games={sanityGames} category={"featured"}>
-            <LayoutCarousel />
-            <div className="relative container mx-auto mt-2 mb-8">
-                <NewsContent gamesNews={gamesNews} />
-            </div>
-            <SupportButtons />
-        </GameFilterProvider>
+        <Suspense>
+            <GameFilterProvider games={sanityGames} category={"featured"}>
+                <LayoutCarousel />
+                <div className="relative container mx-auto mt-2 mb-8">
+                    <NewsContent gamesNews={gamesNews} />
+                </div>
+                <SupportButtons />
+            </GameFilterProvider>
+        </Suspense>
     );
 };
 
