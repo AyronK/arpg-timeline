@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
+import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import {
     gameDetailsQuery,
     GameDetailsQueryResult,
@@ -54,12 +54,15 @@ const GamePage = async ({ params }: GamePageProps) => {
         notFound();
     }
 
+    game.averageSeasonDuration = getAverageSeasonDuration(
+        data.seasons.filter((s) => s.game === game.slug),
+    );
+
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
     const gameNews = await getSteamNewsFromDb(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
     const oldestSeasonInfo = getOldestSeasonInfo(data, gameSlug);
     const archivalSeasons = getArchivalSeasons(data, gameSlug);
-
     return (
         <>
             <BreadcrumbSchema path={`game/${gameSlug}`} />

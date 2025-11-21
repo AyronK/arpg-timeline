@@ -36,5 +36,3 @@ export async function generateMetadata({ params }: DashboardPageProps): Promise<
 
     return generateDashboardMetadata(dashboard, `/dashboard/${dashboard}`);
 }
-
-export const experimental_ppr = true;

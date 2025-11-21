@@ -1,10 +1,12 @@
 import { Description } from "@radix-ui/react-toast";
-import { Filter, Share2, X } from "lucide-react";
+import { Filter, Newspaper, X } from "lucide-react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { useShareAction } from "@/hooks/useShareAction";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
+import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import {
     Drawer,
@@ -30,30 +32,27 @@ interface MobileBottomMenuFiltersProps {
 
 export function MobileBottomMenuFilters({
     filtersProps,
-    category,
     isFiltersDisabled = false,
     onDrawerOpenChange,
 }: MobileBottomMenuFiltersProps) {
     const { isMd } = useBreakpoint("md");
-    const { handleShare } = useShareAction(null, {
-        utm_source: "arpg-timeline",
-        utm_medium: "mobile_menu",
-        utm_campaign: "share",
-        utm_content: category,
-    });
+    const searchParams = useSearchParams();
+
+    const currentParams = searchParams.toString();
+    const newsHref = currentParams ? `/games/news?${currentParams}` : "/games/news";
 
     return (
         <div className="flex flex-1 justify-around">
-            <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleShare()}
-                className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
-                data-sa-click="share"
+            <Link
+                href={newsHref}
+                className={cn(
+                    "flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400",
+                )}
+                data-sa-click="news"
             >
-                <Share2 className="h-5 w-5" />
-                <span className="text-[0.65rem] leading-2 font-medium">Share</span>
-            </Button>
+                <Newspaper className="h-5 w-5" />
+                <span className="text-[0.65rem] leading-2 font-medium">News</span>
+            </Link>
             <Drawer direction={isMd ? "right" : "bottom"} onOpenChange={onDrawerOpenChange}>
                 <DrawerTrigger asChild>
                     <Button

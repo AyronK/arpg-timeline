@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
-@plugin 'tailwindcss-animate';
-@plugin 'tailwind-scrollbar';
+@plugin "tailwindcss-animate";
+@plugin "tailwind-scrollbar";
 
 @layer components {
     .steam-news-content {

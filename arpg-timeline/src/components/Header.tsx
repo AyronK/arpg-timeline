@@ -18,29 +18,23 @@ interface SocialButtonProps {
     className?: string;
 }
 
+const SocialButton = ({ href, icon, label, dataSaClick, className = "" }: SocialButtonProps) => (
+    <Button variant="ghost" asChild className={cn("px-2 lg:px-3 2xl:px-4", className)}>
+        <Link
+            href={href}
+            rel="external noopener noreferrer"
+            target="_blank"
+            data-sa-click={dataSaClick}
+            className="flex items-center gap-2"
+        >
+            <div className="grid h-[1.4rem] w-[1.4rem] place-content-center">{icon}</div>
+            <span className="hidden text-sm font-medium 2xl:block">{label}</span>
+        </Link>
+    </Button>
+);
+
 export const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-    const SocialButton = ({
-        href,
-        icon,
-        label,
-        dataSaClick,
-        className = "",
-    }: SocialButtonProps) => (
-        <Button variant="ghost" asChild className={cn("px-2 lg:px-3 2xl:px-4", className)}>
-            <Link
-                href={href}
-                rel="external noopener noreferrer"
-                target="_blank"
-                data-sa-click={dataSaClick}
-                className="flex items-center gap-2"
-            >
-                <div className="grid h-[1.4rem] w-[1.4rem] place-content-center">{icon}</div>
-                <span className="hidden text-sm font-medium 2xl:block">{label}</span>
-            </Link>
-        </Button>
-    );
 
     return (
         <header className="max-lg:bg-card relative h-[56px] px-2 max-sm:shadow-sm lg:h-[80px] lg:px-8 lg:pt-6 lg:pb-0">

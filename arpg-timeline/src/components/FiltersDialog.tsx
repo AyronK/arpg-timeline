@@ -156,7 +156,7 @@ export const Filters = ({
                                         <label
                                             key={f.value}
                                             className={cn(
-                                                "group relative col-span-1 flex h-28 cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-2 transition-all duration-200 md:h-36",
+                                                "group relative col-span-1 flex h-28 cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-2 transition-all duration-200 select-none md:h-36",
                                                 {
                                                     "bg-card shadow-sm shadow-neutral-950/80":
                                                         isChecked,
@@ -177,7 +177,7 @@ export const Filters = ({
                                             <div className="absolute top-1 right-1 z-10">
                                                 <Switch
                                                     checked={isChecked}
-                                                    className="data-[state=checked]:bg-muted-foreground z-10! origin-top-right scale-50"
+                                                    className="data-[state=checked]:bg-muted-foreground pointer-events-none z-10! origin-top-right scale-50"
                                                     aria-label={`Toggle ${f.label} visibility`}
                                                 />
                                             </div>

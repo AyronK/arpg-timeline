@@ -1,5 +1,6 @@
 "use client";
 import { TimerReset, Twitch } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
@@ -23,21 +24,32 @@ const StreamHeader = ({
     name: string;
     date: string;
     gameName: string;
-}) => (
-    <div className="flex flex-row justify-between align-bottom">
-        <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis max-md:max-w-[25ch]">
-            <span className="max-md:sr-only">{gameName} - </span>
-            {name}
-        </h3>
-        <ClientOnlyVisibleWrapper>
-            {Date.now() < new Date(date).getTime() && (
-                <IconLabel icon={TimerReset} className="text-xs font-semibold lg:text-sm">
-                    <LocalDate longDate utcDate={date} />
-                </IconLabel>
-            )}
-        </ClientOnlyVisibleWrapper>
-    </div>
-);
+}) => {
+    const [isUpcoming, setIsUpcoming] = useState(false);
+
+    useEffect(() => {
+        const checkIfUpcoming = () => {
+            setIsUpcoming(new Date(date).getTime() > Date.now());
+        };
+        checkIfUpcoming();
+    }, [date]);
+
+    return (
+        <div className="flex flex-row justify-between align-bottom">
+            <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis max-md:max-w-[25ch]">
+                <span className="max-md:sr-only">{gameName} - </span>
+                {name}
+            </h3>
+            <ClientOnlyVisibleWrapper>
+                {isUpcoming && (
+                    <IconLabel icon={TimerReset} className="text-xs font-semibold lg:text-sm">
+                        <LocalDate longDate utcDate={date} />
+                    </IconLabel>
+                )}
+            </ClientOnlyVisibleWrapper>
+        </div>
+    );
+};
 
 const WatchNowAction = ({
     twitchChannel,
@@ -106,18 +118,20 @@ export const StreamCard = ({ stream, priority }: { stream: GameStream; priority:
             className="text-card-foreground bg-card relative flex flex-row gap-3 overflow-hidden rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
             key={stream.slug}
         >
-            <div className="h-12 w-12 min-w-12 lg:h-16 lg:w-16">
-                <SanityImage
-                    priority={priority}
-                    loading={priority ? "eager" : "lazy"}
-                    src={stream.gameLogo!}
-                    alt={`${stream.gameName} logo`}
-                    className="my-auto"
-                    width={64}
-                    height={64}
-                    quality={50}
-                    objectFit="contain"
-                />
+            <div className="flex items-center justify-center">
+                <div className="xs:w-8 xs:min-w-8 sm:h-12 sm:w-12 sm:min-w-12 lg:h-16 lg:w-16">
+                    <SanityImage
+                        priority={priority}
+                        loading={priority ? "eager" : "lazy"}
+                        src={stream.gameLogo!}
+                        alt={`${stream.gameName} logo`}
+                        className="my-auto"
+                        width={64}
+                        height={64}
+                        quality={50}
+                        objectFit="contain"
+                    />
+                </div>
             </div>
             <div className="flex w-full flex-1 flex-col gap-1">
                 <StreamHeader

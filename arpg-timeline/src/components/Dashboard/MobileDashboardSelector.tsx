@@ -1,10 +1,12 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
-import { DashboardConfig } from "./DashboardConfig";
+import { DashboardConfig, DashboardOption } from "./DashboardConfig";
 import { useDashboardNavigation } from "./useDashboardNavigation";
 
 interface MobileDashboardSelectorProps {
@@ -17,15 +19,16 @@ export const MobileDashboardSelector = ({
     onLoadingChange,
 }: MobileDashboardSelectorProps) => {
     const { handleDashboardChange } = useDashboardNavigation(onLoadingChange);
+    const pathname = usePathname();
 
     return (
         <div className="flex flex-col">
-            {(Object.keys(DashboardConfig) as GameFilterCategory[])
+            {(Object.keys(DashboardConfig) as DashboardOption[])
                 .filter((tag) => DashboardConfig[tag])
                 .map((tag) => {
                     const config = DashboardConfig[tag]!;
                     const IconComponent = config.icon;
-                    const isActive = tag === category;
+                    const isActive = pathname === "/games/news" ? tag === "news" : tag === category;
                     return (
                         <Button
                             key={tag}

@@ -76,7 +76,7 @@ export const GameCard = ({
                         noIcon
                         onClick={() => sa_event(`${slug}-logo-click`)}
                     >
-                        <div className="grid h-[72px] min-h-[72px] w-[120px] md:h-[140px] md:w-[160px]">
+                        <div className="grid h-[96px] min-h-[96px] w-[120px] md:h-[140px] md:w-[160px]">
                             {gameLogo}
                         </div>
                     </MaybeLinkWrapper>
