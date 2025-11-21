@@ -118,18 +118,20 @@ export const StreamCard = ({ stream, priority }: { stream: GameStream; priority:
             className="text-card-foreground bg-card relative flex flex-row gap-3 overflow-hidden rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
             key={stream.slug}
         >
-            <div className="h-12 w-12 min-w-12 lg:h-16 lg:w-16">
-                <SanityImage
-                    priority={priority}
-                    loading={priority ? "eager" : "lazy"}
-                    src={stream.gameLogo!}
-                    alt={`${stream.gameName} logo`}
-                    className="my-auto"
-                    width={64}
-                    height={64}
-                    quality={50}
-                    objectFit="contain"
-                />
+            <div className="flex items-center justify-center">
+                <div className="xs:w-8 xs:min-w-8 sm:h-12 sm:w-12 sm:min-w-12 lg:h-16 lg:w-16">
+                    <SanityImage
+                        priority={priority}
+                        loading={priority ? "eager" : "lazy"}
+                        src={stream.gameLogo!}
+                        alt={`${stream.gameName} logo`}
+                        className="my-auto"
+                        width={64}
+                        height={64}
+                        quality={50}
+                        objectFit="contain"
+                    />
+                </div>
             </div>
             <div className="flex w-full flex-1 flex-col gap-1">
                 <StreamHeader
