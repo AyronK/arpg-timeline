@@ -126,7 +126,7 @@ const PatreonFunding = () => (
         href={process.env.NEXT_PUBLIC_PATREON_URL || "#"}
         rel="noopener"
         target="_blank"
-        data-sa-click="patreon"
+        data-sa-click="patreon-banner"
         className="text-card-foreground bg-card group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-lg border-2 border-orange-500/30 p-4 transition-all hover:border-orange-500/50 hover:shadow-md md:p-6"
     >
         <div className="flex flex-1 items-center gap-3">
