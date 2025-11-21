@@ -17,7 +17,7 @@ interface MobileBottomMenuCenterProps {
 
 export function MobileBottomMenuCenter({ category, onLoadingChange }: MobileBottomMenuCenterProps) {
     const pathname = usePathname();
-    const currentCategory = pathname === "/news" ? ("news" as const) : category;
+    const currentCategory = pathname === "/games/news" ? ("news" as const) : category;
     const config = DashboardConfig[currentCategory];
 
     return (

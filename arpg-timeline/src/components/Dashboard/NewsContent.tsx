@@ -32,7 +32,7 @@ export const NewsContent = ({ gamesNews }: NewsContentProps) => {
     const { category, totalGames, shownGames, filteredGames, ...filtersProps } =
         useGameFilterContext();
     const pathname = usePathname();
-    const currentCategory = (pathname === "/news" ? "news" : category) as
+    const currentCategory = (pathname === "/games/news" ? "news" : category) as
         | GameFilterCategory
         | "news";
 

@@ -20,7 +20,7 @@ export const DesktopDashboardSelector = ({
 }: DesktopDashboardSelectorProps) => {
     const { handleDashboardChange } = useDashboardNavigation(onLoadingChange);
     const pathname = usePathname();
-    const currentValue = pathname === "/news" ? "news" : dashboard;
+    const currentValue = pathname === "/games/news" ? "news" : dashboard;
 
     return (
         <ToggleGroup

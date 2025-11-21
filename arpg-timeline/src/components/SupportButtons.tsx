@@ -14,7 +14,7 @@ export const SupportButtons = () => {
                 <div className="mx-auto mb-12 flex max-w-prose flex-col gap-2 text-center">
                     <p className="text-muted-foreground text-sm">
                         Looking for news section? Check out the{" "}
-                        <MaybeLinkWrapper href="/news" className="inline-flex! underline">
+                        <MaybeLinkWrapper href="/games/news" className="inline-flex! underline">
                             news page
                         </MaybeLinkWrapper>
                         .

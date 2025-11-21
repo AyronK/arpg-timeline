@@ -28,7 +28,7 @@ export const MobileDashboardSelector = ({
                 .map((tag) => {
                     const config = DashboardConfig[tag]!;
                     const IconComponent = config.icon;
-                    const isActive = pathname === "/news" ? tag === "news" : tag === category;
+                    const isActive = pathname === "games/news" ? tag === "news" : tag === category;
                     return (
                         <Button
                             key={tag}

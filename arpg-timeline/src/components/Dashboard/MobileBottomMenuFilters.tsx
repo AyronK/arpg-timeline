@@ -39,7 +39,7 @@ export function MobileBottomMenuFilters({
     const searchParams = useSearchParams();
 
     const currentParams = searchParams.toString();
-    const newsHref = currentParams ? `/news?${currentParams}` : "/news";
+    const newsHref = currentParams ? `/games/news?${currentParams}` : "/games/news";
 
     return (
         <div className="flex flex-1 justify-around">
