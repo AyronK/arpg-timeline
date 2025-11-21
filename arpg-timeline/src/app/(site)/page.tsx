@@ -37,5 +37,3 @@ export default Home;
 export async function generateMetadata(): Promise<Metadata> {
     return generateDashboardMetadata("featured", "/");
 }
-
-export const experimental_ppr = true;
