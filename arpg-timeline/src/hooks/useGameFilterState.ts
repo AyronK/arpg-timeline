@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { startTransition, useCallback, useEffect, useRef, useState } from "react";
 
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
@@ -14,9 +14,6 @@ export const useGameFilterState = (
     category: GameFilterCategory,
     searchParams: URLSearchParams,
 ) => {
-    const [excludedSlugs, setExcludedSlugs] = useState<string[]>([]);
-    const isInitializedRef = useRef(false);
-
     const getDefaultExcludedSlugs = useCallback(() => {
         if (category === "featured") {
             return games
@@ -33,8 +30,6 @@ export const useGameFilterState = (
     }, [category, games]);
 
     const initializeFilters = useCallback(() => {
-        if (isInitializedRef.current) return;
-
         const stored = getStoredFilters();
         const urlFilters = getUrlFilters(searchParams);
 
@@ -53,13 +48,63 @@ export const useGameFilterState = (
             initialFilters = getDefaultExcludedSlugs();
         }
 
-        setExcludedSlugs(initialFilters);
-        isInitializedRef.current = true;
+        return initialFilters;
     }, [category, searchParams, getDefaultExcludedSlugs]);
 
+    const [excludedSlugs, setExcludedSlugs] = useState<string[]>(() => {
+        const stored = getStoredFilters();
+        const urlFilters = getUrlFilters(searchParams);
+
+        let initialFilters: string[];
+
+        if (stored && stored.category === category) {
+            initialFilters = stored.excludedSlugs;
+        } else if (urlFilters.length > 0) {
+            initialFilters = urlFilters;
+            const storageData: GameFiltersStorage = {
+                excludedSlugs: urlFilters,
+                category,
+            };
+            setStoredFilters(storageData);
+        } else {
+            if (category === "featured") {
+                initialFilters = games
+                    .filter(
+                        (g) =>
+                            !g.categories?.includes("seasonal") &&
+                            !g.categories?.includes("early-access") &&
+                            !g.nextSeason?.start?.confirmed,
+                    )
+                    .map((g) => g.slug!)
+                    .filter(Boolean);
+            } else {
+                initialFilters = [];
+            }
+        }
+
+        return initialFilters;
+    });
+
+    const prevCategoryRef = useRef(category);
+    const prevSearchParamsRef = useRef(searchParams);
+    const isInitializedRef = useRef(false);
+    const [isInitialized, setIsInitialized] = useState(false);
+
     useEffect(() => {
-        initializeFilters();
-    }, [initializeFilters]);
+        const categoryChanged = prevCategoryRef.current !== category;
+        const searchParamsChanged = prevSearchParamsRef.current !== searchParams;
+
+        if (!isInitializedRef.current || categoryChanged || searchParamsChanged) {
+            const newFilters = initializeFilters();
+            startTransition(() => {
+                setExcludedSlugs(newFilters);
+                setIsInitialized(true);
+            });
+            isInitializedRef.current = true;
+            prevCategoryRef.current = category;
+            prevSearchParamsRef.current = searchParams;
+        }
+    }, [category, searchParams, initializeFilters]);
 
     const updateFilters = useCallback(
         (newExcludedSlugs: string[]) => {
@@ -114,7 +159,7 @@ export const useGameFilterState = (
 
     return {
         excludedSlugs,
-        isInitialized: isInitializedRef.current,
+        isInitialized,
         toggleGameFilter,
         toggleGroupFilter,
         updateFilters,

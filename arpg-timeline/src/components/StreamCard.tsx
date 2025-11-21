@@ -1,5 +1,6 @@
 "use client";
 import { TimerReset, Twitch } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
@@ -23,21 +24,32 @@ const StreamHeader = ({
     name: string;
     date: string;
     gameName: string;
-}) => (
-    <div className="flex flex-row justify-between align-bottom">
-        <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis max-md:max-w-[25ch]">
-            <span className="max-md:sr-only">{gameName} - </span>
-            {name}
-        </h3>
-        <ClientOnlyVisibleWrapper>
-            {Date.now() < new Date(date).getTime() && (
-                <IconLabel icon={TimerReset} className="text-xs font-semibold lg:text-sm">
-                    <LocalDate longDate utcDate={date} />
-                </IconLabel>
-            )}
-        </ClientOnlyVisibleWrapper>
-    </div>
-);
+}) => {
+    const [isUpcoming, setIsUpcoming] = useState(false);
+
+    useEffect(() => {
+        const checkIfUpcoming = () => {
+            setIsUpcoming(new Date(date).getTime() > Date.now());
+        };
+        checkIfUpcoming();
+    }, [date]);
+
+    return (
+        <div className="flex flex-row justify-between align-bottom">
+            <h3 className="font-heading mt-auto line-clamp-1 text-xs text-nowrap text-ellipsis max-md:max-w-[25ch]">
+                <span className="max-md:sr-only">{gameName} - </span>
+                {name}
+            </h3>
+            <ClientOnlyVisibleWrapper>
+                {isUpcoming && (
+                    <IconLabel icon={TimerReset} className="text-xs font-semibold lg:text-sm">
+                        <LocalDate longDate utcDate={date} />
+                    </IconLabel>
+                )}
+            </ClientOnlyVisibleWrapper>
+        </div>
+    );
+};
 
 const WatchNowAction = ({
     twitchChannel,
