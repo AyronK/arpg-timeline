@@ -61,7 +61,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                             <Carousel
                                 plugins={[
                                     Autoplay({
-                                        delay: 10_000,
+                                        delay: 7_000,
                                         stopOnMouseEnter: true,
                                     }),
                                 ]}
