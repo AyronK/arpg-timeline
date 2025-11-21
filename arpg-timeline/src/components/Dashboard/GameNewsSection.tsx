@@ -2,14 +2,11 @@
 
 import { Calendar, ExternalLink } from "lucide-react";
 import { SanityImageAssetDocument } from "next-sanity";
-import { useMemo } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
-import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
-import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 
 interface GameNewsItem {
@@ -36,47 +33,31 @@ export const GameNewsSection = ({
     gamesNews,
     className,
 }: Omit<SteamNewsSectionProps, "games" | "category">) => {
-    const { filteredGames } = useGameFilterContext();
-
-    const filteredGamesNews = useMemo(
-        () =>
-            gamesNews.filter((gameNews) =>
-                filteredGames.some((game) => game.slug === gameNews.gameSlug),
-            ),
-        [gamesNews, filteredGames],
-    );
-
-    if (filteredGamesNews.length === 0) {
-        return (
-            <div className={cn("bg-card text-card-foreground rounded-lg border p-6", className)}>
-                <h2 className="font-heading mb-4 text-2xl">Latest News</h2>
-                <p className="text-muted-foreground">No recent news available for any games.</p>
-            </div>
-        );
-    }
-
     return (
-        <div className={cn("bg-card text-card-foreground rounded-lg border p-6", className)}>
-            <h2 className="font-heading mb-6 text-2xl">Latest News</h2>
+        <div className={className}>
+            <h2 className="font-heading sr-only mb-6 text-2xl">Latest News</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredGamesNews.map((gameNews) => (
-                    <article key={gameNews.gameSlug} className="group">
+                {gamesNews.map((gameNews) => (
+                    <article
+                        key={gameNews.gameSlug + gameNews.news.title + gameNews.news.pubDate}
+                        className="group bg-card text-card-foreground hover:border-border rounded-lg border p-2 hover:shadow-lg sm:p-4 md:p-4"
+                    >
                         <a
                             href={addUTM(gameNews.news.link)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-muted/20 hover:bg-muted/40 hover:border-border block rounded-md border border-transparent p-3 transition-all hover:shadow-lg sm:p-4"
+                            className="bg-muted/20 block rounded-md border border-transparent p-3 transition-all"
                         >
                             <div className="space-y-3">
-                                <div className="flex items-center gap-3 sm:items-center">
+                                <div className="flex items-center gap-3 sm:items-center md:gap-4">
                                     {gameNews.gameLogo && (
-                                        <div className="flex-shrink-0 rounded sm:h-10 sm:w-10 lg:h-12 lg:w-12">
+                                        <div className="flex-shrink-0 rounded sm:h-10 sm:w-10 lg:h-16 lg:w-16">
                                             <SanityImage
                                                 loading="lazy"
                                                 src={gameNews.gameLogo}
                                                 alt={`${gameNews.gameName} logo`}
-                                                width={56}
-                                                height={56}
+                                                width={72}
+                                                height={72}
                                                 objectFit="contain"
                                                 className="h-full w-full"
                                             />
@@ -85,11 +66,11 @@ export const GameNewsSection = ({
                                     <div className="min-w-0 flex-1">
                                         <div className="flex items-start justify-between gap-2">
                                             <div className="min-w-0 flex-1">
-                                                <h3 className="text-foreground group-hover:text-primary mb-1 text-sm font-semibold">
+                                                <h3 className="text-foreground group-hover:text-primary mb-1 text-xs font-bold">
                                                     {gameNews.gameName}
                                                 </h3>
                                                 <h4
-                                                    className="text-foreground group-hover:text-primary line-clamp-2 text-sm leading-tight font-medium transition-colors"
+                                                    className="text-foreground group-hover:text-primary text-md group-hover:decoration-primary leading-tight font-semibold text-pretty transition-colors group-hover:underline"
                                                     dangerouslySetInnerHTML={{
                                                         __html: gameNews.news.title,
                                                     }}
@@ -115,7 +96,7 @@ export const GameNewsSection = ({
                                 </div>
 
                                 {gameNews.news.description && (
-                                    <p className="text-muted-foreground line-clamp-2 text-xs leading-relaxed">
+                                    <p className="text-foreground line-clamp-4 text-sm leading-relaxed">
                                         {gameNews.news.description}
                                     </p>
                                 )}

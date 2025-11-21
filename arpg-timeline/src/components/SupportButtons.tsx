@@ -11,7 +11,14 @@ export const SupportButtons = () => {
         <section className="container flex flex-col gap-4 md:my-16">
             <div>
                 <h2 className="sr-only">Support</h2>
-                <div className="mx-auto mb-4 max-w-prose text-center">
+                <div className="mx-auto mb-12 flex max-w-prose flex-col gap-2 text-center">
+                    <p className="text-muted-foreground text-sm">
+                        Looking for news section? Check out the{" "}
+                        <MaybeLinkWrapper href="/news" className="inline-flex! underline">
+                            news page
+                        </MaybeLinkWrapper>
+                        .
+                    </p>
                     <p className="text-muted-foreground text-sm">
                         Have questions? Check out our{" "}
                         <MaybeLinkWrapper

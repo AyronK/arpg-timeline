@@ -1,18 +1,20 @@
-import { ArrowRightToLine, FlaskConical, Library, Users } from "lucide-react";
+import { ArrowRightToLine, FlaskConical, Library, Newspaper, Users } from "lucide-react";
 
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 
 import { LogoIcon } from "../LogoIcon";
 
+export type DashboardOption = GameFilterCategory | "news";
+
 export const DashboardConfig: Partial<
     Record<
-        GameFilterCategory,
+        DashboardOption,
         { description: string; tooltip: string; icon: React.ComponentType<{ className?: string }> }
     >
 > = {
     featured: {
         description: "Featured",
-        tooltip: "Default selection is shown unless you customize the filters",
+        tooltip: "Default set is shown until you customize the filters",
         icon: LogoIcon,
     },
     "early-access": {
@@ -22,7 +24,7 @@ export const DashboardConfig: Partial<
     },
     "non-seasonal": {
         description: "Non-Seasonal",
-        tooltip: "Games that do not feature seasonal updates or follow a classic DLC model",
+        tooltip: "Games that do not feature seasonal updates",
         icon: ArrowRightToLine,
     },
     community: {
@@ -34,5 +36,10 @@ export const DashboardConfig: Partial<
         description: "Full Catalog",
         tooltip: "Display all games together in one comprehensive view",
         icon: Library,
+    },
+    news: {
+        description: "Latest News",
+        tooltip: "Read the latest news and updates",
+        icon: Newspaper,
     },
 };

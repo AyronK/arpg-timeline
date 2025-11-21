@@ -1,4 +1,7 @@
+"use client";
+
 import { ChartGantt } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { Button } from "@/ui/Button";
@@ -13,6 +16,10 @@ interface MobileBottomMenuCenterProps {
 }
 
 export function MobileBottomMenuCenter({ category, onLoadingChange }: MobileBottomMenuCenterProps) {
+    const pathname = usePathname();
+    const currentCategory = pathname === "/news" ? ("news" as const) : category;
+    const config = DashboardConfig[currentCategory];
+
     return (
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <DropdownMenu>
@@ -38,7 +45,6 @@ export function MobileBottomMenuCenter({ category, onLoadingChange }: MobileBott
                     >
                         <div className="-rotate-45 transform">
                             {(() => {
-                                const config = DashboardConfig[category];
                                 const IconComponent = config?.icon;
                                 return IconComponent ? (
                                     <IconComponent className="h-6 w-6 text-white" />
@@ -52,7 +58,7 @@ export function MobileBottomMenuCenter({ category, onLoadingChange }: MobileBott
             </DropdownMenu>
             <div className="absolute left-1/2 mt-3.5 -translate-x-1/2 text-center">
                 <div className="text-[0.65rem] font-bold text-nowrap">
-                    {DashboardConfig[category]?.description ?? "aRPG"}
+                    {config?.description ?? "aRPG"}
                 </div>
             </div>
         </div>

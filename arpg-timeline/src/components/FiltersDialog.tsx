@@ -177,7 +177,7 @@ export const Filters = ({
                                             <div className="absolute top-1 right-1 z-10">
                                                 <Switch
                                                     checked={isChecked}
-                                                    className="data-[state=checked]:bg-muted-foreground z-10! origin-top-right scale-50"
+                                                    className="data-[state=checked]:bg-muted-foreground pointer-events-none z-10! origin-top-right scale-50"
                                                     aria-label={`Toggle ${f.label} visibility`}
                                                 />
                                             </div>

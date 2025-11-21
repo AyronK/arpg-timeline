@@ -94,13 +94,14 @@ export class GameNewsService {
 
     async getLatestNewsForGames(
         gameSlugs: string[],
-    ): Promise<Array<{ gameSlug: string; news: GameNewsDbEntry | null }>> {
+    ): Promise<Array<{ gameSlug: string; news: GameNewsDbEntry[] }>> {
         if (gameSlugs.length === 0) return [];
 
         const { data, error } = await this.supabase
             .from("game_news")
             .select("*")
             .in("game_slug", gameSlugs)
+            .gt("pub_date", new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
             .order("pub_date", { ascending: false });
 
         if (error) {
@@ -108,24 +109,25 @@ export class GameNewsService {
             throw new Error(`Failed to fetch latest news for games: ${error.message}`);
         }
 
-        // Group by game_slug and get the most recent for each
-        const newsByGame = new Map<string, GameNewsDbEntry>();
+        const newsByGame = new Map<string, GameNewsDbEntry[]>();
         data?.forEach((news) => {
             if (!newsByGame.has(news.game_slug)) {
-                newsByGame.set(news.game_slug, news);
+                newsByGame.set(news.game_slug, []);
             }
+            newsByGame.get(news.game_slug)!.push(news);
         });
 
-        // Return results ordered by publication date (most recent first)
         return gameSlugs
             .map((gameSlug) => ({
                 gameSlug,
-                news: newsByGame.get(gameSlug) || null,
+                news: (newsByGame.get(gameSlug) || [])
+                    .sort((a, b) => new Date(b.pub_date).getTime() - new Date(a.pub_date).getTime())
+                    .slice(0, 3),
             }))
-            .filter((item) => item.news !== null)
+            .filter((item) => item.news.length > 0)
             .sort(
                 (a, b) =>
-                    new Date(b.news!.pub_date).getTime() - new Date(a.news!.pub_date).getTime(),
+                    new Date(b.news[0].pub_date).getTime() - new Date(a.news[0].pub_date).getTime(),
             );
     }
 }
