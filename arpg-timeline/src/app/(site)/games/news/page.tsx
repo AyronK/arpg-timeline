@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 import { NewsContent } from "@/components/Dashboard/NewsContent";
 import { LayoutCarousel } from "@/components/LayoutCarousel";
@@ -8,7 +9,6 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "Latest Game News | ARPG Timeline",

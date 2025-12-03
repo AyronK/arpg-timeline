@@ -3,7 +3,7 @@ import { urlForImage } from "@/components/SanityImage";
 import { capitalizeFirstChar } from "../../../../lib/capitalizeFirstChar";
 import { formatDiscordDate } from "../../../../lib/discord/formatDiscordDate";
 import { addUTM } from "../addUTM";
-import { DetectedChange, LiveStreamProjection, SeasonProjection } from "../sanity";
+import { DetectedChange, LiveStreamProjection, SeasonProjection } from "../types";
 
 function createDiscordSeasonEmbed(seasonUpdate: SeasonProjection, changes: DetectedChange[]) {
     const fields = [];

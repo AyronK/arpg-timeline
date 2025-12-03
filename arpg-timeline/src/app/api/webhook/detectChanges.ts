@@ -1,7 +1,7 @@
 import { capitalizeFirstChar } from "@/lib/capitalizeFirstChar";
 
 import { formatDiscordDate } from "../../../lib/discord/formatDiscordDate";
-import { DetectedChange, LiveStreamProjection, SeasonProjection } from "./sanity";
+import { DetectedChange, LiveStreamProjection, SeasonProjection } from "./types";
 
 export function detectLiveStreamChanges(
     current: LiveStreamProjection,
@@ -54,22 +54,30 @@ export function detectSeasonChanges(
         });
     }
 
-    const currentStartConfirmed = current.start?.confirmed && current.start?.startDate;
-    const previousStartConfirmed = previous.start?.confirmed && previous.start?.startDate;
-    const currentEndConfirmed = current.end?.confirmed && current.end?.endDate;
-    const previousEndConfirmed = previous.end?.confirmed && previous.end?.endDate;
+    const currentStartConfirmed = !!(current.start?.confirmed && current.start?.startDate);
+    const previousStartConfirmed = !!(previous.start?.confirmed && previous.start?.startDate);
+    const currentEndConfirmed = !!(current.end?.confirmed && current.end?.endDate);
+    const previousEndConfirmed = !!(previous.end?.confirmed && previous.end?.endDate);
+
+    const normalizeDate = (date: string | undefined | null): string | null => {
+        if (!date) return null;
+        return new Date(date).toISOString();
+    };
+
+    const currentStartDate = normalizeDate(current.start?.startDate);
+    const previousStartDate = normalizeDate(previous.start?.startDate);
+    const currentEndDate = normalizeDate(current.end?.endDate);
+    const previousEndDate = normalizeDate(previous.end?.endDate);
 
     if (
         currentStartConfirmed !== previousStartConfirmed ||
-        (currentStartConfirmed &&
-            previousStartConfirmed &&
-            current.start?.startDate !== previous.start?.startDate)
+        (currentStartConfirmed && previousStartConfirmed && currentStartDate !== previousStartDate)
     ) {
         changes.push({
             type: "date_changed",
             field: "start_date",
-            oldValue: previousStartConfirmed ? previous.start?.startDate : null,
-            newValue: currentStartConfirmed ? current.start?.startDate : null,
+            oldValue: previousStartDate,
+            newValue: currentStartDate,
             discordMessage: currentStartConfirmed
                 ? `Start date ${previousStartConfirmed ? "updated to" : "confirmed for"} ${formatDiscordDate(new Date(current.start!.startDate!), "f")}`
                 : `Start date confirmation removed`,
@@ -78,15 +86,13 @@ export function detectSeasonChanges(
 
     if (
         currentEndConfirmed !== previousEndConfirmed ||
-        (currentEndConfirmed &&
-            previousEndConfirmed &&
-            current.end?.endDate !== previous.end?.endDate)
+        (currentEndConfirmed && previousEndConfirmed && currentEndDate !== previousEndDate)
     ) {
         changes.push({
             type: "date_changed",
             field: "end_date",
-            oldValue: previousEndConfirmed ? previous.end?.endDate : null,
-            newValue: currentEndConfirmed ? current.end?.endDate : null,
+            oldValue: previousEndDate,
+            newValue: currentEndDate,
             discordMessage: currentEndConfirmed
                 ? `End date ${previousEndConfirmed ? "updated to" : "confirmed for"} ${formatDiscordDate(new Date(current.end!.endDate!), "f")}`
                 : `End date confirmation removed`,
