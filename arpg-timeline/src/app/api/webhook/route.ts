@@ -3,12 +3,8 @@ import { parseBody } from "next-sanity/webhook";
 
 import { detectLiveStreamChanges, detectSeasonChanges } from "./detectChanges";
 import { sendDiscordLiveStreamEmbed, sendDiscordSeasonEmbed } from "./discord";
-import {
-    getPreviousRevision,
-    LiveStreamProjection,
-    SeasonProjection,
-    WebhookProjection,
-} from "./sanity";
+import { getPreviousRevision } from "./sanity";
+import { LiveStreamProjection, SeasonProjection, WebhookProjection } from "./types";
 
 export async function POST(req: NextRequest) {
     if (!process.env.SANITY_HOOK_SECRET) {
@@ -62,7 +58,6 @@ async function handleLiveStreamChange(streamUpdate: LiveStreamProjection) {
 
     if (changes.length > 0) {
         const response = await sendDiscordLiveStreamEmbed(streamUpdate, changes);
-
         if (!response || !response.ok) {
             const errorText = response ? await response.text() : "No response from Discord";
             console.error("Discord webhook error:", errorText);
@@ -77,7 +72,6 @@ async function handleLiveStreamChange(streamUpdate: LiveStreamProjection) {
         changesDetected: changes.length,
         changes: changes.map((c) => ({ type: c.type })),
         discordSent: changes.length > 0,
-        webhooksSent: false, // TODO: implement webhook receivers
     });
 }
 
@@ -91,12 +85,10 @@ async function handleSeasonChange(seasonUpdate: SeasonProjection, updatedAt?: st
         seasonUpdate._rev,
         updatedAt,
     );
-
     const changes = detectSeasonChanges(seasonUpdate, previousRevision);
 
     if (changes.length > 0) {
         const response = await sendDiscordSeasonEmbed(seasonUpdate, changes);
-
         if (!response || !response.ok) {
             const errorText = response ? await response.text() : "No response from Discord";
             console.error("Discord webhook error:", errorText);
@@ -111,6 +103,5 @@ async function handleSeasonChange(seasonUpdate: SeasonProjection, updatedAt?: st
         changesDetected: changes.length,
         changes: changes.map((c) => ({ type: c.type })),
         discordSent: changes.length > 0,
-        webhooksSent: false, // TODO: implement webhook receivers
     });
 }

@@ -1,7 +1,7 @@
 import { capitalizeFirstChar } from "@/lib/capitalizeFirstChar";
 
 import { formatDiscordDate } from "../../../lib/discord/formatDiscordDate";
-import { DetectedChange, LiveStreamProjection, SeasonProjection } from "./sanity";
+import { DetectedChange, LiveStreamProjection, SeasonProjection } from "./types";
 
 export function detectLiveStreamChanges(
     current: LiveStreamProjection,
