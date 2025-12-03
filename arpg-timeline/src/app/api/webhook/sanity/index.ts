@@ -44,49 +44,197 @@ export type DetectedChange<T = unknown> = {
     discordMessage: string;
 };
 
-const historyQuery = `*[_id == $id] | order(_rev desc) [0...10] {
-    _id,
-    _rev,
-    _type,
-    name,
-    "game":game->name,
-    "seasonKeyword": game->seasonKeyword,
-    "thumbnail":game->logo,
-    "color": game->logo.asset->metadata.palette.dominant.background,
-    start,
-    end,
-    "gameUrl": game->url,
-    "seasonUrl": url,
-    "patchNotesUrl": patchNotesUrl,
-}`;
+async function fetchDocumentAtRevision(
+    documentId: string,
+    revisionId: string,
+): Promise<Record<string, unknown> | null> {
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
+    const token = process.env.SANITY_STUDIO_READ_TOKEN;
+    const apiVersion = "2025-06-08";
+
+    if (!projectId || !dataset || !token) {
+        throw new Error("Missing required Sanity configuration");
+    }
+
+    const encodedDocumentId = encodeURIComponent(documentId);
+    const url = `https://${projectId}.api.sanity.io/v${apiVersion}/data/history/${dataset}/documents/${encodedDocumentId}?revision=${encodeURIComponent(revisionId)}`;
+
+    try {
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(
+                `Failed to fetch document at revision: ${response.status} ${response.statusText} - ${errorText}`,
+            );
+        }
+
+        const data = await response.json();
+        if (data.documents && Array.isArray(data.documents) && data.documents.length > 0) {
+            return data.documents[0];
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching document at revision:", error);
+        return null;
+    }
+}
+
+async function getPreviousRevisionId(
+    documentId: string,
+    currentRev: string,
+    updatedAt?: string,
+): Promise<string | null> {
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
+    const token = process.env.SANITY_STUDIO_READ_TOKEN;
+    const apiVersion = "2025-06-08";
+
+    if (!projectId || !dataset || !token) {
+        throw new Error("Missing required Sanity configuration");
+    }
+
+    const encodedDocumentId = encodeURIComponent(documentId);
+
+    let timeParam: string;
+    if (updatedAt) {
+        const updateDate = new Date(updatedAt);
+        const oneSecondBefore = new Date(updateDate.getTime() - 1000);
+        timeParam = oneSecondBefore.toISOString();
+    } else {
+        const now = new Date();
+        const minuteAgo = new Date(now.getTime() - 60000);
+        timeParam = minuteAgo.toISOString();
+    }
+
+    const url = `https://${projectId}.api.sanity.io/v${apiVersion}/data/history/${dataset}/documents/${encodedDocumentId}?time=${encodeURIComponent(timeParam)}`;
+
+    try {
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(
+                `Failed to fetch previous revision: ${response.status} ${response.statusText} - ${errorText}`,
+            );
+        }
+
+        const data = await response.json();
+
+        const previousRev = data.documents?.[0]?._rev;
+        if (!previousRev || previousRev === currentRev) {
+            return null;
+        }
+        return previousRev;
+    } catch (error) {
+        console.error("Error fetching previous revision ID:", error);
+        return null;
+    }
+}
+
+async function transformHistoryDocumentToProjection(
+    doc: Record<string, unknown>,
+): Promise<SeasonProjection | null> {
+    if (!doc || typeof doc._id !== "string" || typeof doc._rev !== "string") {
+        return null;
+    }
+
+    try {
+        const gameRefObj = doc.game as { _ref?: string; _id?: string } | undefined;
+        const gameRef = gameRefObj?._ref || gameRefObj?._id;
+        if (!gameRef) {
+            return null;
+        }
+
+        const gameQuery = `*[_id == $gameId] {
+            name,
+            seasonKeyword,
+            "url": url,
+            "logo": logo.asset->{
+                _id,
+                url,
+                metadata
+            }
+        }[0]`;
+
+        const gameData = (await sanityFetch({
+            query: gameQuery,
+            revalidate: 3600,
+            tags: ["game"],
+            params: { gameId: gameRef },
+        })) as {
+            name?: string;
+            seasonKeyword?: string;
+            url?: string;
+            logo?: {
+                _id: string;
+                url: string;
+                metadata?: {
+                    palette?: {
+                        dominant?: {
+                            background?: string;
+                        };
+                    };
+                };
+            };
+        } | null;
+
+        if (!gameData) {
+            return null;
+        }
+
+        const logoAsset = gameData.logo;
+        const color = logoAsset?.metadata?.palette?.dominant?.background || "#000000";
+
+        return {
+            _id: doc._id as string,
+            _rev: doc._rev as string,
+            _type: (doc._type as string) || "",
+            name: (doc.name as string) || "",
+            game: gameData.name || "",
+            gameUrl: gameData.url || "",
+            seasonUrl: (doc.url as string | null) || null,
+            patchNotesUrl: (doc.patchNotesUrl as string | null) || null,
+            seasonKeyword: gameData.seasonKeyword || "",
+            thumbnail: logoAsset as SanityImageAssetDocument,
+            start: doc.start as SeasonStartDateInfo | undefined,
+            end: doc.end as SeasonEndDateInfo | undefined,
+            color,
+        } as SeasonProjection;
+    } catch (error) {
+        console.error("Error transforming history document:", error);
+        return null;
+    }
+}
 
 export async function getPreviousRevision(
     documentId: string,
     currentRev: string,
+    updatedAt?: string,
 ): Promise<SeasonProjection | null> {
     try {
-        const history = await sanityFetch({
-            query: historyQuery,
-            revalidate: 3600,
-            tags: ["game", "season"],
-            params: { id: documentId },
-        });
+        const previousRev = await getPreviousRevisionId(documentId, currentRev, updatedAt);
 
-        if (!history || history.length === 0) {
+        if (!previousRev) {
             return null;
         }
 
-        const currentIndex = history.findIndex((doc: SeasonProjection) => doc._rev === currentRev);
+        const previousDoc = await fetchDocumentAtRevision(documentId, previousRev);
 
-        if (currentIndex === -1) {
+        if (!previousDoc) {
             return null;
         }
 
-        if (currentIndex === history.length - 1) {
-            return null;
-        }
-
-        return history[currentIndex + 1];
+        return await transformHistoryDocumentToProjection(previousDoc);
     } catch (error) {
         console.error("Error fetching previous revision:", error);
         return null;
