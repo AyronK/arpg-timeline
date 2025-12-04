@@ -21,14 +21,26 @@ export const StatisticsSection = ({
                     }
                     label="Average Duration"
                 />
-                <StatisticsCard value={statistics.averagePerYear} label="Average Per Year" />
+                <StatisticsCard
+                    value={
+                        statistics.averagePerYear === "N/A"
+                            ? "N/A"
+                            : (() => {
+                                  const avg = parseFloat(statistics.averagePerYear);
+                                  const floor = Math.floor(avg);
+                                  const ceil = Math.ceil(avg);
+                                  return floor === ceil ? `${floor}` : `${floor}-${ceil}`;
+                              })()
+                    }
+                    label="Average Per Year"
+                />
                 <StatisticsCard
                     className="col-span-full md:col-span-1"
                     value={
                         statistics.usualStartTime === "N/A" ? (
                             "N/A"
                         ) : (
-                            <div className="mx-auto h-8 max-w-1/3">
+                            <div className="mx-auto h-8">
                                 <ClientOnlyVisibleWrapper>
                                     <div>
                                         <LocalTime utcTime={statistics.usualStartTime} />
@@ -38,6 +50,7 @@ export const StatisticsSection = ({
                         )
                     }
                     label="Usual Start Time"
+                    subValue={"(local timezone)"}
                 />
                 <StatisticsCard
                     value={statistics.maxDuration.days}

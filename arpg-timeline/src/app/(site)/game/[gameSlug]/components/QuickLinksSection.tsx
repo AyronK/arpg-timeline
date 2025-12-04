@@ -59,10 +59,10 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                 href={`/docs/html/${gameSlug}`}
                 data-sa-click={`${gameSlug}-html-docs`}
             >
-                HTML Documentation
+                HTML Widget Documentation
             </MaybeLinkWrapper>
             <MaybeLinkWrapper href={`/docs/obs/${gameSlug}`} data-sa-click={`${gameSlug}-obs-docs`}>
-                OBS Integration
+                OBS Widget Integration
             </MaybeLinkWrapper>
             <MaybeLinkWrapper
                 href={`/embed/season-widget/${gameSlug}`}
