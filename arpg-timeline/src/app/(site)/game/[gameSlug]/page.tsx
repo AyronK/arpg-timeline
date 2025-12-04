@@ -1,4 +1,6 @@
+import { Gamepad2 } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -12,6 +14,7 @@ import {
 import { GameNewsService } from "@/lib/gameNewsService";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { Button } from "@/ui/Button";
 
 import {
     ArchivalSeasonsSection,
@@ -97,7 +100,15 @@ const GamePage = async ({ params }: GamePageProps) => {
                 />
             )}
             <div className="relative container mx-auto py-6 md:py-8">
-                <h1 className="font-heading mb-6 text-3xl md:mb-8 md:text-4xl">{game.name}</h1>
+                <div className="mb-4 flex items-center justify-between gap-4">
+                    <h1 className="font-heading text-3xl md:text-4xl">{game.name}</h1>
+                    <Button variant="default" size="sm" asChild>
+                        <Link href="/" data-sa-click="back-to-homepage">
+                            <Gamepad2 className="mr-2 h-4 w-4" />
+                            Browse all games
+                        </Link>
+                    </Button>
+                </div>
 
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
