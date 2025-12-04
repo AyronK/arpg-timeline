@@ -81,4 +81,3 @@ export async function transformHistoryDocumentToProjection(
         return null;
     }
 }
-
