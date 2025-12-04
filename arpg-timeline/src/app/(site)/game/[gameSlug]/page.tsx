@@ -62,7 +62,9 @@ const GamePage = async ({ params }: GamePageProps) => {
     const gameNews = await getSteamNewsFromDb(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
     const oldestSeasonInfo = getOldestSeasonInfo(data, gameSlug);
-    const archivalSeasons = getArchivalSeasons(data, gameSlug);
+    const archivalSeasons = getArchivalSeasons(data, gameSlug).filter(
+        (s) => s.name !== game.currentSeason?.name,
+    );
     return (
         <>
             <BreadcrumbSchema path={`game/${gameSlug}`} />
@@ -111,13 +113,17 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
     }
 
     return {
-        title: `${game.name} Seasons & Updates | aRPG Timeline`,
-        description: `Track ${game.name} seasons, league starts, and updates. Get countdowns, start dates, and never miss a ${game.name} season launch.`,
+        title: `${game.name} Updates | aRPG Timeline`,
+        description: `Track ${game.name} ${game.seasonKeyword}s and updates. Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`,
         keywords: [
+            `${game.name} ${game.seasonKeyword}s`,
             `${game.name} seasons`,
-            `${game.name} league start`,
             `${game.name} countdown`,
             `${game.name} updates`,
+            `${game.name} ${game.seasonKeyword}`,
+            `${game.name} next ${game.seasonKeyword}`,
+            `${game.name} next ${game.seasonKeyword} start`,
+            `${game.name} next ${game.seasonKeyword} release`,
             "arpg timeline",
             "season tracker",
         ],
