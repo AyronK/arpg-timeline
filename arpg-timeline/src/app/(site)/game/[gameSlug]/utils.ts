@@ -190,6 +190,7 @@ export const getArchivalSeasons = (
                 duration,
                 url: season.url,
                 patchNotesUrl: season.patchNotesUrl,
+                logo: season.logo,
             };
         })
         .filter((s): s is NonNullable<typeof s> => s !== null)

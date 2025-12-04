@@ -125,7 +125,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                     />
                 </div>
 
-                <ArchivalSeasonsSection seasons={archivalSeasons} />
+                <ArchivalSeasonsSection seasons={archivalSeasons} gameLogo={game.logo} />
             </div>
         </>
     );
