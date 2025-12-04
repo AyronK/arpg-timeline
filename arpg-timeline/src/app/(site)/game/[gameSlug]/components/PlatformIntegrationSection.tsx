@@ -1,4 +1,5 @@
 import { GameNews } from "@/components/GameNews";
+import { PatreonFunding } from "@/components/PatreonFunding";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
 import { SteamEmbed } from "@/components/SteamEmbed";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ export const PlatformIntegrationSection = ({
         >
             {steamAppId && (
                 <div className="flex flex-1 flex-col justify-between gap-4">
+                    <PatreonFunding />
                     <div className="md:bg-card md:text-card-foreground md:rounded-lg md:border md:p-4">
                         <h3 className="font-heading mb-3 text-lg">Steam Store</h3>
                         <SteamEmbed appId={steamAppId} />

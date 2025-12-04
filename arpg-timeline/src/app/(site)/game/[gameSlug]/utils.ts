@@ -158,7 +158,18 @@ export const getArchivalSeasons = (
     const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
 
     return gameSeasons
-        .filter((s) => s?.start?.startDate && s?.start?.confirmed)
+        .filter(
+            (s) =>
+                s?.start?.startDate &&
+                s?.start?.confirmed &&
+                new Date(s.start.startDate) < new Date(),
+        )
+        .filter((s) => s.start?.startDate && new Date(s.start.startDate) < new Date())
+        .sort(
+            (a, b) =>
+                new Date(b.start!.startDate!).getTime() - new Date(a.start!.startDate!).getTime(),
+        )
+        .slice(1)
         .map((season) => {
             const startDate = new Date(season.start!.startDate!);
             const endDate =
@@ -168,6 +179,10 @@ export const getArchivalSeasons = (
                 ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
                 : null;
 
+            if (endDate && endDate > new Date()) {
+                return null;
+            }
+
             return {
                 name: season.name || "Unknown",
                 startDate,
@@ -175,8 +190,9 @@ export const getArchivalSeasons = (
                 duration,
                 url: season.url,
                 patchNotesUrl: season.patchNotesUrl,
+                logo: season.logo,
             };
         })
-        .sort((a, b) => b.startDate.getTime() - a.startDate.getTime())
-        .slice(1);
+        .filter((s): s is NonNullable<typeof s> => s !== null)
+        .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
 };

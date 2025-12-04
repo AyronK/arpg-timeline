@@ -1,4 +1,6 @@
+import { Gamepad2 } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -10,7 +12,9 @@ import {
     IndexQueryResult,
 } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
+import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { Button } from "@/ui/Button";
 
 import {
     ArchivalSeasonsSection,
@@ -62,12 +66,49 @@ const GamePage = async ({ params }: GamePageProps) => {
     const gameNews = await getSteamNewsFromDb(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
     const oldestSeasonInfo = getOldestSeasonInfo(data, gameSlug);
-    const archivalSeasons = getArchivalSeasons(data, gameSlug);
+    const archivalSeasons = getArchivalSeasons(data, gameSlug).filter(
+        (s) => s.name !== game.currentSeason?.name,
+    );
+    const structuredData = getStructuredDataForGame(game);
+    const faqSchema =
+        structuredData?.faqQuestions && structuredData.faqQuestions.length > 0
+            ? {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "@id": `https://www.arpg-timeline.com/game/${gameSlug}#faq`,
+                  mainEntity: structuredData.faqQuestions,
+              }
+            : null;
+
     return (
         <>
             <BreadcrumbSchema path={`game/${gameSlug}`} />
+            {structuredData && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(structuredData.structuredData, null, 2),
+                    }}
+                />
+            )}
+            {faqSchema && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(faqSchema, null, 2),
+                    }}
+                />
+            )}
             <div className="relative container mx-auto py-6 md:py-8">
-                <h1 className="font-heading mb-6 text-3xl md:mb-8 md:text-4xl">{game.name}</h1>
+                <div className="mb-4 flex items-center justify-between gap-4">
+                    <h1 className="font-heading text-3xl md:text-4xl">{game.name}</h1>
+                    <Button variant="default" size="sm" asChild>
+                        <Link href="/" data-sa-click="back-to-homepage">
+                            <Gamepad2 className="mr-2 h-4 w-4" />
+                            Browse all games
+                        </Link>
+                    </Button>
+                </div>
 
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
@@ -80,11 +121,11 @@ const GamePage = async ({ params }: GamePageProps) => {
                 <div className="mb-6 md:mb-8">
                     <PlatformIntegrationSection
                         steamAppId={steamAppId}
-                        gameNews={gameNews.slice(0, 4)}
+                        gameNews={gameNews.slice(0, 5)}
                     />
                 </div>
 
-                <ArchivalSeasonsSection seasons={archivalSeasons} />
+                <ArchivalSeasonsSection seasons={archivalSeasons} gameLogo={game.logo} />
             </div>
         </>
     );
@@ -110,23 +151,86 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
         };
     }
 
+    const buildDescription = () => {
+        const base = `Track ${game.name} ${game.seasonKeyword}s and updates. Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
+
+        if (
+            game.nextSeason?.name &&
+            game.nextSeason?.start?.startDate &&
+            game.nextSeason?.start?.confirmed &&
+            new Date(game.nextSeason.start.startDate) > new Date()
+        ) {
+            return `Track ${game.name} ${game.seasonKeyword}s and updates. Next ${game.seasonKeyword}: ${game.nextSeason.name} (starts ${game.nextSeason.start.startDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
+        }
+
+        if (
+            game.currentSeason?.name &&
+            game.currentSeason?.start?.startDate &&
+            game.currentSeason?.start?.confirmed
+        ) {
+            return `Track ${game.name} ${game.seasonKeyword}s and updates. Current ${game.seasonKeyword}: ${game.currentSeason.name} (started ${game.currentSeason.start.startDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
+        }
+
+        return base;
+    };
+
+    const ogDescription =
+        game.nextSeason?.name &&
+        game.nextSeason?.start?.startDate &&
+        game.nextSeason?.start?.confirmed &&
+        new Date(game.nextSeason.start.startDate) > new Date()
+            ? `Track ${game.name} seasons and get countdowns for upcoming content. Next ${game.seasonKeyword}: ${game.nextSeason.name}.`
+            : game.currentSeason?.name
+              ? `Track ${game.name} seasons and get countdowns for upcoming content. Current ${game.seasonKeyword}: ${game.currentSeason.name}.`
+              : `Track ${game.name} seasons and get countdowns for upcoming content.`;
+
     return {
-        title: `${game.name} Seasons & Updates | aRPG Timeline`,
-        description: `Track ${game.name} seasons, league starts, and updates. Get countdowns, start dates, and never miss a ${game.name} season launch.`,
+        title: `${game.name} Updates | aRPG Timeline`,
+        description: buildDescription(),
         keywords: [
+            `${game.name} ${game.seasonKeyword}s`,
             `${game.name} seasons`,
-            `${game.name} league start`,
             `${game.name} countdown`,
             `${game.name} updates`,
+            `${game.name} ${game.seasonKeyword}`,
+            `${game.name} next ${game.seasonKeyword}`,
+            `${game.name} next ${game.seasonKeyword} start`,
+            `${game.name} next ${game.seasonKeyword} release`,
             "arpg timeline",
             "season tracker",
         ],
         openGraph: {
             title: `${game.name} Season Tracker`,
-            description: `Track ${game.name} seasons and get countdowns for upcoming content.`,
-            images: ["/assets/seoimage.png"],
+            description: ogDescription,
+            siteName: "aRPG Timeline",
             type: "website",
             url: `https://www.arpg-timeline.com/game/${slug}`,
+            locale: "en_US",
+            images: [
+                {
+                    url: "/assets/seoimage.png",
+                    width: 1200,
+                    height: 630,
+                    alt: `${game.name} Season Tracker - Track ${game.name} ${game.seasonKeyword}s and updates`,
+                    type: "image/png",
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: `${game.name} Season Tracker`,
+            description: ogDescription,
+            images: ["/assets/seoimage.png"],
+        },
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                "max-image-preview": "large",
+                "max-snippet": -1,
+            },
         },
         alternates: { canonical: `/game/${slug}` },
     };

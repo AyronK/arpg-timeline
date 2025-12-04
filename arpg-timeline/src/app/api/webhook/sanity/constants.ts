@@ -11,4 +11,3 @@ export function getSanityConfig() {
 
     return { projectId, dataset, token };
 }
-

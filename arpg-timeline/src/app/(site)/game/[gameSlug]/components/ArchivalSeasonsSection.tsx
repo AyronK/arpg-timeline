@@ -1,6 +1,8 @@
+import { SanityImage } from "@/components/SanityImage";
+
 import { ArchivalSeasonsSectionProps } from "../types";
 
-export const ArchivalSeasonsSection = ({ seasons }: ArchivalSeasonsSectionProps) => {
+export const ArchivalSeasonsSection = ({ seasons, gameLogo }: ArchivalSeasonsSectionProps) => {
     if (seasons.length === 0) {
         return null;
     }
@@ -15,31 +17,51 @@ export const ArchivalSeasonsSection = ({ seasons }: ArchivalSeasonsSectionProps)
                             key={index}
                             className="border-muted-foreground/20 rounded-md border p-3"
                         >
-                            <div className="text-foreground mb-2 font-medium">{season.name}</div>
-                            <div className="text-muted-foreground text-sm">
-                                Started{" "}
-                                {season.startDate.toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "short",
-                                    day: "numeric",
-                                })}
-                                {season.endDate && (
-                                    <>
-                                        {" • "}
-                                        Ended{" "}
-                                        {season.endDate.toLocaleDateString("en-US", {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric",
-                                        })}
-                                    </>
-                                )}
-                                {season.duration && (
-                                    <>
-                                        {" • "}
-                                        {season.duration} days
-                                    </>
-                                )}
+                            <div className="flex items-stretch gap-3 md:gap-6">
+                                <div className="my-auto grid h-16 min-h-16 w-16 min-w-16 shrink-0 place-items-center md:h-24 md:min-h-24 md:w-24 md:min-w-24">
+                                    <SanityImage
+                                        loading="lazy"
+                                        src={season.logo ?? gameLogo}
+                                        alt={`${season.name} logo`}
+                                        width={96}
+                                        height={96}
+                                        quality={50}
+                                        objectFit="contain"
+                                        className="h-full w-full"
+                                    />
+                                </div>
+                                <div className="flex flex-1 flex-col justify-start">
+                                    <div className="text-foreground mb-1 font-medium">
+                                        {season.name}
+                                    </div>
+                                    <div className="text-muted-foreground flex flex-col gap-1 text-sm md:flex-row">
+                                        <div>
+                                            Started{" "}
+                                            {season.startDate.toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                            })}
+                                        </div>
+                                        {season.endDate && (
+                                            <div>
+                                                <span className="hidden md:inline">{" • "}</span>
+                                                Ended{" "}
+                                                {season.endDate.toLocaleDateString("en-US", {
+                                                    year: "numeric",
+                                                    month: "long",
+                                                    day: "numeric",
+                                                })}
+                                            </div>
+                                        )}
+                                        {season.duration && (
+                                            <div>
+                                                <span className="hidden md:inline">{" • "}</span>
+                                                {season.duration} days
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))}

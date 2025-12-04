@@ -42,4 +42,3 @@ export type DetectedChange<T = unknown> = {
     newValue?: T;
     discordMessage: string;
 };
-

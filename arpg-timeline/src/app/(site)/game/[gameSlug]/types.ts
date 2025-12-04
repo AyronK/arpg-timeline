@@ -1,3 +1,5 @@
+import { SanityImageAssetDocument } from "next-sanity";
+
 import { Game as CMSGame } from "@/lib/cms/games.types";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
 
@@ -49,10 +51,12 @@ export interface ArchivalSeason {
     duration: number | null;
     url?: string;
     patchNotesUrl?: string;
+    logo?: SanityImageAssetDocument;
 }
 
 export interface ArchivalSeasonsSectionProps {
     seasons: ArchivalSeason[];
+    gameLogo: SanityImageAssetDocument;
 }
 
 export interface GameHeaderSectionProps {
