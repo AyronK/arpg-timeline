@@ -62,7 +62,13 @@ export const useTimelineEvents = (games: Game[]) => {
                 game: g.name,
                 startDate: nextStartDate,
                 startDateNotice: g?.nextSeason?.start?.overrideText,
-                endDate: nextEndDate > nextStartDate ? nextEndDate : nextStartDate,
+                endDate:
+                    g?.nextSeason?.end?.endDate && nextEndDate > nextStartDate
+                        ? nextEndDate
+                        : new Date(
+                              nextStartDate.getTime() +
+                                  (g.averageSeasonDuration ?? 120) * 24 * 60 * 60 * 1000,
+                          ),
                 endDateNotice: g?.nextSeason?.end?.overrideText ?? "",
                 startDateConfirmed: g.nextSeason?.start?.confirmed ?? false,
                 endDateConfirmed: g.nextSeason?.end?.confirmed ?? false,
