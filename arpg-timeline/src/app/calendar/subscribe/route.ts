@@ -106,7 +106,6 @@ export async function GET(): Promise<NextResponse> {
                 url: "https://www.arpg-timeline.com?utm_source=calendar",
                 calName: "arpg-timeline.com",
                 busyStatus: "FREE",
-                alarms: [{ action: "display", trigger: { hours: 1, before: true } }],
             } satisfies EventAttributes;
         });
 
@@ -131,7 +130,6 @@ export async function GET(): Promise<NextResponse> {
                 url: "https://www.arpg-timeline.com?utm_source=calendar",
                 calName: "arpg-timeline.com",
                 busyStatus: "FREE",
-                alarms: [{ action: "display", trigger: { hours: 1, before: true } }],
             } satisfies EventAttributes;
         });
 
