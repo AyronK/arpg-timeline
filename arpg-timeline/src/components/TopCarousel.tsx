@@ -61,8 +61,10 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                             <Carousel
                                 plugins={[
                                     Autoplay({
-                                        delay: 7_000,
+                                        delay: 7_500,
                                         stopOnMouseEnter: true,
+                                        playOnInit: true,
+                                        stopOnFocusIn: false,
                                     }),
                                 ]}
                                 className="w-full max-w-screen select-none lg:max-w-3xl"
