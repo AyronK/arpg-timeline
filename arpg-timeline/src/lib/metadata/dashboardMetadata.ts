@@ -29,7 +29,7 @@ export async function generateDashboardMetadata(
     const isDefault = dashboard === "featured";
 
     const title = isDefault
-        ? "aRPG Timeline | Season Tracker"
+        ? "aRPG Timeline | Every season. Just on time."
         : `${dashboardLabels[dashboard]} | aRPG Timeline`;
 
     const description =

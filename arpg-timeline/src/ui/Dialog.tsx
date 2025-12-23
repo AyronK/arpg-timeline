@@ -46,7 +46,7 @@ const DialogContent = forwardRef<
             <div className="relative grid h-full gap-4 overflow-x-hidden overflow-y-auto p-6 md:max-h-[75vh]">
                 {children}
             </div>
-            <DialogPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+            <DialogPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
             </DialogPrimitive.Close>
