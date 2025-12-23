@@ -33,7 +33,7 @@ const AllGamesCard = () => {
             role="button"
             onClick={handleCopy}
             className={cn(
-                "text-card-foreground bg-card group flex cursor-pointer flex-col rounded-lg border-2 p-4 text-left transition-all md:p-6",
+                "text-card-foreground bg-card group flex min-w-0 cursor-pointer flex-col rounded-lg border-2 p-4 text-left transition-all md:p-6",
                 "border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-md",
             )}
         >
@@ -46,7 +46,7 @@ const AllGamesCard = () => {
                         All Games Calendar
                     </h2>
                     <p className="text-muted-foreground text-xs leading-tight md:text-sm">
-                        Every aRPG season and stream in one feed
+                        Click to copy the subscription URL
                     </p>
                 </div>
                 <div className="text-muted-foreground flex shrink-0 items-center gap-1 text-sm">
@@ -63,7 +63,7 @@ const AllGamesCard = () => {
                     )}
                 </div>
             </div>
-            <code className="bg-muted/50 mx-auto block truncate rounded px-3 py-2 text-xs">
+            <code className="bg-muted/50 block max-w-full truncate rounded px-3 py-2 text-xs">
                 {url}
             </code>
         </div>
@@ -80,13 +80,13 @@ export default function CalendarPage() {
                 </p>
             </div>
 
-            <div className="container mx-auto mb-6 grid gap-4 md:grid-cols-2">
+            <div className="container mx-auto mb-6 grid min-w-0 gap-4 md:grid-cols-2">
                 <AllGamesCard />
 
                 <Link
                     href="/dashboard/all"
                     className={cn(
-                        "text-card-foreground bg-card group flex flex-col rounded-lg border-2 p-4 transition-all md:p-6",
+                        "text-card-foreground bg-card group flex min-w-0 flex-col rounded-lg border-2 p-4 transition-all md:p-6",
                         "border-sky-500/30 hover:border-sky-500/50 hover:shadow-md",
                     )}
                 >
@@ -99,14 +99,14 @@ export default function CalendarPage() {
                                 Single Game Calendar
                             </h2>
                             <p className="text-muted-foreground text-xs leading-tight md:text-sm">
-                                Track only the games you care about
+                                Click to browse games and subscribe
                             </p>
                         </div>
-                        <span className="text-muted-foreground flex shrink-0 items-center gap-1 text-sm">
+                        <span className="text-muted-foreground hidden shrink-0 items-center gap-1 text-sm md:flex">
                             Browse Games →
                         </span>
                     </div>
-                    <p className="bg-muted/50 mx-auto block truncate rounded px-3 py-2 text-xs">
+                    <p className="bg-muted/50 block max-w-full rounded px-3 py-2 text-xs">
                         Visit any game page and click the calendar icon to get a game-specific link.
                     </p>
                 </Link>
