@@ -6,6 +6,7 @@ import {
     createStreamEvents,
     fetchAllGameSlugs,
     fetchCalendarData,
+    fetchGameBySlug,
     generateIcsResponse,
 } from "../calendarHelper";
 
@@ -24,21 +25,22 @@ export async function generateStaticParams() {
 export async function GET(_request: Request, { params }: RouteParams): Promise<NextResponse> {
     try {
         const { gameSlug } = await params;
+
+        const game = await fetchGameBySlug(gameSlug);
+        if (!game) {
+            return NextResponse.json({ error: "Game not found" }, { status: 404 });
+        }
+
         const { seasons, streams } = await fetchCalendarData();
 
         const filteredSeasons = seasons.filter((season) => season.gameSlug === gameSlug);
         const filteredStreams = streams.filter((stream) => stream.gameSlug === gameSlug);
 
-        if (filteredSeasons.length === 0 && filteredStreams.length === 0) {
-            return NextResponse.json({ error: "Game not found or no events" }, { status: 404 });
-        }
-
-        const gameName = filteredSeasons[0]?.gameName ?? filteredStreams[0]?.gameName;
-        const seasonEvents = createSeasonEvents(filteredSeasons, gameName);
-        const streamEvents = createStreamEvents(filteredStreams, gameName);
+        const seasonEvents = createSeasonEvents(filteredSeasons, game.name);
+        const streamEvents = createStreamEvents(filteredStreams, game.name);
         const events = [...seasonEvents, ...streamEvents];
 
-        const { error, value } = generateIcsResponse(events);
+        const { error, value } = generateIcsResponse(events, game.name);
 
         if (error || !value) {
             console.error("Error creating ICS events:", error);

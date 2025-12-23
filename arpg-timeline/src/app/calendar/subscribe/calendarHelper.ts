@@ -51,6 +51,11 @@ const gamesQuery = `*[_type == "game"]{
     name
 } | order(name asc)`;
 
+const gameBySlugQuery = `*[_type == "game" && slug.current == $slug][0]{
+    "slug": slug.current,
+    name
+}`;
+
 function dateToDateArray(dateString: string): DateArray {
     const date = new Date(dateString);
     return [
@@ -102,6 +107,15 @@ export async function fetchCalendarData(): Promise<{
 export async function fetchAllGameSlugs(): Promise<CalendarGame[]> {
     return sanityFetch({
         query: gamesQuery,
+        revalidate: false,
+        tags: ["game"],
+    });
+}
+
+export async function fetchGameBySlug(slug: string): Promise<CalendarGame | null> {
+    return sanityFetch({
+        query: gameBySlugQuery,
+        params: { slug },
         revalidate: false,
         tags: ["game"],
     });
@@ -173,10 +187,29 @@ export function createStreamEvents(
     });
 }
 
-export function generateIcsResponse(events: EventAttributes[]): {
+function buildEmptyIcs(calName: string): string {
+    return `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//arpg-timeline.com//aRPG Timeline//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:${calName}
+END:VCALENDAR`;
+}
+
+export function generateIcsResponse(
+    events: EventAttributes[],
+    gameName?: string,
+): {
     error: string | null;
     value: string | null;
 } {
+    const calName = gameName ? `arpg-timeline.com | ${gameName}` : "arpg-timeline.com";
+
+    if (events.length === 0) {
+        return { error: null, value: buildEmptyIcs(calName) };
+    }
+
     const { error, value } = createEvents(events);
 
     if (error || !value) {
