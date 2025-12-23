@@ -36,6 +36,16 @@ export const Footer = () => (
                 <div className="flex flex-row gap-1">
                     <Link
                         className="font-semibold transition-opacity duration-200 hover:opacity-75"
+                        href="/calendar"
+                        data-sa-click="calendar"
+                    >
+                        Calendar
+                    </Link>
+                </div>
+
+                <div className="flex flex-row gap-1">
+                    <Link
+                        className="font-semibold transition-opacity duration-200 hover:opacity-75"
                         href="/privacy"
                         data-sa-click="privacy"
                     >

@@ -1,3 +1,4 @@
+import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import { GameNews } from "@/components/GameNews";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
@@ -9,6 +10,8 @@ import { PlatformIntegrationSectionProps } from "../types";
 export const PlatformIntegrationSection = ({
     steamAppId,
     gameNews,
+    gameSlug,
+    gameName,
 }: PlatformIntegrationSectionProps) => (
     <div className="space-y-6 md:gap-6 md:space-y-8">
         <h2 className="font-heading text-2xl md:text-3xl">Live updates</h2>
@@ -28,7 +31,10 @@ export const PlatformIntegrationSection = ({
                     </div>
                 </div>
             )}
-            <GameNews steamAppId={steamAppId} news={gameNews} />
+            <div className="flex min-w-0 flex-col gap-4 md:gap-6">
+                <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={gameName} />
+                <GameNews steamAppId={steamAppId} news={gameNews} />
+            </div>
         </div>
     </div>
 );

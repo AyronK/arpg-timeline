@@ -23,9 +23,8 @@ export const ArchivalSeasonsSection = ({ seasons, gameLogo }: ArchivalSeasonsSec
                                         loading="lazy"
                                         src={season.logo ?? gameLogo}
                                         alt={`${season.name} logo`}
-                                        width={96}
-                                        height={96}
-                                        quality={50}
+                                        width={128}
+                                        height={128}
                                         objectFit="contain"
                                         className="h-full w-full"
                                     />

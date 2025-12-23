@@ -32,8 +32,8 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                             src={game.nextSeason?.logo ?? game.currentSeason?.logo ?? game.logo!}
                             alt={`${game.name} logo`}
                             className="my-auto drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]"
-                            width={340}
-                            height={140}
+                            width={256}
+                            height={256}
                             objectFit="contain"
                         />
                     }

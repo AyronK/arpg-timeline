@@ -105,6 +105,8 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
             <CalendarMenu
                 startDate={stream.date ?? ""}
                 title={`${stream.gameName} stream on Twitch`}
+                gameSlug={stream.gameSlug}
+                gameName={stream.gameName}
             />
         }
     >
@@ -128,7 +130,6 @@ export const StreamCard = ({ stream, priority }: { stream: GameStream; priority:
                         className="my-auto"
                         width={64}
                         height={64}
-                        quality={50}
                         objectFit="contain"
                     />
                 </div>

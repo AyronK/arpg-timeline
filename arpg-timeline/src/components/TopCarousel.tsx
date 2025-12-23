@@ -4,6 +4,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { Twitch } from "lucide-react";
 import { useMemo } from "react";
 
+import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { StreamCard } from "@/components/StreamCard";
@@ -60,8 +61,10 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                             <Carousel
                                 plugins={[
                                     Autoplay({
-                                        delay: 7_000,
+                                        delay: 7_500,
                                         stopOnMouseEnter: true,
+                                        playOnInit: true,
+                                        stopOnFocusIn: false,
                                     }),
                                 ]}
                                 className="w-full max-w-screen select-none lg:max-w-3xl"
@@ -74,7 +77,9 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                     {filteredStreams.map((s, idx) => (
                                         <CarouselItem
                                             key={s.slug}
-                                            className={"h-28 cursor-all-scroll pr-4 pl-8"}
+                                            className={
+                                                "flex h-28 cursor-all-scroll items-center justify-center pr-4 pl-8"
+                                            }
                                         >
                                             <div className="relative pt-3">
                                                 <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
@@ -84,13 +89,15 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                     ))}
                                     <CarouselItem
                                         className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pr-4 pl-8"
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
                                         }
                                     >
-                                        <Kicker />
+                                        <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                     <CarouselItem
-                                        className={"h-28 cursor-all-scroll pt-3 pr-4 pl-8"}
+                                        className={
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
+                                        }
                                     >
                                         <PatreonFunding />
                                     </CarouselItem>
@@ -103,19 +110,3 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
         </ClientOnlyVisibleWrapper>
     );
 };
-
-export const CarouselFallback = () => (
-    <>
-        <div className="sr-only">
-            <Kicker />
-        </div>
-    </>
-);
-
-const Kicker = () => (
-    <p className="font-heading flex-1 py-2 text-center align-middle text-sm text-balance select-none md:text-xl">
-        Stay ahead in your favorite ARPGs with the season tracker.
-        <br />
-        Never miss a season start or end again!
-    </p>
-);

@@ -107,6 +107,8 @@ export const Content = ({
                                             <CalendarMenu
                                                 startDate={season.start.startDate}
                                                 title={`${game.name} ${season.name} launch`}
+                                                gameSlug={game.slug}
+                                                gameName={game.name}
                                             />
                                         }
                                     >

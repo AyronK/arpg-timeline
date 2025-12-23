@@ -29,10 +29,11 @@ export async function generateDashboardMetadata(
     const isDefault = dashboard === "featured";
 
     const title = isDefault
-        ? "aRPG Timeline | Season Tracker"
+        ? "aRPG Timeline | Every season. Just on time."
         : `${dashboardLabels[dashboard]} | aRPG Timeline`;
 
-    const description = "Stay ahead in your favorite aRPGs with our season tracker";
+    const description =
+        "Track Diablo 4, Path of Exile 2, Last Epoch seasons and league start dates. Get countdowns for D4 seasons, PoE2 leagues, and never miss an ARPG launch.";
 
     return {
         title,
@@ -67,14 +68,22 @@ export async function generateDashboardMetadata(
             "league start",
             "arpg, best arpgs",
             "diablo alternative",
-            "poe alternativ",
+            "poe alternative",
             "upcoming arpg",
             "countdown",
             "poe",
+            "poe2",
+            "poe 2",
             "d2",
             "d3",
             "d4",
             "path of exile seasons",
+            "path of exile 2 league",
+            "poe2 league",
+            "poe 2 league",
+            "poe 2 next league",
+            "poe2 next league",
+            "when is poe 2 next league",
             "diablo 4 seasons",
             "last epoch seasons",
             "arpg countdown",
@@ -82,7 +91,13 @@ export async function generateDashboardMetadata(
             "arpg news",
             "gaming calendar",
             "poe league",
+            "poe next league",
             "diablo season",
+            "arpg calendar",
+            "poe 2 calendar",
+            "diablo 4 calendar",
+            "gaming calendar",
+            "season calendar subscription",
         ],
         alternates: { canonical: canonicalPath },
         robots: {

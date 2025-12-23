@@ -4,6 +4,7 @@ type SoftwareApplicationNode = {
     "@type": ["SoftwareApplication", "VideoGame"];
     "@id": string;
     name: string;
+    alternateName?: string;
     url: string;
     applicationCategory: string;
     operatingSystem: string;
@@ -126,6 +127,17 @@ export const getStructuredDataForGame = (game: Game): GameStructuredData | null 
                 text: `The next ${game.name} ${game.seasonKeyword.toLowerCase()}, ${game.nextSeason.name}, starts on ${game.nextSeason.start.startDate}.`,
             },
         });
+
+        if (game.shortName) {
+            gameFaqQuestions.push({
+                "@type": "Question",
+                name: `When is ${game.shortName} next ${game.seasonKeyword}?`,
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: `The next ${game.shortName} (${game.name}) ${game.seasonKeyword.toLowerCase()}, ${game.nextSeason.name}, starts on ${game.nextSeason.start.startDate}.`,
+                },
+            });
+        }
     }
 
     if (game.currentSeason && game.currentSeason.end?.endDate && game.currentSeason.end.confirmed) {
@@ -137,23 +149,37 @@ export const getStructuredDataForGame = (game: Game): GameStructuredData | null 
                 text: `The current ${game.name} ${game.seasonKeyword.toLowerCase()}, ${game.currentSeason.name}, ends on ${game.currentSeason.end.endDate}.`,
             },
         });
+
+        if (game.shortName) {
+            gameFaqQuestions.push({
+                "@type": "Question",
+                name: `When does ${game.shortName} ${game.seasonKeyword} end?`,
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: `The current ${game.shortName} (${game.name}) ${game.seasonKeyword.toLowerCase()}, ${game.currentSeason.name}, ends on ${game.currentSeason.end.endDate}.`,
+                },
+            });
+        }
     }
 
-    const graph: StructuredData["@graph"] = [
-        {
-            "@type": ["SoftwareApplication", "VideoGame"],
-            "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
-            name: game.name,
-            url: `https://www.arpg-timeline.com/game/${game.slug}`,
-            applicationCategory: "GameApplication",
-            operatingSystem: "Windows",
-            image: {
-                "@type": "ImageObject",
-                url: game.logo?.url || "",
-            },
+    const gameNode: SoftwareApplicationNode = {
+        "@type": ["SoftwareApplication", "VideoGame"],
+        "@id": `https://www.arpg-timeline.com/game/${game.slug}#game`,
+        name: game.name,
+        url: `https://www.arpg-timeline.com/game/${game.slug}`,
+        applicationCategory: "GameApplication",
+        operatingSystem: "Windows",
+        image: {
+            "@type": "ImageObject",
+            url: game.logo?.url || "",
         },
-        ...articles,
-    ];
+    };
+
+    if (game.shortName) {
+        gameNode.alternateName = game.shortName;
+    }
+
+    const graph: StructuredData["@graph"] = [gameNode, ...articles];
 
     return {
         structuredData: {
