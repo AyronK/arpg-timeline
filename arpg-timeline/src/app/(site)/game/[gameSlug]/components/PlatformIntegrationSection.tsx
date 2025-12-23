@@ -31,7 +31,7 @@ export const PlatformIntegrationSection = ({
                     </div>
                 </div>
             )}
-            <div className="flex flex-col gap-4 md:gap-6">
+            <div className="flex min-w-0 flex-col gap-4 md:gap-6">
                 <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={gameName} />
                 <GameNews steamAppId={steamAppId} news={gameNews} />
             </div>

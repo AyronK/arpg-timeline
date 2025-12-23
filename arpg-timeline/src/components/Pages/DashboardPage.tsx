@@ -1,7 +1,7 @@
 import { Main } from "@/components/Dashboard/Main";
+import { SideNotes } from "@/components/SideNotes";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
-import { SideNotes } from "@/components/SideNotes";
 import { GameStatistics } from "@/lib/cms/games.types";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";

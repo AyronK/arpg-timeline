@@ -17,10 +17,9 @@ export const CalendarSubscriptionAlert = ({
 }) => {
     const [open, setOpen] = useState(false);
 
-    const description =
-        gameSlug && gameName
-            ? `Get ${gameName} launches and streams in your favorite calendar app`
-            : "Sync your calendar to all or specific games news updates";
+    const description = gameSlug
+        ? `Get launches and streams in your favorite calendar app!`
+        : "Sync your calendar to all or specific games news updates!";
 
     return (
         <>
