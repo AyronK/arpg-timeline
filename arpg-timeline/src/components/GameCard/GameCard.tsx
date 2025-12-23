@@ -61,6 +61,7 @@ export const GameCard = ({
                             </Button>
                             <GameMenu
                                 game={slug}
+                                gameName={name}
                                 steamAppId={stats?.steam?.appId}
                                 playersCount={stats?.steam?.currentPlayers}
                             />
