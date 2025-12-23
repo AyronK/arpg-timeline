@@ -51,13 +51,13 @@ export const GameNewsSection = ({
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3 md:gap-4">
                                     {gameNews.gameLogo && (
-                                        <div className="h-12 w-12 flex-shrink-0 rounded lg:h-16 lg:w-16">
+                                        <div className="h-12 w-12 shrink-0 rounded lg:h-16 lg:w-16">
                                             <SanityImage
                                                 loading="lazy"
                                                 src={gameNews.gameLogo}
                                                 alt={`${gameNews.gameName} logo`}
-                                                width={72}
-                                                height={72}
+                                                width={128}
+                                                height={128}
                                                 objectFit="contain"
                                                 className="h-full w-full"
                                             />

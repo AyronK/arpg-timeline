@@ -35,11 +35,11 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                 gameLogo={
                     <SanityImage
                         loading="lazy"
-                        src={game.logo!}
+                        src={game.nextSeason?.logo ?? game.currentSeason?.logo ?? game.logo!}
                         alt={`${game.name} logo`}
                         className="my-auto"
-                        width={160}
-                        height={140}
+                        width={256}
+                        height={256}
                         objectFit="contain"
                     />
                 }
