@@ -75,7 +75,9 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                     {filteredStreams.map((s, idx) => (
                                         <CarouselItem
                                             key={s.slug}
-                                            className={"h-28 cursor-all-scroll pr-4 pl-8"}
+                                            className={
+                                                "flex h-28 cursor-all-scroll items-center justify-center pr-4 pl-8"
+                                            }
                                         >
                                             <div className="relative pt-3">
                                                 <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
@@ -91,12 +93,16 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         <Kicker />
                                     </CarouselItem>
                                     <CarouselItem
-                                        className={"h-28 cursor-all-scroll pt-3 pr-4 pl-8"}
+                                        className={
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
+                                        }
                                     >
                                         <PatreonFunding />
                                     </CarouselItem>
                                     <CarouselItem
-                                        className={"h-28 cursor-all-scroll pt-3 pr-4 pl-8"}
+                                        className={
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
+                                        }
                                     >
                                         <CalendarSubscriptionAlert />
                                     </CarouselItem>
@@ -119,7 +125,7 @@ export const CarouselFallback = () => (
 );
 
 const Kicker = () => (
-    <p className="font-heading flex-1 py-2 text-center align-middle text-sm text-balance select-none md:text-xl">
+    <p className="font-heading py-2 text-center align-middle text-sm text-balance select-none md:text-xl">
         Stay ahead in your favorite ARPGs with the season tracker.
         <br />
         Never miss a season start or end again!
