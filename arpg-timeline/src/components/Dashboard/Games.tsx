@@ -53,7 +53,6 @@ export const Games = ({
                                     }
                                     alt={`${game.name} logo`}
                                     className="my-auto"
-                                    quality={50}
                                     width={160}
                                     height={140}
                                     objectFit="contain"

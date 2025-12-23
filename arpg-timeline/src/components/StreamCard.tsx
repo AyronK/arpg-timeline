@@ -130,7 +130,6 @@ export const StreamCard = ({ stream, priority }: { stream: GameStream; priority:
                         className="my-auto"
                         width={64}
                         height={64}
-                        quality={50}
                         objectFit="contain"
                     />
                 </div>

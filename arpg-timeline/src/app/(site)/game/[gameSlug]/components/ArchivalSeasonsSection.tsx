@@ -25,7 +25,6 @@ export const ArchivalSeasonsSection = ({ seasons, gameLogo }: ArchivalSeasonsSec
                                         alt={`${season.name} logo`}
                                         width={96}
                                         height={96}
-                                        quality={50}
                                         objectFit="contain"
                                         className="h-full w-full"
                                     />

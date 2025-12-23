@@ -66,7 +66,6 @@ export const Header = () => {
                                     src="/assets/discord-logo.svg"
                                     className="m-auto h-[1rem] w-[1rem]"
                                     alt="Discord logo"
-                                    quality={50}
                                     width={22}
                                     height={22}
                                 />
@@ -82,7 +81,6 @@ export const Header = () => {
                                     src="/assets/patreon-logo.png"
                                     className="m-auto h-[1rem] w-[1rem]"
                                     alt="Patreon logo"
-                                    quality={50}
                                     width={22}
                                     height={22}
                                 />
