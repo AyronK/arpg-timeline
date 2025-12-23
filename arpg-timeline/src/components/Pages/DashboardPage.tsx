@@ -1,7 +1,7 @@
 import { Main } from "@/components/Dashboard/Main";
 import { SingleToast } from "@/components/SingleToast";
 import { StructuredDataScripts } from "@/components/StructuredDataScripts";
-import { SupportButtons } from "@/components/SupportButtons";
+import { SideNotes } from "@/components/SideNotes";
 import { GameStatistics } from "@/lib/cms/games.types";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
@@ -60,7 +60,7 @@ export const DashboardPage = async () => {
                 <Main games={games} statistics={statistics} />
             </div>
             <StructuredDataScripts games={games} />
-            <SupportButtons />
+            <SideNotes />
         </>
     );
 };

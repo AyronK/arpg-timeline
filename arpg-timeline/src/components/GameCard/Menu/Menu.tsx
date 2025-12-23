@@ -46,6 +46,15 @@ export function GameMenu({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                    <Link href={`/game/${game}`} target="_blank" rel="noopener">
+                        <DropdownMenuItem
+                            aria-label="View game details"
+                            data-sa-click={`${game}-view-details`}
+                        >
+                            <Info className="mr-2 h-4 w-4" />
+                            Game Details
+                        </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem
                         onClick={() => {
                             sa_event("calendar_subscribe_opened", { game });
@@ -54,8 +63,9 @@ export function GameMenu({
                         aria-label="Subscribe to calendar"
                     >
                         <Rss className="mr-2 h-4 w-4" />
-                        Subscribe
+                        Calendar Subscription
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     {steamAppId && (
                         <SteamDialogTrigger
                             appId={steamAppId}
@@ -67,27 +77,17 @@ export function GameMenu({
                                 data-sa-click={`${game}-steam-dialog`}
                                 onSelect={(e) => e.preventDefault()}
                             >
-                                <RiSteamLine className="mr-2 h-4 w-4" /> Steam
+                                <RiSteamLine className="mr-2 h-4 w-4" /> Steam Data
                             </DropdownMenuItem>
                         </SteamDialogTrigger>
                     )}
-                    <Link href={`/game/${game}`} target="_blank" rel="noopener">
-                        <DropdownMenuItem
-                            aria-label="View game details"
-                            data-sa-click={`${game}-view-details`}
-                        >
-                            <Info className="mr-2 h-4 w-4" />
-                            Details
-                        </DropdownMenuItem>
-                    </Link>
-                    <DropdownMenuSeparator />
                     <Link href={`/docs/html/${game}`} target="_blank" rel="noopener noreferrer">
                         <DropdownMenuItem
                             aria-label="Share on Discord"
                             data-sa-click={`${game}-html-docs`}
                         >
                             <CodeXml className="mr-2 h-4 w-4" />
-                            HTML
+                            HTML Embed
                         </DropdownMenuItem>
                     </Link>
                     <Link href={`/docs/obs/${game}`} target="_blank" rel="noopener noreferrer">
@@ -96,7 +96,7 @@ export function GameMenu({
                             data-sa-click={`${game}-obs-docs`}
                         >
                             <SiObsstudio className="mr-2 h-4 w-4" />
-                            OBS
+                            OBS Widget
                         </DropdownMenuItem>
                     </Link>
                 </DropdownMenuContent>
