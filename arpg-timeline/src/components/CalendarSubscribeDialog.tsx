@@ -15,9 +15,9 @@ import {
     DrawerTitle,
 } from "@/ui/Drawer";
 
-const SITE_URL = "https://www.arpg-timeline.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
-const CopyableRow = ({
+export const CopyableRow = ({
     url,
     label,
     compact,

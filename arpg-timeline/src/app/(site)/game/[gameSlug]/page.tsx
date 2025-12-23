@@ -198,6 +198,19 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
             `${game.name} next ${game.seasonKeyword}`,
             `${game.name} next ${game.seasonKeyword} start`,
             `${game.name} next ${game.seasonKeyword} release`,
+            `${game.name} ${game.seasonKeyword} start date`,
+            `when does ${game.name} ${game.seasonKeyword} start`,
+            ...(game.shortName
+                ? [
+                      `${game.shortName} ${game.seasonKeyword}`,
+                      `${game.shortName} next ${game.seasonKeyword}`,
+                      `${game.shortName} ${game.seasonKeyword} start`,
+                      `${game.shortName} ${game.seasonKeyword} release`,
+                      `${game.shortName} ${game.seasonKeyword} countdown`,
+                      `${game.shortName} seasons`,
+                      `when is ${game.shortName} next ${game.seasonKeyword}`,
+                  ]
+                : []),
             "arpg timeline",
             "season tracker",
         ],

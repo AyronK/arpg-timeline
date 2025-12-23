@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_GITHUB_REPO: process.env.GITHUB_REPO,
         NEXT_PUBLIC_DISCORD_URL: process.env.DISCORD_URL,
         NEXT_PUBLIC_CONTACT_EMAIL: process.env.CONTACT_EMAIL,
+        NEXT_PUBLIC_SITE_URL: process.env.SITE_URL,
     },
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
