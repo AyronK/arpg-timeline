@@ -295,6 +295,19 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
+            {
+                source: "/calendar/subscribe/:gameSlug",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=0, must-revalidate",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=3600, stale-while-revalidate=300",
+                    },
+                ],
+            },
         ];
     },
 };
