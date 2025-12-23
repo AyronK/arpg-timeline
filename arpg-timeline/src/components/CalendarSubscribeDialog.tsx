@@ -1,13 +1,14 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
+import { CalendarSync, Check, Copy, Info } from "lucide-react";
 import { useCallback, useState } from "react";
 
+import { Button } from "@/ui/Button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/Dialog";
 
 const SITE_URL = "https://www.arpg-timeline.com";
 
-const CopyableUrl = ({ url, label }: { url: string; label: string }) => {
+const CopyableRow = ({ url, label }: { url: string; label: string }) => {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = useCallback(async () => {
@@ -29,21 +30,34 @@ const CopyableUrl = ({ url, label }: { url: string; label: string }) => {
 
     return (
         <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-semibold">{label}</h3>
-            <button
-                onClick={handleCopy}
-                className="bg-muted hover:bg-muted/80 group flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-left transition-colors"
-            >
-                <code className="flex-1 text-xs break-all">{url}</code>
-                <div className="text-muted-foreground shrink-0">
+            <span className="text-xs font-medium">{label}</span>
+            <div className="flex items-stretch gap-2">
+                <button
+                    tabIndex={-1}
+                    onClick={handleCopy}
+                    className="bg-muted hover:bg-muted/80 flex h-9 min-w-0 flex-1 cursor-pointer items-center overflow-hidden rounded-md px-3 transition-colors focus-visible:outline-hidden"
+                >
+                    <code className="block truncate text-xs whitespace-nowrap">{url}</code>
+                </button>
+                <Button
+                    onClick={handleCopy}
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 w-20 shrink-0"
+                >
                     {copied ? (
-                        <Check className="h-4 w-4 text-emerald-500" />
+                        <>
+                            <Check className="mr-2 h-3.5 w-3.5" />
+                            Done
+                        </>
                     ) : (
-                        <Copy className="h-4 w-4 opacity-50 transition-opacity group-hover:opacity-100" />
+                        <>
+                            <Copy className="mr-2 h-3.5 w-3.5" />
+                            Copy
+                        </>
                     )}
-                </div>
-            </button>
-            {copied && <span className="text-xs text-emerald-500">Copied to clipboard!</span>}
+                </Button>
+            </div>
         </div>
     );
 };
@@ -66,40 +80,38 @@ export const CalendarSubscribeDialog = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-lg">
-                <DialogHeader>
+            <DialogContent
+                className="max-w-md!"
+                onOpenAutoFocus={(e) => {
+                    e.preventDefault();
+                    (e.target as HTMLElement)?.focus();
+                }}
+            >
+                <DialogHeader className="items-center text-center">
+                    <div className="bg-muted mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                        <CalendarSync className="text-foreground h-6 w-6" />
+                    </div>
                     <DialogTitle>Subscribe to Calendar</DialogTitle>
                     <DialogDescription>
-                        Get automatic updates for upcoming seasons and streams
+                        Get automatic updates for launches and streams
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-3">
                     {gameSubscribeUrl && gameName && (
-                        <CopyableUrl url={gameSubscribeUrl} label={`${gameName} only`} />
+                        <CopyableRow url={gameSubscribeUrl} label={gameName} />
                     )}
+                    <CopyableRow url={allGamesSubscribeUrl} label="All games" />
+                </div>
 
-                    <CopyableUrl url={allGamesSubscribeUrl} label="All games" />
-
-                    <div className="bg-muted/50 flex flex-col gap-2 rounded-lg p-4">
-                        <h4 className="text-sm font-semibold">How to subscribe</h4>
-                        <ol className="text-muted-foreground list-inside list-decimal space-y-1 text-sm">
-                            <li>Copy the URL above</li>
-                            <li>Open your calendar app</li>
-                            <li>
-                                Look for &quot;Subscribe to calendar&quot; or &quot;Add calendar
-                                from URL&quot;
-                            </li>
-                            <li>Paste the URL and confirm</li>
-                        </ol>
-                        <p className="text-muted-foreground mt-2 text-xs">
-                            Your calendar will automatically sync with new events as they are
-                            announced.
-                        </p>
-                    </div>
+                <div className="text-muted-foreground flex items-center justify-center gap-1.5 text-center text-xs">
+                    <Info className="h-3.5 w-3.5 shrink-0" />
+                    <span>
+                        Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from
+                        URL&quot;
+                    </span>
                 </div>
             </DialogContent>
         </Dialog>
     );
 };
-
