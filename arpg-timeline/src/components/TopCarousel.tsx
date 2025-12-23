@@ -87,10 +87,10 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                     ))}
                                     <CarouselItem
                                         className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pr-4 pl-8"
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
                                         }
                                     >
-                                        <Kicker />
+                                        <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                     <CarouselItem
                                         className={
@@ -98,13 +98,6 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         }
                                     >
                                         <PatreonFunding />
-                                    </CarouselItem>
-                                    <CarouselItem
-                                        className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
-                                        }
-                                    >
-                                        <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                 </CarouselContent>
                             </Carousel>
@@ -115,19 +108,3 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
         </ClientOnlyVisibleWrapper>
     );
 };
-
-export const CarouselFallback = () => (
-    <>
-        <div className="sr-only">
-            <Kicker />
-        </div>
-    </>
-);
-
-const Kicker = () => (
-    <p className="font-heading py-2 text-center align-middle text-sm text-balance select-none md:text-xl">
-        Stay ahead in your favorite ARPGs with the season tracker.
-        <br />
-        Never miss a season start or end again!
-    </p>
-);

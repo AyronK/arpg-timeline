@@ -4,7 +4,7 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
-import { CarouselFallback, TopCarousel } from "./TopCarousel";
+import { TopCarousel } from "./TopCarousel";
 
 const CarouselData = async () => {
     const data: IndexQueryResult = await sanityFetch({
@@ -23,7 +23,7 @@ const CarouselData = async () => {
 export const LayoutCarousel = () => {
     return (
         <div className="mt-2 flex flex-col">
-            <Suspense fallback={<CarouselFallback />}>
+            <Suspense>
                 <CarouselData />
             </Suspense>
         </div>

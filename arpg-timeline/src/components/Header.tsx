@@ -42,14 +42,21 @@ export const Header = () => {
                 <Link
                     href="/"
                     rel="self"
-                    className="absolute top-0 left-2 z-20 mr-auto transform text-base font-semibold tracking-[0.3rem] sm:text-lg lg:left-1/2 lg:ml-auto lg:-translate-x-1/2 lg:text-4xl"
+                    className="absolute top-0 left-2 z-20 mr-auto flex transform flex-col gap-1 text-base font-semibold tracking-[0.3rem] sm:text-lg lg:left-1/2 lg:ml-auto lg:-translate-x-1/2 lg:text-4xl"
                 >
-                    <h1 className="flex flex-row items-center lg:gap-2">
-                        <Logo className="scale-75 lg:mx-auto lg:scale-100" />
-                        <span className="text-nowrap">aRPG Timeline</span>
-                    </h1>
+                    <div className="flex flex-row items-center lg:gap-4">
+                        <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-xs text-nowrap [direction:rtl] md:block">
+                            Every Season
+                        </span>
+                        <div className="flex flex-row items-center lg:gap-4">
+                            <Logo className="scale-75 lg:mx-auto lg:scale-100" />
+                            <h1 className="text-nowrap">aRPG Timeline</h1>
+                        </div>
+                        <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-left text-xs text-nowrap md:block">
+                            Just On Time
+                        </span>
+                    </div>
                 </Link>
-
                 <div className="flex h-full items-center justify-between gap-2">
                     <div className="ml-auto flex items-center">
                         <SocialButton
