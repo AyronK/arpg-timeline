@@ -62,7 +62,7 @@ export const Timeline: FC<{ events: TimelineEvent[] }> = ({ events }) => {
 
     return (
         <>
-            <div className="max-h-full w-full overflow-x-hidden overflow-y-scroll">
+            <div className="isolate max-h-full w-full overflow-x-hidden overflow-y-scroll">
                 <div className="relative">
                     <div className="border-card-foreground/25 bg-card border-b-card-foreground/25 sticky top-0 z-[45] h-6 border-t border-r border-b">
                         {monthMarkers.map((marker, index) => (

@@ -69,21 +69,3 @@ export function addToICloudCalendar(eventTitle: string, eventDate: Date) {
     const iCloudCalendarUrl = `https://www.icloud.com/calendar/event?title=${encodeURIComponent(eventTitle)}&starts=${encodeURIComponent(formattedStart)}&ends=${encodeURIComponent(formattedEnd)}`;
     window.open(iCloudCalendarUrl, "_blank");
 }
-
-const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
-    month: "short",
-    day: "numeric",
-    hourCycle: "h24",
-    hour: "numeric",
-    minute: "numeric",
-};
-
-const locale = "en-US";
-const localDateIntl = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
-
-export function addToTickTick(eventTitle: string, eventDate: Date) {
-    sa_event(`Calendar - TickTick - ${eventTitle}}`);
-    const clipboardDate = localDateIntl.format(eventDate);
-    window.open("https://ticktick.com/webapp", "_blank");
-    navigator.clipboard.writeText(`${eventTitle} ${clipboardDate}`);
-}

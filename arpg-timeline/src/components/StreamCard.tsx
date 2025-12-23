@@ -105,6 +105,8 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
             <CalendarMenu
                 startDate={stream.date ?? ""}
                 title={`${stream.gameName} stream on Twitch`}
+                gameSlug={stream.gameSlug}
+                gameName={stream.gameName}
             />
         }
     >
