@@ -188,8 +188,8 @@ export const Filters = ({
                                                             loading="lazy"
                                                             src={f.logo}
                                                             alt={`${f.label} logo`}
-                                                            width={128}
-                                                            height={128}
+                                                            width={256}
+                                                            height={256}
                                                             objectFit="contain"
                                                             className="h-full w-full"
                                                         />
