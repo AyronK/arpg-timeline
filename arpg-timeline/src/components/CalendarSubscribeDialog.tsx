@@ -134,7 +134,7 @@ const SubscribeContent = ({
                 </div>
             )}
 
-            <p className="text-muted-foreground mt-2 text-center text-xs">
+            <p className="text-muted-foreground mt-2 text-center text-xs text-balance">
                 Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from URL&quot;
             </p>
 
