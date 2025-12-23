@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarSync, Check, Copy } from "lucide-react";
+import Link from "next/link";
 import { useCallback, useState } from "react";
 
 import { useBreakpoint } from "@/hooks/useBreakpoint";
@@ -135,6 +136,13 @@ const SubscribeContent = ({
 
             <p className="text-muted-foreground mt-2 text-center text-xs">
                 Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from URL&quot;
+            </p>
+
+            <p className="text-muted-foreground mt-3 text-center text-xs opacity-70">
+                Free for personal use.{" "}
+                <Link href="/calendar" className="underline underline-offset-2">
+                    Commercial use?
+                </Link>
             </p>
         </>
     );

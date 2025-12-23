@@ -160,15 +160,55 @@ export default function CalendarPage() {
                     </div>
                 </div>
 
-                <div className="bg-muted/50 mb-6 rounded-md border px-4 py-3">
-                    <h3 className="text-foreground mb-2 text-sm font-medium">
-                        What&apos;s Included?
-                    </h3>
-                    <ul className="text-muted-foreground space-y-1.5 text-xs">
-                        <li>✓ Season / league start dates for all aRPGs</li>
-                        <li>✓ Developer livestream schedules</li>
-                        <li>✓ Automatic updates - calendar syncs regularly</li>
-                    </ul>
+                <div className="mb-6 grid gap-4 md:grid-cols-2">
+                    <div className="bg-muted/50 rounded-md border px-4 py-3">
+                        <h3 className="text-foreground mb-2 text-sm font-medium">
+                            What&apos;s Included?
+                        </h3>
+                        <ul className="text-muted-foreground space-y-1.5 text-xs">
+                            <li>✓ Season / league start dates for all aRPGs</li>
+                            <li>✓ Developer livestream schedules</li>
+                            <li>✓ Automatic updates - calendar syncs regularly</li>
+                        </ul>
+                    </div>
+
+                    <div className="bg-muted/50 rounded-md border px-4 py-3">
+                        <h3 className="text-foreground mb-2 text-sm font-medium">
+                            Usage & Support
+                        </h3>
+                        <p className="text-muted-foreground mb-2 text-xs">
+                            This calendar is free for personal use. If you&apos;re integrating it
+                            into a commercial project, website, or app, please consider{" "}
+                            <Link
+                                href={process.env.NEXT_PUBLIC_PATREON_URL || "#"}
+                                target="_blank"
+                                rel="noopener"
+                                className="text-foreground underline underline-offset-2"
+                            >
+                                supporting via Patreon
+                            </Link>{" "}
+                            or reaching out via{" "}
+                            <Link
+                                href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
+                                className="text-foreground underline underline-offset-2"
+                            >
+                                email
+                            </Link>{" "}
+                            or{" "}
+                            <Link
+                                href={process.env.NEXT_PUBLIC_DISCORD_URL || "#"}
+                                target="_blank"
+                                rel="noopener"
+                                className="text-foreground underline underline-offset-2"
+                            >
+                                Discord
+                            </Link>{" "}
+                            to discuss your use case.
+                        </p>
+                        <p className="text-muted-foreground text-xs opacity-70">
+                            Please avoid excessive polling or redistributing the feed.
+                        </p>
+                    </div>
                 </div>
 
                 <PatreonFunding />
