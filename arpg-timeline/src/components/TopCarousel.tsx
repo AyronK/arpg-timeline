@@ -4,6 +4,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { Twitch } from "lucide-react";
 import { useMemo } from "react";
 
+import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { StreamCard } from "@/components/StreamCard";
@@ -93,6 +94,11 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         className={"h-28 cursor-all-scroll pt-3 pr-4 pl-8"}
                                     >
                                         <PatreonFunding />
+                                    </CarouselItem>
+                                    <CarouselItem
+                                        className={"h-28 cursor-all-scroll pt-3 pr-4 pl-8"}
+                                    >
+                                        <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                 </CarouselContent>
                             </Carousel>

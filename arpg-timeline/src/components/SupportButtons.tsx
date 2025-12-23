@@ -8,7 +8,7 @@ import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
 export const SupportButtons = () => {
     return (
-        <section className="container flex flex-col gap-4 md:my-16">
+        <section className="container my-4 flex flex-col gap-8 md:my-16">
             <div>
                 <h2 className="sr-only">Support</h2>
                 <div className="mx-auto mb-12 flex max-w-prose flex-col gap-2 text-center">

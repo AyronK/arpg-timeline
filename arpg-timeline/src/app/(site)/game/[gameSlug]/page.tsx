@@ -100,9 +100,9 @@ const GamePage = async ({ params }: GamePageProps) => {
                 />
             )}
             <div className="relative container mx-auto py-6 md:py-8">
-                <div className="mb-4 flex items-center justify-between gap-4">
+                <div className="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row">
                     <h1 className="font-heading text-3xl md:text-4xl">{game.name}</h1>
-                    <Button variant="default" size="sm" asChild>
+                    <Button variant="default" size="sm" asChild className="w-full md:w-auto">
                         <Link href="/" data-sa-click="back-to-homepage">
                             <Gamepad2 className="mr-2 h-4 w-4" />
                             Browse all games
@@ -122,6 +122,8 @@ const GamePage = async ({ params }: GamePageProps) => {
                     <PlatformIntegrationSection
                         steamAppId={steamAppId}
                         gameNews={gameNews.slice(0, 5)}
+                        gameSlug={gameSlug}
+                        gameName={game.name}
                     />
                 </div>
 

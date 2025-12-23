@@ -6,7 +6,14 @@ import { useCallback, useState } from "react";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Button } from "@/ui/Button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/Dialog";
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/ui/Drawer";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerDescription,
+    DrawerHeader,
+    DrawerPortal,
+    DrawerTitle,
+} from "@/ui/Drawer";
 
 const SITE_URL = "https://www.arpg-timeline.com";
 
@@ -38,7 +45,7 @@ const CopyableRow = ({
                     {copied ? (
                         <>
                             <Check className="mr-1.5 h-4 w-4" />
-                            Done
+                            Copied
                         </>
                     ) : (
                         <>
@@ -66,12 +73,12 @@ const CopyableRow = ({
                     onClick={handleCopy}
                     variant="ghost"
                     size="sm"
-                    className="h-9 w-20 shrink-0"
+                    className="h-9 w-24 shrink-0"
                 >
                     {copied ? (
                         <>
                             <Check className="mr-2 h-3.5 w-3.5" />
-                            Done
+                            Copied
                         </>
                     ) : (
                         <>
@@ -103,6 +110,7 @@ const SubscribeContent = ({
 }) => {
     const gameSubscribeUrl = gameSlug ? `${SITE_URL}/calendar/subscribe/${gameSlug}` : null;
     const allGamesSubscribeUrl = `${SITE_URL}/calendar/subscribe`;
+    const isGeneric = !gameSlug || !gameName;
 
     return (
         <>
@@ -112,6 +120,18 @@ const SubscribeContent = ({
                 )}
                 <CopyableRow url={allGamesSubscribeUrl} label="All games" compact={compact} />
             </div>
+
+            {isGeneric && (
+                <div className="bg-muted/50 mt-2 rounded-md border px-4 py-3 text-center">
+                    <p className="text-foreground text-sm font-medium">
+                        Want updates for a specific game?
+                    </p>
+                    <p className="text-muted-foreground mt-1 text-xs">
+                        Subscribe from the game menu or details page. You can pick as many as you
+                        want!
+                    </p>
+                </div>
+            )}
 
             <p className="text-muted-foreground mt-2 text-center text-xs">
                 Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from URL&quot;
@@ -137,16 +157,18 @@ export const CalendarSubscribeDialog = ({
     if (!isMd) {
         return (
             <Drawer open={open} onOpenChange={onOpenChange}>
-                <DrawerContent className="top-auto! px-6 pb-28">
-                    <DrawerHeader className="items-center text-center">
-                        <HeaderIcon />
-                        <DrawerTitle>Subscribe to Calendar</DrawerTitle>
-                        <DrawerDescription>
-                            Get automatic updates for launches and streams
-                        </DrawerDescription>
-                    </DrawerHeader>
-                    <SubscribeContent gameSlug={gameSlug} gameName={gameName} compact />
-                </DrawerContent>
+                <DrawerPortal>
+                    <DrawerContent className="top-auto! px-6 pb-28">
+                        <DrawerHeader className="items-center text-center">
+                            <HeaderIcon />
+                            <DrawerTitle>Subscribe to Calendar</DrawerTitle>
+                            <DrawerDescription>
+                                Get automatic updates for launches and streams
+                            </DrawerDescription>
+                        </DrawerHeader>
+                        <SubscribeContent gameSlug={gameSlug} gameName={gameName} compact />
+                    </DrawerContent>
+                </DrawerPortal>
             </Drawer>
         );
     }

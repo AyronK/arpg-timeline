@@ -42,6 +42,8 @@ export interface QuickLinksSectionProps {
 export interface PlatformIntegrationSectionProps {
     steamAppId?: number | null;
     gameNews: SteamNewsItem[];
+    gameSlug: string;
+    gameName: string;
 }
 
 export interface ArchivalSeason {

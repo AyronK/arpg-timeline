@@ -3,6 +3,7 @@ Allow: /
 Disallow: /embed
 Disallow: /api
 Disallow: /docs/api
+Disallow: /calendar/subscribe
 
 Sitemap: https://www.arpg-timeline.com/sitemap.xml
 Host: https://www.arpg-timeline.com
