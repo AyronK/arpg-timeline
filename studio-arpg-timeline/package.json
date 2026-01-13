@@ -24,11 +24,11 @@
         "react-dom": "^19.2.3",
         "react-icons": "^5.5.0",
         "sanity": "^4.22.0",
-        "styled-components": "^6.1.19"
+        "styled-components": "^6.3.5"
     },
     "devDependencies": {
         "@sanity/eslint-config-studio": "^5.0.2",
-        "@types/react": "^19.2.7",
+        "@types/react": "^19.2.8",
         "eslint": "^9.39.2",
         "prettier": "3.7.4",
         "typescript": "^5.9.3"
