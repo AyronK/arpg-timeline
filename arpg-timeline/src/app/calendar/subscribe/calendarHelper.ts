@@ -116,7 +116,7 @@ export async function fetchGameBySlug(slug: string): Promise<CalendarGame | null
     return sanityFetch({
         query: gameBySlugQuery,
         params: { slug },
-        revalidate: false,
+        revalidate: 24 * 60 * 60,
         tags: ["game"],
     });
 }
