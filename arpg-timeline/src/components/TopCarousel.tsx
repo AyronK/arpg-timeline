@@ -81,7 +81,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                                 "flex h-28 cursor-all-scroll items-center justify-center pr-4 pl-8"
                                             }
                                         >
-                                            <div className="relative pt-3 flex-1">
+                                            <div className="relative flex-1 pt-3">
                                                 <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
                                                 <StreamCard stream={s} priority={idx === 0} />
                                             </div>
