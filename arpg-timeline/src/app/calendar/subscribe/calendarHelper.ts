@@ -91,12 +91,12 @@ export async function fetchCalendarData(): Promise<{
     const [seasons, streams]: [CalendarSeason[], CalendarStream[]] = await Promise.all([
         sanityFetch({
             query: seasonsQuery,
-            revalidate: false,
+            revalidate: 24 * 60 * 60,
             tags: ["season"],
         }),
         sanityFetch({
             query: streamsQuery,
-            revalidate: false,
+            revalidate: 24 * 60 * 60,
             tags: ["liveStreamTwitch"],
         }),
     ]);
@@ -116,7 +116,7 @@ export async function fetchGameBySlug(slug: string): Promise<CalendarGame | null
     return sanityFetch({
         query: gameBySlugQuery,
         params: { slug },
-        revalidate: 24 * 60 * 60,
+        revalidate: false,
         tags: ["game"],
     });
 }
