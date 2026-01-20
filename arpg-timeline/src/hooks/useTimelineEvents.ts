@@ -54,8 +54,8 @@ export const useTimelineEvents = (games: Game[]) => {
                 } satisfies TimelineEvent);
             }
 
-            const nextStartDate = new Date(g?.nextSeason?.start?.startDate ?? next[-1].endDate);
-            const nextEndDate = new Date(g?.nextSeason?.end?.endDate ?? next[-1].endDate);
+            const nextStartDate = new Date(g?.nextSeason?.start?.startDate ?? next?.[-1]?.endDate);
+            const nextEndDate = new Date(g?.nextSeason?.end?.endDate ?? next?.[-1]?.endDate);
 
             next.push({
                 name: g.nextSeason?.name ?? "",

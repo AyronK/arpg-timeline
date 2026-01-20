@@ -5,10 +5,10 @@ import { Time } from "@/components/Time";
 import { cn } from "@/lib/utils";
 
 const getTimeComponents = (distance: number) => {
-    const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const totalDays = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
+    const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+    const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+    const seconds = Math.max(0, Math.floor((distance % (1000 * 60)) / 1000));
 
     return { days: totalDays, hours, minutes, seconds };
 };

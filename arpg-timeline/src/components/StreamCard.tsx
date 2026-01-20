@@ -69,21 +69,23 @@ const WatchNowAction = ({
         <FramedAction
             appendClassName="!bg-[#6441a5]"
             append={
-                <Button
-                    asChild
-                    size="icon"
-                    className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
-                    variant="destructive"
-                >
-                    <a
-                        target="_blank"
-                        rel="noopener"
-                        onClick={() => sa_event(`${gameSlug}-twitch-channel-click`)}
-                        href={addUTM(`https://www.twitch.tv/${twitchChannel}`)}
+                twitchChannel && (
+                    <Button
+                        asChild
+                        size="icon"
+                        className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
+                        variant="destructive"
                     >
-                        <Twitch className="h-4 w-4" />
-                    </a>
-                </Button>
+                        <a
+                            target="_blank"
+                            rel="noopener"
+                            onClick={() => sa_event(`${gameSlug}-twitch-channel-click`)}
+                            href={addUTM(`https://www.twitch.tv/${twitchChannel}`)}
+                        >
+                            <Twitch className="h-4 w-4" />
+                        </a>
+                    </Button>
+                )
             }
         >
             <span className="my-auto">Watch now!</span>
@@ -115,6 +117,26 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => (
 );
 
 export const StreamCard = ({ stream, priority }: { stream: GameStream; priority: boolean }) => {
+    const [isLiveSoon, setIsLiveSoon] = useState(false);
+
+    useEffect(() => {
+        const checkIsLiveSoon = () => {
+            const date = stream.date;
+            if (!date) {
+                setIsLiveSoon(false);
+                return;
+            }
+            const now = Date.now();
+            const streamTime = new Date(date).getTime();
+            const isStartingSoon = now < streamTime && streamTime - now <= 30 * 60 * 1000;
+            const hasStarted = now >= streamTime;
+            setIsLiveSoon(isStartingSoon || hasStarted);
+        };
+        checkIsLiveSoon();
+        const interval = setInterval(checkIsLiveSoon, 10_000);
+        return () => clearInterval(interval);
+    }, [stream.date]);
+
     return (
         <section
             className="text-card-foreground bg-card relative flex flex-row gap-3 overflow-hidden rounded-lg border-2 border-[#6441a5]/40 p-4 md:gap-4"
@@ -142,7 +164,7 @@ export const StreamCard = ({ stream, priority }: { stream: GameStream; priority:
                 />
                 <ClientOnlyVisibleWrapper>
                     <div className="bg-card">
-                        {stream.isLiveSoon && stream.twitchChannel ? (
+                        {isLiveSoon ? (
                             <WatchNowAction
                                 twitchChannel={stream.twitchChannel}
                                 gameSlug={stream.gameSlug}

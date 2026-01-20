@@ -10,7 +10,6 @@ import { PatreonFunding } from "@/components/PatreonFunding";
 import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { useGameFilterContext, useTimeBasedKey } from "@/contexts/GameFilterContext";
-import { isStreamSoon } from "@/lib/cms/isStreamSoon";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
 import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
@@ -40,15 +39,12 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
     const { filteredGames } = useGameFilterContext();
 
     const filteredStreams = useMemo(() => {
-        return parsedStreams
-            .map((s) => ({ ...s, isLiveSoon: isStreamSoon(s.date) }))
-            .filter(
-                (s) =>
-                    filteredGames.find((g) => g.slug === s.gameSlug) &&
-                    s.date &&
-                    (s.isLiveSoon ||
-                        (s?.date && new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000)),
-            );
+        return parsedStreams.filter(
+            (s) =>
+                filteredGames.find((g) => g.slug === s.gameSlug) &&
+                s.date &&
+                new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000,
+        );
     }, [filteredGames, parsedStreams]);
 
     return (
