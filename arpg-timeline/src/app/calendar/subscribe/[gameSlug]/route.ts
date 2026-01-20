@@ -57,4 +57,4 @@ export async function GET(_request: Request, { params }: RouteParams): Promise<N
     }
 }
 
-export const revalidate = false;
+export const revalidate = 86400;
