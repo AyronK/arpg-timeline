@@ -33,4 +33,4 @@ export async function GET(): Promise<NextResponse> {
     }
 }
 
-export const revalidate = false;
+export const revalidate = 86400;
