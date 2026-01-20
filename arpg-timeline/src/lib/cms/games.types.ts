@@ -11,7 +11,6 @@ export type GameStream = {
     gameLogo: SanityImageAssetDocument;
     slug: string;
     twitchChannel: string;
-    isLiveSoon: boolean;
 };
 export type GameStatistics = {
     steam?: { currentPlayers: number; appId: number; isComingSoon?: boolean } | null;
