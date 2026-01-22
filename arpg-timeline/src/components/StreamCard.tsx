@@ -93,28 +93,28 @@ const WatchNowAction = ({
     );
 };
 
-const CountdownAction = ({ stream }: { stream: GameStream }) => (
-    <FramedAction
-        prependClassName="!rounded-r-none"
-        prepend={
-            <ShareMenu
+const CountdownAction = ({ stream }: { stream: GameStream }) => {
+    const addUTM = addUTMParameters({
+        utm_source: "arpg-timeline",
+    });
+
+    return (
+        <FramedAction
+            prependClassName="!rounded-r-none"
+            prepend={<ShareMenu
                 startDate={stream.date ?? ""}
-                title={`Hey, **${stream.gameName} ${stream.name} stream** is soon live on Twitch`}
-            />
-        }
-        appendClassName="!rounded-l-none"
-        append={
-            <CalendarMenu
+                title={`Hey, **${stream.gameName} ${stream.name} stream** is soon live on Twitch${stream.twitchChannel ? ` at ${addUTM(`https://www.twitch.tv/${stream.twitchChannel}`)}` : ""}`} />}
+            appendClassName="!rounded-l-none"
+            append={<CalendarMenu
                 startDate={stream.date ?? ""}
                 title={`${stream.gameName} stream on Twitch`}
                 gameSlug={stream.gameSlug}
-                gameName={stream.gameName}
-            />
-        }
-    >
-        <Countdown date={new Date(stream.date ?? "")} />
-    </FramedAction>
-);
+                gameName={stream.gameName} />}
+        >
+            <Countdown date={new Date(stream.date ?? "")} />
+        </FramedAction>
+    );
+};
 
 export const StreamCard = ({ stream, priority }: { stream: GameStream; priority: boolean }) => {
     const [isLiveSoon, setIsLiveSoon] = useState(false);
