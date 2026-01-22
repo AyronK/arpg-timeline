@@ -15,7 +15,6 @@ export default {
             name: "category",
             title: "Category slug",
             type: "string",
-            validation: (Rule: Rule) => Rule.required(),
         },
         {
             name: "channel",
