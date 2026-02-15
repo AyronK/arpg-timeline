@@ -26,7 +26,7 @@ export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
                         utm_term: "patch+notes",
                         utm_content: "patch-notes-link",
                     })(game.currentSeason.patchNotesUrl)}
-                    isOfficial={!game.categories?.includes("community")}
+                    isOfficial={game.isOfficial}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="ml-auto text-sm text-nowrap hover:underline"

@@ -45,7 +45,7 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                 }
                 slug={game.slug}
                 shortName={game.shortName!}
-                official={!game.categories?.includes("community")}
+                official={game.isOfficial}
                 stats={{ steam: steamStats }}
             >
                 <EmbedGameToSeasonWidget game={game} selector="current" />
@@ -54,7 +54,7 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                         <div className="mt-auto flex flex-col gap-2">
                             <GuardedExternalLink
                                 href={game.currentSeason.patchNotesUrl}
-                                isOfficial={!game.categories?.includes("community")}
+                                isOfficial={game.isOfficial}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="ml-auto text-sm text-nowrap hover:underline"

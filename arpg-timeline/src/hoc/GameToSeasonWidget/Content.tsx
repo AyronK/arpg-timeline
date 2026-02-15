@@ -63,7 +63,7 @@ export const Content = ({
                             {season.patchNotesUrl && (
                                 <GuardedExternalLink
                                     href={season.patchNotesUrl}
-                                    isOfficial={!game.categories?.includes("community")}
+                                    isOfficial={game.isOfficial}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-primary hover:text-primary/80 ml-auto text-sm text-nowrap hover:underline"

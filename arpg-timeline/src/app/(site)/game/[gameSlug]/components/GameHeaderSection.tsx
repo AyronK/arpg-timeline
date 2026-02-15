@@ -32,7 +32,7 @@ export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSect
             slug={game.slug}
             shortName={game.shortName || game.name}
             url={game.url || "#"}
-            official={!game.categories?.includes("community")}
+            official={game.isOfficial}
             stats={{}}
         >
             <GameToSeasonWidget game={game} selector="current" />
@@ -41,7 +41,7 @@ export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSect
                     <div className="mt-auto flex flex-col gap-2">
                         <GuardedExternalLink
                             href={game.currentSeason.patchNotesUrl}
-                            isOfficial={!game.categories?.includes("community")}
+                            isOfficial={game.isOfficial}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-primary hover:text-primary/80 ml-auto text-sm text-nowrap hover:underline"

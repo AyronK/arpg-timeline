@@ -34,6 +34,7 @@ export type Game = {
     averageSeasonDuration?: number | null;
     categories?: GameCategory[];
     tags?: GameTag[];
+    isOfficial: boolean;
 };
 
 export type Season = {

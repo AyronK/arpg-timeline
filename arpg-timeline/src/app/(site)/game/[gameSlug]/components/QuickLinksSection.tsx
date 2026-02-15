@@ -5,14 +5,13 @@ import { addUTMParameters } from "@/lib/utm";
 import { QuickLinksSectionProps } from "../types";
 
 export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSectionProps) => {
-    const isOfficial = !game.categories?.includes("community");
     return (
         <div className="bg-card text-card-foreground flex-1 rounded-lg border p-4 md:p-6">
             <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Quick Links</h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
                 {game.url && (
                     <div className="flex flex-col gap-1">
-                        {!isOfficial ? (
+                        {!game.isOfficial ? (
                             <GuardedExternalLink
                                 href={game.url}
                                 isOfficial={false}

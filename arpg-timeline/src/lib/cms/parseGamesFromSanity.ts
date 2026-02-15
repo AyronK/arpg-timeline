@@ -91,6 +91,7 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
             shortName: g.shortName ?? "",
             isDormant: g.isDormant ?? false,
             isComingSoon: g.isComingSoon ?? false,
+            isOfficial: !g.categories?.includes("community"),
         };
         const gameTwitch = g.twitchChannel;
 

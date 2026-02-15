@@ -54,7 +54,7 @@ export const Games = ({
                             slug={game.slug}
                             shortName={game.shortName!}
                             url={game.url!}
-                            official={!game.categories?.includes("community")}
+                            official={game.isOfficial}
                             stats={statistics[game.slug]}
                         >
                             <GameToSeasonWidget game={game} selector="current" />
