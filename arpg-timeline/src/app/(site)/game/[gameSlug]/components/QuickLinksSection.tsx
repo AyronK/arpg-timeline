@@ -49,24 +49,26 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                     </MaybeLinkWrapper>
                 )}
                 {game.currentSeason?.url && (
-                    <MaybeLinkWrapper
-                        href={game.currentSeason?.url}
+                    <GuardedExternalLink
+                        href={game.currentSeason.url}
+                        isOfficial={game.isOfficial}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
                         data-sa-click={`${gameSlug}-current-season-details`}
                     >
                         Current {game.seasonKeyword} details
-                    </MaybeLinkWrapper>
+                    </GuardedExternalLink>
                 )}
                 {game.nextSeason?.url && (
-                    <MaybeLinkWrapper
-                        href={game.nextSeason?.url}
+                    <GuardedExternalLink
+                        href={game.nextSeason.url}
+                        isOfficial={game.isOfficial}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
                         data-sa-click={`${gameSlug}-next-season-details`}
                     >
                         Next {game.seasonKeyword} details
-                    </MaybeLinkWrapper>
+                    </GuardedExternalLink>
                 )}
 
                 <div className="border-muted-foreground col-span-full h-px border border-t opacity-50" />
