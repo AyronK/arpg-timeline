@@ -20,6 +20,7 @@ export const GameToSeasonWidget = ({ game, selector }: { game: Game; selector: S
         <SeasonWidget
             aria-label={`${selector} ${game.name} ${game.seasonKeyword} - ${season.name}`}
             chip={chip}
+            isOfficial={game.isOfficial}
             name={season.name ?? `${SelectorLabels[selector]} ${game.seasonKeyword}`}
             url={season.url ?? undefined}
         >

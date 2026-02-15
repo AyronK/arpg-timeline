@@ -1,5 +1,5 @@
 import { GameCard } from "@/components/GameCard/GameCard";
-import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
+import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { SanityImage } from "@/components/SanityImage";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
@@ -32,21 +32,23 @@ export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSect
             slug={game.slug}
             shortName={game.shortName || game.name}
             url={game.url || "#"}
-            official={!game.categories?.includes("community")}
+            official={game.isOfficial}
             stats={{}}
         >
             <GameToSeasonWidget game={game} selector="current" />
             {inGracePeriod(game.currentSeason?.start?.startDate) ? (
                 game.currentSeason?.patchNotesUrl && (
                     <div className="mt-auto flex flex-col gap-2">
-                        <MaybeLinkWrapper
-                            href={game.currentSeason?.patchNotesUrl}
+                        <GuardedExternalLink
+                            href={game.currentSeason.patchNotesUrl}
+                            isOfficial={game.isOfficial}
                             target="_blank"
+                            rel="noopener noreferrer"
                             className="text-primary hover:text-primary/80 ml-auto text-sm text-nowrap hover:underline"
                             data-sa-click={`${game.currentSeason?.name}-patch-notes`}
                         >
                             Patch notes
-                        </MaybeLinkWrapper>
+                        </GuardedExternalLink>
                     </div>
                 )
             ) : (

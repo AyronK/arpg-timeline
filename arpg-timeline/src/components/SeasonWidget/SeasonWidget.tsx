@@ -1,4 +1,4 @@
-import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
+import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { SeasonChip, SeasonWidgetProps } from "@/components/SeasonWidget/SeasonWidget.types";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,14 @@ const ChipColorText: Record<SeasonChip, string> = {
     comingSoon: "Soon",
 };
 
-export const SeasonWidget = ({ name, url, children, chip, ...divProps }: SeasonWidgetProps) => {
+export const SeasonWidget = ({
+    name,
+    url,
+    children,
+    chip,
+    isOfficial,
+    ...divProps
+}: SeasonWidgetProps) => {
     const addUTM = addUTMParameters({
         utm_source: "arpg-timeline",
         utm_content: "season_link",
@@ -37,15 +44,20 @@ export const SeasonWidget = ({ name, url, children, chip, ...divProps }: SeasonW
                     {ChipColorText[chip]}
                 </Chip>
                 <h4 className="font-heading text-foreground flex-1 md:text-sm">
-                    <MaybeLinkWrapper
-                        className="underline decoration-transparent underline-offset-2 select-none hover:decoration-current/75"
-                        href={url ? addUTM(url) : null}
-                        target="_blank"
-                        rel="noopener"
-                        onClick={() => sa_event(`${name}-link-click`)}
-                    >
-                        {name}
-                    </MaybeLinkWrapper>
+                    {url ? (
+                        <GuardedExternalLink
+                            href={addUTM(url)}
+                            isOfficial={isOfficial ?? true}
+                            className="underline decoration-transparent underline-offset-2 select-none hover:decoration-current/75"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => sa_event(`${name}-link-click`)}
+                        >
+                            {name}
+                        </GuardedExternalLink>
+                    ) : (
+                        name
+                    )}
                 </h4>
             </div>
             <div className="flex flex-1 flex-col gap-2">{children}</div>

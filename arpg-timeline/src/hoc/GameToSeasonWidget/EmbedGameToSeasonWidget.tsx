@@ -18,7 +18,9 @@ export const EmbedGameToSeasonWidget = ({ game, selector }: { game: Game; select
         <SeasonWidget
             aria-label={`${selector} ${game.name} ${game.seasonKeyword} - ${season.name}`}
             chip={chip}
+            isOfficial={game.isOfficial}
             name={season.name ?? `${SelectorLabels[selector]} ${game.seasonKeyword}`}
+            url={season.url ?? undefined}
         >
             <Content embed game={game} selector={selector} />
         </SeasonWidget>
