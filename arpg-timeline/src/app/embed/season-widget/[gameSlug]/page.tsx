@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { EmbedGameCard } from "@/components/GameCard/EmbedGameCard";
-import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
+import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { SanityImage } from "@/components/SanityImage";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { EmbedGameToSeasonWidget } from "@/hoc/GameToSeasonWidget/EmbedGameToSeasonWidget";
@@ -52,14 +52,16 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                 {inGracePeriod(game.currentSeason?.start?.startDate) ? (
                     game.currentSeason?.patchNotesUrl && (
                         <div className="mt-auto flex flex-col gap-2">
-                            <MaybeLinkWrapper
+                            <GuardedExternalLink
                                 href={game.currentSeason.patchNotesUrl}
+                                isOfficial={!game.categories?.includes("community")}
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className="ml-auto text-sm text-nowrap hover:underline"
                                 data-sa-click={`${game.currentSeason.name}-patch-notes`}
                             >
                                 Patch notes
-                            </MaybeLinkWrapper>
+                            </GuardedExternalLink>
                         </div>
                     )
                 ) : (

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { CommunityLabel } from "@/components/CommunityLabel";
 import { GameCardProps } from "@/components/GameCard/GameCard.types";
-import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
+import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { sa_event } from "@/lib/sa_event";
 import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
@@ -28,6 +28,12 @@ export const GameCard = ({
     stats,
     noMenu,
 }: GameCardProps) => {
+    const hasExternalUrl = url && url !== "#";
+    const logoContent = (
+        <div className="grid h-[96px] min-h-[96px] w-[120px] md:h-[140px] md:w-[160px]">
+            {gameLogo}
+        </div>
+    );
     return (
         <section className="bg-card text-card-foreground relative flex flex-1 flex-col gap-1 rounded-md border p-4">
             <div className="flex flex-col">
@@ -68,19 +74,24 @@ export const GameCard = ({
                         </div>
                     )}
                 </div>
-                <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
-                    <MaybeLinkWrapper
-                        href={url ? addUTM(url) : null}
-                        rel="noopener"
-                        className="select-none hover:scale-105"
-                        target="_blank"
-                        noIcon
-                        onClick={() => sa_event(`${slug}-logo-click`)}
-                    >
-                        <div className="grid h-[96px] min-h-[96px] w-[120px] md:h-[140px] md:w-[160px]">
-                            {gameLogo}
-                        </div>
-                    </MaybeLinkWrapper>
+                <div className="relative flex flex-col items-center gap-1">
+                    <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
+                        {hasExternalUrl ? (
+                            <GuardedExternalLink
+                                href={addUTM(url)}
+                                isOfficial={official}
+                                rel="noopener noreferrer"
+                                className="select-none hover:scale-105"
+                                target="_blank"
+                                noIcon
+                                onClick={() => sa_event(`${slug}-logo-click`)}
+                            >
+                                {logoContent}
+                            </GuardedExternalLink>
+                        ) : (
+                            logoContent
+                        )}
+                    </div>
                 </div>
             </div>
             <div className="flex flex-1 flex-col gap-3 md:gap-4">{children}</div>

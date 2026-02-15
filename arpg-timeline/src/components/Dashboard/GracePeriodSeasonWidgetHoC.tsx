@@ -1,13 +1,13 @@
 import { Twitch } from "lucide-react";
 import Link from "next/link";
 
+import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
 import { Game } from "@/lib/cms/games.types";
 import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
 
 import { FramedAction } from "../FramedAction/FramedAction";
-import { MaybeLinkWrapper } from "../MaybeLinkWrapper";
 import { useInGracePeriod } from "./useInGracePeriod";
 
 export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
@@ -20,18 +20,20 @@ export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
     return (
         <div className="mt-auto flex flex-col gap-2">
             {game.currentSeason?.patchNotesUrl && (
-                <MaybeLinkWrapper
+                <GuardedExternalLink
                     href={addUTMParameters({
                         utm_source: "arpg-timeline",
                         utm_term: "patch+notes",
                         utm_content: "patch-notes-link",
                     })(game.currentSeason.patchNotesUrl)}
+                    isOfficial={!game.categories?.includes("community")}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="ml-auto text-sm text-nowrap hover:underline"
                     data-sa-click={`${game.currentSeason.name}-patch-notes`}
                 >
                     Patch notes
-                </MaybeLinkWrapper>
+                </GuardedExternalLink>
             )}
             <FramedAction
                 appendClassName="!bg-[#6441a5]"

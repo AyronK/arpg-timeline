@@ -26,6 +26,16 @@ export const Footer = () => (
                 <div className="flex flex-row gap-1">
                     <Link
                         className="font-semibold transition-opacity duration-200 hover:opacity-75"
+                        href="/community-launchers"
+                        data-sa-click="community-launchers"
+                    >
+                        Community launchers
+                    </Link>
+                </div>
+
+                <div className="flex flex-row gap-1">
+                    <Link
+                        className="font-semibold transition-opacity duration-200 hover:opacity-75"
                         href="/faq"
                         data-sa-click="faq"
                     >

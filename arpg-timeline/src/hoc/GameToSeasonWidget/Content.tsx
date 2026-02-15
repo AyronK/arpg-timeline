@@ -5,9 +5,9 @@ import { CalendarMenu } from "@/components/CalendarMenu";
 import ClientOnlyVisibleWrapper from "@/components/ClientOnlyVisibleWrapper";
 import { Countdown } from "@/components/Countdown";
 import { FramedAction } from "@/components/FramedAction/FramedAction";
+import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
-import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ShareMenu } from "@/components/ShareMenu";
 import { Game } from "@/lib/cms/games.types";
@@ -61,14 +61,16 @@ export const Content = ({
                                 </ClientOnlyVisibleWrapper>
                             )}
                             {season.patchNotesUrl && (
-                                <MaybeLinkWrapper
+                                <GuardedExternalLink
                                     href={season.patchNotesUrl}
+                                    isOfficial={!game.categories?.includes("community")}
                                     target="_blank"
+                                    rel="noopener noreferrer"
                                     className="text-primary hover:text-primary/80 ml-auto text-sm text-nowrap hover:underline"
                                     data-sa-click={`${season.name}-patch-notes`}
                                 >
                                     Patch notes
-                                </MaybeLinkWrapper>
+                                </GuardedExternalLink>
                             )}
                         </div>
                     )}
