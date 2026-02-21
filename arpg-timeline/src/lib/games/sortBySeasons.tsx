@@ -43,13 +43,11 @@ export const sortBySeasons = (a: Game, b: Game) => {
 
     if (aGrace !== bGrace) return aGrace ? -1 : 1;
 
-    const bothGrace = aGrace && bGrace;
     const nextStartCompare = compareDates(
         a.nextSeason?.start?.startDate,
         b.nextSeason?.start?.startDate,
     );
-    if (nextStartCompare !== 0) return bothGrace ? -nextStartCompare : nextStartCompare;
+    if (nextStartCompare !== 0) return nextStartCompare;
 
-    const endCompare = compareDates(a.currentSeason?.end?.endDate, b.currentSeason?.end?.endDate);
-    return bothGrace ? -endCompare : endCompare;
+    return compareDates(a.currentSeason?.end?.endDate, b.currentSeason?.end?.endDate);
 };
