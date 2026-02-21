@@ -69,6 +69,17 @@ export const useTimeBasedKey = (targetDate: Date) => {
         };
     }, [targetDate]);
 
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === "visible") {
+                setKey((k) => k + 1);
+            }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    }, []);
+
     return key;
 };
 
