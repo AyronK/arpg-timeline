@@ -1,4 +1,8 @@
-import { GameDetailsQueryResult } from "@/lib/cms/queries/indexQuery";
+import {
+    GameDetailsQueryResult,
+    SanitySeason,
+    SeasonEndDateInfo,
+} from "@/lib/cms/queries/indexQuery";
 
 import { ArchivalSeason, GameStatistics, LocalSeason, SeasonDuration } from "./types";
 
@@ -93,7 +97,14 @@ export const calculateGameStatistics = (
     data: GameDetailsQueryResult,
     gameSlug: string,
 ): GameStatistics => {
-    const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
+    const gameSeasons = data.seasons
+        .filter((s) => s?.game === gameSlug && !s?.isSideEvent)
+        .sort(
+            (a, b) =>
+                new Date(a.start!.startDate!).getTime() - new Date(b.start!.startDate!).getTime(),
+        );
+
+    adjustMissingEndDates(gameSeasons);
 
     const seasonDurations = calculateSeasonDurations(gameSeasons);
 
@@ -170,10 +181,15 @@ export const getArchivalSeasons = (
                 new Date(b.start!.startDate!).getTime() - new Date(a.start!.startDate!).getTime(),
         )
         .slice(1)
-        .map((season) => {
+        .map((season, index, arr) => {
             const startDate = new Date(season.start!.startDate!);
+            const prevStart = arr[index - 1]?.start?.startDate;
             const endDate =
-                season.end?.endDate && season.end?.confirmed ? new Date(season.end.endDate) : null;
+                season.end?.endDate && season.end?.confirmed
+                    ? new Date(season.end.endDate)
+                    : prevStart
+                      ? new Date(prevStart)
+                      : null;
 
             const duration = endDate
                 ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
@@ -195,4 +211,20 @@ export const getArchivalSeasons = (
         })
         .filter((s): s is NonNullable<typeof s> => s !== null)
         .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+};
+
+const adjustMissingEndDates = (gameSeasons: SanitySeason[]) => {
+    for (let i = 0; i < gameSeasons.length - 1; i++) {
+        const currentSeason = gameSeasons[i];
+        const nextSeason = gameSeasons[i + 1];
+        if (
+            currentSeason &&
+            nextSeason &&
+            (!currentSeason.end?.endDate || !currentSeason.end?.confirmed)
+        ) {
+            currentSeason.end ??= {} as SeasonEndDateInfo;
+            currentSeason.end.endDate = nextSeason.start!.startDate;
+            currentSeason.end.confirmed = true;
+        }
+    }
 };

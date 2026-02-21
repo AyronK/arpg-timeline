@@ -19,6 +19,8 @@ export function MobileBottomMenuActions() {
                         className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
                     >
                         <Image
+                            loading="lazy"
+                            unoptimized
                             src="/assets/discord-logo.svg"
                             className="h-5 w-5 brightness-200 grayscale-100"
                             alt="Discord logo"
@@ -42,6 +44,7 @@ export function MobileBottomMenuActions() {
                         className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
                     >
                         <Image
+                            loading="lazy"
                             src="/assets/patreon-logo.png"
                             className="h-5 w-5 brightness-200 grayscale-100"
                             alt="Patreon logo"

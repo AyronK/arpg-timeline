@@ -11,7 +11,7 @@ export const StatisticsSection = ({
 }: StatisticsSectionProps) => (
     <div className="mb-6 md:mb-8">
         <div className="bg-card text-card-foreground rounded-lg border p-4 md:p-6">
-            <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Statistics</h2>
+            <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Seasonal Statistics</h2>
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
                 <StatisticsCard
                     value={

@@ -14,6 +14,7 @@ export const PatreonFunding = () => (
         <CtaBannerContent
             icon={
                 <Image
+                    loading="lazy"
                     src="/assets/patreon-logo.png"
                     className="m-auto h-5 w-5 opacity-70 md:h-6 md:w-6"
                     alt="Patreon logo"

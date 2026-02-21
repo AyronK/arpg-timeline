@@ -63,6 +63,7 @@ export const Header = () => {
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}
                             icon={
                                 <Image
+                                    unoptimized
                                     src="/assets/discord-logo.svg"
                                     className="m-auto h-[1rem] w-[1rem]"
                                     alt="Discord logo"
@@ -138,6 +139,8 @@ export const Header = () => {
                                     data-sa-click="discord"
                                 >
                                     <Image
+                                        loading="lazy"
+                                        unoptimized
                                         src="/assets/discord-logo.svg"
                                         className="h-4 w-4"
                                         alt="Discord logo"
@@ -154,6 +157,7 @@ export const Header = () => {
                                     data-sa-click="patreon"
                                 >
                                     <Image
+                                        loading="lazy"
                                         src="/assets/patreon-logo.png"
                                         className="h-4 w-4"
                                         alt="Patreon logo"

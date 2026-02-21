@@ -29,6 +29,13 @@ export default {
             type: "url",
         },
         {
+            name: "isSideEvent",
+            title: "Side event",
+            type: "boolean",
+            initialValue: false,
+            description: "Side events are excluded from average season duration calculations.",
+        },
+        {
             name: "logo",
             title: "Logo",
             type: "image",

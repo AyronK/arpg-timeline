@@ -59,6 +59,7 @@ export interface ArchivalSeason {
 export interface ArchivalSeasonsSectionProps {
     seasons: ArchivalSeason[];
     gameLogo: SanityImageAssetDocument;
+    seasonKeyword: string;
 }
 
 export interface GameHeaderSectionProps {

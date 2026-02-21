@@ -19,9 +19,11 @@ export const useGameFilterState = (
             return games
                 .filter(
                     (g) =>
-                        !g.categories?.includes("seasonal") &&
-                        !g.categories?.includes("early-access") &&
-                        !g.nextSeason?.start?.confirmed,
+                        g.isDormant ||
+                        g.categories?.includes("community") ||
+                        (!g.categories?.includes("seasonal") &&
+                            !g.categories?.includes("early-access") &&
+                            !g.nextSeason?.start?.confirmed),
                 )
                 .map((g) => g.slug!)
                 .filter(Boolean);
@@ -67,19 +69,7 @@ export const useGameFilterState = (
             };
             setStoredFilters(storageData);
         } else {
-            if (category === "featured") {
-                initialFilters = games
-                    .filter(
-                        (g) =>
-                            !g.categories?.includes("seasonal") &&
-                            !g.categories?.includes("early-access") &&
-                            !g.nextSeason?.start?.confirmed,
-                    )
-                    .map((g) => g.slug!)
-                    .filter(Boolean);
-            } else {
-                initialFilters = [];
-            }
+            initialFilters = getDefaultExcludedSlugs();
         }
 
         return initialFilters;
