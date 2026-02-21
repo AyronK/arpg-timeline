@@ -46,8 +46,9 @@ const adjustDateIfTooSoon = (date: string | undefined | null, offset: number): s
 
 export const getAverageSeasonDuration = (seasons: SanitySeason[]): number | undefined => {
     const validDurations: number[] = [];
+    const mainSeasons = seasons.filter((s) => !s.isSideEvent);
 
-    for (const season of seasons) {
+    for (const season of mainSeasons) {
         if (season.start?.startDate && season.end?.endDate) {
             const startDate = new Date(season.start.startDate);
             const endDate = new Date(season.end.endDate);
@@ -202,6 +203,14 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
                 game.nextSeason.start?.startDate,
                 defaultSeasonOffset,
             );
+        }
+
+        if (
+            game.currentSeason?.end?.endDate &&
+            game.nextSeason?.start?.startDate &&
+            !game.currentSeason.end.confirmed
+        ) {
+            game.currentSeason.end.endDate = game.nextSeason.start.startDate;
         }
 
         return game;

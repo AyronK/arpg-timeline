@@ -73,6 +73,7 @@ export const indexQuery = `{
       url      
     },
     patchNotesUrl,
+    isSideEvent,
     start {
       startDate,
       confirmed,
@@ -153,6 +154,7 @@ export const gameDetailsQuery = `{
       url      
     },
     patchNotesUrl,
+    isSideEvent,
     start {
       startDate,
       confirmed,
@@ -216,6 +218,7 @@ export interface SanitySeason extends SanityDocumentBase {
     url?: string;
     logo?: SanityImageAssetDocument;
     patchNotesUrl?: string;
+    isSideEvent?: boolean;
     start?: SeasonStartDateInfo;
     end?: SeasonEndDateInfo;
 }
