@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 
 import { LayoutCarousel } from "@/components/LayoutCarousel";
 import { DashboardPage } from "@/components/Pages/DashboardPage";
@@ -25,6 +26,16 @@ const Home = async () => {
 
     return (
         <GameFilterProvider games={sanityGames} category={"featured"}>
+            <div className="sr-only absolute h-px w-px overflow-hidden p-0 [-webkit-clip-path:inset(50%)] [clip-path:inset(50%)]">
+                <Image
+                    src="/assets/seoimage.png"
+                    alt="aRPG Timeline - Track your favorite aRPG game seasons"
+                    width={1200}
+                    height={630}
+                    fetchPriority="high"
+                    priority
+                />
+            </div>
             <LayoutCarousel />
             <DashboardPage />
         </GameFilterProvider>
