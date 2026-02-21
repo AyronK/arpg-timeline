@@ -1,4 +1,4 @@
-import { CalendarClock, CalendarOff, Sword, TimerOff, TimerReset } from "lucide-react";
+import { CalendarClock, CalendarOff, Sword, TimerReset } from "lucide-react";
 
 import { IconLabel } from "@/components/IconLabel/IconLabel";
 import LocalDate from "@/components/LocalDate";
