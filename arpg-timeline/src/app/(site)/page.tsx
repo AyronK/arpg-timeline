@@ -28,8 +28,9 @@ const Home = async () => {
         <GameFilterProvider games={sanityGames} category={"featured"}>
             <div className="sr-only absolute h-px w-px overflow-hidden p-0 [-webkit-clip-path:inset(50%)] [clip-path:inset(50%)]">
                 <Image
-                    src="/assets/seoimage.png"
-                    alt="aRPG Timeline - Track your favorite aRPG game seasons"
+                    unoptimized
+                    src="/assets/logo.png"
+                    alt="aRPG Timeline - Every Season Just On Time"
                     width={1200}
                     height={630}
                     fetchPriority="high"

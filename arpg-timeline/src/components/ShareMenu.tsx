@@ -57,6 +57,7 @@ export const ShareMenu = ({ title, startDate }: { title: string; startDate: stri
                 >
                     <Image
                         loading="lazy"
+                        unoptimized
                         className="mr-2 h-4 w-4"
                         width="24"
                         height="24"
