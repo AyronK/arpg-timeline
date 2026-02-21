@@ -112,11 +112,13 @@ const GamePage = async ({ params }: GamePageProps) => {
 
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
-                <StatisticsSection
-                    game={game}
-                    statistics={statistics}
-                    oldestSeasonInfo={oldestSeasonInfo}
-                />
+                {game.categories?.includes("seasonal") && (
+                    <StatisticsSection
+                        game={game}
+                        statistics={statistics}
+                        oldestSeasonInfo={oldestSeasonInfo}
+                    />
+                )}
 
                 <div className="mb-6 md:mb-8">
                     <PlatformIntegrationSection
@@ -127,7 +129,11 @@ const GamePage = async ({ params }: GamePageProps) => {
                     />
                 </div>
 
-                <ArchivalSeasonsSection seasons={archivalSeasons} gameLogo={game.logo} />
+                <ArchivalSeasonsSection
+                    seasons={archivalSeasons}
+                    gameLogo={game.logo}
+                    seasonKeyword={game.seasonKeyword}
+                />
             </div>
         </>
     );
