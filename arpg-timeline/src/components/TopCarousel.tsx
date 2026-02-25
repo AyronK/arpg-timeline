@@ -88,14 +88,14 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                             "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
                                         }
                                     >
-                                        <CalendarSubscriptionAlert />
+                                        <PatreonFunding />
                                     </CarouselItem>
                                     <CarouselItem
                                         className={
                                             "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
                                         }
                                     >
-                                        <PatreonFunding />
+                                        <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                 </CarouselContent>
                             </Carousel>
