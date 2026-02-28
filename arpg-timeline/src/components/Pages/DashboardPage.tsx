@@ -7,6 +7,7 @@ import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseG
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
+
 import { SupportSection } from "../SupportSection";
 
 export const DashboardPage = async () => {
