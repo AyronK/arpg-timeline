@@ -115,7 +115,7 @@ const SubscribeContent = ({
     const isGeneric = !gameSlug || !gameName;
 
     return (
-        <>
+        <div className="flex flex-col gap-4">
             <div className="flex min-w-0 flex-col gap-3 overflow-hidden">
                 {gameSubscribeUrl && gameName && (
                     <CopyableRow url={gameSubscribeUrl} label={gameName} compact={compact} />
@@ -147,7 +147,7 @@ const SubscribeContent = ({
             </p>
 
             <ProtonCalendarAffiliation />
-        </>
+        </div>
     );
 };
 
