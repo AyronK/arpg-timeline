@@ -8,6 +8,8 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getMultipleSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 
+import { SupportSection } from "../SupportSection";
+
 export const DashboardPage = async () => {
     const data: IndexQueryResult = await sanityFetch({
         query: indexQuery,
@@ -60,6 +62,7 @@ export const DashboardPage = async () => {
                 <Main games={games} statistics={statistics} />
             </div>
             <StructuredDataScripts games={games} />
+            <SupportSection />
             <SideNotes />
         </>
     );

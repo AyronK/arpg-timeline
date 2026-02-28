@@ -42,7 +42,7 @@ export const CalendarSubscriptionAlert = ({
             >
                 <CtaBannerContent
                     icon={<Rss className="m-auto h-5 w-5 opacity-70 md:h-6 md:w-6" />}
-                    title="Subscribe to Calendar"
+                    title="Subscribe to Calendar for free"
                     description={description}
                     actionLabel="Subscribe"
                     color="emerald"

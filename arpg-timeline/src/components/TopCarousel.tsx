@@ -90,6 +90,18 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                     >
                                         <PatreonFunding />
                                     </CarouselItem>
+
+                                    {/* Problem:
+                                        Referrals are intended to be private direct recommendations of the Services and any referral done through a public platform and/or website will not lead to any reward and may cause ineligibility for future referral benefits.
+                                        https://proton.me/pl/legal/terms 
+                                    */}
+                                    {/* <CarouselItem
+                                        className={
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
+                                        }
+                                    >
+                                        <ProtonAffiliation />
+                                    </CarouselItem> */}
                                     <CarouselItem
                                         className={
                                             "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
