@@ -11,10 +11,10 @@ const links = {
 
 const PrivacyPage = () => {
     return (
-        <div className="relative container mx-auto my-12 max-w-prose space-y-16">
-            <section>
+        <div className="relative container mx-auto mb-8">
+            <section className="container flex flex-col gap-4 md:my-16">
                 <h2 className="mb-4 text-center text-3xl font-semibold">Privacy</h2>
-                <div className="space-y-6 text-base leading-relaxed">
+                <div className="mx-auto mt-8 max-w-prose space-y-6 text-base leading-relaxed">
                     <p>
                         At <i>arpg-timeline.com</i>, your privacy is important. This page outlines
                         how information is collected and used when you visit the site.
@@ -23,7 +23,7 @@ const PrivacyPage = () => {
                     <p>
                         We use Simple Analytics to help us understand website usage. It provides
                         anonymous metrics only. Read more{" "}
-                        <Button className="px-0 text-base" variant="link" asChild>
+                        <Button className="h-4 px-0 py-0 text-base" variant="link" asChild>
                             <Link
                                 className="underline"
                                 href={links.gdpr}
@@ -38,13 +38,13 @@ const PrivacyPage = () => {
                     </p>
                     <p>
                         This website also uses local storage to remember user preferences like theme
-                        or filters. No personal data is stored or transmitted — it stays on your
+                        or filters. No personal data is stored or transmitted - it stays on your
                         device.
                     </p>
                     <p>
                         If you have any questions about our privacy practices, feel free to contact
                         me on{" "}
-                        <Button className="px-0 text-base" variant="link" asChild>
+                        <Button className="h-4 px-0 py-0 text-base" variant="link" asChild>
                             <Link
                                 className="underline"
                                 href={links.github}
@@ -60,14 +60,14 @@ const PrivacyPage = () => {
                 </div>
             </section>
 
-            <section>
+            <section className="container flex flex-col gap-4 md:my-16">
                 <h2 className="mb-4 text-center text-3xl font-semibold">
                     What We Do and Do Not Collect
                 </h2>
-                <div className="space-y-6 text-base leading-relaxed">
+                <div className="mx-auto mt-8 max-w-prose space-y-6 text-base leading-relaxed">
                     <p>
                         You can read a thorough report{" "}
-                        <Button className="px-0 text-base" variant="link" asChild>
+                        <Button className="h-4 px-0 py-0 text-base" variant="link" asChild>
                             <Link
                                 className="underline"
                                 href={links.whatWeCollect}
@@ -79,7 +79,7 @@ const PrivacyPage = () => {
                             </Link>
                         </Button>{" "}
                         and{" "}
-                        <Button className="px-0 text-base" variant="link" asChild>
+                        <Button className="h-4 px-0 py-0 text-base" variant="link" asChild>
                             <Link
                                 className="underline"
                                 href={links.metrics}
