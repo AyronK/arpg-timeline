@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_DISCORD_URL: process.env.DISCORD_URL,
         NEXT_PUBLIC_CONTACT_EMAIL: process.env.CONTACT_EMAIL,
         NEXT_PUBLIC_SITE_URL: process.env.SITE_URL,
-        NEXT_PUBLIC_PROTON_AFFILIATE_URL: process.env.PROTON_AFFILIATE_URL,
     },
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],

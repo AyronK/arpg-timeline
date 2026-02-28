@@ -7,16 +7,13 @@ export interface CtaBannerProps {
     title: string;
     description: string;
     actionLabel: string;
-    color: "orange" | "emerald" | "violet" | "indigo";
-    layout?: "inline" | "stacked" | "mobile-stacked";
+    color: "orange" | "emerald";
     className?: string;
 }
 
 const colorClasses = {
     orange: "bg-orange-500/30 group-hover:bg-orange-500/50",
     emerald: "bg-emerald-500/30 group-hover:bg-emerald-500/50",
-    violet: "bg-violet-500/30 group-hover:bg-violet-500/50",
-    indigo: "bg-indigo-500/30 group-hover:bg-indigo-500/50",
 };
 
 export const CtaBannerContent = ({
@@ -25,26 +22,10 @@ export const CtaBannerContent = ({
     description,
     actionLabel,
     color,
-    layout = "inline",
 }: Omit<CtaBannerProps, "className">) => (
     <>
-        <div
-            className={cn(
-                "flex flex-1",
-                layout === "inline" && "items-center gap-3",
-                layout === "stacked" && "flex-col items-start",
-                layout === "mobile-stacked" &&
-                    "flex-col items-start md:flex-row md:items-center md:gap-3",
-            )}
-        >
-            <div
-                className={cn(
-                    "bg-muted/50 grid shrink-0 place-content-center rounded-full",
-                    layout === "inline" && "h-10 min-w-10 md:h-12 md:min-w-12",
-                    layout === "stacked" && "h-12 w-12 md:h-14 md:w-14",
-                    layout === "mobile-stacked" && "h-12 min-w-12 md:h-12 md:min-w-12",
-                )}
-            >
+        <div className="flex flex-1 items-center gap-3">
+            <div className="bg-muted/50 grid h-10 w-10 shrink-0 place-content-center rounded-full md:h-12 md:w-12">
                 {icon}
             </div>
             <div className="flex flex-1 flex-col gap-0.5">
@@ -85,11 +66,9 @@ export const CtaBannerContent = ({
 const borderClasses = {
     orange: "border-orange-500/30 hover:border-orange-500/50",
     emerald: "border-emerald-500/30 hover:border-emerald-500/50",
-    violet: "border-violet-500/30 hover:border-violet-500/50",
-    indigo: "border-indigo-500/30 hover:border-indigo-500/50",
 };
 
-export const getCtaBannerClassName = (color: "orange" | "emerald" | "violet" | "indigo") =>
+export const getCtaBannerClassName = (color: "orange" | "emerald") =>
     cn(
         "text-card-foreground bg-card group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-lg border-2 p-4 transition-all hover:shadow-md md:p-6",
         borderClasses[color],

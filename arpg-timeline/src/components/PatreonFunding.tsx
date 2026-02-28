@@ -22,8 +22,8 @@ export const PatreonFunding = () => (
                     height={24}
                 />
             }
-            title="Support us on Patreon"
-            description="Help aRPG Timeline grow. Privacy-first, no intrusive ads!"
+            title="Support aRPG Timeline"
+            description="Help us grow and keep the site private and ad-free!"
             actionLabel="Support"
             color="orange"
         />
