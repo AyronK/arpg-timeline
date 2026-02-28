@@ -1,6 +1,6 @@
 import { DiscordContactBanner, DiscordServerBoost } from "./DiscordServerBoost";
 import { PatreonFunding } from "./PatreonFunding";
-import { ProtonCalendarAffiliation } from "./ProtonCalendarAffiliation";
+import { ProtonAffiliation } from "./ProtonAffiliation";
 
 export const SupportSection = () => {
     return (
@@ -10,7 +10,7 @@ export const SupportSection = () => {
             <div className="flex flex-col-reverse gap-4 md:flex-col">
                 <div className="flex flex-col gap-4 md:flex-row">
                     <PatreonFunding />
-                    <ProtonCalendarAffiliation />
+                    <ProtonAffiliation />
                 </div>
                 <div className="flex flex-col gap-4 md:flex-row">
                     <DiscordServerBoost />
