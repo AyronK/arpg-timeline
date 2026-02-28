@@ -16,8 +16,6 @@ import {
     DrawerTitle,
 } from "@/ui/Drawer";
 
-import { ProtonCalendarAffiliation } from "./ProtonCalendarAffiliation";
-
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 export const CopyableRow = ({
@@ -147,7 +145,11 @@ const SubscribeContent = ({
                 Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from URL&quot;
             </p>
 
-            <ProtonCalendarAffiliation />
+            {/* Problem:
+                Referrals are intended to be private direct recommendations of the Services and any referral done through a public platform and/or website will not lead to any reward and may cause ineligibility for future referral benefits.
+                https://proton.me/pl/legal/terms 
+            */}
+            {/* <ProtonCalendarAffiliation />  */}
         </div>
     );
 };
