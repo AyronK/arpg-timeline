@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AffiliationBadge } from "@/components/AffiliationBadge";
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 
 const ProtonCalendarIcon = () => (
@@ -144,6 +145,7 @@ export const ProtonCalendarAffiliation = () => (
         data-sa-click="proton-calendar-affiliation-banner"
         className={getCtaBannerClassName("violet")}
     >
+        <AffiliationBadge />
         <CtaBannerContent
             layout="mobile-stacked"
             icon={<ProtonCalendarIcon />}
