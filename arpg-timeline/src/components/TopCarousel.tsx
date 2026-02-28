@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { PatreonFunding } from "@/components/PatreonFunding";
+import { ProtonAffiliation } from "@/components/ProtonAffiliation";
 import { StreamCard } from "@/components/StreamCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { useGameFilterContext, useTimeBasedKey } from "@/contexts/GameFilterContext";
@@ -89,6 +90,13 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         }
                                     >
                                         <PatreonFunding />
+                                    </CarouselItem>
+                                    <CarouselItem
+                                        className={
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
+                                        }
+                                    >
+                                        <ProtonAffiliation />
                                     </CarouselItem>
                                     <CarouselItem
                                         className={

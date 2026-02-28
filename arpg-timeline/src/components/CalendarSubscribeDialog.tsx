@@ -16,6 +16,8 @@ import {
     DrawerTitle,
 } from "@/ui/Drawer";
 
+import { ProtonCalendarAffiliation } from "./ProtonCalendarAffiliation";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 export const CopyableRow = ({
@@ -114,7 +116,7 @@ const SubscribeContent = ({
     const isGeneric = !gameSlug || !gameName;
 
     return (
-        <>
+        <div className="flex flex-col gap-4">
             <div className="flex min-w-0 flex-col gap-3 overflow-hidden">
                 {gameSubscribeUrl && gameName && (
                     <CopyableRow url={gameSubscribeUrl} label={gameName} compact={compact} />
@@ -134,17 +136,19 @@ const SubscribeContent = ({
                 </div>
             )}
 
-            <p className="text-muted-foreground mt-2 text-center text-xs text-balance">
-                Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from URL&quot;
-            </p>
-
-            <p className="text-muted-foreground mt-3 text-center text-xs opacity-70">
+            <p className="text-muted-foreground text-center text-xs opacity-70">
                 Free for personal use.{" "}
                 <Link href="/calendar" className="underline underline-offset-2">
                     Commercial use?
                 </Link>
             </p>
-        </>
+
+            <p className="text-muted-foreground text-center text-xs text-balance">
+                Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from URL&quot;
+            </p>
+
+            <ProtonCalendarAffiliation />
+        </div>
     );
 };
 
@@ -170,8 +174,9 @@ export const CalendarSubscribeDialog = ({
                         <DrawerHeader className="items-center text-center">
                             <HeaderIcon />
                             <DrawerTitle>Subscribe to Calendar</DrawerTitle>
-                            <DrawerDescription>
-                                Get automatic updates for launches and streams
+                            <DrawerDescription className="text-center text-balance">
+                                Get automatic updates for launches and streams in your favorite
+                                calendar app for free! No ads, no tracking, no spam.
                             </DrawerDescription>
                         </DrawerHeader>
                         <SubscribeContent gameSlug={gameSlug} gameName={gameName} compact />
@@ -193,8 +198,9 @@ export const CalendarSubscribeDialog = ({
                 <DialogHeader className="items-center text-center">
                     <HeaderIcon />
                     <DialogTitle>Subscribe to Calendar</DialogTitle>
-                    <DialogDescription>
-                        Get automatic updates for launches and streams
+                    <DialogDescription className="text-center text-balance">
+                        Get automatic updates for launches and streams in your favorite calendar app
+                        for free! No ads, no tracking, no spam.
                     </DialogDescription>
                 </DialogHeader>
                 <SubscribeContent gameSlug={gameSlug} gameName={gameName} />
