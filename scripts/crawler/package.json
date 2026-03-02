@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "@types/he": "^1.2.3",
-    "@types/node": "^20.19.27",
-    "fast-xml-parser": "^5.3.8",
+    "@types/node": "^20.19.35",
+    "fast-xml-parser": "^5.4.1",
     "node-fetch": "^3.3.2",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
