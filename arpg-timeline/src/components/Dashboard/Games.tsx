@@ -25,7 +25,7 @@ export const Games = ({
             {games.map((game, idx) => (
                 <div
                     key={game.slug}
-                    className={cn("order-4 flex", {
+                    className={cn("order-5 flex", {
                         "order-first": idx <= 1,
                         "xl:order-first": idx <= 2,
                         "3xl:order-first": idx <= 3,
