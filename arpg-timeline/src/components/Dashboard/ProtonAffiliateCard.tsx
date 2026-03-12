@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const ProtonAffiliateCard = () => (
-    <div className="bg-card text-card-foreground relative order-4 col-span-1 flex flex-1 cursor-pointer flex-col gap-1 rounded-md border border-violet-500/30 p-4 hover:border-violet-500/50">
+    <div className="bg-card text-card-foreground relative col-span-1 flex flex-1 cursor-pointer flex-col gap-1 rounded-md border border-violet-500/30 p-4 hover:border-violet-500/50">
         <Link
             href={
                 process.env.NEXT_PUBLIC_PROTON_AFFILIATE_URL ||

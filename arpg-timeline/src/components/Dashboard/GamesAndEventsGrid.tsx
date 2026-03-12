@@ -15,7 +15,6 @@ import { Events } from "./Events";
 import { GameCountDisplay } from "./GameCountDisplay";
 import { Games } from "./Games";
 import { MobileBottomMenu } from "./MobileBottomMenu";
-import { ProtonAffiliateCard } from "./ProtonAffiliateCard";
 
 export const GamesAndEventsGrid = ({
     statistics,
@@ -57,7 +56,6 @@ export const GamesAndEventsGrid = ({
                 >
                     <Games games={allGames} statistics={statistics} />
                     <CantFindGame />
-                    <ProtonAffiliateCard />
                     {filteredGames.length > 1 && <Events events={events} />}
                 </div>
             </article>
