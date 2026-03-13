@@ -32,7 +32,7 @@ export const CtaBannerContent = ({
             className={cn(
                 "flex flex-1",
                 layout === "inline" && "items-center gap-3",
-                layout === "stacked" && "flex-col items-start",
+                layout === "stacked" && "flex-col items-start gap-2",
                 layout === "mobile-stacked" &&
                     "flex-col items-start md:flex-row md:items-center md:gap-3",
             )}
@@ -41,7 +41,6 @@ export const CtaBannerContent = ({
                 className={cn(
                     "bg-muted/50 grid shrink-0 place-content-center rounded-full",
                     layout === "inline" && "h-10 min-w-10 md:h-12 md:min-w-12",
-                    layout === "stacked" && "h-12 w-12 md:h-14 md:w-14",
                     layout === "mobile-stacked" && "h-12 min-w-12 md:h-12 md:min-w-12",
                 )}
             >

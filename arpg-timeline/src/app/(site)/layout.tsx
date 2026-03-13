@@ -7,7 +7,9 @@ import Script from "next/script";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { PartnerPromosDrawer } from "@/components/PartnerPromosDrawer";
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
+import { PartnerPromosProvider } from "@/contexts/PartnerPromosContext";
 import { Toaster } from "@/ui/Toaster";
 
 const cinzel = Cinzel({
@@ -30,9 +32,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <SimpleAnalytics />
                 {process.env.SPEED_INSIGHTS_ENABLED && <SpeedInsights />}
                 <Toaster />
-                <Header />
-                <main className="flex flex-1 flex-col">{children}</main>
-                <Footer />
+                <PartnerPromosProvider>
+                    <Header />
+                    <main className="flex flex-1 flex-col">{children}</main>
+                    <Footer />
+                    <PartnerPromosDrawer />
+                </PartnerPromosProvider>
             </body>
             <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
         </html>

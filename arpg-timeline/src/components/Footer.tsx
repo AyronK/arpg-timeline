@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { FooterPartnerPromosLink } from "@/components/FooterPartnerPromosLink";
+
 export const Footer = () => (
     <footer className="mt-4">
         <div className="border-foreground bg-card flex flex-col gap-4 border-t px-4 py-4">
@@ -11,6 +13,9 @@ export const Footer = () => (
                 delayed up to 48 hours.
             </p>
             <div className="flex flex-col justify-evenly gap-6 md:flex-row">
+                <div className="flex flex-row gap-1">
+                    <FooterPartnerPromosLink />
+                </div>
                 <div className="flex flex-row gap-1">
                     <Link
                         href="/assets/about.txt"
