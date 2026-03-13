@@ -1,14 +1,6 @@
 "use client";
 
-import {
-    createContext,
-    ReactNode,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
 
 const STORAGE_KEY = "arpg-timeline-hidden-partners";
 
@@ -47,12 +39,8 @@ function saveHiddenPartners(set: Set<PartnerId>) {
 }
 
 export function PartnerPromosProvider({ children }: { children: ReactNode }) {
-    const [hiddenPartners, setHiddenPartners] = useState<Set<PartnerId>>(new Set());
+    const [hiddenPartners, setHiddenPartners] = useState<Set<PartnerId>>(loadHiddenPartners);
     const [drawerOpen, setDrawerOpen] = useState(false);
-
-    useEffect(() => {
-        setHiddenPartners(loadHiddenPartners());
-    }, []);
 
     const setPartnerHidden = useCallback((partnerId: PartnerId, hidden: boolean) => {
         setHiddenPartners((prev) => {
@@ -80,13 +68,12 @@ export function PartnerPromosProvider({ children }: { children: ReactNode }) {
         [hiddenPartners, setPartnerHidden, isPartnerHidden, drawerOpen],
     );
 
-    return (
-        <PartnerPromosContext.Provider value={value}>{children}</PartnerPromosContext.Provider>
-    );
+    return <PartnerPromosContext.Provider value={value}>{children}</PartnerPromosContext.Provider>;
 }
 
 export function usePartnerPromos() {
     const ctx = useContext(PartnerPromosContext);
-    if (ctx === undefined) throw new Error("usePartnerPromos must be used within PartnerPromosProvider");
+    if (ctx === undefined)
+        throw new Error("usePartnerPromos must be used within PartnerPromosProvider");
     return ctx;
 }

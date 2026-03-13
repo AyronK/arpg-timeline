@@ -9,8 +9,8 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { PartnerPromosDrawer } from "@/components/PartnerPromosDrawer";
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
-import { Toaster } from "@/ui/Toaster";
 import { PartnerPromosProvider } from "@/contexts/PartnerPromosContext";
+import { Toaster } from "@/ui/Toaster";
 
 const cinzel = Cinzel({
     subsets: ["latin"],

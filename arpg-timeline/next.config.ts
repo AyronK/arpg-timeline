@@ -11,7 +11,9 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_DISCORD_URL: process.env.DISCORD_URL,
         NEXT_PUBLIC_CONTACT_EMAIL: process.env.CONTACT_EMAIL,
         NEXT_PUBLIC_SITE_URL: process.env.SITE_URL,
-        NEXT_PUBLIC_PROTON_AFFILIATE_URL: process.env.PROTON_AFFILIATE_URL,
+        NEXT_PUBLIC_PROTON_MAIL_AFFILIATE_URL: process.env.PROTON_MAIL_AFFILIATE_URL,
+        NEXT_PUBLIC_PROTON_VPN_AFFILIATE_URL: process.env.PROTON_VPN_AFFILIATE_URL,
+        NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL: process.env.PROTON_CALENDAR_AFFILIATE_URL,
     },
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
@@ -45,19 +47,6 @@ const nextConfig: NextConfig = {
                     {
                         key: "Content-Security-Policy",
                         value: "frame-ancestors *;",
-                    },
-                ],
-            },
-            {
-                source: "/_next/static/:path*",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=31536000, immutable",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=31536000, immutable",
                     },
                 ],
             },

@@ -4,9 +4,6 @@ import Link from "next/link";
 
 import { usePartnerPromos } from "@/contexts/PartnerPromosContext";
 
-const AFFILIATE_LINK =
-    "https://go.getproton.me/aff_c?offer_id=26&aff_id=16678&source=arpg-timeline";
-
 export const ProtonDashboardCard = () => {
     const { setDrawerOpen } = usePartnerPromos();
     return (
@@ -17,17 +14,26 @@ export const ProtonDashboardCard = () => {
                 onClick={() => setDrawerOpen(true)}
                 aria-label="Hide promos (opens settings)"
             >
-                Hide?
+                Hide it?
             </button>
             <div>
-                <h3 className="mb-1 text-sm font-medium">Support aRPG Timeline</h3>
+                <h3 className="mb-1 text-sm font-medium">Proton with aRPG Timeline</h3>
                 <p className="text-muted-foreground max-w-[320px] min-w-0 text-xs">
-                    Getting Proton through our links supports us directly.
+                    Get a discount and support aRPG Timeline directly.
                 </p>
             </div>
             <div className="flex flex-col gap-4">
                 <h4 className="font-heading text-foreground flex-1 text-sm">Proton Mail</h4>
-                <Link href={AFFILIATE_LINK} className="mx-auto block shrink-0">
+                <Link
+                    href={
+                        process.env.NEXT_PUBLIC_PROTON_MAIL_AFFILIATE_URL ||
+                        "https://proton.me/Mail"
+                    }
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    data-sa-click="proton-mail-affiliation-banner"
+                    className="mx-auto block shrink-0 transition-transform duration-200 hover:translate-x-1"
+                >
                     <Image
                         src="/assets/Mail_EED_320X50.png"
                         alt="Proton Mail deal"
@@ -37,7 +43,15 @@ export const ProtonDashboardCard = () => {
                     />
                 </Link>
                 <h4 className="font-heading text-foreground flex-1 text-sm">Proton VPN</h4>
-                <Link href={AFFILIATE_LINK} className="mx-auto block shrink-0">
+                <Link
+                    href={
+                        process.env.NEXT_PUBLIC_PROTON_VPN_AFFILIATE_URL || "https://proton.me/VPN"
+                    }
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    data-sa-click="proton-vpn-affiliation-banner"
+                    className="mx-auto block shrink-0 transition-transform duration-200 hover:translate-x-1"
+                >
                     <Image
                         src="/assets/VPN_SVD_320x50.png"
                         alt="Proton VPN deal"

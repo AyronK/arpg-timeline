@@ -1,5 +1,7 @@
 "use client";
 
+import { PatreonFunding } from "@/components/PatreonFunding";
+import { PARTNER_IDS, type PartnerId, usePartnerPromos } from "@/contexts/PartnerPromosContext";
 import {
     Drawer,
     DrawerContent,
@@ -9,9 +11,6 @@ import {
     DrawerTitle,
 } from "@/ui/Drawer";
 import { Switch } from "@/ui/Switch";
-
-import { PatreonFunding } from "@/components/PatreonFunding";
-import { PARTNER_IDS, type PartnerId, usePartnerPromos } from "@/contexts/PartnerPromosContext";
 
 const PARTNER_LABELS: Record<PartnerId, string> = {
     proton: "Proton (Mail, VPN, Calendar, Drive, Ultimate)",
@@ -23,7 +22,7 @@ export function PartnerPromosDrawer() {
     return (
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} direction="right">
             <DrawerPortal>
-                <DrawerContent className="top-0 h-full max-w-4xl">
+                <DrawerContent className="top-0 h-full max-w-3xl">
                     <DrawerHeader className="border-b">
                         <DrawerTitle>Partner promos</DrawerTitle>
                         <DrawerDescription>
@@ -44,7 +43,7 @@ export function PartnerPromosDrawer() {
                             The website remains{" "}
                             <strong className="text-foreground">free of charge</strong> and{" "}
                             <strong className="text-foreground">free of ads</strong>. Partner promos
-                            can be turned off anytime below.
+                            can be turned off anytime below and your choice will be remembered.
                         </p>
                         <div className="flex flex-col gap-4">
                             <h4 className="text-sm font-medium">Show partner promos</h4>
