@@ -6,6 +6,14 @@ import { usePartnerPromos } from "@/contexts/PartnerPromosContext";
 
 export const ProtonDashboardCard = () => {
     const { setDrawerOpen } = usePartnerPromos();
+
+    if (
+        !process.env.NEXT_PUBLIC_PROTON_MAIL_AFFILIATE_URL ||
+        !process.env.NEXT_PUBLIC_PROTON_VPN_AFFILIATE_URL
+    ) {
+        return null;
+    }
+
     return (
         <div className="bg-card relative flex max-h-[272px] flex-col gap-2 rounded-md p-4">
             <button
@@ -25,10 +33,7 @@ export const ProtonDashboardCard = () => {
             <div className="flex flex-col gap-4">
                 <h4 className="font-heading text-foreground flex-1 text-sm">Proton Mail</h4>
                 <Link
-                    href={
-                        process.env.NEXT_PUBLIC_PROTON_MAIL_AFFILIATE_URL ||
-                        "https://proton.me/Mail"
-                    }
+                    href={process.env.NEXT_PUBLIC_PROTON_MAIL_AFFILIATE_URL}
                     rel="noopener noreferrer"
                     target="_blank"
                     data-sa-click="proton-mail-affiliation-banner"
@@ -46,9 +51,7 @@ export const ProtonDashboardCard = () => {
                 </Link>
                 <h4 className="font-heading text-foreground flex-1 text-sm">Proton VPN</h4>
                 <Link
-                    href={
-                        process.env.NEXT_PUBLIC_PROTON_VPN_AFFILIATE_URL || "https://proton.me/VPN"
-                    }
+                    href={process.env.NEXT_PUBLIC_PROTON_VPN_AFFILIATE_URL}
                     rel="noopener noreferrer"
                     target="_blank"
                     data-sa-click="proton-vpn-affiliation-banner"

@@ -8,7 +8,11 @@ import { usePartnerPromos } from "@/contexts/PartnerPromosContext";
 
 export const ProtonCalendarAffiliation = () => {
     const { isPartnerHidden, setDrawerOpen } = usePartnerPromos();
-    if (isPartnerHidden("proton")) return null;
+
+    if (!process.env.NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL || isPartnerHidden("proton")) {
+        return null;
+    }
+
     return (
         <div className="border-border flex hidden flex-col gap-2 border-t pt-2 md:flex">
             <div className="flex justify-end">
@@ -22,10 +26,7 @@ export const ProtonCalendarAffiliation = () => {
                 </button>
             </div>
             <Link
-                href={
-                    process.env.NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL ||
-                    "https://proton.me/Calendar"
-                }
+                href={process.env.NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL}
                 rel="noopener noreferrer"
                 target="_blank"
                 data-sa-click="proton-calendar-affiliation-banner"
