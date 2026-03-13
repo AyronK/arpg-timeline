@@ -37,6 +37,8 @@ export const ProtonDashboardCard = () => {
                     <Image
                         src="/assets/Mail_EED_320X50.png"
                         alt="Proton Mail deal"
+                        loading="lazy"
+                        unoptimized
                         width={320}
                         height={50}
                         className="h-auto w-full max-w-[320px] rounded-md"
@@ -55,6 +57,8 @@ export const ProtonDashboardCard = () => {
                     <Image
                         src="/assets/VPN_SVD_320x50.png"
                         alt="Proton VPN deal"
+                        loading="lazy"
+                        unoptimized
                         width={320}
                         height={50}
                         className="h-auto w-full max-w-[320px] rounded-md"
