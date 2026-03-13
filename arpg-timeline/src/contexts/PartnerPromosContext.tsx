@@ -1,5 +1,6 @@
 "use client";
 
+import { sa_event } from "@/lib/sa_event";
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
 
 const STORAGE_KEY = "arpg-timeline-hidden-partners";
@@ -43,6 +44,7 @@ export function PartnerPromosProvider({ children }: { children: ReactNode }) {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const setPartnerHidden = useCallback((partnerId: PartnerId, hidden: boolean) => {
+        sa_event(`partner-promos-${partnerId}-${hidden ? "hidden" : "shown"}`);
         setHiddenPartners((prev) => {
             const next = new Set(prev);
             if (hidden) next.add(partnerId);
