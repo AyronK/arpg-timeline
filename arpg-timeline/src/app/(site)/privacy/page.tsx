@@ -19,7 +19,13 @@ const PrivacyPage = () => {
                         At <i>arpg-timeline.com</i>, your privacy is important. This page outlines
                         how information is collected and used when you visit the site.
                     </p>
-                    <p>We do not use cookies or process any personal data.</p>
+                    <p>
+                        We do not use cookies for tracking, analytics, or advertising. Our hosting
+                        provider (Vercel) may set a strictly necessary security cookie to protect
+                        the website from abuse and automated traffic. Like most websites, the
+                        hosting infrastructure may also temporarily process IP addresses in server
+                        logs for security and operational purposes.
+                    </p>
                     <p>
                         We use Simple Analytics to help us understand website usage. It provides
                         anonymous metrics only. Read more{" "}
@@ -100,10 +106,10 @@ const PrivacyPage = () => {
                     <ul className="list-inside list-disc space-y-2">
                         <li>Whether visits are unique</li>
                         <li>
-                            <strong>No</strong> cookies or similar technologies
+                            <strong>No</strong> tracking or advertising cookies
                         </li>
                         <li>
-                            <strong>No</strong> IP addresses collected or stored
+                            <strong>No</strong> IP addresses stored for analytics
                         </li>
                         <li>Timestamps of visits</li>
                         <li>Anonymized user agents</li>
