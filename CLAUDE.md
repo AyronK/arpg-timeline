@@ -8,11 +8,10 @@ aRPG Timeline is a dashboard for tracking seasons and events across multiple act
 
 ## Repository Structure
 
-This is a monorepo with three independent packages:
+This is a monorepo with two active packages:
 
 - **`arpg-timeline/`** — Main Next.js 15 public-facing website
 - **`studio-arpg-timeline/`** — Sanity CMS studio for content management (games, seasons, events)
-- **`scripts/crawler/`** — Automated crawler that monitors games and sends Discord notifications
 
 Each package has its own `package.json` and is developed independently (no root-level workspace tooling).
 
@@ -35,13 +34,6 @@ npm run dev          # Dev studio
 npm run build        # Build studio
 npm run deploy       # Deploy to Sanity
 npm run typecheck    # TypeScript check
-```
-
-### Crawler (`scripts/crawler/`)
-
-```bash
-npm run crawl          # Build + run (uses env vars from environment)
-npm run crawl:develop  # Build + run with local .env file
 ```
 
 ## Code Style & Contribution
