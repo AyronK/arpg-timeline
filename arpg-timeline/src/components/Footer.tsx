@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FooterPartnerPromosLink } from "@/components/FooterPartnerPromosLink";
 
 export const Footer = () => (
-    <footer className="mt-4">
+    <footer className="mt-10 md:mt-36">
         <div className="border-foreground bg-card flex flex-col gap-4 border-t px-4 py-4">
             <div className="container mx-auto grid gap-6 text-sm md:grid-cols-4">
                 <div className="flex flex-col gap-5">

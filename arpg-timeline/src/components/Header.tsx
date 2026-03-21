@@ -38,7 +38,7 @@ const SocialButton = ({
             className="flex items-center gap-2"
         >
             <div className="grid h-[1.4rem] w-[1.4rem] place-content-center">{icon}</div>
-            <span className="hidden text-sm font-medium 2xl:block">{label}</span>
+            <span className="hidden text-sm font-medium lg:block">{label}</span>
         </Link>
     </Button>
 );
@@ -47,7 +47,7 @@ export const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="max-lg:bg-card relative container mx-auto h-[56px] max-sm:shadow-sm lg:h-[80px] lg:pt-6 lg:pb-0">
+        <header className="max-xl:bg-card relative h-[56px] max-sm:shadow-sm xl:container xl:mx-auto xl:h-[80px] xl:pt-6 xl:pb-0">
             <div className="relative h-full w-full">
                 <Link
                     href="/"
@@ -55,14 +55,14 @@ export const Header = () => {
                     className="absolute top-0 z-20 mr-auto flex transform flex-col gap-1 text-base font-semibold tracking-[0.3rem] sm:text-lg lg:left-1/2 lg:ml-auto lg:-translate-x-1/2 lg:text-4xl"
                 >
                     <div className="flex flex-row items-center lg:gap-4">
-                        <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-xs text-nowrap [direction:rtl] md:block">
+                        <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-xs text-nowrap [direction:rtl] lg:block">
                             Every Season
                         </span>
                         <div className="flex flex-row items-center lg:gap-4">
                             <Logo className="scale-75 lg:mx-auto lg:scale-100" />
                             <h1 className="text-nowrap">aRPG Timeline</h1>
                         </div>
-                        <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-left text-xs text-nowrap md:block">
+                        <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-left text-xs text-nowrap lg:block">
                             Just On Time
                         </span>
                     </div>
@@ -83,7 +83,7 @@ export const Header = () => {
                             }
                             label="Discord"
                             dataSaClick="click"
-                            className="hidden lg:flex"
+                            className="hidden xl:flex"
                         />
                         <SocialButton
                             href="/support"
@@ -94,12 +94,12 @@ export const Header = () => {
                             dataSaClick="support"
                             target="_self"
                             rel=""
-                            className="hidden lg:flex"
+                            className="hidden xl:flex"
                         />
                     </div>
 
                     <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                        <DropdownMenuTrigger asChild className="lg:hidden">
+                        <DropdownMenuTrigger asChild className="xl:hidden">
                             <Button
                                 variant="ghost"
                                 size="icon"
