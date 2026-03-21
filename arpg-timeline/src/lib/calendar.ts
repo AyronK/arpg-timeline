@@ -2,11 +2,18 @@ import { createEvent, DateTime, EventAttributes } from "ics";
 
 import { sa_event } from "@/lib/sa_event";
 
-export async function downloadICSFile(eventTitle: string, eventDate: Date) {
+import { TIME_UNKNOWN_NOTE } from "./calendarConstants";
+
+export async function downloadICSFile(
+    eventTitle: string,
+    eventDate: Date,
+    timeUnknown?: boolean,
+) {
     const formattedDate = new Date(eventDate);
     const fileName = `${eventTitle}.ics`;
     const event: EventAttributes = {
         title: eventTitle,
+        description: timeUnknown ? TIME_UNKNOWN_NOTE : undefined,
         start: [
             formattedDate.getFullYear(),
             formattedDate.getMonth() + 1,
@@ -52,20 +59,22 @@ function getEndDateTime(startDate: Date): Date {
     return new Date(startDate.getTime() + HOUR_IN_MS);
 }
 
-export function addToGoogleCalendar(eventTitle: string, eventDate: Date) {
+export function addToGoogleCalendar(eventTitle: string, eventDate: Date, timeUnknown?: boolean) {
     sa_event(`Calendar - Google - ${eventTitle}}`);
     const endDateTime = getEndDateTime(eventDate);
     const formattedStart = formatDateForCalendar(eventDate);
     const formattedEnd = formatDateForCalendar(endDateTime);
-    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${encodeURIComponent(formattedStart)}/${encodeURIComponent(formattedEnd)}`;
+    const details = timeUnknown ? TIME_UNKNOWN_NOTE : "";
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${encodeURIComponent(formattedStart)}/${encodeURIComponent(formattedEnd)}${details ? `&details=${encodeURIComponent(details)}` : ""}`;
     window.open(googleCalendarUrl, "_blank");
 }
 
-export function addToICloudCalendar(eventTitle: string, eventDate: Date) {
+export function addToICloudCalendar(eventTitle: string, eventDate: Date, timeUnknown?: boolean) {
     sa_event(`Calendar - Apple - ${eventTitle}}`);
     const endDateTime = getEndDateTime(eventDate);
     const formattedStart = formatDateForCalendar(eventDate);
     const formattedEnd = formatDateForCalendar(endDateTime);
-    const iCloudCalendarUrl = `https://www.icloud.com/calendar/event?title=${encodeURIComponent(eventTitle)}&starts=${encodeURIComponent(formattedStart)}&ends=${encodeURIComponent(formattedEnd)}`;
+    const notes = timeUnknown ? TIME_UNKNOWN_NOTE : "";
+    const iCloudCalendarUrl = `https://www.icloud.com/calendar/event?title=${encodeURIComponent(eventTitle)}&starts=${encodeURIComponent(formattedStart)}&ends=${encodeURIComponent(formattedEnd)}${notes ? `&notes=${encodeURIComponent(notes)}` : ""}`;
     window.open(iCloudCalendarUrl, "_blank");
 }

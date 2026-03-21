@@ -114,6 +114,7 @@ export const Content = ({
                                                 title={`${game.name} ${season.name} launch`}
                                                 gameSlug={game.slug}
                                                 gameName={game.name}
+                                                timeUnknown={season.start.timeUnknown ?? false}
                                             />
                                         }
                                     >

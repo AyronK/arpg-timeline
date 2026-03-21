@@ -1,5 +1,6 @@
 import { createEvents, DateArray, EventAttributes } from "ics";
 
+import { TIME_UNKNOWN_NOTE } from "@/lib/calendarConstants";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { addUTMParameters } from "@/lib/utm";
 
@@ -9,6 +10,7 @@ export interface CalendarSeason {
     gameName: string;
     gameSlug: string;
     startDate: string;
+    timeUnknown?: boolean | null;
     url: string | null;
     patchNotesUrl: string | null;
 }
@@ -33,6 +35,7 @@ const seasonsQuery = `*[_type == "season" && start.confirmed == true && start.st
     "gameName": game->name,
     "gameSlug": game->slug.current,
     "startDate": start.startDate,
+    "timeUnknown": start.timeUnknown,
     url,
     patchNotesUrl
 } | order(start.startDate asc)`;
@@ -129,6 +132,9 @@ export function createSeasonEvents(
 
     return seasons.map((season) => {
         const descriptionParts: string[] = [];
+        if (season.timeUnknown) {
+            descriptionParts.push(TIME_UNKNOWN_NOTE);
+        }
         if (season.url) {
             descriptionParts.push(`Season page: ${addUTM(season.url)}`);
         }

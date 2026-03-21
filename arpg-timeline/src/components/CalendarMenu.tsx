@@ -22,9 +22,10 @@ interface CalendarMenuProps {
     startDate: string;
     gameSlug?: string;
     gameName?: string;
+    timeUnknown?: boolean;
 }
 
-export const CalendarMenu = ({ title, startDate, gameSlug, gameName }: CalendarMenuProps) => {
+export const CalendarMenu = ({ title, startDate, gameSlug, gameName, timeUnknown }: CalendarMenuProps) => {
     const [subscribeDialogOpen, setSubscribeDialogOpen] = useState(false);
 
     return (
@@ -58,7 +59,7 @@ export const CalendarMenu = ({ title, startDate, gameSlug, gameName }: CalendarM
                         </>
                     )}
                     <DropdownMenuItem
-                        onClick={() => addToGoogleCalendar(title, new Date(startDate))}
+                        onClick={() => addToGoogleCalendar(title, new Date(startDate), timeUnknown)}
                         aria-label="Add to Google calendar"
                     >
                         <Image
@@ -73,7 +74,7 @@ export const CalendarMenu = ({ title, startDate, gameSlug, gameName }: CalendarM
                         <span>Gmail</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        onClick={() => addToICloudCalendar(title, new Date(startDate))}
+                        onClick={() => addToICloudCalendar(title, new Date(startDate), timeUnknown)}
                         aria-label="Add to iCloud calendar"
                     >
                         <Image
@@ -89,7 +90,7 @@ export const CalendarMenu = ({ title, startDate, gameSlug, gameName }: CalendarM
                         <span>iCloud</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        onClick={() => downloadICSFile(title, new Date(startDate))}
+                        onClick={() => downloadICSFile(title, new Date(startDate), timeUnknown)}
                         aria-label="Download iCal file"
                     >
                         <Calendar className="mr-2 h-4 w-4" />
