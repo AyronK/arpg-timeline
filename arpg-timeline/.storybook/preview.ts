@@ -1,16 +1,16 @@
 import type { Preview } from "@storybook/nextjs-vite";
 
+import { create } from "storybook/theming";
 import "../src/app/globals.css";
 
 const preview: Preview = {
     parameters: {
         backgrounds: {
             default: "website",
-            values: [{ name: "website", value: "hsl(240, 10%, 10%)" }],
+            values: [{ name: "website", value: "#17171c" }],
         },
         controls: {
             matchers: {
-                color: /(background|color)$/i,
                 date: /Date$/i,
             },
         },
@@ -20,6 +20,10 @@ const preview: Preview = {
             // 'error' - fail CI on a11y violations
             // 'off' - skip a11y checks entirely
             test: "todo",
+        },
+
+        docs: {
+            theme: create({ base: "dark" }),
         },
     },
 };
