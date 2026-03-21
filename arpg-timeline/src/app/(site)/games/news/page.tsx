@@ -3,7 +3,6 @@ import { Suspense } from "react";
 
 import { NewsContent } from "@/components/Dashboard/NewsContent";
 import { LayoutCarousel } from "@/components/LayoutCarousel";
-import { SideNotes } from "@/components/SideNotes";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
@@ -70,7 +69,6 @@ const NewsPage = async () => {
                 <div className="relative container mx-auto mt-2 mb-8">
                     <NewsContent gamesNews={gamesNews} />
                 </div>
-                <SideNotes />
             </GameFilterProvider>
         </Suspense>
     );
