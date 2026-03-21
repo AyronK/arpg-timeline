@@ -91,7 +91,10 @@ export const Content = ({
                                             "p-1": !compactEmbed,
                                         })}
                                     >
-                                        <Countdown date={new Date(season.start.startDate)} />
+                                        <Countdown
+                                            date={new Date(season.start.startDate)}
+                                            variant={season.start.timeUnknown ? "days" : "full"}
+                                        />
                                     </FramedAction>
                                 </div>
                             ) : (
@@ -114,7 +117,10 @@ export const Content = ({
                                             />
                                         }
                                     >
-                                        <Countdown date={new Date(season.start.startDate)} />
+                                        <Countdown
+                                            date={new Date(season.start.startDate)}
+                                            variant={season.start.timeUnknown ? "days" : "full"}
+                                        />
                                     </FramedAction>
                                 </div>
                             )}
