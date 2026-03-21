@@ -8,7 +8,7 @@ export const CantFindGame = () => (
         <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
             Can&apos;t find a game?
         </h3>
-        <p className="hidden text-sm text-gray-600 lg:block dark:text-gray-400">
+        <p className="text-muted-foreground hidden text-sm lg:block">
             Switch between different dashboard views using the tabs above, or request a game on
             Discord
         </p>

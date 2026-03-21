@@ -46,7 +46,7 @@ export function MobileBottomMenuFilters({
             <Link
                 href={newsHref}
                 className={cn(
-                    "flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400",
+                    "flex flex-col items-center justify-center gap-1 px-2 py-1 text-gray-300 hover:bg-transparent hover:text-blue-400",
                 )}
                 data-sa-click="news"
             >

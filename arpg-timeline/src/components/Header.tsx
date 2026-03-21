@@ -115,12 +115,12 @@ export const Header = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             align="end"
-                            className="w-56 border-2 border-slate-500 bg-gray-800 p-2 shadow-2xl"
+                            className="border-foreground/35 w-56 border p-2 shadow-xl"
                             sideOffset={8}
                             collisionPadding={0}
                             alignOffset={-8}
                         >
-                            <div className="flex flex-col">
+                            <div className="flex flex-col text-sm">
                                 <Link
                                     href="/support"
                                     className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"

@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen } from "lucide-react";
+import { ScrollText } from "lucide-react";
 import Link from "next/link";
 
 import { CommunityLabel } from "@/components/CommunityLabel";
@@ -9,6 +9,7 @@ import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { sa_event } from "@/lib/sa_event";
 import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 import { SteamPlayersChip } from "../SteamPlayersChip";
 import { GameMenu } from "./Menu/Menu";
@@ -52,19 +53,24 @@ export const GameCard = ({
                     </div>
                     {!noMenu && (
                         <div className="border-foreground/10 flex flex-row items-center rounded-md border">
-                            <Button
-                                asChild
-                                className="h-8 w-8"
-                                variant="ghost"
-                                size="icon"
-                                aria-label={`View ${name} details`}
-                                data-sa-click={`${slug}-view-details`}
-                            >
-                                <Link href={`/game/${slug}`} target="_blank" rel="noopener">
-                                    <BookOpen className="h-4 w-4" />
-                                    <span className="sr-only">Details</span>
-                                </Link>
-                            </Button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        asChild
+                                        className="h-8 w-8"
+                                        variant="ghost"
+                                        size="icon"
+                                        aria-label={`View ${name} details`}
+                                        data-sa-click={`${slug}-view-details`}
+                                    >
+                                        <Link href={`/game/${slug}`} target="_blank" rel="noopener">
+                                            <ScrollText className="h-4 w-4" />
+                                            <span className="sr-only">Details</span>
+                                        </Link>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom">View {name} details</TooltipContent>
+                            </Tooltip>
                             <GameMenu
                                 game={slug}
                                 gameName={name}
