@@ -89,6 +89,15 @@ const ProtonLogo = ({
     );
 };
 
+const BANNERS = {
+    mail: { src: "/assets/Mail_EED_320X50.png", w: 320, h: 50 },
+    vpn: { src: "/assets/VPN_SVD_320x50.png", w: 320, h: 50 },
+    /** File is 1200×180 (2×); display at 600×90 */
+    drive: { src: "/assets/drive_affiliate_600x90.png", w: 600, h: 90 },
+} as const;
+
+type BannerProductKey = keyof typeof BANNERS;
+
 // ─── Card templates ───────────────────────────────────────────────────────────
 
 /**
@@ -156,6 +165,47 @@ const ProductLogoCard = ({ product }: { product: ProductKey }) => (
         </MaybeLinkWrapper>
     </section>
 );
+
+/**
+ * Single-product focus: banner only, no logo above it.
+ * The affiliate banner image is the hero visual.
+ */
+const ProductBannerCard = ({ product }: { product: BannerProductKey }) => {
+    const banner = BANNERS[product];
+    return (
+        <section
+            style={{ height: "272px" }}
+            className="bg-card text-card-foreground relative flex flex-col justify-between gap-3 rounded-md border p-4"
+        >
+            <HideButton />
+            <div className="flex flex-col gap-0.5">
+                <h3 className="font-heading text-xs">Proton with aRPG Timeline</h3>
+            </div>
+            <Link
+                href={PRODUCTS[product].href}
+                className="block transition-opacity hover:opacity-90"
+            >
+                <Image
+                    src={banner.src}
+                    alt={`Proton ${PRODUCTS[product].label} deal`}
+                    width={banner.w}
+                    height={banner.h}
+                    unoptimized
+                    className="h-auto w-full cursor-pointer rounded-md transition-all ease-in-out hover:scale-[1.02]"
+                />
+            </Link>
+            <p className="text-muted-foreground pb-2 text-center text-xs">
+                {PRODUCTS[product].pitch}
+            </p>
+            <MaybeLinkWrapper
+                href={PRODUCTS[product].href}
+                className="border-border hover:bg-accent justify-center rounded-md border px-4 py-1.5 text-center text-xs font-medium transition-colors"
+            >
+                <span className="mr-1">{PRODUCTS[product].cta}</span>
+            </MaybeLinkWrapper>
+        </section>
+    );
+};
 
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
@@ -232,4 +282,23 @@ export const FocusPassLogo: Story = {
 export const FocusDriveLogo: Story = {
     name: "Focus - Drive (logo)",
     render: () => <ProductLogoCard product="drive" />,
+};
+
+// =============================================================================
+// Product focus - banner only (no logo)
+// =============================================================================
+
+export const FocusMailBanner: Story = {
+    name: "Focus - Mail (banner)",
+    render: () => <ProductBannerCard product="mail" />,
+};
+
+export const FocusVpnBanner: Story = {
+    name: "Focus - VPN (banner)",
+    render: () => <ProductBannerCard product="vpn" />,
+};
+
+export const FocusDriveBanner: Story = {
+    name: "Focus - Drive (banner)",
+    render: () => <ProductBannerCard product="drive" />,
 };
