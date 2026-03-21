@@ -16,7 +16,7 @@ type Variant =
 
 const BANNER_PRODUCTS: BannerProductKey[] = ["mail", "vpn", "drive"];
 
-// Env vars are build-time constants — compute the variant pool once at module load.
+// Env vars are build-time constants - compute the variant pool once at module load.
 const availableProducts = (Object.keys(PRODUCT_URLS) as ProductKey[]).filter(
     (k) => PRODUCT_URLS[k] !== null,
 );

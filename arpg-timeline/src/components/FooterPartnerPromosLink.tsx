@@ -7,7 +7,7 @@ export function FooterPartnerPromosLink() {
     return (
         <button
             type="button"
-            className="font-semibold transition-opacity duration-200 hover:opacity-75"
+            className="cursor-pointer font-semibold transition-opacity duration-200 hover:opacity-75"
             onClick={() => setDrawerOpen(true)}
             data-sa-click="partner-promos-settings"
         >

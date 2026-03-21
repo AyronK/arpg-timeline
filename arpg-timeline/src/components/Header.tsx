@@ -1,5 +1,5 @@
 "use client";
-import { Menu, X } from "lucide-react";
+import { Heart, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,14 +16,24 @@ interface SocialButtonProps {
     label: string;
     dataSaClick: string;
     className?: string;
+    target?: string;
+    rel?: string;
 }
 
-const SocialButton = ({ href, icon, label, dataSaClick, className = "" }: SocialButtonProps) => (
+const SocialButton = ({
+    href,
+    icon,
+    label,
+    dataSaClick,
+    className = "",
+    target = "_blank",
+    rel = "external noopener noreferrer",
+}: SocialButtonProps) => (
     <Button variant="ghost" asChild className={cn("px-2 lg:px-3 2xl:px-4", className)}>
         <Link
             href={href}
-            rel="external noopener noreferrer"
-            target="_blank"
+            rel={rel}
+            target={target}
             data-sa-click={dataSaClick}
             className="flex items-center gap-2"
         >
@@ -76,18 +86,14 @@ export const Header = () => {
                             className="hidden lg:flex"
                         />
                         <SocialButton
-                            href={process.env.NEXT_PUBLIC_PATREON_URL}
+                            href="/support"
                             icon={
-                                <Image
-                                    src="/assets/patreon-logo.png"
-                                    className="m-auto h-[1rem] w-[1rem]"
-                                    alt="Patreon logo"
-                                    width={22}
-                                    height={22}
-                                />
+                                <Heart className="m-auto h-[1rem] w-[1rem] fill-rose-500 text-rose-500" />
                             }
                             label="Support us"
-                            dataSaClick="patreon"
+                            dataSaClick="support"
+                            target="_self"
+                            rel=""
                             className="hidden lg:flex"
                         />
                     </div>
@@ -116,6 +122,15 @@ export const Header = () => {
                         >
                             <div className="flex flex-col">
                                 <Link
+                                    href="/support"
+                                    className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    data-sa-click="support"
+                                >
+                                    <Heart className="h-4 w-4 fill-rose-500 text-rose-500" />
+                                    <span className="text-nowrap">Support us</span>
+                                </Link>
+                                <Link
                                     href={process.env.NEXT_PUBLIC_DISCORD_URL}
                                     className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
                                     target="_blank"
@@ -132,23 +147,6 @@ export const Header = () => {
                                         height={20}
                                     />
                                     <span className="text-nowrap">Join Discord</span>
-                                </Link>
-                                <Link
-                                    href={process.env.NEXT_PUBLIC_PATREON_URL}
-                                    className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
-                                    target="_blank"
-                                    rel="noopener"
-                                    data-sa-click="patreon"
-                                >
-                                    <Image
-                                        loading="lazy"
-                                        src="/assets/patreon-logo.png"
-                                        className="h-4 w-4"
-                                        alt="Patreon logo"
-                                        width={20}
-                                        height={20}
-                                    />
-                                    <span className="text-nowrap">Support us</span>
                                 </Link>
                             </div>
                         </DropdownMenuContent>

@@ -54,8 +54,16 @@ export function detectSeasonChanges(
         });
     }
 
-    const currentStartConfirmed = !!(current.start?.confirmed && current.start?.startDate && !current.start.timeUnknown);
-    const previousStartConfirmed = !!(previous.start?.confirmed && previous.start?.startDate && !previous.start.timeUnknown);
+    const currentStartConfirmed = !!(
+        current.start?.confirmed &&
+        current.start?.startDate &&
+        !current.start.timeUnknown
+    );
+    const previousStartConfirmed = !!(
+        previous.start?.confirmed &&
+        previous.start?.startDate &&
+        !previous.start.timeUnknown
+    );
     const currentEndConfirmed = !!(current.end?.confirmed && current.end?.endDate);
     const previousEndConfirmed = !!(previous.end?.confirmed && previous.end?.endDate);
 
