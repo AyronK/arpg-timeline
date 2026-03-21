@@ -11,7 +11,7 @@ export function FooterPartnerPromosLink() {
             onClick={() => setDrawerOpen(true)}
             data-sa-click="partner-promos-settings"
         >
-            Partner dealsa
+            Partner deals
         </button>
     );
 }
