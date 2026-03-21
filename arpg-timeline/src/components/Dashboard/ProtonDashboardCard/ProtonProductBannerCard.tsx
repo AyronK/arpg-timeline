@@ -20,7 +20,7 @@ export const ProtonProductBannerCard = ({ product, onHide }: Props) => {
     const banner = BANNER_ASSETS[product];
     return (
         <section className="bg-card text-card-foreground relative flex flex-1 flex-col justify-between gap-3 rounded-md border border-violet-500/20 p-4 shadow-[0_0_10px_1px_rgba(139,92,246,0.08)]">
-            <HideButton onClick={onHide} />
+            {onHide && <HideButton onClick={onHide} />}
             <h3 className="font-heading text-xs">Proton + aRPG Timeline</h3>
             <Link
                 href={url}
