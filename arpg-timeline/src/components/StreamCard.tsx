@@ -100,14 +100,12 @@ const CountdownAction = ({ stream }: { stream: GameStream }) => {
 
     return (
         <FramedAction
-            prependClassName="!rounded-r-none"
             prepend={
                 <ShareMenu
                     startDate={stream.date ?? ""}
                     title={`Hey, **${stream.gameName} ${stream.name} stream** is soon live on Twitch${stream.twitchChannel ? ` at ${addUTM(`https://www.twitch.tv/${stream.twitchChannel}`)}` : ""}`}
                 />
             }
-            appendClassName="!rounded-l-none"
             append={
                 <CalendarMenu
                     startDate={stream.date ?? ""}

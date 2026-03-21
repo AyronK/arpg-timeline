@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Time } from "@/components/Time";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 const getTimeComponents = (distance: number) => {
     const totalDays = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
@@ -15,9 +16,11 @@ const getTimeComponents = (distance: number) => {
 
 export const Countdown = ({
     date,
+    variant = "full",
     testProps,
 }: {
     date: Date;
+    variant?: "full" | "days";
     testProps?: { timeLeft?: number };
 }) => {
     const [timeComponents, setTimeComponents] = useState<{
@@ -33,6 +36,10 @@ export const Countdown = ({
     });
 
     useEffect(() => {
+        if (variant === "days") {
+            return;
+        }
+
         const timerInterval = setInterval(() => {
             const now = new Date().getTime();
             const targetDate = new Date(date).getTime();
@@ -54,6 +61,31 @@ export const Countdown = ({
 
         return () => clearInterval(timerInterval);
     }, [date, testProps?.timeLeft]);
+
+    if (variant === "days") {
+        return (
+            <Tooltip>
+                <TooltipTrigger className="w-full" asChild>
+                    <div className="font-heading flex cursor-help flex-row items-center justify-center gap-1 pt-0.5 text-lg font-bold text-emerald-100 select-none md:text-xl">
+                        {timeComponents.days < 1 ? (
+                            <span suppressHydrationWarning>Today</span>
+                        ) : (
+                            <>
+                                <span className="text-sm text-emerald-600 md:text-base">~</span>
+                                <span suppressHydrationWarning>{timeComponents.days}</span>
+                                <span className="text-sm text-emerald-600 md:text-base">
+                                    {timeComponents.days === 1 ? "day" : "days"}
+                                </span>
+                            </>
+                        )}
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" sideOffset={4}>
+                    Exact time is unknown and may vary by timezone or platform.
+                </TooltipContent>
+            </Tooltip>
+        );
+    }
 
     return (
         <>
