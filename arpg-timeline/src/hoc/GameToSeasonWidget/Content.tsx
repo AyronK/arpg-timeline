@@ -66,7 +66,7 @@ export const Content = ({
                                     isOfficial={game.isOfficial}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-primary hover:text-primary/80 ml-auto text-sm text-nowrap hover:underline"
+                                    className="text-card-foreground hover:text-card-foreground/80 ml-auto text-sm text-nowrap hover:underline"
                                     data-sa-click={`${season.name}-patch-notes`}
                                 >
                                     Patch notes
@@ -91,7 +91,10 @@ export const Content = ({
                                             "p-1": !compactEmbed,
                                         })}
                                     >
-                                        <Countdown date={new Date(season.start.startDate)} />
+                                        <Countdown
+                                            date={new Date(season.start.startDate)}
+                                            variant={season.start.timeUnknown ? "days" : "full"}
+                                        />
                                     </FramedAction>
                                 </div>
                             ) : (
@@ -102,6 +105,7 @@ export const Content = ({
                                             <ShareMenu
                                                 startDate={season.start.startDate}
                                                 title={`Hey, ${game.name} ${season.name} launch is happening`}
+                                                timeUnknown={season.start.timeUnknown ?? false}
                                             />
                                         }
                                         appendClassName="!rounded-l-none"
@@ -111,10 +115,14 @@ export const Content = ({
                                                 title={`${game.name} ${season.name} launch`}
                                                 gameSlug={game.slug}
                                                 gameName={game.name}
+                                                timeUnknown={season.start.timeUnknown ?? false}
                                             />
                                         }
                                     >
-                                        <Countdown date={new Date(season.start.startDate)} />
+                                        <Countdown
+                                            date={new Date(season.start.startDate)}
+                                            variant={season.start.timeUnknown ? "days" : "full"}
+                                        />
                                     </FramedAction>
                                 </div>
                             )}

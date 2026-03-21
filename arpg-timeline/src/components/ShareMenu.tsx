@@ -12,7 +12,15 @@ import {
     DropdownMenuTrigger,
 } from "@/ui/DropdownMenu";
 
-export const ShareMenu = ({ title, startDate }: { title: string; startDate: string }) => {
+export const ShareMenu = ({
+    title,
+    startDate,
+    timeUnknown,
+}: {
+    title: string;
+    startDate: string;
+    timeUnknown?: boolean;
+}) => {
     const { handleShare } = useShareAction(null, {
         utm_source: "arpg-timeline",
         utm_medium: "share_menu",
@@ -20,10 +28,20 @@ export const ShareMenu = ({ title, startDate }: { title: string; startDate: stri
         utm_content: title,
     });
 
+    const getDateText = () => {
+        if (timeUnknown) {
+            const daysUntil = Math.ceil(
+                (new Date(startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24),
+            );
+            return `in ${daysUntil} days`;
+        }
+        return new Date(startDate).toLocaleDateString();
+    };
+
     const handleNativeShare = () => {
         handleShare({
             title: title,
-            text: `Check out the ${title} starting ${new Date(startDate).toLocaleDateString()}`,
+            text: `Check out the ${title} starting ${getDateText()}`,
             url: window.location.href,
         });
     };
@@ -51,7 +69,7 @@ export const ShareMenu = ({ title, startDate }: { title: string; startDate: stri
                     <span>Share with others</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    onClick={() => shareOnDiscord(title, new Date(startDate))}
+                    onClick={() => shareOnDiscord(title, new Date(startDate), timeUnknown)}
                     aria-label="Share on Discord"
                     data-sa-click="discord"
                 >

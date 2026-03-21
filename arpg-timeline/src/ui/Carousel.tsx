@@ -204,6 +204,57 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
 );
 CarouselPrevious.displayName = "CarouselPrevious";
 
+const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+    ({ className, ...props }, ref) => {
+        const { api } = useCarousel();
+        const [selected, setSelected] = React.useState(0);
+        const [count, setCount] = React.useState(0);
+
+        React.useEffect(() => {
+            if (!api) return;
+
+            setCount(api.scrollSnapList().length);
+            setSelected(api.selectedScrollSnap());
+
+            const onSelect = () => setSelected(api.selectedScrollSnap());
+            api.on("select", onSelect);
+            api.on("reInit", () => {
+                setCount(api.scrollSnapList().length);
+                setSelected(api.selectedScrollSnap());
+            });
+
+            return () => {
+                api.off("select", onSelect);
+            };
+        }, [api]);
+
+        if (count <= 1) return null;
+
+        return (
+            <div
+                ref={ref}
+                className={cn("flex items-center justify-center gap-1.5", className)}
+                {...props}
+            >
+                {Array.from({ length: count }).map((_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => api?.scrollTo(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                        className={cn(
+                            "h-1.5 rounded-full transition-all duration-300",
+                            i === selected
+                                ? "w-4 bg-slate-400/70"
+                                : "w-1.5 cursor-pointer bg-slate-600/70 hover:bg-slate-400/70",
+                        )}
+                    />
+                ))}
+            </div>
+        );
+    },
+);
+CarouselDots.displayName = "CarouselDots";
+
 const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
     ({ className, variant = "outline", size = "icon", ...props }, ref) => {
         const { orientation, scrollNext, canScrollNext } = useCarousel();
@@ -236,6 +287,7 @@ export {
     Carousel,
     type CarouselApi,
     CarouselContent,
+    CarouselDots,
     CarouselItem,
     CarouselNext,
     CarouselPrevious,

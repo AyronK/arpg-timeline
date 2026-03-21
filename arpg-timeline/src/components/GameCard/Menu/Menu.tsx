@@ -17,6 +17,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/ui/DropdownMenu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 export function GameMenu({
     game,
@@ -30,21 +31,27 @@ export function GameMenu({
     steamAppId?: number;
 }) {
     const [subscribeDialogOpen, setSubscribeDialogOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
         <>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant={"ghost"}
-                        size={"icon"}
-                        aria-label="Share"
-                        data-sa-click="game-menu"
-                        className="h-8 w-8"
-                    >
-                        <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                </DropdownMenuTrigger>
+            <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+                <Tooltip open={dropdownOpen ? false : undefined}>
+                    <TooltipTrigger asChild>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant={"ghost"}
+                                size={"icon"}
+                                aria-label="Share"
+                                data-sa-click="game-menu"
+                                className="h-8 w-8"
+                            >
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">More options</TooltipContent>
+                </Tooltip>
                 <DropdownMenuContent align="end">
                     <Link href={`/game/${game}`} target="_blank" rel="noopener">
                         <DropdownMenuItem

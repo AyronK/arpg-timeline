@@ -50,6 +50,7 @@ export type Season = {
 
 export type BaseSeasonDate = {
     confirmed?: boolean | null | undefined;
+    timeUnknown?: boolean | null | undefined;
     overrideText?: string | null | undefined;
     additionalText?: string | null | undefined;
 };

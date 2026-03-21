@@ -63,6 +63,14 @@ export default {
                     initialValue: false,
                 },
                 {
+                    name: "timeUnknown",
+                    title: "Time unknown",
+                    type: "boolean",
+                    initialValue: false,
+                    description:
+                        "Show only days remaining instead of a full H/M/S countdown. Use when the exact launch time is not known.",
+                },
+                {
                     name: "overrideText",
                     title: "Override text",
                     type: "string",

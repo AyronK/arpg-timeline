@@ -3,6 +3,7 @@
 import { FC, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 import { MIN_BAR_WIDTH_PERCENT } from "./Timeline";
 import { EventBarProps } from "./Timeline.types";
@@ -31,21 +32,24 @@ export const EventBar: FC<EventBarProps> = ({ event, index, allEvents, startPos,
     );
 
     return (
-        <div
-            className={cn("relative bottom-0 z-5 h-3 bg-sky-900 shadow-sm", {
-                "z-10": index === 0,
-                "z-20 rounded-tr-2xl rounded-br-xs bg-emerald-900 ring ring-emerald-500":
-                    isNextConfirmed,
-                "rounded-tr-2xl border border-dashed border-emerald-800/75 bg-emerald-900/25":
-                    !event.startDateConfirmed,
-            })}
-            style={barStyle}
-            suppressHydrationWarning
-            title={
-                !event.startDateConfirmed
-                    ? `[PRESUMED] ${event.game}: ${event.name}`
-                    : `${event.game}: ${event.name}`
-            }
-        />
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <div
+                    className={cn("relative bottom-0 z-5 h-3 bg-sky-900 shadow-sm", {
+                        "z-10": index === 0,
+                        "z-20 rounded-tr-2xl rounded-br-xs bg-emerald-900 ring ring-emerald-500":
+                            isNextConfirmed,
+                        "rounded-tr-2xl border border-dashed border-emerald-800/75 bg-emerald-900/25":
+                            !event.startDateConfirmed,
+                    })}
+                    style={barStyle}
+                    suppressHydrationWarning
+                />
+            </TooltipTrigger>
+            <TooltipContent>
+                {!event.startDateConfirmed && <span className="text-yellow-400">[PRESUMED] </span>}
+                {event.game}: {event.name}
+            </TooltipContent>
+        </Tooltip>
     );
 };

@@ -13,7 +13,7 @@ import {
 import { Switch } from "@/ui/Switch";
 
 const PARTNER_LABELS: Record<PartnerId, string> = {
-    proton: "Proton (Mail, VPN, Calendar, Drive, Ultimate)",
+    proton: "Proton (Mail, Calendar, VPN, Pass, Drive)",
 };
 
 export function PartnerPromosDrawer() {
@@ -31,7 +31,7 @@ export function PartnerPromosDrawer() {
                         </DrawerDescription>
                     </DrawerHeader>
                     <div className="flex flex-col gap-6 overflow-y-auto p-6">
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-muted-foreground text-sm text-balance">
                             Partnerships and Patreon support are what keep aRPG Timeline running. If
                             you choose to see partner offers and use our links, you support the site
                             at no extra cost to you.
@@ -39,11 +39,21 @@ export function PartnerPromosDrawer() {
                         <div>
                             <PatreonFunding />
                         </div>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-muted-foreground text-sm text-balance">
                             The website remains{" "}
                             <strong className="text-foreground">free of charge</strong> and{" "}
                             <strong className="text-foreground">free of ads</strong>. Partner promos
                             can be turned off anytime below and your choice will be remembered.
+                        </p>
+                        <p className="text-muted-foreground text-sm text-balance">
+                            Want to support directly or browse our full partner offers list?{" "}
+                            <a
+                                href="/support"
+                                className="text-foreground underline transition-opacity hover:opacity-75"
+                            >
+                                Visit our support page
+                            </a>
+                            .
                         </p>
                         <div className="flex flex-col gap-4">
                             <h4 className="text-sm font-medium">Show partner promos</h4>

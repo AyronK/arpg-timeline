@@ -46,6 +46,7 @@ export const indexQuery = `{
       start {
         startDate,
         confirmed,
+        timeUnknown,
         overrideText,
         additionalText
       },
@@ -131,6 +132,7 @@ export const gameDetailsQuery = `{
       start {
         startDate,
         confirmed,
+        timeUnknown,
         overrideText,
         additionalText
       },
@@ -203,6 +205,7 @@ export interface SanityGame extends SanityDocumentBase {
 export interface SeasonStartDateInfo {
     startDate?: string;
     confirmed?: boolean;
+    timeUnknown?: boolean;
     overrideText?: string;
     additionalText?: string;
 }

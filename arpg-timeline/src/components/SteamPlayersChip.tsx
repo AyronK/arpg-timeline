@@ -12,6 +12,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/ui/Dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 import { SteamDBEmbed } from "./SteamDBEmbed";
 import { SteamEmbed } from "./SteamEmbed";
@@ -38,17 +39,19 @@ export const SteamPlayersChip = ({
           : formatPlayerCount(playersCount);
 
     return (
-        <span
-            title={description}
-            className="text-foreground flex cursor-help flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 shadow-sky-400/25 select-none"
-        >
-            {playersCount > 0 && <PiUsersThree className="h-4 w-4" />}
-            <span className="mx-1" aria-hidden>
-                {text}
-            </span>
-            <span className="sr-only">{description}</span>
-            <RiSteamLine className="h-4 w-4" />
-        </span>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <span className="text-foreground flex cursor-help flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 shadow-sky-400/25 select-none">
+                    {playersCount > 0 && <PiUsersThree className="h-4 w-4" />}
+                    <span className="mx-1" aria-hidden>
+                        {text}
+                    </span>
+                    <span className="sr-only">{description}</span>
+                    <RiSteamLine className="h-4 w-4" />
+                </span>
+            </TooltipTrigger>
+            {description && <TooltipContent side="bottom">{description}</TooltipContent>}
+        </Tooltip>
     );
 };
 
