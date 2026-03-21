@@ -4,11 +4,7 @@ import { sa_event } from "@/lib/sa_event";
 
 import { TIME_UNKNOWN_NOTE } from "./calendarConstants";
 
-export async function downloadICSFile(
-    eventTitle: string,
-    eventDate: Date,
-    timeUnknown?: boolean,
-) {
+export async function downloadICSFile(eventTitle: string, eventDate: Date, timeUnknown?: boolean) {
     const formattedDate = new Date(eventDate);
     const fileName = `${eventTitle}.ics`;
     const event: EventAttributes = {

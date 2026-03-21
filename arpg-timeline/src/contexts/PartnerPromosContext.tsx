@@ -1,7 +1,8 @@
 "use client";
 
-import { sa_event } from "@/lib/sa_event";
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
+
+import { sa_event } from "@/lib/sa_event";
 
 const STORAGE_KEY = "arpg-timeline-hidden-partners";
 

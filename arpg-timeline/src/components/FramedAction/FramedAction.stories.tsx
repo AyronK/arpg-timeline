@@ -144,8 +144,7 @@ export const CompactEmbed: Story = {
         ),
     ],
     args: {
-        className:
-            "bg-transparent! shadow-none! [text-shadow:_0_1px_1px_rgba(0,0,0,0.4)]",
+        className: "bg-transparent! shadow-none! [text-shadow:_0_1px_1px_rgba(0,0,0,0.4)]",
         children: <Countdown date={new Date(NEXT_DATE)} />,
     },
 };

@@ -25,7 +25,13 @@ interface CalendarMenuProps {
     timeUnknown?: boolean;
 }
 
-export const CalendarMenu = ({ title, startDate, gameSlug, gameName, timeUnknown }: CalendarMenuProps) => {
+export const CalendarMenu = ({
+    title,
+    startDate,
+    gameSlug,
+    gameName,
+    timeUnknown,
+}: CalendarMenuProps) => {
     const [subscribeDialogOpen, setSubscribeDialogOpen] = useState(false);
 
     return (
