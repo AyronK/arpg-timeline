@@ -71,8 +71,7 @@ export const Countdown = ({
                             <span suppressHydrationWarning>Today</span>
                         ) : (
                             <>
-                                <span className="text-sm text-emerald-600 md:text-base">~</span>
-                                <span suppressHydrationWarning>{timeComponents.days}</span>
+                                <span suppressHydrationWarning>~{timeComponents.days}</span>
                                 <span className="text-sm text-emerald-600 md:text-base">
                                     {timeComponents.days === 1 ? "day" : "days"}
                                 </span>
