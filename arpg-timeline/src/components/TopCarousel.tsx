@@ -12,7 +12,7 @@ import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { useGameFilterContext, useTimeBasedKey } from "@/contexts/GameFilterContext";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
-import { Carousel, CarouselContent, CarouselItem } from "@/ui/Carousel";
+import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/ui/Carousel";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 
@@ -98,6 +98,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                 </CarouselContent>
+                                <CarouselDots className="pt-2" />
                             </Carousel>
                         </div>
                     </ErrorBoundary>
