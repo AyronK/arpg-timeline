@@ -8,7 +8,11 @@ import { DetectedChange, LiveStreamProjection, SeasonProjection } from "../types
 function createDiscordSeasonEmbed(seasonUpdate: SeasonProjection, changes: DetectedChange[]) {
     const fields = [];
 
-    if (seasonUpdate.start?.confirmed && seasonUpdate.start.startDate) {
+    if (
+        seasonUpdate.start?.confirmed &&
+        seasonUpdate.start.startDate &&
+        !seasonUpdate.start.timeUnknown
+    ) {
         fields.push({
             name: `🚀 ${capitalizeFirstChar(seasonUpdate.seasonKeyword)} ${new Date(seasonUpdate.start.startDate) > new Date() ? "Starts" : "Started"}`,
             value: `${formatDiscordDate(new Date(seasonUpdate.start.startDate), "f")}\n(${formatDiscordDate(new Date(seasonUpdate.start.startDate))})`,
