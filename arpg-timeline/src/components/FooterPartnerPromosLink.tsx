@@ -7,11 +7,11 @@ export function FooterPartnerPromosLink() {
     return (
         <button
             type="button"
-            className="cursor-pointer font-semibold transition-opacity duration-200 hover:opacity-75"
+            className="hover:text-primary flex cursor-pointer font-semibold transition-all duration-200 hover:translate-x-1"
             onClick={() => setDrawerOpen(true)}
             data-sa-click="partner-promos-settings"
         >
-            Partners
+            Partner deals
         </button>
     );
 }
