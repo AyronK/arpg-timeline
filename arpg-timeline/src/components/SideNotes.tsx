@@ -5,7 +5,7 @@ import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 export const SideNotes = () => {
     return (
         <section className="container mt-4 mb-12 md:mt-16">
-            <div className="bg-muted mx-auto max-w-prose rounded-lg px-5 py-4">
+            <div className="bg-muted mx-auto max-w-prose rounded-md px-5 py-4">
                 <div className="flex flex-col gap-2">
                     <p className="text-muted-foreground flex items-center gap-2 text-sm">
                         <Heart className="h-3.5 w-3.5 shrink-0" />
