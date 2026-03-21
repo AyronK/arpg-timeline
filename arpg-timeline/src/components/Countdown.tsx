@@ -60,7 +60,7 @@ export const Countdown = ({
         }, 1000);
 
         return () => clearInterval(timerInterval);
-    }, [date, testProps?.timeLeft]);
+    }, [date, testProps?.timeLeft, variant]);
 
     if (variant === "days") {
         return (

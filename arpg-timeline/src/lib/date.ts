@@ -1,6 +1,6 @@
 const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
     month: "short",
-    day: "2-digit",
+    day: "numeric",
     hourCycle: "h23",
     hour: "numeric",
     minute: "numeric",
@@ -8,7 +8,7 @@ const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
 
 const longDateTimeFormatOptions: Intl.DateTimeFormatOptions = {
     month: "short",
-    day: "2-digit",
+    day: "numeric",
     hourCycle: "h23",
     hour: "numeric",
     minute: "numeric",
@@ -16,7 +16,7 @@ const longDateTimeFormatOptions: Intl.DateTimeFormatOptions = {
 
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
     month: "short",
-    day: "2-digit",
+    day: "numeric",
 };
 
 const locale = "en-US";

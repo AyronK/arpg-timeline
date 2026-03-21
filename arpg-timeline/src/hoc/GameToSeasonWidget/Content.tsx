@@ -55,7 +55,11 @@ export const Content = ({
                                     <IconLabel icon={TimerReset}>
                                         Starts
                                         <span className="font-semibold">
-                                            <LocalDate longDate utcDate={season.start.startDate} />
+                                            <LocalDate
+                                                longDate={!season.start.timeUnknown}
+                                                dateOnly={season.start.timeUnknown ?? false}
+                                                utcDate={season.start.startDate}
+                                            />
                                         </span>
                                     </IconLabel>
                                 </ClientOnlyVisibleWrapper>
