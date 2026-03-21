@@ -4,7 +4,7 @@ import { toast } from "@/ui/hooks/useToast";
 
 import { formatDiscordDate } from "./discord/formatDiscordDate";
 
-export const shareOnDiscord = (eventTitle: string, eventDate: Date) => {
+export const shareOnDiscord = (eventTitle: string, eventDate: Date, timeUnknown?: boolean) => {
     sa_event(`Share - Discord - ${eventTitle}}`);
 
     const baseUrl = window.location.href;
@@ -17,7 +17,11 @@ export const shareOnDiscord = (eventTitle: string, eventDate: Date) => {
 
     const url = addUTM(baseUrl);
 
-    const shareText = `📅 ${eventTitle}\n⏰ Starts ${formatDiscordDate(eventDate)}\n🔗 ${url}`;
+    const dateText = timeUnknown
+        ? `in ${Math.ceil((eventDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))} days`
+        : formatDiscordDate(eventDate, "f");
+
+    const shareText = `📅 ${eventTitle}\n⏰ Starts ${dateText}\n🔗 ${url}`;
 
     navigator.clipboard.writeText(shareText).then(() => {
         toast({

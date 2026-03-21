@@ -105,6 +105,7 @@ export const Content = ({
                                             <ShareMenu
                                                 startDate={season.start.startDate}
                                                 title={`Hey, ${game.name} ${season.name} launch is happening`}
+                                                timeUnknown={season.start.timeUnknown ?? false}
                                             />
                                         }
                                         appendClassName="!rounded-l-none"
