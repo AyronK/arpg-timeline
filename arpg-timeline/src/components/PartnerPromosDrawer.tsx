@@ -13,7 +13,7 @@ import {
 import { Switch } from "@/ui/Switch";
 
 const PARTNER_LABELS: Record<PartnerId, string> = {
-    proton: "Proton (Mail, VPN, Calendar, Drive, Ultimate)",
+    proton: "Proton (Mail, Calendar, VPN, Pass, Drive)",
 };
 
 export function PartnerPromosDrawer() {
