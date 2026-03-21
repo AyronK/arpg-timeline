@@ -8,7 +8,7 @@ import type { ProductKey } from "./types";
 export const HideButton = ({ onClick }: { onClick: () => void }) => (
     <button
         type="button"
-        className="text-muted-foreground hover:text-foreground absolute top-4 right-2 cursor-pointer rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
+        className="text-muted-foreground hover:text-foreground absolute top-3.5 right-2 cursor-pointer rounded px-1.5 py-0.25 text-[10px] font-medium transition-colors"
         onClick={onClick}
         aria-label="Hide promos (opens settings)"
     >
