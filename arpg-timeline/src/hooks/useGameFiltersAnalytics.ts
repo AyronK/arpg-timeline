@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { Game } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
@@ -8,7 +8,21 @@ export const useGameFiltersAnalytics = (
     filteredGames: Game[],
     searchParam: string[],
 ) => {
+    const hasFiredInitial = useRef(false);
+
     useEffect(() => {
+        if (!hasFiredInitial.current) {
+            hasFiredInitial.current = true;
+            sa_event("page-load-games", {
+                visible: filteredGames
+                    .sort((a, b) => a.slug.localeCompare(b.slug))
+                    .map((g) => g.slug)
+                    .join(","),
+                hidden: excludedSlugs.slice().sort().join(","),
+            });
+            return;
+        }
+
         for (const i in excludedSlugs) {
             if (Object.prototype.hasOwnProperty.call(filteredGames, i)) {
                 const element = excludedSlugs[i];
