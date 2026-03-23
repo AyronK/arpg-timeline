@@ -1,3 +1,4 @@
+import { Game } from "@/lib/cms/games.types";
 import {
     GameDetailsQueryResult,
     SanitySeason,
@@ -76,9 +77,13 @@ export const calculateUsualStartTime = (gameSeasons: LocalSeason[]): string => {
 };
 
 export const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDuration[] => {
-    const completedSeasons = gameSeasons.filter(
-        (s) => s?.start?.startDate && s?.start?.confirmed && s?.end?.endDate && s?.end?.confirmed,
-    );
+    const now = new Date();
+    const completedSeasons = gameSeasons.filter((s, index) => {
+        if (!s?.start?.startDate || !s?.start?.confirmed || !s?.end?.endDate || !s?.end?.confirmed)
+            return false;
+        const nextSeason = gameSeasons[index + 1];
+        return !!nextSeason?.start?.startDate && new Date(nextSeason.start.startDate) <= now;
+    });
 
     return completedSeasons
         .map((s) => {
@@ -133,8 +138,8 @@ export const calculateGameStatistics = (
     };
 };
 
-export const getOldestSeasonInfo = (data: GameDetailsQueryResult, gameSlug: string): string => {
-    const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
+export const getOldestSeasonInfo = (data: GameDetailsQueryResult, game: Game): string => {
+    const gameSeasons = data.seasons.filter((s) => s?.game === game.slug);
     if (gameSeasons.length === 0) return "No season data available";
 
     const seasonsWithConfirmedStartDates = gameSeasons.filter(
@@ -159,14 +164,12 @@ export const getOldestSeasonInfo = (data: GameDetailsQueryResult, gameSlug: stri
         day: "numeric",
     });
 
-    return `Calculations based on ${seasonsWithConfirmedStartDates.length} confirmed historical entries. Oldest season in aRPG Timeline's archive started ${formattedOldestDate}.`;
+    const count = getArchivalSeasons(data, game).length;
+    return `Based on ${count} seasons tracked since ${formattedOldestDate}.`;
 };
 
-export const getArchivalSeasons = (
-    data: GameDetailsQueryResult,
-    gameSlug: string,
-): ArchivalSeason[] => {
-    const gameSeasons = data.seasons.filter((s) => s?.game === gameSlug);
+export const getArchivalSeasons = (data: GameDetailsQueryResult, game: Game): ArchivalSeason[] => {
+    const gameSeasons = data.seasons.filter((s) => s?.game === game.slug);
 
     return gameSeasons
         .filter(
@@ -210,6 +213,7 @@ export const getArchivalSeasons = (
             };
         })
         .filter((s): s is NonNullable<typeof s> => s !== null)
+        .filter((s) => s.name !== game.currentSeason?.name)
         .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
 };
 

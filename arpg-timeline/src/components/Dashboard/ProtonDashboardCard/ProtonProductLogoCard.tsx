@@ -1,6 +1,5 @@
 "use client";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
-import { sa_event } from "@/lib/sa_event";
 
 import { PRODUCT_CTA, PRODUCT_PITCH, PRODUCT_URLS } from "./config";
 import { HideButton, ProtonLogoLink } from "./shared";
@@ -28,7 +27,7 @@ export const ProtonProductLogoCard = ({ product, onHide }: Props) => {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => sa_event(`proton-${product}-cta`)}
+                data-sa-click={`proton-${product}-cta`}
                 className="border-border hover:bg-accent justify-center rounded-md border px-4 py-1.5 text-center text-xs font-medium transition-colors"
             >
                 <span className="mr-1">{PRODUCT_CTA[product]}</span>
