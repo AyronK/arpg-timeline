@@ -1,6 +1,5 @@
 "use client";
 import { MaybeLinkWrapper } from "@/components/MaybeLinkWrapper";
-import { sa_event } from "@/lib/sa_event";
 
 import { PRODUCT_LABELS, PRODUCT_URLS } from "./ProtonDashboardCard.config";
 import { HideButton, ProtonLogoLink } from "./ProtonDashboardCard/shared";
@@ -32,7 +31,7 @@ export const ProtonTwoProductCard = ({ a, b, onHide }: Props) => {
                     href={urlA}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => sa_event(`proton-${a}-cta`)}
+                    data-sa-click={`proton-${a}-cta`}
                     className="border-border hover:bg-accent flex-1 justify-center rounded-md border px-4 py-1.5 text-center text-xs font-medium transition-colors"
                 >
                     <span>{PRODUCT_LABELS[a]} deal</span>
@@ -41,7 +40,7 @@ export const ProtonTwoProductCard = ({ a, b, onHide }: Props) => {
                     href={urlB}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => sa_event(`proton-${b}-cta`)}
+                    data-sa-click={`proton-${b}-cta`}
                     className="border-border hover:bg-accent flex-1 justify-center rounded-md border px-4 py-1.5 text-center text-xs font-medium transition-colors"
                 >
                     <span>{PRODUCT_LABELS[b]} deal</span>

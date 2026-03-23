@@ -65,10 +65,8 @@ const GamePage = async ({ params }: GamePageProps) => {
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
     const gameNews = await getSteamNewsFromDb(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
-    const oldestSeasonInfo = getOldestSeasonInfo(data, gameSlug);
-    const archivalSeasons = getArchivalSeasons(data, gameSlug).filter(
-        (s) => s.name !== game.currentSeason?.name,
-    );
+    const oldestSeasonInfo = getOldestSeasonInfo(data, game);
+    const archivalSeasons = getArchivalSeasons(data, game);
     const structuredData = getStructuredDataForGame(game);
     const faqSchema =
         structuredData?.faqQuestions && structuredData.faqQuestions.length > 0
@@ -112,7 +110,7 @@ const GamePage = async ({ params }: GamePageProps) => {
 
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
-                {game.categories?.includes("seasonal") && (
+                {game.categories?.includes("seasonal") && archivalSeasons.length > 0 && (
                     <StatisticsSection
                         game={game}
                         statistics={statistics}
@@ -129,11 +127,13 @@ const GamePage = async ({ params }: GamePageProps) => {
                     />
                 </div>
 
-                <ArchivalSeasonsSection
-                    seasons={archivalSeasons}
-                    gameLogo={game.logo}
-                    seasonKeyword={game.seasonKeyword}
-                />
+                {archivalSeasons.length > 0 && (
+                    <ArchivalSeasonsSection
+                        seasons={archivalSeasons}
+                        gameLogo={game.logo}
+                        seasonKeyword={game.seasonKeyword}
+                    />
+                )}
             </div>
         </>
     );
