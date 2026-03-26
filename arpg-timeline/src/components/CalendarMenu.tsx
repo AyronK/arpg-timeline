@@ -73,7 +73,7 @@ export const CalendarMenu = ({
                             className="mr-2 h-4 w-4"
                             width="24"
                             height="24"
-                            src="/assets/google-calendar-logo.png"
+                            src="/assets/third-party/google-calendar-logo.png"
                             aria-hidden
                             alt="Gmail logo"
                         />
@@ -89,7 +89,7 @@ export const CalendarMenu = ({
                             className="mr-2 h-4 w-4"
                             width="24"
                             height="24"
-                            src="/assets/apple-logo.svg"
+                            src="/assets/third-party/apple-logo.svg"
                             aria-hidden
                             alt="iCloud logo"
                         />

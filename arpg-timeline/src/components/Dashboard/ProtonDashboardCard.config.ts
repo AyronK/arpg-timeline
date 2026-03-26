@@ -30,15 +30,15 @@ export const PRODUCT_CTA: Record<ProductKey, string> = {
 };
 
 export const LOGO_ASSETS: Record<ProductKey, { src: string; w: number; h: number }> = {
-    mail: { src: "/assets/Mail-logomark-logotype-white-transparent.svg", w: 5704, h: 2064 },
-    vpn: { src: "/assets/VPN-logomark-logotype-white-transparent.svg", w: 5834, h: 2064 },
-    pass: { src: "/assets/Pass-logotype-white-transparent.svg", w: 23020, h: 8256 },
-    drive: { src: "/assets/Drive-logomark-logotype-white-transparent.svg", w: 5894, h: 2064 },
+    mail: { src: "/assets/third-party/Mail-logomark-logotype-white-transparent.svg", w: 5704, h: 2064 },
+    vpn: { src: "/assets/third-party/VPN-logomark-logotype-white-transparent.svg", w: 5834, h: 2064 },
+    pass: { src: "/assets/third-party/Pass-logotype-white-transparent.svg", w: 23020, h: 8256 },
+    drive: { src: "/assets/third-party/Drive-logomark-logotype-white-transparent.svg", w: 5894, h: 2064 },
 };
 
 export const BANNER_ASSETS: Record<BannerProductKey, { src: string; w: number; h: number }> = {
-    mail: { src: "/assets/Mail_EED_320X50.png", w: 320, h: 50 },
-    vpn: { src: "/assets/VPN_SVD_320x50.png", w: 320, h: 50 },
+    mail: { src: "/assets/third-party/Mail_EED_320X50.png", w: 320, h: 50 },
+    vpn: { src: "/assets/third-party/VPN_SVD_320x50.png", w: 320, h: 50 },
     /** File is 1200×180 (2×); display at 600×90. */
-    drive: { src: "/assets/drive_affiliate_600x90.png", w: 600, h: 90 },
+    drive: { src: "/assets/third-party/drive_affiliate_600x90.png", w: 600, h: 90 },
 };

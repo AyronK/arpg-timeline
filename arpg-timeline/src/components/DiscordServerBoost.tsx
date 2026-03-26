@@ -15,7 +15,7 @@ export const DiscordServerBoost = () => (
             icon={
                 <Image
                     loading="lazy"
-                    src="/assets/discord-logo.svg"
+                    src="/assets/third-party/discord-logo.svg"
                     className="m-auto h-5 w-5 opacity-90 md:h-6 md:w-6"
                     alt="Discord logo"
                     width={24}
@@ -42,7 +42,7 @@ export const DiscordContactBanner = () => (
             icon={
                 <Image
                     loading="lazy"
-                    src="/assets/discord-logo.svg"
+                    src="/assets/third-party/discord-logo.svg"
                     className="m-auto h-5 w-5 opacity-90 md:h-6 md:w-6"
                     alt="Discord logo"
                     width={24}

@@ -15,7 +15,7 @@ export const PatreonFunding = () => (
             icon={
                 <Image
                     loading="lazy"
-                    src="/assets/patreon-logo.png"
+                    src="/assets/third-party/patreon-logo.png"
                     className="m-auto h-5 w-5 opacity-70 md:h-6 md:w-6"
                     alt="Patreon logo"
                     width={24}

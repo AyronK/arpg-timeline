@@ -15,7 +15,7 @@ export function MobileBottomMenuActions() {
                 <Image
                     loading="lazy"
                     unoptimized
-                    src="/assets/discord-logo.svg"
+                    src="/assets/third-party/discord-logo.svg"
                     className="h-5 w-5 brightness-200 grayscale-100"
                     alt="Discord logo"
                     width={20}
