@@ -79,7 +79,7 @@ export const ShareMenu = ({
                         className="mr-2 h-4 w-4"
                         width="24"
                         height="24"
-                        src="/assets/discord-logo.svg"
+                        src="/assets/third-party/discord-logo.svg"
                         aria-hidden
                         alt="Discord logo"
                     />

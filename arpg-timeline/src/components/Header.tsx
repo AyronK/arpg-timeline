@@ -74,7 +74,7 @@ export const Header = () => {
                             icon={
                                 <Image
                                     unoptimized
-                                    src="/assets/discord-logo.svg"
+                                    src="/assets/third-party/discord-logo.svg"
                                     className="m-auto h-[1rem] w-[1rem]"
                                     alt="Discord logo"
                                     width={22}
@@ -140,7 +140,7 @@ export const Header = () => {
                                     <Image
                                         loading="lazy"
                                         unoptimized
-                                        src="/assets/discord-logo.svg"
+                                        src="/assets/third-party/discord-logo.svg"
                                         className="h-4 w-4"
                                         alt="Discord logo"
                                         width={20}

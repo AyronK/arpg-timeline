@@ -28,7 +28,7 @@ export const CantFindGame = () => (
                         <Image
                             loading="lazy"
                             unoptimized
-                            src="/assets/discord-logo.svg"
+                            src="/assets/third-party/discord-logo.svg"
                             className="mr-2 h-4 w-4 brightness-200 grayscale-100"
                             alt="Discord logo"
                             width={20}

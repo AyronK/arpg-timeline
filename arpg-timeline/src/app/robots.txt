@@ -4,6 +4,8 @@ Disallow: /embed
 Disallow: /api
 Disallow: /docs/api
 Disallow: /calendar/subscribe
+Disallow: /assets/third-party/
+Disallow: /_next/image/
 
 Sitemap: https://www.arpg-timeline.com/sitemap.xml
 Host: https://www.arpg-timeline.com
