@@ -1,11 +1,15 @@
 import { Description } from "@radix-ui/react-toast";
+import { useHasMounted } from "@react-hooks-library/core";
 import { Filter, Newspaper, X } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
+import { getFilterPingSeen, setFilterPingSeen } from "@/lib/storage/filterOnboardingStorage";
+import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import {
@@ -37,6 +41,22 @@ export function MobileBottomMenuFilters({
 }: MobileBottomMenuFiltersProps) {
     const { isMd } = useBreakpoint("md");
     const searchParams = useSearchParams();
+    const hasMounted = useHasMounted();
+    const [pingSeen, setPingSeen] = useState(
+        () => getStoredFilters() !== null || getFilterPingSeen(),
+    );
+
+    const hiddenCount = filtersProps.gameFilters.length - filtersProps.activeFilters.length;
+    const showIndicator = hasMounted && hiddenCount > 0 && !isFiltersDisabled;
+    const showPing = showIndicator && !pingSeen;
+
+    const handleDrawerOpenChange = (open: boolean) => {
+        if (open && !pingSeen) {
+            setFilterPingSeen();
+            setPingSeen(true);
+        }
+        onDrawerOpenChange(open);
+    };
 
     const currentParams = searchParams.toString();
     const newsHref = currentParams ? `/games/news?${currentParams}` : "/games/news";
@@ -53,24 +73,27 @@ export function MobileBottomMenuFilters({
                 <Newspaper className="h-5 w-5" />
                 <span className="text-[0.65rem] leading-2 font-medium">News</span>
             </Link>
-            <Drawer direction={isMd ? "right" : "bottom"} onOpenChange={onDrawerOpenChange}>
+            <Drawer direction={isMd ? "right" : "bottom"} onOpenChange={handleDrawerOpenChange}>
                 <DrawerTrigger asChild>
                     <Button
                         variant="ghost"
                         size="sm"
                         disabled={isFiltersDisabled}
-                        className="flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
+                        className="relative flex flex-col items-center gap-1 text-gray-300 hover:bg-transparent hover:text-blue-400"
                         data-sa-click="filters"
                     >
-                        <div className="relative">
-                            <Filter className="h-5 w-5" />
-                            {filtersProps.gameFilters.length !==
-                                filtersProps.activeFilters.length &&
-                                !isFiltersDisabled && (
-                                    <div className="bg-warning absolute -top-1 -right-1 h-2 w-2 rounded-full"></div>
-                                )}
-                        </div>
+                        <Filter className="h-5 w-5" />
                         <span className="text-[0.65rem] leading-2 font-medium">Filters</span>
+                        {showIndicator && (
+                            <div className="absolute -top-1 right-0">
+                                {showPing && (
+                                    <div className="bg-foreground/60 absolute inset-0 animate-ping rounded-full" />
+                                )}
+                                <div className="bg-foreground relative flex h-3.5 min-w-3.5 items-center justify-center rounded-full px-1 text-[10px] leading-none font-semibold text-black">
+                                    {hiddenCount}
+                                </div>
+                            </div>
+                        )}
                     </Button>
                 </DrawerTrigger>
                 <DrawerContent className={!isMd ? "left-0" : undefined}>

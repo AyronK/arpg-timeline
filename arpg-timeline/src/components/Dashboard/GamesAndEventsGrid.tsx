@@ -1,5 +1,6 @@
 "use client";
 
+import { Filter } from "lucide-react";
 import { useState } from "react";
 
 import { GameFilters } from "@/components/GameFilters";
@@ -7,6 +8,8 @@ import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useGameCategories } from "@/hooks/useGameCategories";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
+import { getFilterHintDismissed } from "@/lib/storage/filterOnboardingStorage";
+import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
 import { cn } from "@/lib/utils";
 
 import { CantFindGame } from "./CantFindGame";
@@ -22,6 +25,7 @@ export const GamesAndEventsGrid = ({
     statistics: Record<string, GameStatistics>;
 }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [hintDismissed] = useState(() => getStoredFilters() !== null || getFilterHintDismissed());
     const { filteredGames, totalGames, shownGames, category, ...filtersProps } =
         useGameFilterContext();
     const events = useTimelineEvents(filteredGames);
@@ -33,11 +37,23 @@ export const GamesAndEventsGrid = ({
 
     return (
         <>
-            <article className="relative mt-2 flex flex-col gap-4 lg:mt-0 lg:gap-0">
+            <article className="relative mt-2 flex flex-col gap-2 lg:mt-0 lg:gap-0">
                 <h2 className="sr-only">Seasons</h2>
-                <div className="lg:bg-background relative -mt-4 flex flex-col gap-1 lg:sticky lg:top-0 lg:z-10 lg:-mt-2 lg:pb-4">
-                    <div className="hidden lg:block">
-                        <GameCountDisplay shownGames={shownGames} totalGames={totalGames} />
+                <div className="lg:bg-background relative sticky -mt-2 -mt-4 flex flex-col gap-1.5 lg:top-0 lg:z-10 lg:pb-4">
+                    <div className="flex flex-row items-end justify-center gap-2 lg:justify-between">
+                        {category === "featured" && !hintDismissed && (
+                            <p className="text-muted-foreground flex items-center gap-1.5 text-xs">
+                                <Filter className="h-3 w-3 shrink-0 opacity-60" />
+                                <span>
+                                    Some games are hidden by default -{" "}
+                                    <span className="text-foreground/80">Filter</span> to customize
+                                    your view
+                                </span>
+                            </p>
+                        )}
+                        <div className="ml-auto hidden lg:block">
+                            <GameCountDisplay shownGames={shownGames} totalGames={totalGames} />
+                        </div>
                     </div>
                     <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
                         <DashboardSelector
