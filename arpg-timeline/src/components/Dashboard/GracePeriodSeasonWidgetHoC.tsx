@@ -42,7 +42,7 @@ export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
                         <Button
                             asChild
                             size="icon"
-                            className="mt-auto ml-auto !rounded-l-none !bg-[#6441a5]"
+                            className="mt-auto ml-auto h-[32px]! w-[32px]! flex-1 !rounded-l-none !bg-[#6441a5] md:h-[40px]! md:w-[40px]!"
                             variant="destructive"
                         >
                             <Link

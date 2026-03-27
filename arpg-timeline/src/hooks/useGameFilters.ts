@@ -28,20 +28,15 @@ export const useGameFilters = (
     shownGames: number;
 } => {
     const searchParams = useSearchParams();
-    const searchParam = searchParams.getAll("exclude");
-
-    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } = useGameFilterState(
-        games,
-        category,
-        searchParams,
-    );
+    const { excludedSlugs, toggleGameFilter, toggleGroupFilter, defaultExcludedSlugs } =
+        useGameFilterState(games, category, searchParams);
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {
         return getFilteredGames(excludedSlugs, category);
     }, [getFilteredGames, excludedSlugs, category]);
 
-    useGameFiltersAnalytics(excludedSlugs, filteredGames, searchParam);
+    useGameFiltersAnalytics(excludedSlugs, filteredGames, category, defaultExcludedSlugs);
 
     const activeFilters = useMemo(() => {
         return games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));

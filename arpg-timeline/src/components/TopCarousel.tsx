@@ -98,7 +98,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                 </CarouselContent>
-                                <CarouselDots className="pt-2" />
+                                <CarouselDots className="py-2" />
                             </Carousel>
                         </div>
                     </ErrorBoundary>
