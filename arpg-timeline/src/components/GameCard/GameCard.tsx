@@ -31,7 +31,7 @@ export const GameCard = ({
 }: GameCardProps) => {
     const hasExternalUrl = url && url !== "#";
     const logoContent = (
-        <div className="grid h-[96px] min-h-[96px] w-[120px] md:h-[140px] md:w-[160px]">
+        <div className="flex h-[96px] w-[180px] items-center justify-center p-2 md:h-[140px] md:w-[220px] md:p-4">
             {gameLogo}
         </div>
     );
@@ -81,7 +81,7 @@ export const GameCard = ({
                     )}
                 </div>
                 <div className="relative flex flex-col items-center gap-1">
-                    <div className="relative flex min-h-[80px] w-[120px] flex-row justify-center place-self-center md:h-[140px] md:w-[160px]">
+                    <div className="relative flex min-h-[80px] w-[180px] flex-row justify-center place-self-center md:h-[140px] md:w-[220px]">
                         {hasExternalUrl ? (
                             <GuardedExternalLink
                                 href={addUTM(url)}
