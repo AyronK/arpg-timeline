@@ -153,5 +153,6 @@ export const useGameFilterState = (
         toggleGameFilter,
         toggleGroupFilter,
         updateFilters,
+        defaultExcludedSlugs: getDefaultExcludedSlugs(),
     };
 };
