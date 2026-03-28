@@ -139,7 +139,7 @@ type UnsafeGameFilterProviderProps = Omit<
 const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilterProviderProps) => {
     const searchParams = useSearchParams();
 
-    const { excludedSlugs, toggleGameFilter, toggleGroupFilter, defaultExcludedSlugs } =
+    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } =
         useGameFilterState(games, category, searchParams);
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
@@ -147,7 +147,7 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         return getFilteredGames(excludedSlugs, category);
     }, [getFilteredGames, excludedSlugs, category]);
 
-    useGameFiltersAnalytics(excludedSlugs, filteredGames, category, defaultExcludedSlugs);
+    useGameFiltersAnalytics(excludedSlugs, filteredGames, category);
 
     const activeFilters = useMemo(() => {
         return games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
