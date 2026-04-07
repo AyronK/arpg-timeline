@@ -32,7 +32,7 @@ export const ProtonLogoLink = ({
         <Link
             href={url}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
             data-sa-click={`proton-${product}-logo`}
         >
             <Image

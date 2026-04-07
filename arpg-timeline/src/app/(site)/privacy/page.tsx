@@ -33,7 +33,7 @@ const PrivacyPage = () => {
                             <Link
                                 className="underline"
                                 href={links.gdpr}
-                                rel="noopener nofollow noreferrer"
+                                rel="noopener noreferrer nofollow"
                                 target="_blank"
                                 data-sa-click="privacy-gdpr"
                             >
@@ -77,7 +77,7 @@ const PrivacyPage = () => {
                             <Link
                                 className="underline"
                                 href={links.whatWeCollect}
-                                rel="noreferrer noopener"
+                                rel="noopener noreferrer nofollow"
                                 target="_blank"
                                 data-sa-click="privacy-what-we-collect"
                             >
@@ -89,7 +89,7 @@ const PrivacyPage = () => {
                             <Link
                                 className="underline"
                                 href={links.metrics}
-                                rel="noreferrer noopener"
+                                rel="noopener noreferrer nofollow"
                                 target="_blank"
                                 data-sa-click="privacy-metrics"
                             >

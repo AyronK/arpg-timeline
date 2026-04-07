@@ -6,7 +6,7 @@ import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner"
 export const DiscordServerBoost = () => (
     <Link
         href={process.env.NEXT_PUBLIC_DISCORD_URL || "#"}
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         target="_blank"
         data-sa-click="discord-boost-banner"
         className={getCtaBannerClassName("indigo")}
@@ -33,7 +33,7 @@ export const DiscordServerBoost = () => (
 export const DiscordContactBanner = () => (
     <Link
         href={process.env.NEXT_PUBLIC_DISCORD_URL || "#"}
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         target="_blank"
         data-sa-click="discord-boost-banner"
         className={getCtaBannerClassName("indigo")}

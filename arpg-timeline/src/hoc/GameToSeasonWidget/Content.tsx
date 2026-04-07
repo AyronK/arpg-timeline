@@ -69,7 +69,7 @@ export const Content = ({
                                     href={season.patchNotesUrl}
                                     isOfficial={game.isOfficial}
                                     target="_blank"
-                                    rel="noopener noreferrer"
+                                    rel="noopener noreferrer nofollow"
                                     className="text-card-foreground hover:text-card-foreground/80 ml-auto text-sm text-nowrap hover:underline"
                                     data-sa-click={`${season.name}-patch-notes`}
                                 >

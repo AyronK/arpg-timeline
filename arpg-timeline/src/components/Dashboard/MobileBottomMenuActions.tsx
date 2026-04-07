@@ -7,7 +7,7 @@ export function MobileBottomMenuActions() {
         <div className="flex flex-1 justify-around">
             <Link
                 href={process.env.NEXT_PUBLIC_DISCORD_URL}
-                rel="external noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 target="_blank"
                 data-sa-click="click"
                 className="flex flex-col items-center justify-center gap-1 px-2 py-1 text-gray-300 hover:bg-transparent hover:text-blue-400"

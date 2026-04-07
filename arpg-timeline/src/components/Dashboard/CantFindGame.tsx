@@ -20,7 +20,7 @@ export const CantFindGame = () => (
             <Button variant={"ghost"} asChild className="px-2 2xl:px-4">
                 <Link
                     href={process.env.NEXT_PUBLIC_DISCORD_URL}
-                    rel="external noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     target="_blank"
                     data-sa-click="click"
                 >

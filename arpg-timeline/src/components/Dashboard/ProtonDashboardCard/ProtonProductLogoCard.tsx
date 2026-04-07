@@ -26,7 +26,7 @@ export const ProtonProductLogoCard = ({ product, onHide }: Props) => {
             <MaybeLinkWrapper
                 href={url}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 data-sa-click={`proton-${product}-cta`}
                 className="border-border hover:bg-accent justify-center rounded-md border px-4 py-1.5 text-center text-xs font-medium transition-colors"
             >

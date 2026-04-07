@@ -6,7 +6,7 @@ import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner"
 export const PatreonFunding = () => (
     <Link
         href={process.env.NEXT_PUBLIC_PATREON_URL || "#"}
-        rel="noopener"
+        rel="noopener noreferrer nofollow"
         target="_blank"
         data-sa-click="patreon-banner"
         className={getCtaBannerClassName("orange")}

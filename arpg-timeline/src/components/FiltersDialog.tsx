@@ -20,7 +20,6 @@ import {
 } from "@/ui/Dialog";
 import { Switch } from "@/ui/Switch";
 
-
 export type FiltersDialogProps = {
     filters: {
         value: string;

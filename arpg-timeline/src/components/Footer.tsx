@@ -76,6 +76,7 @@ export const Footer = () => (
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href="/docs/api"
+                            rel="noopener noreferrer nofollow"
                             data-sa-click="api-docs"
                         >
                             API Docs
@@ -103,7 +104,7 @@ export const Footer = () => (
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}
-                            rel="noopener noreferrer"
+                            rel="noopener noreferrer nofollow"
                             data-sa-click="discord"
                         >
                             Discord
@@ -111,6 +112,7 @@ export const Footer = () => (
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
+                            rel="noopener noreferrer nofollow"
                             data-sa-click="contact"
                         >
                             Contact
@@ -156,7 +158,7 @@ export const Footer = () => (
                             <Link
                                 className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                                 href={process.env.NEXT_PUBLIC_GITHUB_URL}
-                                rel="external nofollow noreferrer"
+                                rel="noopener noreferrer nofollow"
                                 target="_blank"
                                 aria-label="Author's Github Profile - AyronK"
                                 data-sa-click="github"

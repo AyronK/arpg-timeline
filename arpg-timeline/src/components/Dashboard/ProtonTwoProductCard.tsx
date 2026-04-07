@@ -30,7 +30,7 @@ export const ProtonTwoProductCard = ({ a, b, onHide }: Props) => {
                 <MaybeLinkWrapper
                     href={urlA}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     data-sa-click={`proton-${a}-cta`}
                     className="border-border hover:bg-accent flex-1 justify-center rounded-md border px-4 py-1.5 text-center text-xs font-medium transition-colors"
                 >
@@ -39,7 +39,7 @@ export const ProtonTwoProductCard = ({ a, b, onHide }: Props) => {
                 <MaybeLinkWrapper
                     href={urlB}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     data-sa-click={`proton-${b}-cta`}
                     className="border-border hover:bg-accent flex-1 justify-center rounded-md border px-4 py-1.5 text-center text-xs font-medium transition-colors"
                 >

@@ -182,7 +182,7 @@ export default function CalendarPage() {
                             <Link
                                 href={process.env.NEXT_PUBLIC_PATREON_URL || "#"}
                                 target="_blank"
-                                rel="noopener"
+                                rel="noopener noreferrer nofollow"
                                 className="text-foreground underline underline-offset-2"
                             >
                                 supporting via Patreon
@@ -190,6 +190,7 @@ export default function CalendarPage() {
                             or reaching out via{" "}
                             <Link
                                 href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
+                                rel="noopener noreferrer nofollow"
                                 className="text-foreground underline underline-offset-2"
                             >
                                 email
@@ -198,7 +199,7 @@ export default function CalendarPage() {
                             <Link
                                 href={process.env.NEXT_PUBLIC_DISCORD_URL || "#"}
                                 target="_blank"
-                                rel="noopener"
+                                rel="noopener noreferrer nofollow"
                                 className="text-foreground underline underline-offset-2"
                             >
                                 Discord

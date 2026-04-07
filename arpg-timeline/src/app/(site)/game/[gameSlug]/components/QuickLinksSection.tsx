@@ -16,7 +16,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                                 href={game.url}
                                 isOfficial={false}
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noopener noreferrer nofollow"
                                 data-sa-click={`${gameSlug}-official-website`}
                             >
                                 Community Website
@@ -25,7 +25,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             <MaybeLinkWrapper
                                 href={game.url}
                                 target="_blank"
-                                rel="noopener"
+                                rel="noopener noreferrer nofollow"
                                 data-sa-click={`${gameSlug}-official-website`}
                             >
                                 Official Game Website
@@ -42,7 +42,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             utm_content: gameSlug,
                         })(`https://store.steampowered.com/app/${steamAppId}`)}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer nofollow"
                         data-sa-click={`${gameSlug}-steam-page`}
                     >
                         Steam Page
@@ -53,7 +53,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                         href={game.currentSeason.url}
                         isOfficial={game.isOfficial}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer nofollow"
                         data-sa-click={`${gameSlug}-current-season-details`}
                     >
                         Current {game.seasonKeyword} details
@@ -64,7 +64,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                         href={game.nextSeason.url}
                         isOfficial={game.isOfficial}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer nofollow"
                         data-sa-click={`${gameSlug}-next-season-details`}
                     >
                         Next {game.seasonKeyword} details

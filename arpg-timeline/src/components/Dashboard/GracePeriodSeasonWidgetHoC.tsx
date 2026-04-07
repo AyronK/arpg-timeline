@@ -28,7 +28,7 @@ export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
                     })(game.currentSeason.patchNotesUrl)}
                     isOfficial={game.isOfficial}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     className="ml-auto text-sm text-nowrap hover:underline"
                     data-sa-click={`${game.currentSeason.name}-patch-notes`}
                 >
@@ -47,7 +47,7 @@ export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
                         >
                             <Link
                                 target="_blank"
-                                rel="noopener"
+                                rel="noopener noreferrer nofollow"
                                 data-sa-click={`${game.slug}-twitch`}
                                 href={addUTMParameters({
                                     utm_source: "arpg-timeline",

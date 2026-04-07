@@ -30,10 +30,22 @@ export const PRODUCT_CTA: Record<ProductKey, string> = {
 };
 
 export const LOGO_ASSETS: Record<ProductKey, { src: string; w: number; h: number }> = {
-    mail: { src: "/assets/third-party/Mail-logomark-logotype-white-transparent.svg", w: 5704, h: 2064 },
-    vpn: { src: "/assets/third-party/VPN-logomark-logotype-white-transparent.svg", w: 5834, h: 2064 },
+    mail: {
+        src: "/assets/third-party/Mail-logomark-logotype-white-transparent.svg",
+        w: 5704,
+        h: 2064,
+    },
+    vpn: {
+        src: "/assets/third-party/VPN-logomark-logotype-white-transparent.svg",
+        w: 5834,
+        h: 2064,
+    },
     pass: { src: "/assets/third-party/Pass-logotype-white-transparent.svg", w: 23020, h: 8256 },
-    drive: { src: "/assets/third-party/Drive-logomark-logotype-white-transparent.svg", w: 5894, h: 2064 },
+    drive: {
+        src: "/assets/third-party/Drive-logomark-logotype-white-transparent.svg",
+        w: 5894,
+        h: 2064,
+    },
 };
 
 export const BANNER_ASSETS: Record<BannerProductKey, { src: string; w: number; h: number }> = {

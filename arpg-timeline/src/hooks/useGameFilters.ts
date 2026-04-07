@@ -28,8 +28,11 @@ export const useGameFilters = (
     shownGames: number;
 } => {
     const searchParams = useSearchParams();
-    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } =
-        useGameFilterState(games, category, searchParams);
+    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } = useGameFilterState(
+        games,
+        category,
+        searchParams,
+    );
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {

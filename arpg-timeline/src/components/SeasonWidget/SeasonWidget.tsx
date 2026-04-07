@@ -50,7 +50,7 @@ export const SeasonWidget = ({
                             isOfficial={isOfficial ?? true}
                             className="underline decoration-transparent underline-offset-2 select-none hover:decoration-current/75"
                             target="_blank"
-                            rel="noopener noreferrer"
+                            rel="noopener noreferrer nofollow"
                             onClick={() => sa_event(`${name}-link-click`)}
                         >
                             {name}

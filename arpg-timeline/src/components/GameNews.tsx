@@ -45,7 +45,7 @@ export const GameNews = ({ steamAppId, news, className }: GameNewsProps) => {
                         <a
                             href={addUTM(item.link)}
                             target="_blank"
-                            rel="noopener noreferrer"
+                            rel="noopener noreferrer nofollow"
                             className="bg-muted/20 hover:bg-muted/40 hover:border-border block rounded-md border border-transparent p-3 transition-all hover:shadow-lg"
                         >
                             <div className="space-y-2.5">
@@ -86,7 +86,7 @@ export const GameNews = ({ steamAppId, news, className }: GameNewsProps) => {
                     <MaybeLinkWrapper
                         href={addUTM(`https://store.steampowered.com/news/app/${steamAppId}`)}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer nofollow"
                         className="text-primary hover:text-primary/80 text-sm"
                     >
                         View all news

@@ -45,7 +45,7 @@ export const GameNewsSection = ({
                         <a
                             href={addUTM(gameNews.news.link)}
                             target="_blank"
-                            rel="noopener noreferrer"
+                            rel="noopener noreferrer nofollow"
                             className="bg-muted/20 block rounded-md border border-transparent p-3 transition-all"
                         >
                             <div className="space-y-3">

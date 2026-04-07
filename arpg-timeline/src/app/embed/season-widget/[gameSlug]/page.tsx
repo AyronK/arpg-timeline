@@ -56,7 +56,7 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                                 href={game.currentSeason.patchNotesUrl}
                                 isOfficial={game.isOfficial}
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noopener noreferrer nofollow"
                                 className="ml-auto text-sm text-nowrap hover:underline"
                                 data-sa-click={`${game.currentSeason.name}-patch-notes`}
                             >

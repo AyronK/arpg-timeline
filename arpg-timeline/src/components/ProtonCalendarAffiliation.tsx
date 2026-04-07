@@ -27,7 +27,7 @@ export const ProtonCalendarAffiliation = () => {
             </div>
             <Link
                 href={process.env.NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL}
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 target="_blank"
                 data-sa-click="proton-calendar-affiliation-banner"
                 className={getCtaBannerClassName("violet")}

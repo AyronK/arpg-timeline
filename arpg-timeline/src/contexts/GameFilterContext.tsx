@@ -139,8 +139,11 @@ type UnsafeGameFilterProviderProps = Omit<
 const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilterProviderProps) => {
     const searchParams = useSearchParams();
 
-    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } =
-        useGameFilterState(games, category, searchParams);
+    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } = useGameFilterState(
+        games,
+        category,
+        searchParams,
+    );
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {

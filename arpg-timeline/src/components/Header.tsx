@@ -27,7 +27,7 @@ const SocialButton = ({
     dataSaClick,
     className = "",
     target = "_blank",
-    rel = "external noopener noreferrer",
+    rel = "noopener noreferrer nofollow",
 }: SocialButtonProps) => (
     <Button variant="ghost" asChild className={cn("px-2 lg:px-3 2xl:px-4", className)}>
         <Link
@@ -71,6 +71,7 @@ export const Header = () => {
                     <div className="ml-auto flex items-center">
                         <SocialButton
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}
+                            rel="noopener noreferrer nofollow"
                             icon={
                                 <Image
                                     unoptimized
@@ -134,7 +135,7 @@ export const Header = () => {
                                     href={process.env.NEXT_PUBLIC_DISCORD_URL}
                                     className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
                                     target="_blank"
-                                    rel="external noopener noreferrer"
+                                    rel="noopener noreferrer nofollow"
                                     data-sa-click="discord"
                                 >
                                     <Image
