@@ -1,0 +1,1849 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>aRPG Timeline - Filter Analytics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #111110;
+        --surface: #1c1c1b;
+        --surface2: #252524;
+        --border: #2e2e2c;
+        --border2: #3a3a38;
+        --text: #e8e8e4;
+        --text2: #a8a8a2;
+        --text3: #66665e;
+        --accent: #3b82f6;
+        --accent-light: #1e2a3d;
+        --green: #22c55e;
+        --red: #ef4444;
+        --purple: #8b5cf6;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .page {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 24px 80px;
+      }
+      header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+      }
+      .header-left h1 {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+      }
+      .header-left p {
+        color: var(--text3);
+        font-size: 13px;
+        margin-top: 3px;
+      }
+      .upload-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border: 1px solid var(--border2);
+        border-radius: 6px;
+        background: var(--surface);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text2);
+        transition: border-color 0.15s;
+        white-space: nowrap;
+      }
+      .upload-label:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .upload-label input {
+        display: none;
+      }
+      .file-loaded {
+        color: var(--green);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+      }
+      #empty-state {
+        text-align: center;
+        padding: 100px 0;
+        color: var(--text3);
+      }
+      #empty-state h2 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text2);
+      }
+      #dashboard {
+        display: none;
+      }
+      .kpi-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 32px;
+      }
+      .kpi {
+        background: var(--surface);
+        padding: 16px 20px;
+      }
+      .kpi-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+      }
+      .kpi-value {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+      .kpi-sub {
+        font-size: 12px;
+        color: var(--text3);
+        margin-top: 4px;
+      }
+      .section {
+        margin-bottom: 36px;
+      }
+      .section-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .section-title .hint {
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--text3);
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+      }
+      .card-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 900px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      /* Engagement: donut (fixed width) + two insight columns */
+      .engage-row {
+        display: grid;
+        grid-template-columns: 220px 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .engage-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      .donut-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+      .donut-legend {
+        width: 100%;
+      }
+      .legend-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px;
+      }
+      .legend-row:last-child {
+        border-bottom: none;
+      }
+      .legend-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        margin-right: 6px;
+      }
+      .legend-label {
+        display: flex;
+        align-items: center;
+        color: var(--text2);
+      }
+      .legend-val {
+        font-weight: 600;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+      }
+      .insight-col {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .insight-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px 20px;
+      }
+      .insight-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text3);
+        margin-bottom: 6px;
+      }
+      .insight-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .insight-sub {
+        font-size: 12px;
+        color: var(--text3);
+        line-height: 1.5;
+      }
+      .tabs {
+        display: flex;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        width: fit-content;
+        margin-bottom: 12px;
+      }
+      .tab-btn {
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border: none;
+        border-right: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text2);
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .tab-btn:last-child {
+        border-right: none;
+      }
+      .tab-btn.active {
+        background: var(--accent);
+        color: white;
+      }
+      .tab-btn:hover:not(.active) {
+        background: var(--surface2);
+      }
+      .bar-list {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .bar-row {
+        display: grid;
+        grid-template-columns: 150px 1fr 52px;
+        align-items: center;
+        gap: 8px;
+      }
+      .bar-label {
+        font-size: 12px;
+        color: var(--text2);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .bar-track {
+        height: 6px;
+        background: var(--surface2);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: 3px;
+      }
+      .bar-pct {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        color: var(--text3);
+        text-align: right;
+      }
+      .heatmap-scroll {
+        overflow: auto;
+      }
+      #heatmap-canvas {
+        display: block;
+      }
+      .tooltip {
+        position: fixed;
+        z-index: 9999;
+        background: #0a0a09;
+        color: #e8e8e4;
+        border: 1px solid var(--border2);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 12px;
+        line-height: 1.6;
+        pointer-events: none;
+        display: none;
+        max-width: 300px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      }
+      .tooltip strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+      .card-scroll {
+        max-height: 420px;
+        overflow-y: auto;
+      }
+      .card-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .card-scroll::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 2px;
+      }
+      .combo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .combo-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 12px;
+        background: var(--surface2);
+        border-radius: 6px;
+      }
+      .combo-rank {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text3);
+        min-width: 22px;
+        padding-top: 2px;
+      }
+      .combo-games {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .game-chip {
+        padding: 2px 7px;
+        border-radius: 3px;
+        font-size: 11px;
+        background: var(--accent-light);
+        color: var(--accent);
+        border: 1px solid #2a4070;
+        white-space: nowrap;
+      }
+      .combo-count {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        color: var(--text3);
+        white-space: nowrap;
+        padding-top: 2px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      th {
+        text-align: left;
+        padding: 8px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--text3);
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text2);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: var(--surface2);
+      }
+      .mono {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+      }
+      .net-pos {
+        color: var(--green);
+        font-weight: 600;
+      }
+      .net-neg {
+        color: var(--red);
+        font-weight: 600;
+      }
+      .pct-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .pct-bar-inline {
+        width: 50px;
+        height: 4px;
+        background: var(--surface2);
+        border-radius: 2px;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .pct-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+      }
+      #graph-canvas {
+        display: block;
+        width: 100%;
+        cursor: grab;
+      }
+      #graph-canvas:active {
+        cursor: grabbing;
+      }
+      .graph-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .graph-controls select {
+        font-size: 12px;
+        border: 1px solid var(--border2);
+        border-radius: 4px;
+        padding: 4px 8px;
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .graph-controls input[type="range"] {
+        cursor: pointer;
+        accent-color: var(--accent);
+        width: 120px;
+      }
+      .graph-hint {
+        font-size: 11px;
+        color: var(--text3);
+        margin-top: 8px;
+      }
+      .graph-legend {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--text3);
+        align-items: center;
+      }
+      .graph-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .graph-legend-line {
+        width: 20px;
+        height: 3px;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="header-left">
+          <h1>aRPG Timeline - Filter Analytics</h1>
+          <p>
+            Which games users choose to show or hide - active customizations
+            only. Based on
+            <code>filter_customization(visible, hidden, isDefault)</code> events
+          </p>
+        </div>
+        <label class="upload-label" id="drop-zone">
+          <input type="file" id="csv-input" accept=".csv" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            style="flex-shrink: 0"
+          >
+            <path d="M8 10V2M5 5l3-3 3 3M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2" />
+          </svg>
+          <span id="upload-text">Upload CSV</span>
+        </label>
+      </header>
+
+      <div id="empty-state">
+        <h2>No data loaded</h2>
+        <p>
+          Upload your Simple Analytics CSV export to explore filter patterns.
+        </p>
+      </div>
+
+      <div id="dashboard">
+        <div class="kpi-row" id="kpi-row"></div>
+
+        <!-- Engagement -->
+        <div class="section">
+          <div class="section-title">
+            Filter engagement
+            <span class="hint"
+              >- how many visitors customized their view vs left defaults
+              unchanged</span
+            >
+          </div>
+          <div class="engage-row">
+            <div class="donut-card">
+              <canvas id="donut-canvas" width="130" height="130"></canvas>
+              <div class="donut-legend" id="donut-legend"></div>
+            </div>
+            <div class="insight-col" id="ins1"></div>
+            <div class="insight-col" id="ins2"></div>
+          </div>
+        </div>
+
+        <!-- Game popularity -->
+        <div class="section">
+          <div class="section-title">
+            Game popularity
+            <span class="hint"
+              >- % of active filter events where the game was included or
+              excluded</span
+            >
+          </div>
+          <div class="tabs" id="pop-tabs">
+            <button class="tab-btn active" data-tab="visible">
+              Included (visible)
+            </button>
+            <button class="tab-btn" data-tab="hidden">Excluded (hidden)</button>
+            <button class="tab-btn" data-tab="delta">Net preference</button>
+          </div>
+          <div class="grid-2">
+            <div class="card card-scroll">
+              <div class="card-title" id="btl">Most included</div>
+              <div class="bar-list" id="bl"></div>
+            </div>
+            <div class="card card-scroll">
+              <div class="card-title" id="btr">Least included</div>
+              <div class="bar-list" id="br"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Heatmap -->
+        <div class="section">
+          <div class="section-title">
+            Co-occurrence heatmap
+            <span class="hint"
+              >- how often two games appear in the same active filter
+              configuration</span
+            >
+          </div>
+          <div class="card">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 14px;
+                flex-wrap: wrap;
+              "
+            >
+              <div class="card-title" style="margin: 0">
+                Pair frequency - hover cells for details
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  font-size: 11px;
+                  color: var(--text3);
+                "
+              >
+                <span>Fewer</span>
+                <canvas
+                  id="scale-canvas"
+                  width="100"
+                  height="8"
+                  style="border-radius: 2px; vertical-align: middle"
+                ></canvas>
+                <span>More co-occurrences</span>
+              </div>
+            </div>
+            <div class="heatmap-scroll">
+              <canvas id="heatmap-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graph -->
+        <div class="section">
+          <div class="section-title">
+            Game similarity graph
+            <span class="hint"
+              >- node size = inclusion frequency; edge = co-occurrence
+              strength</span
+            >
+          </div>
+          <div class="card">
+            <div class="graph-controls">
+              <label
+                >Mode:
+                <select id="graph-mode">
+                  <option value="both">Co-selected + Co-excluded</option>
+                  <option value="visible">Co-selected only</option>
+                  <option value="hidden">Co-excluded only</option>
+                </select></label
+              >
+              <label
+                >Min pair strength:
+                <input type="range" id="edge-thresh" min="1" max="50" value="8"
+              /></label>
+              <span
+                id="thresh-label"
+                style="
+                  font-family: &quot;IBM Plex Mono&quot;, monospace;
+                  color: var(--text3);
+                  min-width: 36px;
+                "
+              ></span>
+            </div>
+            <canvas id="graph-canvas" height="480"></canvas>
+            <div class="graph-hint">
+              Scroll to zoom - drag background to pan - drag nodes to reposition
+            </div>
+            <div class="graph-legend">
+              <div class="graph-legend-item">
+                <div
+                  class="graph-legend-line"
+                  style="background: var(--accent)"
+                ></div>
+                Included together
+              </div>
+              <div class="graph-legend-item">
+                <div
+                  class="graph-legend-line"
+                  style="background: var(--red)"
+                ></div>
+                Excluded together
+              </div>
+              <div class="graph-legend-item">
+                <div
+                  class="graph-legend-line"
+                  style="background: var(--purple)"
+                ></div>
+                Both signals
+              </div>
+              <span>Node size = inclusion frequency</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top combos -->
+        <div class="section">
+          <div class="section-title">
+            Popular filter configurations
+            <span class="hint"
+              >- exact game sets chosen by active visitors</span
+            >
+          </div>
+          <div class="card card-scroll">
+            <div class="card-title">Top included sets</div>
+            <div class="combo-list" id="top-combos"></div>
+          </div>
+        </div>
+
+        <!-- Size dist + dropout/addin -->
+        <div class="section">
+          <div class="section-title">Filter set size &amp; default changes</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Visitors by number of visible games</div>
+              <canvas
+                id="dist-canvas"
+                height="220"
+                style="display: block; width: 100%"
+              ></canvas>
+            </div>
+            <div class="card card-scroll">
+              <div class="card-title" style="margin-bottom: 8px">
+                Default vs active - what changed?
+              </div>
+              <div class="tabs" id="dropout-tabs" style="margin-bottom: 12px">
+                <button class="tab-btn active" data-dtype="out">
+                  Removed from default
+                </button>
+                <button class="tab-btn" data-dtype="in">
+                  Added beyond default
+                </button>
+              </div>
+              <div class="bar-list" id="dropout-bars"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Config diversity log scale -->
+        <div class="section">
+          <div class="section-title">
+            Configuration diversity
+            <span class="hint"
+              >- each bar = one unique filter config, sorted by popularity. Log
+              scale reveals the long tail.</span
+            >
+          </div>
+          <div class="card">
+            <canvas
+              id="combo-dist-canvas"
+              height="180"
+              style="display: block; width: 100%"
+            ></canvas>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="section">
+          <div class="section-title">All games - full statistics</div>
+          <div class="card">
+            <div class="card-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Game</th>
+                    <th>Included in</th>
+                    <th>Excluded in</th>
+                    <th>Visible events</th>
+                    <th>Hidden events</th>
+                    <th>
+                      Net score
+                      <span
+                        id="net-q"
+                        style="
+                          cursor: help;
+                          color: var(--accent);
+                          border-bottom: 1px dotted var(--accent);
+                        "
+                        >?</span
+                      >
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="stats-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const fmt = (n) => Number(n).toLocaleString();
+      const slug = (s) =>
+        (s || "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const pctOf = (n, d) => (d > 0 ? ((n / d) * 100).toFixed(1) + "%" : "0%");
+      const pctNum = (n, d) => (d > 0 ? (n / d) * 100 : 0);
+      const splitG = (s) =>
+        (s || "")
+          .split(",")
+          .map((g) => g.trim())
+          .filter(Boolean);
+      const C = {
+        accent: "#3b82f6",
+        green: "#22c55e",
+        red: "#ef4444",
+        purple: "#8b5cf6",
+        text: "#e8e8e4",
+        text2: "#a8a8a2",
+        text3: "#66665e",
+        surface: "#1c1c1b",
+        surface2: "#252524",
+      };
+
+      const tip = $("tooltip");
+      function showTip(e, html) {
+        tip.innerHTML = html;
+        tip.style.display = "block";
+        moveTip(e);
+      }
+      function moveTip(e) {
+        let x = e.clientX + 14,
+          y = e.clientY - 10;
+        if (x + 310 > window.innerWidth) x = e.clientX - 320;
+        tip.style.left = x + "px";
+        tip.style.top = y + "px";
+      }
+      function hideTip() {
+        tip.style.display = "none";
+      }
+
+      // CSV parser
+      function parseCSV(text) {
+        const lines = text.trim().split("\n");
+        const hdrs = parseLine(lines[0]);
+        return lines
+          .slice(1)
+          .map((l) => {
+            const v = parseLine(l),
+              o = {};
+            hdrs.forEach((h, i) => (o[h.trim()] = (v[i] || "").trim()));
+            return o;
+          })
+          .filter((r) => r[hdrs[0]]);
+      }
+      function parseLine(line) {
+        const res = [];
+        let q = false,
+          cur = "";
+        for (let i = 0; i < line.length; i++) {
+          const c = line[i];
+          if (c === '"') {
+            q = !q;
+            continue;
+          }
+          if (c === "," && !q) {
+            res.push(cur);
+            cur = "";
+            continue;
+          }
+          cur += c;
+        }
+        res.push(cur);
+        return res;
+      }
+
+      // Heatmap color scale (dark bg: near-black -> dark blue -> bright blue -> light blue)
+      function heatCol(t) {
+        if (t <= 0) return "#252524";
+        const stops = [
+          [37, 37, 36],
+          [20, 50, 100],
+          [37, 99, 235],
+          [96, 165, 250],
+          [219, 234, 254],
+        ];
+        const idx = Math.min(
+          stops.length - 2,
+          Math.floor(t * (stops.length - 1)),
+        );
+        const f = t * (stops.length - 1) - idx,
+          a = stops[idx],
+          b = stops[idx + 1];
+        return `rgb(${Math.round(a[0] + (b[0] - a[0]) * f)},${Math.round(a[1] + (b[1] - a[1]) * f)},${Math.round(a[2] + (b[2] - a[2]) * f)})`;
+      }
+
+      // Analysis
+      function analyze(rows) {
+        const defRows = rows.filter(
+          (r) => r["metadata.isDefault_bool"] === "true",
+        );
+        const actRows = rows.filter(
+          (r) => r["metadata.isDefault_bool"] !== "true",
+        );
+        const total = rows.reduce((s, r) => s + parseInt(r.count || 0), 0);
+        const defEvt = defRows.reduce((s, r) => s + parseInt(r.count || 0), 0);
+        const actEvt = actRows.reduce((s, r) => s + parseInt(r.count || 0), 0);
+
+        const allG = new Set();
+        actRows.forEach((r) => {
+          splitG(r["metadata.visible_text"]).forEach((g) => allG.add(g));
+          splitG(r["metadata.hidden_text"]).forEach((g) => allG.add(g));
+        });
+
+        const defRow = [...defRows].sort(
+          (a, b) => parseInt(b.count) - parseInt(a.count),
+        )[0];
+        const defVis = new Set(splitG(defRow?.["metadata.visible_text"]));
+
+        const gameVis = {},
+          gameHid = {};
+        allG.forEach((g) => {
+          gameVis[g] = 0;
+          gameHid[g] = 0;
+        });
+        actRows.forEach((r) => {
+          const cnt = parseInt(r.count || 0);
+          splitG(r["metadata.visible_text"]).forEach((g) => {
+            if (g in gameVis) gameVis[g] += cnt;
+          });
+          splitG(r["metadata.hidden_text"]).forEach((g) => {
+            if (g in gameHid) gameHid[g] += cnt;
+          });
+        });
+
+        const gameList = [...allG]
+          .filter((g) => (gameVis[g] || 0) + (gameHid[g] || 0) > 0)
+          .sort();
+        const gameSet = new Set(gameList);
+
+        const coVis = {},
+          coHid = {};
+        gameList.forEach((a) => {
+          coVis[a] = {};
+          coHid[a] = {};
+        });
+        actRows.forEach((r) => {
+          const cnt = parseInt(r.count || 0);
+          const vis = splitG(r["metadata.visible_text"]).filter((g) =>
+            gameSet.has(g),
+          );
+          const hid = splitG(r["metadata.hidden_text"]).filter((g) =>
+            gameSet.has(g),
+          );
+          for (let i = 0; i < vis.length; i++)
+            for (let j = i + 1; j < vis.length; j++) {
+              coVis[vis[i]][vis[j]] = (coVis[vis[i]][vis[j]] || 0) + cnt;
+              coVis[vis[j]][vis[i]] = (coVis[vis[j]][vis[i]] || 0) + cnt;
+            }
+          for (let i = 0; i < hid.length; i++)
+            for (let j = i + 1; j < hid.length; j++) {
+              coHid[hid[i]][hid[j]] = (coHid[hid[i]][hid[j]] || 0) + cnt;
+              coHid[hid[j]][hid[i]] = (coHid[hid[j]][hid[i]] || 0) + cnt;
+            }
+        });
+
+        const dropout = {};
+        actRows.forEach((r) => {
+          const cnt = parseInt(r.count || 0);
+          const vis = new Set(splitG(r["metadata.visible_text"]));
+          defVis.forEach((g) => {
+            if (!vis.has(g)) dropout[g] = (dropout[g] || 0) + cnt;
+          });
+        });
+
+        const addin = {};
+        actRows.forEach((r) => {
+          const cnt = parseInt(r.count || 0);
+          splitG(r["metadata.visible_text"]).forEach((g) => {
+            if (gameSet.has(g) && !defVis.has(g))
+              addin[g] = (addin[g] || 0) + cnt;
+          });
+        });
+
+        const comboCounts = {};
+        actRows.forEach((r) => {
+          const cnt = parseInt(r.count || 0);
+          const vk = splitG(r["metadata.visible_text"]).sort().join("|");
+          if (vk) comboCounts[vk] = (comboCounts[vk] || 0) + cnt;
+        });
+
+        const sizeDist = {};
+        actRows.forEach((r) => {
+          const cnt = parseInt(r.count || 0);
+          const n = splitG(r["metadata.visible_text"]).length;
+          if (n > 0) sizeDist[n] = (sizeDist[n] || 0) + cnt;
+        });
+
+        return {
+          total,
+          defEvt,
+          actEvt,
+          uniqueConfigs: Object.keys(comboCounts).length,
+          gameList,
+          gameVis,
+          gameHid,
+          coVis,
+          coHid,
+          dropout,
+          addin,
+          comboCounts,
+          sizeDist,
+          defVis,
+        };
+      }
+
+      // KPIs
+      function renderKPIs(d) {
+        const ep = pctNum(d.actEvt, d.total).toFixed(1);
+        $("kpi-row").innerHTML = [
+          {
+            label: "Total filter events",
+            val: fmt(d.total),
+            sub: "all recorded customizations",
+          },
+          {
+            label: "Active customizations",
+            val: fmt(d.actEvt),
+            sub: `${ep}% of all events`,
+          },
+          {
+            label: "Default (no change)",
+            val: fmt(d.defEvt),
+            sub: `${(100 - parseFloat(ep)).toFixed(1)}% - no interaction`,
+          },
+          {
+            label: "Unique configurations",
+            val: fmt(d.uniqueConfigs),
+            sub: "distinct active filter states",
+          },
+          {
+            label: "Games tracked",
+            val: fmt(d.gameList.length),
+            sub: "with at least one occurrence",
+          },
+        ]
+          .map(
+            (k) =>
+              `<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`,
+          )
+          .join("");
+      }
+
+      // Donut
+      function renderDonut(d) {
+        const cv = $("donut-canvas"),
+          ctx = cv.getContext("2d");
+        const slices = [
+          { label: "Active customizations", val: d.actEvt, color: C.accent },
+          { label: "Default (unchanged)", val: d.defEvt, color: "#3a3a38" },
+        ];
+        ctx.clearRect(0, 0, 130, 130);
+        let s = -Math.PI / 2;
+        slices.forEach((sl) => {
+          const a = (sl.val / d.total) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(65, 65);
+          ctx.arc(65, 65, 54, s, s + a);
+          ctx.closePath();
+          ctx.fillStyle = sl.color;
+          ctx.fill();
+          s += a;
+        });
+        ctx.beginPath();
+        ctx.arc(65, 65, 34, 0, Math.PI * 2);
+        ctx.fillStyle = C.surface;
+        ctx.fill();
+        ctx.fillStyle = C.text;
+        ctx.font = "bold 15px Inter,sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(pctNum(d.actEvt, d.total).toFixed(0) + "%", 65, 68);
+        ctx.fillStyle = C.text3;
+        ctx.font = "10px Inter,sans-serif";
+        ctx.fillText("active", 65, 80);
+        $("donut-legend").innerHTML = slices
+          .map(
+            (sl) =>
+              `<div class="legend-row"><div class="legend-label"><span class="legend-dot" style="background:${sl.color}"></span>${sl.label}</div><div class="legend-val">${fmt(sl.val)}</div></div>`,
+          )
+          .join("");
+      }
+
+      // Insights
+      function renderInsights(d) {
+        const { actEvt, total, gameVis, gameHid, sizeDist, defVis, defEvt } = d;
+        const ep = pctNum(actEvt, total).toFixed(1);
+        const topVis = Object.entries(gameVis)
+          .filter(([, v]) => v > 0)
+          .sort((a, b) => b[1] - a[1])[0];
+        const topHid = Object.entries(gameHid)
+          .filter(([, v]) => v > 0)
+          .sort((a, b) => b[1] - a[1])[0];
+        const topSize = Object.entries(sizeDist).sort((a, b) => b[1] - a[1])[0];
+        const mkCard = (label, value, sub) =>
+          `<div class="insight-card"><div class="insight-label">${label}</div><div class="insight-value">${value}</div><div class="insight-sub">${sub}</div></div>`;
+        $("ins1").innerHTML =
+          mkCard(
+            "Engagement rate",
+            `${ep}% customize filters`,
+            `${fmt(actEvt)} active vs ${fmt(defEvt)} unchanged. ${parseFloat(ep) > 50 ? "Majority" : "Minority"} of visitors interact with filters.`,
+          ) +
+          mkCard(
+            "Most included game",
+            slug(topVis?.[0] || ""),
+            `Kept visible in ${pctOf(topVis?.[1] || 0, actEvt)} of active events (${fmt(topVis?.[1] || 0)}).`,
+          );
+        $("ins2").innerHTML =
+          mkCard(
+            "Most excluded game",
+            slug(topHid?.[0] || ""),
+            `Hidden in ${pctOf(topHid?.[1] || 0, actEvt)} of active events. May not belong in the default list.`,
+          ) +
+          mkCard(
+            "Typical filter size",
+            `${topSize?.[0] || 0} games visible`,
+            `Most common selection count (${pctOf(topSize?.[1] || 0, actEvt)}). Default shows ${defVis.size} games.`,
+          );
+      }
+
+      // Bars
+      function renderBars(d, tab) {
+        const { gameVis, gameHid, actEvt, gameList } = d;
+        let entries, lT, rT, lC, rC;
+        if (tab === "visible") {
+          entries = gameList
+            .map((g) => [g, gameVis[g] || 0])
+            .filter(([, v]) => v > 0)
+            .sort((a, b) => b[1] - a[1]);
+          lT = "Most included games";
+          rT = "Least included games";
+          lC = C.accent;
+          rC = "#4a6fa5";
+        } else if (tab === "hidden") {
+          entries = gameList
+            .map((g) => [g, gameHid[g] || 0])
+            .filter(([, v]) => v > 0)
+            .sort((a, b) => b[1] - a[1]);
+          lT = "Most excluded games";
+          rT = "Least excluded games";
+          lC = C.red;
+          rC = "#7a3535";
+        } else {
+          entries = gameList
+            .map((g) => [g, (gameVis[g] || 0) - (gameHid[g] || 0)])
+            .sort((a, b) => b[1] - a[1]);
+          lT = "Most preferred (visible - hidden)";
+          rT = "Least preferred";
+          lC = C.green;
+          rC = C.red;
+        }
+        const top = entries.slice(0, 15);
+        const bot = [...entries]
+          .reverse()
+          .filter(([, v]) => (tab === "delta" ? true : v > 0))
+          .slice(0, 15);
+        $("btl").textContent = lT;
+        $("btr").textContent = rT;
+        const maxL = Math.max(...top.map(([, v]) => Math.abs(v)), 1);
+        const maxR = Math.max(...bot.map(([, v]) => Math.abs(v)), 1);
+        const mkRows = (items, maxV, color) =>
+          items
+            .map(
+              ([g, v]) =>
+                `<div class="bar-row"><div class="bar-label" title="${slug(g)}">${slug(g)}</div><div class="bar-track"><div class="bar-fill" style="width:${((Math.abs(v) / maxV) * 100).toFixed(1)}%;background:${tab === "delta" ? (v >= 0 ? C.green : C.red) : color}"></div></div><div class="bar-pct">${pctOf(Math.abs(v), actEvt)}</div></div>`,
+            )
+            .join("");
+        $("bl").innerHTML = mkRows(top, maxL, lC);
+        $("br").innerHTML = mkRows(bot, maxR, rC);
+      }
+
+      // Heatmap
+      function renderHeatmap(d) {
+        const { gameList, coVis } = d;
+        const active = gameList.filter((g) =>
+          Object.values(coVis[g] || {}).some((v) => v > 0),
+        );
+        const n = active.length;
+        if (!n) return;
+
+        // Dynamically measure label width
+        const tmpCv = document.createElement("canvas");
+        const tmpCtx = tmpCv.getContext("2d");
+        tmpCtx.font = "11px IBM Plex Mono,monospace";
+        const LABEL = Math.min(
+          220,
+          Math.ceil(
+            Math.max(...active.map((g) => tmpCtx.measureText(slug(g)).width)) +
+              16,
+          ),
+        );
+
+        const avail = Math.min(window.innerWidth - 80, 1200);
+        const CELL = Math.max(
+          14,
+          Math.min(24, Math.floor((avail - LABEL) / n)),
+        );
+        const FONT = Math.min(11, CELL - 1);
+        const W = LABEL + n * CELL,
+          H = LABEL + n * CELL;
+        const cv = $("heatmap-canvas");
+        cv.width = W;
+        cv.height = H;
+        cv.style.width = W + "px";
+        cv.style.height = H + "px";
+        const ctx = cv.getContext("2d");
+        ctx.fillStyle = C.surface;
+        ctx.fillRect(0, 0, W, H);
+
+        let maxVal = 0;
+        active.forEach((a) =>
+          active.forEach((b) => {
+            if (a !== b) maxVal = Math.max(maxVal, coVis[a]?.[b] || 0);
+          }),
+        );
+
+        active.forEach((a, i) =>
+          active.forEach((b, j) => {
+            const v = a === b ? 0 : coVis[a]?.[b] || 0;
+            ctx.fillStyle =
+              a === b ? C.surface2 : heatCol(maxVal > 0 ? v / maxVal : 0);
+            ctx.fillRect(
+              LABEL + j * CELL,
+              LABEL + i * CELL,
+              CELL - 1,
+              CELL - 1,
+            );
+          }),
+        );
+
+        ctx.font = `${FONT}px IBM Plex Mono,monospace`;
+        ctx.fillStyle = C.text2;
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "right";
+        active.forEach((g, i) =>
+          ctx.fillText(slug(g), LABEL - 4, LABEL + i * CELL + CELL / 2),
+        );
+
+        ctx.save();
+        ctx.textAlign = "left";
+        active.forEach((g, j) => {
+          ctx.save();
+          ctx.translate(LABEL + j * CELL + CELL / 2, LABEL - 4);
+          ctx.rotate(-Math.PI / 2);
+          ctx.fillText(slug(g), 0, 0);
+          ctx.restore();
+        });
+        ctx.restore();
+
+        // Scale
+        const sc = $("scale-canvas"),
+          sctx = sc.getContext("2d");
+        const grad = sctx.createLinearGradient(0, 0, 100, 0);
+        for (let i = 0; i <= 10; i++)
+          grad.addColorStop(i / 10, heatCol(i / 10));
+        sctx.fillStyle = grad;
+        sctx.fillRect(0, 0, 100, 8);
+
+        cv.onmousemove = (e) => {
+          const r = cv.getBoundingClientRect(),
+            sx = cv.width / r.width,
+            sy = cv.height / r.height;
+          const row = Math.floor(((e.clientY - r.top) * sy - LABEL) / CELL);
+          const col = Math.floor(((e.clientX - r.left) * sx - LABEL) / CELL);
+          if (row >= 0 && row < n && col >= 0 && col < n) {
+            const a = active[row],
+              b = active[col];
+            if (a === b) showTip(e, `<strong>${slug(a)}</strong><br>Diagonal`);
+            else {
+              const v = coVis[a]?.[b] || 0;
+              showTip(
+                e,
+                `<strong>${slug(a)}</strong><br><strong>${slug(b)}</strong><br>Co-selected: ${fmt(v)} events (${maxVal > 0 ? ((v / maxVal) * 100).toFixed(0) : 0}% of max)`,
+              );
+            }
+            moveTip(e);
+          } else hideTip();
+        };
+        cv.onmouseleave = hideTip;
+      }
+
+      // Graph - pre-computed layout (runs offline, no animation loop)
+      const gState = { nodes: [], edges: [], zoom: 1, panX: 0, panY: 0 };
+      function renderGraph(d, mode, thresh) {
+        const { gameList, coVis, coHid, gameVis, gameHid } = d;
+
+        const cv = $("graph-canvas");
+        const W = cv.parentElement.clientWidth || 900;
+        const H = 480;
+        cv.setAttribute("width", W);
+        cv.setAttribute("height", H);
+        const ctx = cv.getContext("2d");
+
+        const maxVco = Math.max(
+          ...gameList.flatMap((a) => gameList.map((b) => coVis[a]?.[b] || 0)),
+          1,
+        );
+        const maxHco = Math.max(
+          ...gameList.flatMap((a) => gameList.map((b) => coHid[a]?.[b] || 0)),
+          1,
+        );
+
+        const edges = [];
+        gameList.forEach((a, i) =>
+          gameList.forEach((b, j) => {
+            if (j <= i) return;
+            let wv = 0,
+              wh = 0;
+            if (mode === "visible" || mode === "both")
+              wv = (coVis[a]?.[b] || 0) / maxVco;
+            if (mode === "hidden" || mode === "both")
+              wh = (coHid[a]?.[b] || 0) / maxHco;
+            const w = Math.max(wv, wh);
+            if (w * 100 >= thresh)
+              edges.push({
+                a,
+                b,
+                wv,
+                wh,
+                weight: w,
+                type: wv > 0 && wh > 0 ? "both" : wv > 0 ? "vis" : "hid",
+              });
+          }),
+        );
+
+        const connected = new Set(edges.flatMap((e) => [e.a, e.b]));
+        const activeG = [...connected];
+        const maxVis = Math.max(...activeG.map((g) => gameVis[g] || 0), 1);
+
+        // Initialise positions: reuse existing if same node, else evenly on circle
+        const existMap = {};
+        gState.nodes.forEach((n) => (existMap[n.id] = n));
+        const cx = W / 2,
+          cy = H / 2,
+          initR = Math.min(W, H) * 0.35;
+        const nodes = activeG.map((g, i) => ({
+          id: g,
+          x: existMap[g]
+            ? existMap[g].x
+            : cx + initR * Math.cos((2 * Math.PI * i) / activeG.length),
+          y: existMap[g]
+            ? existMap[g].y
+            : cy + initR * Math.sin((2 * Math.PI * i) / activeG.length),
+          vx: 0,
+          vy: 0,
+          r: 5 + ((gameVis[g] || 0) / maxVis) * 10,
+        }));
+        const nMap = {};
+        nodes.forEach((n) => (nMap[n.id] = n));
+
+        // Run simulation synchronously for N iterations until energy is low
+        const ITERS = 400;
+        const REPULSION = 3500;
+        const IDEAL_DIST = 120;
+        for (let iter = 0; iter < ITERS; iter++) {
+          const cooling = 1 - iter / ITERS; // 1 -> 0
+          const damp = 0.4 + 0.5 * (1 - cooling); // 0.4 -> 0.9
+
+          // Repulsion between all pairs
+          for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+              const a = nodes[i],
+                b = nodes[j];
+              const dx = a.x - b.x,
+                dy = a.y - b.y;
+              const dist2 = Math.max(1, dx * dx + dy * dy);
+              const dist = Math.sqrt(dist2);
+              const f = (REPULSION / dist2) * cooling;
+              a.vx += (dx / dist) * f;
+              a.vy += (dy / dist) * f;
+              b.vx -= (dx / dist) * f;
+              b.vy -= (dy / dist) * f;
+            }
+          }
+          // Spring attraction along edges
+          edges.forEach((e) => {
+            const a = nMap[e.a],
+              b = nMap[e.b];
+            if (!a || !b) return;
+            const dx = b.x - a.x,
+              dy = b.y - a.y,
+              dist = Math.max(1, Math.hypot(dx, dy));
+            const ideal = IDEAL_DIST * (1 - e.weight * 0.5);
+            const f = (dist - ideal) * 0.06;
+            a.vx += (dx / dist) * f;
+            a.vy += (dy / dist) * f;
+            b.vx -= (dx / dist) * f;
+            b.vy -= (dy / dist) * f;
+          });
+          // Gentle centre gravity
+          nodes.forEach((n) => {
+            n.vx += (cx - n.x) * 0.004 * cooling;
+            n.vy += (cy - n.y) * 0.004 * cooling;
+            n.vx *= damp;
+            n.vy *= damp;
+            n.x += n.vx;
+            n.y += n.vy;
+            n.x = Math.max(n.r + 6, Math.min(W - n.r - 6, n.x));
+            n.y = Math.max(n.r + 6, Math.min(H - n.r - 6, n.y));
+          });
+        }
+
+        gState.nodes = nodes;
+        gState.edges = edges;
+
+        // --- Static draw function (called once + on zoom/pan/drag) ---
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+          ctx.fillStyle = C.surface;
+          ctx.fillRect(0, 0, W, H);
+          ctx.save();
+          ctx.translate(gState.panX, gState.panY);
+          ctx.scale(gState.zoom, gState.zoom);
+          edges.forEach((e) => {
+            const a = nMap[e.a],
+              b = nMap[e.b];
+            if (!a || !b) return;
+            ctx.globalAlpha = 0.15 + e.weight * 0.55;
+            ctx.strokeStyle =
+              e.type === "hid"
+                ? C.red
+                : e.type === "both"
+                  ? C.purple
+                  : C.accent;
+            ctx.lineWidth = Math.max(0.5, (0.5 + e.weight * 2.5) / gState.zoom);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          });
+          ctx.globalAlpha = 1;
+          nodes.forEach((n) => {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx.fillStyle = C.surface2;
+            ctx.fill();
+            ctx.strokeStyle = C.accent;
+            ctx.lineWidth = 1.5 / gState.zoom;
+            ctx.stroke();
+            const fs = Math.max(8, Math.min(11, n.r + 2));
+            ctx.font = `500 ${fs}px Inter,sans-serif`;
+            ctx.fillStyle = C.text;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(slug(n.id).split(" ").slice(0, 3).join(" "), n.x, n.y);
+          });
+          ctx.restore();
+        }
+
+        draw();
+
+        // Interaction
+        let dragNode = null,
+          isPanning = false,
+          lastMx = 0,
+          lastMy = 0;
+        cv.onmousedown = (e) => {
+          const r = cv.getBoundingClientRect();
+          const mx = (e.clientX - r.left - gState.panX) / gState.zoom;
+          const my = (e.clientY - r.top - gState.panY) / gState.zoom;
+          dragNode =
+            nodes.find((n) => Math.hypot(n.x - mx, n.y - my) < n.r + 6) || null;
+          if (!dragNode) {
+            isPanning = true;
+            lastMx = e.clientX;
+            lastMy = e.clientY;
+          }
+        };
+        cv.onmousemove = (e) => {
+          const r = cv.getBoundingClientRect();
+          let dirty = false;
+          if (dragNode) {
+            dragNode.x = (e.clientX - r.left - gState.panX) / gState.zoom;
+            dragNode.y = (e.clientY - r.top - gState.panY) / gState.zoom;
+            dirty = true;
+          } else if (isPanning) {
+            gState.panX += e.clientX - lastMx;
+            gState.panY += e.clientY - lastMy;
+            lastMx = e.clientX;
+            lastMy = e.clientY;
+            dirty = true;
+          }
+          if (dirty) draw();
+          const mx = (e.clientX - r.left - gState.panX) / gState.zoom;
+          const my = (e.clientY - r.top - gState.panY) / gState.zoom;
+          const hit = nodes.find(
+            (n) => Math.hypot(n.x - mx, n.y - my) < n.r + 5,
+          );
+          if (hit)
+            showTip(
+              e,
+              `<strong>${slug(hit.id)}</strong><br>Included: ${fmt(gameVis[hit.id] || 0)} events (${pctOf(gameVis[hit.id] || 0, d.actEvt)})<br>Excluded: ${fmt(gameHid[hit.id] || 0)} events`,
+            );
+          else hideTip();
+          moveTip(e);
+        };
+        cv.onmouseup = () => {
+          dragNode = null;
+          isPanning = false;
+        };
+        cv.onmouseleave = () => {
+          dragNode = null;
+          isPanning = false;
+          hideTip();
+        };
+        cv.onwheel = (e) => {
+          e.preventDefault();
+          const r = cv.getBoundingClientRect(),
+            mx = e.clientX - r.left,
+            my = e.clientY - r.top;
+          const factor = e.deltaY > 0 ? 0.88 : 1.14;
+          const nz = Math.max(0.2, Math.min(6, gState.zoom * factor));
+          gState.panX = mx - (mx - gState.panX) * (nz / gState.zoom);
+          gState.panY = my - (my - gState.panY) * (nz / gState.zoom);
+          gState.zoom = nz;
+          draw();
+        };
+      }
+
+      // Combos
+      function renderCombos(d) {
+        $("top-combos").innerHTML = Object.entries(d.comboCounts)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 12)
+          .map(([key, cnt], i) => {
+            const games = key.split("|").filter(Boolean);
+            return `<div class="combo-item"><div class="combo-rank">#${i + 1}</div><div class="combo-games">${games.map((g) => `<span class="game-chip">${slug(g)}</span>`).join("")}</div><div class="combo-count">${fmt(cnt)}</div></div>`;
+          })
+          .join("");
+      }
+
+      // Size dist
+      function renderSizeDist(d) {
+        const cv = $("dist-canvas");
+        const W = cv.offsetWidth;
+        if (!W) return;
+        const H = 220;
+        cv.width = W;
+        cv.height = H;
+        const ctx = cv.getContext("2d");
+        ctx.clearRect(0, 0, W, H);
+        const entries = Object.entries(d.sizeDist)
+          .map(([k, v]) => [+k, v])
+          .sort((a, b) => a[0] - b[0]);
+        if (!entries.length) return;
+        const maxV = Math.max(...entries.map((e) => e[1]));
+        const pad = { t: 12, r: 12, b: 48, l: 50 },
+          cW = W - pad.l - pad.r,
+          cH = H - pad.t - pad.b;
+        const bw = Math.max(6, Math.floor(cW / entries.length) - 3);
+        ctx.strokeStyle = C.surface2;
+        ctx.lineWidth = 1;
+        [0, 0.25, 0.5, 0.75, 1].forEach((f) => {
+          const y = pad.t + cH - f * cH;
+          ctx.beginPath();
+          ctx.moveTo(pad.l, y);
+          ctx.lineTo(W - pad.r, y);
+          ctx.stroke();
+          ctx.fillStyle = C.text3;
+          ctx.font = "10px IBM Plex Mono,monospace";
+          ctx.textAlign = "right";
+          ctx.fillText(Math.round(maxV * f).toLocaleString(), pad.l - 4, y + 3);
+        });
+        entries.forEach(([k, v], i) => {
+          const bh = (v / maxV) * cH;
+          const x =
+            pad.l + (i / entries.length) * cW + (cW / entries.length - bw) / 2;
+          const y = pad.t + cH - bh;
+          ctx.fillStyle = C.accent + "cc";
+          ctx.fillRect(x, y, bw, bh);
+          ctx.save();
+          ctx.fillStyle = C.text2;
+          ctx.font = "10px IBM Plex Mono,monospace";
+          ctx.translate(x + bw / 2, H - pad.b + 8);
+          ctx.rotate(-Math.PI / 3);
+          ctx.textAlign = "right";
+          ctx.fillText(String(k), 0, 0);
+          ctx.restore();
+        });
+        ctx.fillStyle = C.text3;
+        ctx.font = "11px Inter,sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Number of games kept visible", W / 2, H - 2);
+      }
+
+      // Dropout / addin
+      function renderDropout(d, type) {
+        const entries =
+          type === "out"
+            ? Object.entries(d.dropout)
+                .filter(([, v]) => v > 0)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15)
+            : Object.entries(d.addin)
+                .filter(([, v]) => v > 0)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15);
+        const maxV = Math.max(...entries.map((e) => e[1]), 1);
+        const color = type === "out" ? C.red : C.green;
+        $("dropout-bars").innerHTML = entries.length
+          ? entries
+              .map(
+                ([g, v]) =>
+                  `<div class="bar-row"><div class="bar-label" title="${slug(g)}">${slug(g)}</div><div class="bar-track"><div class="bar-fill" style="width:${((v / maxV) * 100).toFixed(1)}%;background:${color}cc"></div></div><div class="bar-pct">${pctOf(v, d.actEvt)}</div></div>`,
+              )
+              .join("")
+          : `<div style="color:var(--text3);font-size:12px;padding:8px 0">No data for this view</div>`;
+      }
+
+      // Config diversity - log scale
+      function renderComboDist(d) {
+        const cv = $("combo-dist-canvas");
+        const W = cv.offsetWidth;
+        if (!W) return;
+        const H = 180;
+        cv.width = W;
+        cv.height = H;
+        const ctx = cv.getContext("2d");
+        ctx.clearRect(0, 0, W, H);
+        const entries = Object.entries(d.comboCounts).sort(
+          (a, b) => b[1] - a[1],
+        );
+        if (!entries.length) return;
+        const maxV = entries[0][1];
+        const logMax = Math.log10(maxV + 1);
+        const pad = { t: 16, r: 16, b: 28, l: 52 },
+          cW = W - pad.l - pad.r,
+          cH = H - pad.t - pad.b;
+        const bw = Math.max(1, Math.floor(cW / entries.length) - 1);
+
+        ctx.strokeStyle = C.surface2;
+        ctx.lineWidth = 1;
+        [1, 10, 100, 1000, 10000].forEach((v) => {
+          if (v > maxV * 1.5) return;
+          const logV = Math.log10(v + 1) / logMax;
+          const y = pad.t + cH * (1 - logV);
+          ctx.beginPath();
+          ctx.moveTo(pad.l, y);
+          ctx.lineTo(W - pad.r, y);
+          ctx.stroke();
+          ctx.fillStyle = C.text3;
+          ctx.font = "10px IBM Plex Mono,monospace";
+          ctx.textAlign = "right";
+          ctx.fillText(
+            v >= 1000 ? `${v / 1000}k` : String(v),
+            pad.l - 4,
+            y + 3,
+          );
+        });
+
+        entries.forEach(([, v], i) => {
+          const logV = Math.log10(v + 1) / logMax;
+          const bh = logV * cH;
+          const x = pad.l + (i / entries.length) * cW;
+          const alpha = Math.max(0.3, 0.9 - (i / entries.length) * 0.5);
+          ctx.fillStyle =
+            C.accent +
+            Math.round(alpha * 255)
+              .toString(16)
+              .padStart(2, "0");
+          ctx.fillRect(x, pad.t + cH - bh, Math.max(1, bw), bh);
+        });
+
+        ctx.fillStyle = C.text3;
+        ctx.font = "11px Inter,sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          `${entries.length} unique configurations - sorted by popularity (log scale Y)`,
+          W / 2,
+          H - 4,
+        );
+      }
+
+      // Table
+      function renderTable(d) {
+        const { gameList, gameVis, gameHid, actEvt } = d;
+        const rows = gameList
+          .filter((g) => (gameVis[g] || 0) + (gameHid[g] || 0) > 0)
+          .map((g) => {
+            const vis = gameVis[g] || 0,
+              hid = gameHid[g] || 0;
+            return {
+              g,
+              vis,
+              hid,
+              net: vis - hid,
+              vp: pctNum(vis, actEvt),
+              hp: pctNum(hid, actEvt),
+            };
+          })
+          .sort((a, b) => b.net - a.net);
+        $("stats-tbody").innerHTML = rows
+          .map(
+            (r, i) => `
+    <tr>
+      <td class="mono" style="color:var(--text3)">${i + 1}</td>
+      <td>${slug(r.g)}</td>
+      <td><div class="pct-cell"><div class="pct-bar-inline"><div class="pct-bar-fill" style="width:${Math.min(100, r.vp).toFixed(1)}%;background:${C.accent}"></div></div><span class="mono">${r.vp.toFixed(1)}%</span></div></td>
+      <td><div class="pct-cell"><div class="pct-bar-inline"><div class="pct-bar-fill" style="width:${Math.min(100, r.hp).toFixed(1)}%;background:${C.red}"></div></div><span class="mono">${r.hp.toFixed(1)}%</span></div></td>
+      <td class="mono" style="color:var(--text2)">${fmt(r.vis)}</td>
+      <td class="mono" style="color:var(--text2)">${fmt(r.hid)}</td>
+      <td class="mono ${r.net >= 0 ? "net-pos" : "net-neg"}">${r.net >= 0 ? "+" : ""}${fmt(r.net)}</td>
+    </tr>`,
+          )
+          .join("");
+        $("net-q").onmouseenter = (e) =>
+          showTip(
+            e,
+            "<strong>Net score = Visible minus Hidden events</strong><br>Positive: users prefer to keep this game visible.<br>Negative: more users hide it than show it.",
+          );
+        $("net-q").onmousemove = moveTip;
+        $("net-q").onmouseleave = hideTip;
+      }
+
+      // Load
+      function loadData(text) {
+        const rows = parseCSV(text);
+        if (!rows.length) {
+          alert("No data found");
+          return;
+        }
+        const d = analyze(rows);
+        window._data = d;
+        $("empty-state").style.display = "none";
+        $("dashboard").style.display = "block";
+
+        renderKPIs(d);
+        renderDonut(d);
+        renderInsights(d);
+        renderBars(d, "visible");
+        renderCombos(d);
+        renderDropout(d, "out");
+        renderTable(d);
+
+        // Game popularity tab wiring
+        document.querySelectorAll("#pop-tabs .tab-btn").forEach((btn) => {
+          btn.onclick = () => {
+            document
+              .querySelectorAll("#pop-tabs .tab-btn")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderBars(d, btn.dataset.tab);
+          };
+        });
+
+        // Dropout tab wiring
+        document.querySelectorAll("#dropout-tabs .tab-btn").forEach((btn) => {
+          btn.onclick = () => {
+            document
+              .querySelectorAll("#dropout-tabs .tab-btn")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderDropout(d, btn.dataset.dtype);
+          };
+        });
+
+        requestAnimationFrame(() => {
+          renderSizeDist(d);
+          renderComboDist(d);
+          renderHeatmap(d);
+          gState.zoom = 1;
+          gState.panX = 0;
+          gState.panY = 0;
+          const initT = 8;
+          $("thresh-label").textContent = initT + "%";
+          renderGraph(d, "both", initT);
+          $("graph-mode").onchange = () => {
+            gState.zoom = 1;
+            gState.panX = 0;
+            gState.panY = 0;
+            renderGraph(
+              d,
+              $("graph-mode").value,
+              parseInt($("edge-thresh").value),
+            );
+          };
+          $("edge-thresh").oninput = () => {
+            $("thresh-label").textContent = $("edge-thresh").value + "%";
+          };
+          $("edge-thresh").onchange = () => {
+            gState.zoom = 1;
+            gState.panX = 0;
+            gState.panY = 0;
+            renderGraph(
+              d,
+              $("graph-mode").value,
+              parseInt($("edge-thresh").value),
+            );
+          };
+        });
+      }
+
+      // File handling
+      const inp = $("csv-input"),
+        dz = $("drop-zone");
+      function handleFile(file) {
+        if (!file || !file.name.endsWith(".csv")) {
+          alert("Please upload a .csv file");
+          return;
+        }
+        $("upload-text").textContent = file.name;
+        $("upload-text").className = "file-loaded";
+        const r = new FileReader();
+        r.onload = (e) => loadData(e.target.result);
+        r.readAsText(file);
+      }
+      inp.onchange = (e) => handleFile(e.target.files[0]);
+      dz.ondragover = (e) => {
+        e.preventDefault();
+      };
+      dz.ondrop = (e) => {
+        e.preventDefault();
+        handleFile(e.dataTransfer.files[0]);
+      };
+      window.addEventListener("resize", () => {
+        if (!window._data) return;
+        requestAnimationFrame(() => {
+          renderSizeDist(window._data);
+          renderComboDist(window._data);
+          renderHeatmap(window._data);
+          renderGraph(
+            window._data,
+            $("graph-mode").value,
+            parseInt($("edge-thresh").value),
+          );
+        });
+      });
+    </script>
+  </body>
+</html>
