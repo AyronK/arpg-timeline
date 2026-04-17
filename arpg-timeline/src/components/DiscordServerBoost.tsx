@@ -16,10 +16,10 @@ export const DiscordServerBoost = () => (
                 <Image
                     loading="lazy"
                     src="/assets/third-party/discord-logo.svg"
-                    className="m-auto h-5 w-5 opacity-90 md:h-6 md:w-6"
+                    className="m-auto h-6 w-6 opacity-70 md:h-7 md:w-7"
                     alt="Discord logo"
-                    width={24}
-                    height={24}
+                    width={32}
+                    height={32}
                 />
             }
             title="Boost our Discord server"
@@ -43,10 +43,10 @@ export const DiscordContactBanner = () => (
                 <Image
                     loading="lazy"
                     src="/assets/third-party/discord-logo.svg"
-                    className="m-auto h-5 w-5 opacity-90 md:h-6 md:w-6"
+                    className="m-auto h-6 w-6 opacity-70 md:h-7 md:w-7"
                     alt="Discord logo"
-                    width={24}
-                    height={24}
+                    width={32}
+                    height={32}
                 />
             }
             title="Contact us on Discord"

@@ -4,6 +4,7 @@ import { Check, Copy, Gamepad2, Rss } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 
+import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { cn } from "@/lib/utils";
 
@@ -212,7 +213,10 @@ export default function CalendarPage() {
                     </div>
                 </div>
 
-                <PatreonFunding />
+                <div className="flex flex-col gap-4">
+                    <PatreonFunding />
+                    <BuyMeACoffee />
+                </div>
             </div>
         </div>
     );

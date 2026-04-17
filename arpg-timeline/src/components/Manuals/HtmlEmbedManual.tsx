@@ -3,6 +3,8 @@
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
+import { BuyMeACoffee } from "@/components/BuyMeACoffee";
+import { PatreonFunding } from "@/components/PatreonFunding";
 import { Button } from "@/ui/Button";
 
 export const HtmlEmbedManual = ({ game }: { game: string }) => {
@@ -156,6 +158,9 @@ export const HtmlEmbedManual = ({ game }: { game: string }) => {
                     <li>• No JavaScript required - it&apos;s a simple HTML embed</li>
                 </ul>
             </section>
+
+            <PatreonFunding />
+            <BuyMeACoffee />
         </article>
     );
 };

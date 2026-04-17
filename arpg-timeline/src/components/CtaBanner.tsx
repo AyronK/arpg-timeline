@@ -7,7 +7,7 @@ export interface CtaBannerProps {
     title: string;
     description: string;
     actionLabel: string;
-    color: "orange" | "emerald" | "violet" | "indigo";
+    color: "orange" | "emerald" | "violet" | "indigo" | "amber";
     layout?: "inline" | "stacked" | "mobile-stacked";
     className?: string;
 }
@@ -17,6 +17,7 @@ const colorClasses = {
     emerald: "bg-emerald-500/30 group-hover:bg-emerald-500/50",
     violet: "bg-violet-500/30 group-hover:bg-violet-500/50",
     indigo: "bg-indigo-500/30 group-hover:bg-indigo-500/50",
+    amber: "bg-amber-500/30 group-hover:bg-amber-500/50",
 };
 
 export const CtaBannerContent = ({
@@ -50,7 +51,7 @@ export const CtaBannerContent = ({
                 <h3 className="font-heading text-foreground text-sm font-medium md:text-base">
                     {title}
                 </h3>
-                <p className="text-muted-foreground text-xs leading-tight md:text-sm">
+                <p className="text-muted-foreground text-xs leading-tight text-pretty md:text-sm">
                     {description}
                 </p>
             </div>
@@ -86,9 +87,12 @@ const borderClasses = {
     emerald: "border-emerald-500/30 hover:border-emerald-500/50",
     violet: "border-violet-500/30 hover:border-violet-500/50",
     indigo: "border-indigo-500/30 hover:border-indigo-500/50",
+    amber: "border-amber-500/30 hover:border-amber-500/50",
 };
 
-export const getCtaBannerClassName = (color: "orange" | "emerald" | "violet" | "indigo") =>
+export const getCtaBannerClassName = (
+    color: "orange" | "emerald" | "violet" | "indigo" | "amber",
+) =>
     cn(
         "text-card-foreground bg-card group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-lg border-2 p-4 transition-all hover:shadow-md md:p-6",
         borderClasses[color],

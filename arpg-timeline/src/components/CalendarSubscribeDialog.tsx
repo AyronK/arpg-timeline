@@ -1,9 +1,11 @@
 "use client";
 
 import { CalendarSync, Check, Copy } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 
+import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Button } from "@/ui/Button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/Dialog";
@@ -16,9 +18,38 @@ import {
     DrawerTitle,
 } from "@/ui/Drawer";
 
-import { ProtonCalendarAffiliation } from "./ProtonCalendarAffiliation";
-
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+
+const CalendarSupportCta = () => {
+    if (!process.env.NEXT_PUBLIC_BUY_ME_A_COFFEE_URL) return null;
+
+    return (
+        <Link
+            href={process.env.NEXT_PUBLIC_BUY_ME_A_COFFEE_URL}
+            rel="noopener noreferrer nofollow"
+            target="_blank"
+            data-sa-click="bmc-calendar-banner"
+            className={getCtaBannerClassName("amber")}
+        >
+            <CtaBannerContent
+                icon={
+                    <Image
+                        loading="lazy"
+                        src="/assets/third-party/bmc-logo.svg"
+                        className="m-auto h-5 w-5 opacity-70 md:h-6 md:w-6"
+                        alt="Buy Me a Coffee logo"
+                        width={24}
+                        height={24}
+                    />
+                }
+                title="Calendar syncs are free"
+                description="Real-time season updates in your calendar at no extra cost. Your small tip helps keep it that way."
+                actionLabel="Tip"
+                color="amber"
+            />
+        </Link>
+    );
+};
 
 export const CopyableRow = ({
     url,
@@ -147,7 +178,7 @@ const SubscribeContent = ({
                 </Link>
             </p>
 
-            <ProtonCalendarAffiliation />
+            <CalendarSupportCta />
         </div>
     );
 };

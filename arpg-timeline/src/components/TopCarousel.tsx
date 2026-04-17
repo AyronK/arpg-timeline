@@ -14,6 +14,7 @@ import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
 import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/ui/Carousel";
 
+import { BuyMeACoffee } from "./BuyMeACoffee";
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 
 export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
@@ -50,20 +51,20 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
     return (
         <ClientOnlyVisibleWrapper key={key}>
             <div className="flex justify-center">
-                <div className="relative mx-auto max-w-screen flex-1 lg:max-w-3xl">
+                <div className="relative mx-auto max-w-screen flex-1 lg:max-w-4xl">
                     <h2 className="hidden">Streams</h2>
                     <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                        <div className="mx-auto max-w-screen lg:max-w-3xl">
+                        <div className="mx-auto max-w-screen lg:max-w-4xl">
                             <Carousel
                                 plugins={[
                                     Autoplay({
-                                        delay: 7_500,
+                                        delay: 5000,
                                         stopOnMouseEnter: true,
                                         playOnInit: true,
                                         stopOnFocusIn: false,
                                     }),
                                 ]}
-                                className="w-full max-w-screen select-none lg:max-w-3xl"
+                                className="w-full max-w-screen select-none lg:max-w-4xl"
                                 opts={{
                                     loop: true,
                                     active: true,
@@ -85,14 +86,21 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                     ))}
                                     <CarouselItem
                                         className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full"
                                         }
                                     >
                                         <PatreonFunding />
                                     </CarouselItem>
                                     <CarouselItem
                                         className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8"
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full"
+                                        }
+                                    >
+                                        <BuyMeACoffee />
+                                    </CarouselItem>
+                                    <CarouselItem
+                                        className={
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full"
                                         }
                                     >
                                         <CalendarSubscriptionAlert />
