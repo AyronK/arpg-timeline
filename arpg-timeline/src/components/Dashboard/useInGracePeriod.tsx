@@ -1,25 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { DAY } from "@/lib/date";
+import { inGracePeriod } from "@/lib/games/sortBySeasons";
 
-export const GRACE_PERIOD = DAY * 2;
-
-export const useInGracePeriod = (startDate: string | null | undefined) => {
+export const useInGracePeriod = (startDate: string | null | undefined, endDate?: string | null) => {
     const [isInGracePeriod, setIsInGracePeriod] = useState(false);
 
     useEffect(() => {
         const checkGracePeriod = () => {
-            if (!startDate) {
-                setIsInGracePeriod(false);
-                return;
-            }
-            setIsInGracePeriod(Date.now() - new Date(startDate).getTime() < GRACE_PERIOD);
+            setIsInGracePeriod(inGracePeriod(startDate, endDate));
         };
         checkGracePeriod();
         const interval = setInterval(checkGracePeriod, 10_000);
         return () => clearInterval(interval);
-    }, [startDate]);
+    }, [startDate, endDate]);
 
     return isInGracePeriod;
 };

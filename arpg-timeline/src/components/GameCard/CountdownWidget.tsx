@@ -6,7 +6,10 @@ import { FramedAction } from "../FramedAction/FramedAction";
 import { Logo } from "../Logo";
 
 export const CountdownWidget = ({ game, gameLogo }: { game: Game; gameLogo: React.ReactNode }) => {
-    const isInGracePeriod = inGracePeriod(game.currentSeason?.start?.startDate);
+    const isInGracePeriod = inGracePeriod(
+        game.currentSeason?.start?.startDate,
+        game.currentSeason?.end?.endDate,
+    );
     if (!game?.nextSeason && !isInGracePeriod) {
         return null;
     }

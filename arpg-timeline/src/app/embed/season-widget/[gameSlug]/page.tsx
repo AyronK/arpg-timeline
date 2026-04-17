@@ -49,7 +49,10 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                 stats={{ steam: steamStats }}
             >
                 <EmbedGameToSeasonWidget game={game} selector="current" />
-                {inGracePeriod(game.currentSeason?.start?.startDate) ? (
+                {inGracePeriod(
+                    game.currentSeason?.start?.startDate,
+                    game.currentSeason?.end?.endDate,
+                ) ? (
                     game.currentSeason?.patchNotesUrl && (
                         <div className="mt-auto flex flex-col gap-2">
                             <GuardedExternalLink

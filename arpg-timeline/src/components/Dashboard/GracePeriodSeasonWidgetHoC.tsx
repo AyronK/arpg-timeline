@@ -11,7 +11,10 @@ import { FramedAction } from "../FramedAction/FramedAction";
 import { useInGracePeriod } from "./useInGracePeriod";
 
 export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
-    const isInGracePeriod = useInGracePeriod(game.currentSeason?.start?.startDate);
+    const isInGracePeriod = useInGracePeriod(
+        game.currentSeason?.start?.startDate,
+        game.currentSeason?.end?.endDate,
+    );
 
     if (!isInGracePeriod) {
         return <GameToSeasonWidget game={game} selector="next" />;

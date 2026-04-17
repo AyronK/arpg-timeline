@@ -7,7 +7,7 @@ export const processGamesWithGracePeriodAndSort = (games: Game[]): Game[] => {
         .map((g) => {
             if (
                 g?.currentSeason?.start?.startDate &&
-                inGracePeriod(g.currentSeason.start.startDate)
+                inGracePeriod(g.currentSeason.start.startDate, g.currentSeason?.end?.endDate)
             ) {
                 const diff =
                     new Date().getTime() - new Date(g.currentSeason.start.startDate).getTime();

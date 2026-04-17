@@ -66,7 +66,7 @@ export const GamesAndEventsGrid = ({
                 </div>
                 <div
                     className={cn(
-                        "3xl:grid-cols-4 4xl:grid-cols-5 transition- relative z-0 grid grid-cols-1 gap-4 transition-all ease-in-out ease-out md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3 [&>*]:min-h-52 md:[&>*]:min-h-80",
+                        "4xl:grid-cols-5 transition- relative z-0 grid grid-cols-1 gap-4 transition-all ease-in-out ease-out md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 [&>*]:min-h-52 md:[&>*]:min-h-80",
                         { "opacity-0": isLoading },
                     )}
                 >

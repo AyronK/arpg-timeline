@@ -28,7 +28,7 @@ export const Games = ({
                     className={cn("order-4 flex", {
                         "order-first": idx <= 1,
                         "xl:order-first": idx <= 2,
-                        "3xl:order-first": idx <= 3,
+                        "2xl:order-first": idx <= 3,
                         "4xl:order-first": idx <= 4,
                     })}
                 >

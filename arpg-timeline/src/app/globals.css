@@ -175,13 +175,16 @@
         padding-inline: 0rem;
     }
     @media (width >= theme(--breakpoint-lg)) {
-        padding-inline: 4rem;
+        padding-inline: 2rem;
     }
     @media (width >= theme(--breakpoint-xl)) {
-        padding-inline: 4rem;
+        padding-inline: 2rem;
     }
     @media (width >= theme(--breakpoint-2xl)) {
-        padding-inline: 10rem;
+        padding-inline: 2rem;
+    }
+    @media (width >= theme(--breakpoint-4xl)) {
+        padding-inline: 12rem;
     }
 }
 

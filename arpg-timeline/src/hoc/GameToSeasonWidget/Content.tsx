@@ -33,7 +33,7 @@ export const Content = ({
         return null;
     }
 
-    const isInGracePeriod = inGracePeriod(season.start?.startDate);
+    const isInGracePeriod = inGracePeriod(season.start?.startDate, season.end?.endDate);
     const info = (season.start?.additionalText || season.end?.additionalText) && !compactEmbed && (
         <IconLabel icon={InfoIcon} className="text-xs" iconPosition="end">
             {season.start?.additionalText || season.end?.additionalText}

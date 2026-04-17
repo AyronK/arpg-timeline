@@ -15,7 +15,7 @@ export const useChip = ({ game, selector }: { game: Game; selector: Selector }) 
             return "over";
         }
 
-        const isInGracePeriod = inGracePeriod(season.start?.startDate);
+        const isInGracePeriod = inGracePeriod(season.start?.startDate, season.end?.endDate);
         let chip: SeasonChip;
 
         if (game.isDormant) {

@@ -17,7 +17,7 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => {
     const { isPartnerHidden } = usePartnerPromos();
     const showProtonCard = !expanded && !isPartnerHidden("proton");
     return (
-        <div className="3xl:col-span-4 4xl:col-span-5 lg-col-span-2 3xl:grid-cols-4 4xl:grid-cols-5 transition- relative z-0 order-3 col-span-1 grid min-h-auto! grid-cols-1 gap-4 transition-all ease-in-out ease-out md:col-span-2 md:grid-cols-2 md:gap-4 md:gap-5 lg:grid-cols-2 xl:col-span-3 xl:grid-cols-3">
+        <div className="4xl:col-span-5 lg-col-span-2 4xl:grid-cols-5 transition- relative z-0 order-3 col-span-1 grid min-h-auto! grid-cols-1 gap-4 transition-all ease-in-out ease-out md:col-span-2 md:grid-cols-2 md:gap-4 md:gap-5 lg:grid-cols-2 xl:col-span-3 xl:grid-cols-3 2xl:col-span-4 2xl:grid-cols-4">
             {showProtonCard && <ProtonDashboardCard />}
             <div
                 className={cn(

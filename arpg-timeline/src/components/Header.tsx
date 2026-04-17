@@ -58,7 +58,7 @@ export const Header = () => {
                         <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-xs text-nowrap [direction:rtl] lg:block">
                             Every Season
                         </span>
-                        <div className="flex flex-row items-center lg:gap-4">
+                        <div className="flex flex-row items-center px-2 lg:gap-4 xl:px-0">
                             <Logo className="scale-75 lg:mx-auto lg:scale-100" />
                             <h1 className="text-nowrap">aRPG Timeline</h1>
                         </div>
@@ -67,7 +67,7 @@ export const Header = () => {
                         </span>
                     </div>
                 </Link>
-                <div className="flex h-full items-center justify-between gap-2">
+                <div className="flex h-full items-center justify-between gap-2 px-2">
                     <div className="ml-auto flex items-center">
                         <SocialButton
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}

@@ -1,13 +1,17 @@
 import { Game } from "@/lib/cms/games.types";
-import { DAY } from "@/lib/date";
+import { HOUR } from "@/lib/date";
 
-const GRACE_PERIOD = DAY * 2;
+export const GRACE_PERIOD = HOUR * 84;
 
-export const inGracePeriod = (startDate: string | null | undefined) => {
+export const inGracePeriod = (startDate: string | null | undefined, endDate?: string | null) => {
     if (!startDate) {
         return false;
     }
-    return new Date().getTime() - new Date(startDate).getTime() < GRACE_PERIOD;
+    const now = new Date().getTime();
+    if (endDate && now >= new Date(endDate).getTime()) {
+        return false;
+    }
+    return now - new Date(startDate).getTime() < GRACE_PERIOD;
 };
 
 export const isOver = (endDate: string | null | undefined) => {
@@ -31,7 +35,8 @@ export const sortBySeasons = (a: Game, b: Game) => {
         isOver(game.currentSeason.end.endDate);
 
     const isInGracePeriod = (game: Game) =>
-        game.currentSeason?.start?.startDate && inGracePeriod(game.currentSeason.start.startDate);
+        game.currentSeason?.start?.startDate &&
+        inGracePeriod(game.currentSeason.start.startDate, game.currentSeason?.end?.endDate);
 
     const aOver = isSeasonOver(a);
     const bOver = isSeasonOver(b);

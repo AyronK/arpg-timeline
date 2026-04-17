@@ -38,7 +38,7 @@ export const getCurrentSeasonChip = (
     const now = currentTime?.getTime() ?? Date.now();
     const endTimeMs = new Date(endDate).getTime();
 
-    return inGracePeriod(startDate) ? "live" : endTimeMs <= now ? "over" : "now";
+    return inGracePeriod(startDate, endDate) ? "live" : endTimeMs <= now ? "over" : "now";
 };
 
 export const getProgressStartContent = (
