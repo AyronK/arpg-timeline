@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 
+import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { DiscordServerBoost } from "@/components/DiscordServerBoost";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { ProtonSupportCards } from "@/components/ProtonSupportCards";
@@ -29,6 +30,7 @@ export default function SupportPage() {
                 <h3 className="font-heading mb-4 text-lg">Direct Support</h3>
                 <div className="mb-12 flex flex-col gap-4">
                     <PatreonFunding />
+                    <BuyMeACoffee />
                     <DiscordServerBoost />
                 </div>
 

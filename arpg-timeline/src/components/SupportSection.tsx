@@ -1,3 +1,4 @@
+import { BuyMeACoffee } from "./BuyMeACoffee";
 import { DiscordServerBoost } from "./DiscordServerBoost";
 import { PatreonFunding } from "./PatreonFunding";
 
@@ -9,6 +10,7 @@ export const SupportSection = () => {
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-4 md:flex-row">
                     <PatreonFunding />
+                    <BuyMeACoffee />
                     <DiscordServerBoost />
                 </div>
             </div>

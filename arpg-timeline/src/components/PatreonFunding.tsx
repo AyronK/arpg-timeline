@@ -3,6 +3,9 @@ import Link from "next/link";
 
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 
+const SITE_MONTHLY_COST = 25;
+const MONTHLY_VISITORS = "30K";
+
 export const PatreonFunding = () => (
     <Link
         href={process.env.NEXT_PUBLIC_PATREON_URL || "#"}
@@ -22,8 +25,8 @@ export const PatreonFunding = () => (
                     height={24}
                 />
             }
-            title="Support us on Patreon"
-            description="Help aRPG Timeline grow. Privacy-first, no intrusive ads!"
+            title="Keep aRPG Timeline Running"
+            description={`The site costs $${SITE_MONTHLY_COST}/month. Your 3$ powers ${MONTHLY_VISITORS}+ gamers and keeps us growing.`}
             actionLabel="Support"
             color="orange"
         />

@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL: process.env.PROTON_CALENDAR_AFFILIATE_URL,
         NEXT_PUBLIC_PROTON_DRIVE_AFFILIATE_URL: process.env.PROTON_DRIVE_AFFILIATE_URL,
         NEXT_PUBLIC_PROTON_PASS_AFFILIATE_URL: process.env.PROTON_PASS_AFFILIATE_URL,
+        NEXT_PUBLIC_BUY_ME_A_COFFEE_URL: process.env.BUY_ME_A_COFFEE_URL,
     },
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
