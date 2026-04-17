@@ -48,7 +48,7 @@ export default async function SupportPage() {
                 </p>
                 <ProtonSupportCards />
 
-                <div className="mt-12">
+                <div id="supporters" className="mt-12">
                     <h3 className="font-heading mb-4 text-lg">Supporters</h3>
                     <SupportersSection {...supporters} />
                 </div>

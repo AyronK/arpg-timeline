@@ -5,12 +5,11 @@ import type {
     ActiveSupporter,
     HallOfFameEntry,
     PastSupporter,
-    SupporterTier,
     SupportersQueryResult,
+    SupporterTier,
 } from "@/lib/cms/queries/supportersQuery";
-import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
-// ── Tier config ───────────────────────────────────────────────────────────────
+import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
 const TIER_LABELS: Record<SupporterTier, string> = {
     unique: "Unique",
@@ -33,13 +32,12 @@ const TIER_CARD_BORDER: Record<SupporterTier, string> = {
     magic: "border-blue-500/30",
 };
 
-// ── Hall of Fame ──────────────────────────────────────────────────────────────
-
-const TierBadge = ({ tier }: { tier: SupporterTier }) => (
-    <span className={`text-xs font-semibold tracking-wide uppercase ${TIER_LABEL_CLASSES[tier]}`}>
-        {TIER_LABELS[tier]}
-    </span>
-);
+const TIER_CARD_GLOW: Record<SupporterTier, string> = {
+    unique: "shadow-[0_0_14px_3px_rgba(217,119,6,0.45)]",
+    exalted: "shadow-[0_0_10px_2px_rgba(139,92,246,0.35)]",
+    rare: "shadow-[0_0_7px_1px_rgba(234,179,8,0.25)]",
+    magic: "shadow-[0_0_5px_0px_rgba(59,130,246,0.15)]",
+};
 
 const HallOfFameCard = ({ entry }: { entry: HallOfFameEntry }) => {
     const isTwitch = entry.url?.includes("twitch.tv");
@@ -59,19 +57,12 @@ const HallOfFameCard = ({ entry }: { entry: HallOfFameEntry }) => {
     );
 
     return (
-        <div className="bg-card flex w-44 flex-col items-center gap-2 rounded-lg border border-white/20 p-4 text-center shadow-[0_0_16px_2px_rgba(255,255,255,0.10)]">
-            {/* min-h reserves space for 2-line titles so cards in a row stay aligned */}
-            <p className="text-muted-foreground flex min-h-8 items-center justify-center text-xs font-medium leading-tight tracking-wide uppercase">
+        <div className="bg-card flex w-44 flex-col items-center gap-2 rounded-lg border border-white/20 p-4 text-center shadow-[0_0_16px_2px_rgba(203,213,225,0.18)]">
+            <p className="text-muted-foreground flex min-h-8 items-center justify-center text-xs leading-tight font-medium tracking-wide uppercase">
                 {entry.hallOfFameTitle}
             </p>
 
             <p className="text-foreground font-semibold">{nameEl}</p>
-
-            {entry.tier ? (
-                <TierBadge tier={entry.tier} />
-            ) : (
-                <span className="text-muted-foreground text-xs">Supporter</span>
-            )}
 
             {entry.hallOfFameNote && (
                 <p className="text-muted-foreground text-xs leading-relaxed text-balance">
@@ -90,7 +81,7 @@ const HallOfFameSection = ({ entries }: { entries: HallOfFameEntry[] }) => {
             <h4 className="text-muted-foreground flex items-center justify-center text-sm font-semibold tracking-wide uppercase">
                 Hall of Fame
             </h4>
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex flex-wrap justify-center gap-12">
                 {entries.map((entry) => (
                     <HallOfFameCard key={entry.name} entry={entry} />
                 ))}
@@ -98,8 +89,6 @@ const HallOfFameSection = ({ entries }: { entries: HallOfFameEntry[] }) => {
         </div>
     );
 };
-
-// ── Active Supporters ─────────────────────────────────────────────────────────
 
 const MAGIC_OVERFLOW_THRESHOLD = 10;
 
@@ -125,7 +114,9 @@ const SupporterCard = ({
     );
 
     return (
-        <div className={`bg-card rounded-md border ${TIER_CARD_BORDER[tier]} px-3 py-2 text-sm`}>
+        <div
+            className={`bg-card rounded-md border ${TIER_CARD_BORDER[tier]} ${TIER_CARD_GLOW[tier]} px-3 py-2 text-sm`}
+        >
             {inner}
         </div>
     );
@@ -149,13 +140,13 @@ const TierGroup = ({
             >
                 {TIER_LABELS[tier]}
             </span>
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-wrap justify-center gap-3">
                 {supporters.map((s) => (
                     <SupporterCard key={s.name} supporter={s} tier={tier} />
                 ))}
                 {overflow > 0 && (
                     <div
-                        className={`bg-card rounded-md border border-dashed ${TIER_CARD_BORDER[tier]} px-3 py-2 text-sm text-muted-foreground`}
+                        className={`bg-card rounded-md border border-dashed ${TIER_CARD_BORDER[tier]} text-muted-foreground px-3 py-2 text-sm`}
                     >
                         +{overflow} more
                     </div>
@@ -204,8 +195,6 @@ const ActiveSupportersSection = ({ supporters }: { supporters: ActiveSupporter[]
     );
 };
 
-// ── Past Supporters ───────────────────────────────────────────────────────────
-
 const PastSupportersSection = ({ supporters }: { supporters: PastSupporter[] }) => {
     if (supporters.length === 0) return null;
 
@@ -221,12 +210,12 @@ const PastSupportersSection = ({ supporters }: { supporters: PastSupporter[] }) 
     );
 };
 
-// ── Root ──────────────────────────────────────────────────────────────────────
-
 export const SupportersSection = ({ hallOfFame, active, past }: SupportersQueryResult) => {
     return (
         <div className="space-y-12">
             <HallOfFameSection entries={hallOfFame} />
+
+            {hallOfFame.length > 0 && <hr className="border-white/10" />}
 
             <div className="space-y-5">
                 {active.length > 0 && (
@@ -236,6 +225,8 @@ export const SupportersSection = ({ hallOfFame, active, past }: SupportersQueryR
                 )}
                 <ActiveSupportersSection supporters={active} />
             </div>
+
+            {past.length > 0 && <hr className="border-white/10" />}
 
             <PastSupportersSection supporters={past} />
         </div>
