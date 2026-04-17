@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SupportPage() {
-    const supporters = await sanityFetch<SupportersQueryResult>({
+    const supporters: SupportersQueryResult = await sanityFetch({
         query: supportersQuery,
         revalidate: 3600,
     });
