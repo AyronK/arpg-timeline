@@ -70,24 +70,10 @@ export default {
             hidden: ({ document }: { document: any }) => document?.status !== "hallOfFame",
         },
         {
-            name: "avatar",
-            title: "Avatar",
-            description: "Only shown on Hall of Fame cards.",
-            type: "image",
-            hidden: ({ document }: { document: any }) => document?.status !== "hallOfFame",
-        },
-        {
             name: "joinedAt",
             title: "Joined At",
             type: "date",
             validation: (Rule: Rule) => Rule.required(),
-        },
-        {
-            name: "order",
-            title: "Display Order",
-            description: "Lower numbers appear first within each section/tier group.",
-            type: "number",
-            initialValue: 100,
         },
     ],
     preview: {
@@ -111,10 +97,9 @@ export default {
     },
     orderings: [
         {
-            title: "Order",
-            name: "orderAsc",
-            by: [{ field: "order", direction: "asc" }],
+            title: "Joined At",
+            name: "joinedAtAsc",
+            by: [{ field: "joinedAt", direction: "asc" }],
         },
     ],
 };
-

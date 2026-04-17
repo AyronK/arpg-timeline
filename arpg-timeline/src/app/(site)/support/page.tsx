@@ -4,6 +4,9 @@ import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { DiscordServerBoost } from "@/components/DiscordServerBoost";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { ProtonSupportCards } from "@/components/ProtonSupportCards";
+import { SupportersSection } from "@/components/SupportersSection";
+import { supportersQuery, SupportersQueryResult } from "@/lib/cms/queries/supportersQuery";
+import { sanityFetch } from "@/lib/sanity/sanityClient";
 
 export const metadata: Metadata = {
     title: "Support - aRPG Timeline",
@@ -11,7 +14,11 @@ export const metadata: Metadata = {
         "Support aRPG Timeline via Patreon, Discord, or with our partners. Every contribution helps keep the site running.",
 };
 
-export default function SupportPage() {
+export default async function SupportPage() {
+    const supporters = await sanityFetch<SupportersQueryResult>({
+        query: supportersQuery,
+        revalidate: 3600,
+    });
     return (
         <div className="relative container mx-auto mb-12">
             <div className="mx-auto max-w-prose">
@@ -40,6 +47,11 @@ export default function SupportPage() {
                     supports the project and has a great deal for you.
                 </p>
                 <ProtonSupportCards />
+
+                <div className="mt-12">
+                    <h3 className="font-heading mb-4 text-lg">Supporters</h3>
+                    <SupportersSection {...supporters} />
+                </div>
             </div>
         </div>
     );

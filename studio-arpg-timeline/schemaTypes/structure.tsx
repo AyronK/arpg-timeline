@@ -135,7 +135,7 @@ export const structure = {
                     .child(
                         S.documentTypeList("supporter")
                             .title("Supporters")
-                            .defaultOrdering([{ field: "order", direction: "asc" }]),
+                            .defaultOrdering([{ field: "joinedAt", direction: "asc" }]),
                     ),
             ]),
 };
