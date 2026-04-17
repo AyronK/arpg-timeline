@@ -19,10 +19,10 @@ export const PatreonFunding = () => (
                 <Image
                     loading="lazy"
                     src="/assets/third-party/patreon-logo.png"
-                    className="m-auto h-5 w-5 opacity-70 md:h-6 md:w-6"
+                    className="m-auto h-6 w-6 opacity-70 md:h-7 md:w-7"
                     alt="Patreon logo"
-                    width={24}
-                    height={24}
+                    width={32}
+                    height={32}
                 />
             }
             title="Keep aRPG Timeline Running"

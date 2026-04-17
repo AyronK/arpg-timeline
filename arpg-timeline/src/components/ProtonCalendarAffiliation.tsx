@@ -14,7 +14,7 @@ export const ProtonCalendarAffiliation = () => {
     }
 
     return (
-        <div className="border-border flex hidden flex-col gap-2 border-t pt-2 md:flex">
+        <div className="border-border flex flex-col gap-2 border-t pt-2">
             <div className="flex justify-end">
                 <button
                     type="button"
@@ -34,7 +34,7 @@ export const ProtonCalendarAffiliation = () => {
             >
                 <CtaBannerContent
                     icon={<Calendar />}
-                    title="Proton Calendar - partner offer"
+                    title="Proton Calendar & more"
                     description="Buying through our link supports us directly."
                     actionLabel="Get Proton"
                     color="violet"

@@ -15,6 +15,7 @@ import { SanityGame } from "@/lib/cms/queries/indexQuery";
 import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/ui/Carousel";
 
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
+import { BuyMeACoffee } from "./BuyMeACoffee";
 
 export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
     const nextDate = useMemo(
@@ -57,7 +58,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                             <Carousel
                                 plugins={[
                                     Autoplay({
-                                        delay: 7_500,
+                                        delay: 5000,
                                         stopOnMouseEnter: true,
                                         playOnInit: true,
                                         stopOnFocusIn: false,
@@ -89,6 +90,13 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         }
                                     >
                                         <PatreonFunding />
+                                    </CarouselItem>
+                                    <CarouselItem
+                                        className={
+                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full"
+                                        }
+                                    >
+                                        <BuyMeACoffee />
                                     </CarouselItem>
                                     <CarouselItem
                                         className={

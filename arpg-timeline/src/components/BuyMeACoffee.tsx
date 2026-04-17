@@ -3,6 +3,9 @@ import Link from "next/link";
 
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 
+const SITE_MONTHLY_COST = 25;
+const MONTHLY_VISITORS = "30K";
+
 export const BuyMeACoffee = () => {
     if (!process.env.NEXT_PUBLIC_BUY_ME_A_COFFEE_URL) return null;
 
@@ -19,14 +22,14 @@ export const BuyMeACoffee = () => {
                     <Image
                         loading="lazy"
                         src="/assets/third-party/bmc-logo.svg"
-                        className="m-auto h-5 w-5 opacity-70 md:h-6 md:w-6"
+                        className="m-auto h-6 w-6 opacity-70 md:h-7 md:w-7"
                         alt="Buy Me a Coffee logo"
-                        width={24}
-                        height={24}
+                        width={32}
+                        height={32}
                     />
                 }
                 title="Buy Me a Coffee"
-                description="A one-time tip to help cover server costs. Every bit helps!"
+                description={`The site costs $${SITE_MONTHLY_COST}/month. A one-time tip keeps it running for ${MONTHLY_VISITORS}+ gamers!`}
                 actionLabel="Tip"
                 color="amber"
             />
