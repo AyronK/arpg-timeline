@@ -1,20 +1,22 @@
+import Link from "next/link";
 import { SiTwitch } from "react-icons/si";
 
 import type {
     ActiveSupporter,
     HallOfFameEntry,
     PastSupporter,
-    SupportersQueryResult,
     SupporterTier,
+    SupportersQueryResult,
 } from "@/lib/cms/queries/supportersQuery";
-
 import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
+// ── Tier config ───────────────────────────────────────────────────────────────
+
 const TIER_LABELS: Record<SupporterTier, string> = {
-    unique: "Unique supporter",
-    exalted: "Exalted supporter",
-    rare: "Rare supporter",
-    magic: "Magic supporter",
+    unique: "Unique",
+    exalted: "Exalted",
+    rare: "Rare",
+    magic: "Magic",
 };
 
 const TIER_LABEL_CLASSES: Record<SupporterTier, string> = {
@@ -31,6 +33,8 @@ const TIER_CARD_BORDER: Record<SupporterTier, string> = {
     magic: "border-blue-500/30",
 };
 
+// ── Hall of Fame ──────────────────────────────────────────────────────────────
+
 const TierBadge = ({ tier }: { tier: SupporterTier }) => (
     <span className={`text-xs font-semibold tracking-wide uppercase ${TIER_LABEL_CLASSES[tier]}`}>
         {TIER_LABELS[tier]}
@@ -41,7 +45,7 @@ const HallOfFameCard = ({ entry }: { entry: HallOfFameEntry }) => {
     const isTwitch = entry.url?.includes("twitch.tv");
 
     const nameEl = entry.url ? (
-        <MaybeLinkWrapper
+        <Link
             href={entry.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -49,20 +53,25 @@ const HallOfFameCard = ({ entry }: { entry: HallOfFameEntry }) => {
         >
             {isTwitch && <SiTwitch className="h-3.5 w-3.5 shrink-0 text-[#9146FF]" />}
             {entry.name}
-        </MaybeLinkWrapper>
+        </Link>
     ) : (
         <span>{entry.name}</span>
     );
 
     return (
-        <div className="bg-card flex flex-col items-center gap-2 rounded-lg border border-emerald-300/40 p-4 text-center shadow-[0_0_10px_1px_rgba(16,185,129,0.1)]">
-            <p className="text-muted-foreground flex min-h-8 items-center justify-center text-xs leading-tight font-medium tracking-wide uppercase">
+        <div className="bg-card flex w-44 flex-col items-center gap-2 rounded-lg border border-white/20 p-4 text-center shadow-[0_0_16px_2px_rgba(255,255,255,0.10)]">
+            {/* min-h reserves space for 2-line titles so cards in a row stay aligned */}
+            <p className="text-muted-foreground flex min-h-8 items-center justify-center text-xs font-medium leading-tight tracking-wide uppercase">
                 {entry.hallOfFameTitle}
             </p>
 
             <p className="text-foreground font-semibold">{nameEl}</p>
 
-            {entry.tier && <TierBadge tier={entry.tier} />}
+            {entry.tier ? (
+                <TierBadge tier={entry.tier} />
+            ) : (
+                <span className="text-muted-foreground text-xs">Supporter</span>
+            )}
 
             {entry.hallOfFameNote && (
                 <p className="text-muted-foreground text-xs leading-relaxed text-balance">
@@ -77,11 +86,11 @@ const HallOfFameSection = ({ entries }: { entries: HallOfFameEntry[] }) => {
     if (entries.length === 0) return null;
 
     return (
-        <div className="space-y-3">
-            <h4 className="text-muted-foreground flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase">
+        <div className="space-y-5">
+            <h4 className="text-muted-foreground flex items-center justify-center text-sm font-semibold tracking-wide uppercase">
                 Hall of Fame
             </h4>
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
+            <div className="flex flex-wrap justify-center gap-6">
                 {entries.map((entry) => (
                     <HallOfFameCard key={entry.name} entry={entry} />
                 ))}
@@ -89,6 +98,9 @@ const HallOfFameSection = ({ entries }: { entries: HallOfFameEntry[] }) => {
         </div>
     );
 };
+
+// ── Active Supporters ─────────────────────────────────────────────────────────
+
 const MAGIC_OVERFLOW_THRESHOLD = 10;
 
 const SupporterCard = ({
@@ -103,6 +115,7 @@ const SupporterCard = ({
             href={supporter.url}
             target="_blank"
             rel="noopener noreferrer"
+            noIcon
             className="text-foreground hover:underline"
         >
             {supporter.name}
@@ -130,19 +143,19 @@ const TierGroup = ({
     if (supporters.length === 0 && overflow === 0) return null;
 
     return (
-        <div className="space-y-2">
+        <div className="space-y-3">
             <span
-                className={`text-xs font-semibold tracking-wide uppercase ${TIER_LABEL_CLASSES[tier]}`}
+                className={`block text-center text-sm font-semibold tracking-wide uppercase ${TIER_LABEL_CLASSES[tier]}`}
             >
                 {TIER_LABELS[tier]}
             </span>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap justify-center gap-2">
                 {supporters.map((s) => (
                     <SupporterCard key={s.name} supporter={s} tier={tier} />
                 ))}
                 {overflow > 0 && (
                     <div
-                        className={`bg-card rounded-md border border-dashed ${TIER_CARD_BORDER[tier]} text-muted-foreground px-3 py-2 text-sm`}
+                        className={`bg-card rounded-md border border-dashed ${TIER_CARD_BORDER[tier]} px-3 py-2 text-sm text-muted-foreground`}
                     >
                         +{overflow} more
                     </div>
@@ -155,7 +168,7 @@ const TierGroup = ({
 const ActiveSupportersSection = ({ supporters }: { supporters: ActiveSupporter[] }) => {
     if (supporters.length === 0) {
         return (
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-center text-sm">
                 Be the first to support -{" "}
                 <a
                     href={process.env.NEXT_PUBLIC_PATREON_URL ?? "#"}
@@ -178,7 +191,7 @@ const ActiveSupportersSection = ({ supporters }: { supporters: ActiveSupporter[]
     const magicOverflow = magic.length - MAGIC_OVERFLOW_THRESHOLD;
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-6">
             <TierGroup tier="unique" supporters={unique} />
             <TierGroup tier="exalted" supporters={exalted} />
             <TierGroup tier="rare" supporters={rare} />
@@ -191,12 +204,14 @@ const ActiveSupportersSection = ({ supporters }: { supporters: ActiveSupporter[]
     );
 };
 
+// ── Past Supporters ───────────────────────────────────────────────────────────
+
 const PastSupportersSection = ({ supporters }: { supporters: PastSupporter[] }) => {
     if (supporters.length === 0) return null;
 
     return (
-        <div className="space-y-1 pt-2">
-            <h4 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+        <div className="space-y-2 pt-2 text-center">
+            <h4 className="text-muted-foreground text-sm font-semibold tracking-wide uppercase">
                 Past Supporters
             </h4>
             <p className="text-muted-foreground text-sm">
@@ -206,14 +221,16 @@ const PastSupportersSection = ({ supporters }: { supporters: PastSupporter[] }) 
     );
 };
 
+// ── Root ──────────────────────────────────────────────────────────────────────
+
 export const SupportersSection = ({ hallOfFame, active, past }: SupportersQueryResult) => {
     return (
-        <div className="space-y-8">
+        <div className="space-y-12">
             <HallOfFameSection entries={hallOfFame} />
 
-            <div className="space-y-3">
+            <div className="space-y-5">
                 {active.length > 0 && (
-                    <h4 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+                    <h4 className="text-muted-foreground text-center text-sm font-semibold tracking-wide uppercase">
                         Active Supporters
                     </h4>
                 )}
