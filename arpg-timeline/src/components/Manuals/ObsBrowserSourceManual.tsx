@@ -3,6 +3,8 @@
 import { Check, Copy, ExternalLink, Monitor, Settings } from "lucide-react";
 import { useState } from "react";
 
+import { BuyMeACoffee } from "@/components/BuyMeACoffee";
+import { PatreonFunding } from "@/components/PatreonFunding";
 import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
 
@@ -307,6 +309,9 @@ export const ObsBrowserSourceManual = ({ game }: { game: string }) => {
                     </li>
                 </ul>
             </section>
+
+            <PatreonFunding />
+            <BuyMeACoffee />
 
             <section className="space-y-2 rounded-lg border border-blue-200 bg-blue-50 p-4">
                 <h3 className="flex items-center gap-2 font-semibold text-blue-800">

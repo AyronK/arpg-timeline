@@ -4,9 +4,9 @@ import { Check, Copy, Gamepad2, Rss } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 
+import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { cn } from "@/lib/utils";
-import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 
 const CalendarAppCard = ({ name, steps }: { name: string; steps: string[] }) => (
     <div className="bg-muted/50 flex min-w-48 flex-1 flex-col gap-2 rounded-md border px-4 py-3">

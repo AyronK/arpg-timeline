@@ -14,8 +14,8 @@ import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
 import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/ui/Carousel";
 
-import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 import { BuyMeACoffee } from "./BuyMeACoffee";
+import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
 
 export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
     const nextDate = useMemo(
