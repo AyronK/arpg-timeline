@@ -35,6 +35,13 @@ export const Footer = () => (
                         </Link>
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/support#supporters"
+                            data-sa-click="supporters-credits"
+                        >
+                            Credits & supporters
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href="/community-launchers"
                             data-sa-click="community-launchers"
                         >

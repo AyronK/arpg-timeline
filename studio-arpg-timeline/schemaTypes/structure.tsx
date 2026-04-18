@@ -1,5 +1,13 @@
 import { StructureBuilder } from "sanity/structure";
-import { FiCalendar, FiLink, FiServer, FiTwitch, FiMessageCircle, FiBell } from "react-icons/fi";
+import {
+    FiCalendar,
+    FiLink,
+    FiServer,
+    FiTwitch,
+    FiMessageCircle,
+    FiBell,
+    FiHeart,
+} from "react-icons/fi";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { SiSteam, SiReddit } from "react-icons/si";
 
@@ -119,5 +127,15 @@ export const structure = {
                     .title("Toasts")
                     .icon(FiBell)
                     .child(S.documentTypeList("toast").title("Toasts")),
+
+                // Supporters
+                S.listItem()
+                    .title("Supporters")
+                    .icon(FiHeart)
+                    .child(
+                        S.documentTypeList("supporter")
+                            .title("Supporters")
+                            .defaultOrdering([{ field: "joinedAt", direction: "asc" }]),
+                    ),
             ]),
 };

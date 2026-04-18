@@ -7,6 +7,7 @@ import faq from "./schemas/faq";
 import toast from "./schemas/toast";
 import liveStreamTwitch from "./schemas/liveStreamTwitch";
 import liveStreamPlatformTwitch from "./schemas/liveStreamPlatformTwitch";
+import supporter from "./schemas/supporter";
 
 export const schemaTypes = [
     crawlerSourceHttp,
@@ -18,4 +19,5 @@ export const schemaTypes = [
     toast,
     liveStreamTwitch,
     liveStreamPlatformTwitch,
+    supporter,
 ];
