@@ -31,6 +31,7 @@ interface GameFilterContextType {
     }[];
     toggleGameFilter: (slug: string, value: boolean) => void;
     toggleGroupFilter: (group: string, value: boolean) => void;
+    updateFilters: (excludedSlugs: string[]) => void;
     activeFilters: string[];
     filteredGames: Game[];
     totalGames: number;
@@ -110,6 +111,7 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
                             gameFilters: [],
                             toggleGameFilter: () => {},
                             toggleGroupFilter: () => {},
+                            updateFilters: () => {},
                             activeFilters: [],
                             filteredGames: parsedGames,
                             totalGames: games.length,
@@ -139,11 +141,8 @@ type UnsafeGameFilterProviderProps = Omit<
 const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilterProviderProps) => {
     const searchParams = useSearchParams();
 
-    const { excludedSlugs, toggleGameFilter, toggleGroupFilter } = useGameFilterState(
-        games,
-        category,
-        searchParams,
-    );
+    const { excludedSlugs, toggleGameFilter, toggleGroupFilter, updateFilters } =
+        useGameFilterState(games, category, searchParams);
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {
@@ -160,6 +159,7 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         gameFilters,
         toggleGameFilter,
         toggleGroupFilter,
+        updateFilters,
         filteredGames,
         activeFilters,
         shownGames: filteredGames.length,

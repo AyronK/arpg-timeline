@@ -4,6 +4,7 @@ import { Filter } from "lucide-react";
 import { useState } from "react";
 
 import { GameFilters } from "@/components/GameFilters";
+import { OnboardingModal } from "@/components/OnboardingModal";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useGameCategories } from "@/hooks/useGameCategories";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
@@ -37,6 +38,7 @@ export const GamesAndEventsGrid = ({
 
     return (
         <>
+            <OnboardingModal />
             <article className="relative mt-2 flex flex-col gap-2 lg:mt-0 lg:gap-0">
                 <h2 className="sr-only">Seasons</h2>
                 <div className="lg:bg-background relative sticky -mt-2 -mt-4 flex flex-col gap-1.5 lg:top-0 lg:z-10 lg:pb-4">

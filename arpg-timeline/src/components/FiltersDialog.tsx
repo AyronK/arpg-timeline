@@ -112,7 +112,7 @@ const Trigger = forwardRef<
             className="relative inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
         >
             <Filter className="h-4 w-4" />
-            <span className="text-center leading-0 font-medium whitespace-nowrap">Filter</span>
+            <span className="text-center leading-0 font-medium whitespace-nowrap">Filters</span>
             {hasMounted && showIndicator && (
                 <div className="absolute -top-2 -right-2">
                     {showPing && (
