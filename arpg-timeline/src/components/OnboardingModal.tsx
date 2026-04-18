@@ -47,6 +47,7 @@ export const OnboardingModal = () => {
         if (didIncrementRef.current) return;
         didIncrementRef.current = true;
         if (getStoredFilters() !== null) return;
+        if (getOnboardingSeen()) return;
         incrementVisitCount();
     }, []);
 
@@ -125,36 +126,42 @@ export const OnboardingModal = () => {
     if (!isMounted) return null;
 
     const cards = (
-        <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-3">
-            <OptionCard
-                icon={<Star className="h-5 w-5" />}
-                title="Featured"
-                sublabel="Default view"
-                description="Active seasonal ARPGs. Community and non-seasonal games are hidden."
-                detail={`${shownGames} games`}
-                onClick={handleFeatured}
-            />
-            <OptionCard
-                icon={<SlidersHorizontal className="h-5 w-5" />}
-                title="Customize"
-                description="Tailored to the games you actually play."
-                detail="You decide"
-                recommended
-                onClick={handleCustomizeOpen}
-            />
-            <OptionCard
-                icon={<LayoutGrid className="h-5 w-5" />}
-                title="All Games"
-                sublabel="Full view"
-                description="Every game including community servers and non-seasonal titles - nothing hidden."
-                detail={`${totalGames} games`}
-                onClick={handleAllGames}
-            />
+        <div className="flex flex-col gap-4 pt-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <OptionCard
+                    icon={<Star className="h-5 w-5" />}
+                    title="Featured"
+                    sublabel="Default view"
+                    description="Active and upcoming seasonal aRPGs. Community and non-seasonal games are hidden."
+                    detail={`${shownGames} games`}
+                    onClick={handleFeatured}
+                />
+                <OptionCard
+                    icon={<SlidersHorizontal className="h-5 w-5" />}
+                    title="Customize"
+                    description="Tailored to the games you actually play."
+                    detail="You decide"
+                    recommended
+                    onClick={handleCustomizeOpen}
+                />
+                <OptionCard
+                    icon={<LayoutGrid className="h-5 w-5" />}
+                    title="All Games"
+                    sublabel="Full view"
+                    description="Every game including community servers and non-seasonal titles - nothing hidden."
+                    detail={`${totalGames} games`}
+                    onClick={handleAllGames}
+                />
+            </div>
+            <p className="text-muted-foreground text-center text-xs">
+                You can always change this later using the{" "}
+                <span className="text-foreground/70 font-medium">Filters</span> button.
+            </p>
         </div>
     );
 
     const customizeBody = (
-        <div className="max-h-[60vh] overflow-y-auto">
+        <div className="max-h-[60vh] overflow-y-auto pr-4">
             <Filters
                 filters={gameFilters}
                 checked={localChecked}
@@ -167,7 +174,7 @@ export const OnboardingModal = () => {
     const customizeFooter = (
         <div className="flex shrink-0 justify-end border-t pt-4">
             <Button onClick={handleCustomizeApply}>
-                Apply - {localChecked.length} {localChecked.length === 1 ? "game" : "games"} shown
+                Apply - {localChecked.length} of {gameFilters.length} games shown
             </Button>
         </div>
     );
@@ -307,7 +314,14 @@ const OptionCard = ({
             <span className="text-muted-foreground text-xs leading-relaxed">{description}</span>
         </div>
         {detail && (
-            <span className="text-muted-foreground mt-auto text-xs font-medium">{detail}</span>
+            <span
+                className={cn(
+                    "text-foreground mt-auto text-xs font-medium",
+                    recommended && "text-primary",
+                )}
+            >
+                {detail}
+            </span>
         )}
     </button>
 );

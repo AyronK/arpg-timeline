@@ -54,6 +54,7 @@ export const setOnboardingSeen = (): void => {
     if (typeof window === "undefined") return;
     try {
         localStorage.setItem(ONBOARDING_KEY, "1");
+        localStorage.removeItem(VISIT_COUNT_KEY);
     } catch {
         // Silently fail if storage is not available
     }
