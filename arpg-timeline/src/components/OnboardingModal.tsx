@@ -1,7 +1,7 @@
 "use client";
 
 import { useHasMounted } from "@react-hooks-library/core";
-import { ChevronLeft, LayoutGrid, SlidersHorizontal, Star } from "lucide-react";
+import { ChevronLeft, LayoutGrid, SlidersHorizontal, Star, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Filters } from "@/components/FiltersDialog";
@@ -132,7 +132,7 @@ export const OnboardingModal = () => {
                     icon={<Star className="h-5 w-5" />}
                     title="Featured"
                     sublabel="Default view"
-                    description="Active and upcoming seasonal aRPGs. Community and non-seasonal games are hidden."
+                    description="Most relevant aRPGs. Community and non-seasonal games are hidden."
                     detail={`${shownGames} games`}
                     onClick={handleFeatured}
                 />
@@ -148,15 +148,26 @@ export const OnboardingModal = () => {
                     icon={<LayoutGrid className="h-5 w-5" />}
                     title="All Games"
                     sublabel="Full view"
-                    description="Every game including community servers and non-seasonal titles - nothing hidden."
+                    description="Every game including community servers and non-seasonal titles."
                     detail={`${totalGames} games`}
                     onClick={handleAllGames}
                 />
             </div>
             <p className="text-muted-foreground text-center text-xs">
-                You can always change this later using the{" "}
+                You can always change using the{" "}
                 <span className="text-foreground/70 font-medium">Filters</span> button.
             </p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="col-span-full sm:col-span-1 sm:col-start-2"
+                    onClick={() => handleOpenChange(false)}
+                >
+                    <X className="mr-2 h-4 w-4" />
+                    I&apos;ll decide later
+                </Button>
+            </div>
         </div>
     );
 
@@ -196,13 +207,14 @@ export const OnboardingModal = () => {
             <Drawer open={open} onOpenChange={handleOpenChange}>
                 <DrawerPortal>
                     <DrawerContent
+                        onInteractOutside={(e) => e.preventDefault()}
                         className={cn(
                             "top-auto! flex flex-col px-4 pb-28",
                             step === "customize" && "max-h-[90vh]",
                         )}
                     >
                         <DrawerDescription className="sr-only">
-                            Choose how to display aRPG seasons and events
+                            Choose which games to show
                         </DrawerDescription>
                         {step === "choice" ? (
                             <>
@@ -211,7 +223,7 @@ export const OnboardingModal = () => {
                                         Customize your experience
                                     </DrawerTitle>
                                     <DrawerDescription>
-                                        Choose how you&apos;d like to see aRPG seasons and events.
+                                        Choose which games to show
                                     </DrawerDescription>
                                 </DrawerHeader>
                                 {cards}
@@ -237,20 +249,22 @@ export const OnboardingModal = () => {
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent
+                hideClose
+                onInteractOutside={(e) => e.preventDefault()}
                 className={cn(
                     "transition-[max-width] duration-200",
                     step === "customize" ? "max-h-[80vh] w-full max-w-7xl!" : "max-w-2xl!",
                 )}
             >
                 <DialogDescription className="sr-only">
-                    Choose how to display aRPG seasons and events
+                    Choose which games to show
                 </DialogDescription>
                 {step === "choice" ? (
                     <>
                         <DialogHeader className="text-center">
                             <DialogTitle className="text-xl">Customize your experience</DialogTitle>
                             <p className="text-muted-foreground text-sm text-balance">
-                                Choose how you&apos;d like to see aRPG seasons and events.
+                                Choose which games to show
                             </p>
                         </DialogHeader>
                         {cards}
@@ -308,9 +322,11 @@ const OptionCard = ({
                 {sublabel}
             </span>
         )}
-        <div className={cn("text-muted-foreground", recommended && "text-primary")}>{icon}</div>
         <div className="flex flex-col gap-1.5">
-            <span className="font-semibold">{title}</span>
+            <div className="flex items-center gap-2">
+                {icon}
+                <span className="font-semibold">{title}</span>
+            </div>
             <span className="text-muted-foreground text-xs leading-relaxed">{description}</span>
         </div>
         {detail && (
