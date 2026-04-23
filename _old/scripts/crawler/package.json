@@ -19,7 +19,7 @@
   "devDependencies": {
     "@types/he": "^1.2.3",
     "@types/node": "^20.19.37",
-    "fast-xml-parser": "^5.5.7",
+    "fast-xml-parser": "^5.7.0",
     "node-fetch": "^3.3.2",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
