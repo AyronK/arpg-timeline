@@ -26,7 +26,7 @@ export const PatreonFunding = () => (
                 />
             }
             title="Keep aRPG Timeline Running"
-            description={`The site costs $${SITE_MONTHLY_COST}/month. Your 3$ powers ${MONTHLY_VISITORS}+ gamers and keeps us growing.`}
+            description={`Hosting costs us $${SITE_MONTHLY_COST}/month. Join to keep it free for ${MONTHLY_VISITORS}+ gamers and help us grow.`}
             actionLabel="Support"
             color="orange"
         />

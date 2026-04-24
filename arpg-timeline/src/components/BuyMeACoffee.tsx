@@ -29,7 +29,7 @@ export const BuyMeACoffee = () => {
                     />
                 }
                 title="Buy Me a Coffee"
-                description={`The site costs $${SITE_MONTHLY_COST}/month. A one-time tip keeps it running for ${MONTHLY_VISITORS}+ gamers!`}
+                description={`Hosting costs us $${SITE_MONTHLY_COST}/month. Your tips keep it free for ${MONTHLY_VISITORS}+ gamers and help us grow.`}
                 actionLabel="Tip"
                 color="amber"
             />
