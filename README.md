@@ -140,6 +140,12 @@ Please check out the [Contributing guide](CONTRIBUTING.md) for guidelines about 
 
 If you'd like to help maintaining the list with up-to-date information about new seasons without coding, visit [this spreadsheet](https://docs.google.com/spreadsheets/d/18h4sOenvKqpc39YnWpCcuw2n9B6PWx0-wu6JH_VmTnk/edit?usp=sharing) and request editor's access. Let me know on Discord that you'd like to help.
 
+## License
+
+This project is licensed under the [Elastic License 2.0](LICENSE).
+
+The source code is public for transparency - you can read it, learn from it, and contribute to it. You may **not** host it as a competing service or managed product. See [TRANSPARENCY.md](TRANSPARENCY.md) for the full reasoning.
+
 ## Tracking
 
 [Simple Analytics](https://dashboard.simpleanalytics.com/arpg-timeline.com)
