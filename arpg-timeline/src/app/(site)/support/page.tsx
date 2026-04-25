@@ -18,6 +18,7 @@ export default async function SupportPage() {
     const supporters: SupportersQueryResult = await sanityFetch({
         query: supportersQuery,
         revalidate: 3600,
+        tags: ["supporter"],
     });
     return (
         <div className="relative container mx-auto mb-12">
