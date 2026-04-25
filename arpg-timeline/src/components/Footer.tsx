@@ -152,6 +152,20 @@ export const Footer = () => (
                             Privacy & GDPR
                         </Link>
                         <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/terms"
+                            data-sa-click="terms"
+                        >
+                            Terms of Service
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/transparency"
+                            data-sa-click="transparency"
+                        >
+                            Transparency
+                        </Link>
+                        <Link
                             href="/assets/about.txt"
                             target="_blank"
                             rel="noopener noreferrer nofollow"
