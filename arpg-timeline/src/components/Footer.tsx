@@ -165,16 +165,7 @@ export const Footer = () => (
                         >
                             Transparency
                         </Link>
-                        <Link
-                            href="/assets/about.txt"
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
-                            data-sa-click="licenses"
-                        >
-                            Licenses
-                        </Link>
-                        <span className="text-muted-foreground">
+<span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}
                             <Link
                                 className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
