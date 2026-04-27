@@ -1,7 +1,7 @@
 import { Game } from "@/lib/cms/games.types";
 import { HOUR } from "@/lib/date";
 
-export const GRACE_PERIOD = HOUR * 84;
+export const GRACE_PERIOD = HOUR * 72;
 
 export const inGracePeriod = (startDate: string | null | undefined, endDate?: string | null) => {
     if (!startDate) {
