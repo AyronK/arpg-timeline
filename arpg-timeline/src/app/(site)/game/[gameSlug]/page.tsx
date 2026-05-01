@@ -22,6 +22,12 @@ import {
     PlatformIntegrationSection,
     StatisticsSection,
 } from "./components";
+import {
+    buildGamePageDescription,
+    buildGamePageOgDescription,
+    buildGamePageOgTitle,
+    buildGamePageTitle,
+} from "./metadata";
 import { GamePageProps } from "./types";
 import { calculateGameStatistics, getArchivalSeasons, getOldestSeasonInfo } from "./utils";
 
@@ -159,42 +165,9 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
         };
     }
 
-    const buildDescription = () => {
-        const base = `Track ${game.name} ${game.seasonKeyword}s and updates. Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
-
-        if (
-            game.nextSeason?.name &&
-            game.nextSeason?.start?.startDate &&
-            game.nextSeason?.start?.confirmed &&
-            new Date(game.nextSeason.start.startDate) > new Date()
-        ) {
-            return `Track ${game.name} ${game.seasonKeyword}s and updates. Next ${game.seasonKeyword}: ${game.nextSeason.name} (starts ${game.nextSeason.start.startDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
-        }
-
-        if (
-            game.currentSeason?.name &&
-            game.currentSeason?.start?.startDate &&
-            game.currentSeason?.start?.confirmed
-        ) {
-            return `Track ${game.name} ${game.seasonKeyword}s and updates. Current ${game.seasonKeyword}: ${game.currentSeason.name} (started ${game.currentSeason.start.startDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
-        }
-
-        return base;
-    };
-
-    const ogDescription =
-        game.nextSeason?.name &&
-        game.nextSeason?.start?.startDate &&
-        game.nextSeason?.start?.confirmed &&
-        new Date(game.nextSeason.start.startDate) > new Date()
-            ? `Track ${game.name} seasons and get countdowns for upcoming content. Next ${game.seasonKeyword}: ${game.nextSeason.name}.`
-            : game.currentSeason?.name
-              ? `Track ${game.name} seasons and get countdowns for upcoming content. Current ${game.seasonKeyword}: ${game.currentSeason.name}.`
-              : `Track ${game.name} seasons and get countdowns for upcoming content.`;
-
     return {
-        title: `${game.name} Updates | aRPG Timeline`,
-        description: buildDescription(),
+        title: buildGamePageTitle(game),
+        description: buildGamePageDescription(game),
         keywords: [
             `${game.name} ${game.seasonKeyword}s`,
             `${game.name} seasons`,
@@ -221,8 +194,8 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
             "season tracker",
         ],
         openGraph: {
-            title: `${game.name} Season Tracker`,
-            description: ogDescription,
+            title: buildGamePageOgTitle(game),
+            description: buildGamePageOgDescription(game),
             siteName: "aRPG Timeline",
             type: "website",
             url: `https://www.arpg-timeline.com/game/${slug}`,
@@ -239,8 +212,8 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
         },
         twitter: {
             card: "summary_large_image",
-            title: `${game.name} Season Tracker`,
-            description: ogDescription,
+            title: buildGamePageOgTitle(game),
+            description: buildGamePageOgDescription(game),
             images: ["/assets/seoimage.png"],
         },
         robots: {
