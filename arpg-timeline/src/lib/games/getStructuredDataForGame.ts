@@ -117,14 +117,47 @@ export const getStructuredDataForGame = (game: Game): GameStructuredData | null 
     if (next) articles.push(next);
 
     const gameFaqQuestions: FAQQuestion[] = [];
+    const gameUrl = `https://www.arpg-timeline.com/game/${game.slug}`;
+    const seasonKeyword = game.seasonKeyword.toLowerCase();
+
+    if (game.currentSeason?.name) {
+        const currentName = game.currentSeason.name;
+        const startedOn = game.currentSeason.start?.startDate
+            ? ` It started on ${game.currentSeason.start.startDate}.`
+            : "";
+
+        gameFaqQuestions.push({
+            "@type": "Question",
+            name: `What is the current ${game.name} ${game.seasonKeyword}?`,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: `The current ${game.name} ${seasonKeyword} is ${currentName}.${startedOn}`,
+            },
+        });
+
+        if (game.shortName) {
+            gameFaqQuestions.push({
+                "@type": "Question",
+                name: `What is the current ${game.shortName} ${game.seasonKeyword}?`,
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: `The current ${game.shortName} (${game.name}) ${seasonKeyword} is ${currentName}.${startedOn}`,
+                },
+            });
+        }
+    }
 
     if (game.nextSeason && game.nextSeason.start?.startDate && game.nextSeason.start.confirmed) {
+        const nextName = game.nextSeason.name;
+        const nextDate = game.nextSeason.start.startDate;
+        const isFuture = new Date(nextDate) > new Date();
+
         gameFaqQuestions.push({
             "@type": "Question",
             name: `When is the next ${game.name} ${game.seasonKeyword}?`,
             acceptedAnswer: {
                 "@type": "Answer",
-                text: `The next ${game.name} ${game.seasonKeyword.toLowerCase()}, ${game.nextSeason.name}, starts on ${game.nextSeason.start.startDate}.`,
+                text: `The next ${game.name} ${seasonKeyword}, ${nextName}, starts on ${nextDate}.`,
             },
         });
 
@@ -134,29 +167,56 @@ export const getStructuredDataForGame = (game: Game): GameStructuredData | null 
                 name: `When is ${game.shortName} next ${game.seasonKeyword}?`,
                 acceptedAnswer: {
                     "@type": "Answer",
-                    text: `The next ${game.shortName} (${game.name}) ${game.seasonKeyword.toLowerCase()}, ${game.nextSeason.name}, starts on ${game.nextSeason.start.startDate}.`,
+                    text: `The next ${game.shortName} (${game.name}) ${seasonKeyword}, ${nextName}, starts on ${nextDate}.`,
+                },
+            });
+        }
+
+        gameFaqQuestions.push({
+            "@type": "Question",
+            name: `What is the next ${game.name} ${game.seasonKeyword} called?`,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: `The next ${game.name} ${seasonKeyword} is called ${nextName}. It starts on ${nextDate}.`,
+            },
+        });
+
+        if (isFuture) {
+            gameFaqQuestions.push({
+                "@type": "Question",
+                name: `Is ${nextName} out yet?`,
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: `No, ${nextName} has not started yet. It launches on ${nextDate}. Track the countdown at ${gameUrl}.`,
                 },
             });
         }
     }
 
-    if (game.currentSeason && game.currentSeason.end?.endDate && game.currentSeason.end.confirmed) {
+    if (game.currentSeason && game.currentSeason.end?.endDate) {
+        const endDate = game.currentSeason.end.endDate;
+        const ended = new Date(endDate) < new Date();
+        const seasonLabel = ended ? "previous" : "current";
+        const endVerb = ended ? "concluded on" : "ends on";
+        const questionVerb = ended ? "did" : "does";
+        const currentName = game.currentSeason.name;
+
         gameFaqQuestions.push({
             "@type": "Question",
-            name: `When does the current ${game.name} ${game.seasonKeyword} end?`,
+            name: `When ${questionVerb} the ${seasonLabel} ${game.name} ${game.seasonKeyword} end?`,
             acceptedAnswer: {
                 "@type": "Answer",
-                text: `The current ${game.name} ${game.seasonKeyword.toLowerCase()}, ${game.currentSeason.name}, ends on ${game.currentSeason.end.endDate}.`,
+                text: `The ${seasonLabel} ${game.name} ${seasonKeyword}, ${currentName}, ${endVerb} ${endDate}.`,
             },
         });
 
         if (game.shortName) {
             gameFaqQuestions.push({
                 "@type": "Question",
-                name: `When does ${game.shortName} ${game.seasonKeyword} end?`,
+                name: `When ${questionVerb} ${game.shortName} ${game.seasonKeyword} end?`,
                 acceptedAnswer: {
                     "@type": "Answer",
-                    text: `The current ${game.shortName} (${game.name}) ${game.seasonKeyword.toLowerCase()}, ${game.currentSeason.name}, ends on ${game.currentSeason.end.endDate}.`,
+                    text: `The ${seasonLabel} ${game.shortName} (${game.name}) ${seasonKeyword}, ${currentName}, ${endVerb} ${endDate}.`,
                 },
             });
         }

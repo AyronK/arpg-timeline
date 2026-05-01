@@ -262,19 +262,6 @@ const nextConfig: NextConfig = {
                 ],
             },
             {
-                source: "/looking-for-moderators",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=86400",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=86400",
-                    },
-                ],
-            },
-            {
                 source: "/faq",
                 headers: [
                     {

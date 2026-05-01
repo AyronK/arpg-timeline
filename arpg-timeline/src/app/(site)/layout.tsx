@@ -25,6 +25,31 @@ const montserrat = Montserrat({
     style: ["normal", "italic"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.arpg-timeline.com";
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebSite",
+            name: "aRPG Timeline",
+            url: siteUrl,
+        },
+        {
+            "@type": "Organization",
+            name: "aRPG Timeline",
+            url: siteUrl,
+            logo: `${siteUrl}/assets/logo.png`,
+            sameAs: [
+                process.env.NEXT_PUBLIC_GITHUB_URL,
+                process.env.NEXT_PUBLIC_DISCORD_URL,
+                process.env.NEXT_PUBLIC_BUY_ME_A_COFFEE_URL,
+                process.env.NEXT_PUBLIC_PATREON_URL,
+            ].filter(Boolean),
+        },
+    ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
@@ -40,6 +65,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </PartnerPromosProvider>
             </body>
             <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
         </html>
     );
 }

@@ -19,6 +19,21 @@ const dashboardLabels: Record<GameFilterCategory, string> = {
     all: "Full Catalog",
 };
 
+function buildDescription(dashboard: GameFilterCategory, gameCount: number): string {
+    switch (dashboard) {
+        case "all":
+            return `Season dates, countdowns, and calendar exports for every aRPG - ${gameCount}+ games tracked and updated in real-time.`;
+        case "community":
+            return `Season dates and countdowns for community-run aRPG servers and mods - calendar exports and real-time updates for every season launch.`;
+        case "non-seasonal":
+            return `Expansion release dates and major updates for aRPGs without seasonal resets - countdowns and calendar exports, all in one place.`;
+        case "early-access":
+            return `Season dates and launch countdowns for early access aRPGs - calendar exports and real-time updates so you never miss a season or major update.`;
+        default:
+            return `Season dates and countdowns for the most popular aRPGs - Diablo 4, Path of Exile 2, Last Epoch, and more, with calendar exports and real-time updates.`;
+    }
+}
+
 export async function generateDashboardMetadata(
     dashboard: GameFilterCategory,
     canonicalPath: string = "/",
@@ -32,15 +47,14 @@ export async function generateDashboardMetadata(
         ? "aRPG Timeline | Every season. Just on time."
         : `${dashboardLabels[dashboard]} | aRPG Timeline`;
 
-    const description =
-        "Track Diablo 4, Path of Exile 2, Last Epoch seasons and league start dates. Get countdowns for D4 seasons, PoE2 leagues, and never miss an ARPG launch.";
+    const description = buildDescription(dashboard, data.games.length);
 
     return {
         title,
         description,
         openGraph: {
             title: isDefault ? "aRPG Timeline" : title,
-            description: isDefault ? "Track your favorite aRPG game seasons" : description,
+            description,
             siteName: "aRPG Timeline",
             type: "website",
             url: `https://www.arpg-timeline.com${canonicalPath}`,
