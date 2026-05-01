@@ -1,4 +1,5 @@
 import { Game } from "@/lib/cms/games.types";
+import { getGeneralFaqQuestions } from "@/lib/games/getGeneralFaqQuestions";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 
 type FAQQuestion = {
@@ -16,7 +17,7 @@ type StructuredData = {
 };
 
 export const StructuredDataScripts = ({ games }: { games: Game[] }) => {
-    const allFaqQuestions: FAQQuestion[] = [];
+    const allFaqQuestions: FAQQuestion[] = [...getGeneralFaqQuestions(games)];
     const structuredDataArray: StructuredData[] = [];
 
     games.forEach((game) => {
