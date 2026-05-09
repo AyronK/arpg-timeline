@@ -72,10 +72,18 @@ export async function GET(request: NextRequest) {
                     padding: "28px 36px",
                 }}
             >
-                <div style={{ display: "flex", alignItems: "center", marginBottom: 18 }}>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: 6,
+                        paddingBottom: 6,
+                        borderBottom: `1px solid ${BORDER}`,
+                    }}
+                >
                     <svg
-                        width="22"
-                        height="22"
+                        width="32"
+                        height="32"
                         viewBox="0 0 135.5 135.5"
                         xmlns="http://www.w3.org/2000/svg"
                         fill={TEXT_HEADING}
@@ -95,7 +103,7 @@ export async function GET(request: NextRequest) {
                     <span
                         style={{
                             color: TEXT_HEADING,
-                            fontSize: 13,
+                            fontSize: 22,
                             fontWeight: 400,
                             letterSpacing: "0.06em",
                             fontFamily: "Cinzel, serif",
@@ -104,14 +112,13 @@ export async function GET(request: NextRequest) {
                         aRPG Timeline
                     </span>
                 </div>
-
                 <div
                     style={{
                         color: TEXT_HEADING,
-                        fontSize: 36,
+                        fontSize: 28,
                         fontWeight: 700,
                         lineHeight: 1.2,
-                        marginBottom: 10,
+                        marginBottom: 2,
                         fontFamily: "Cinzel, serif",
                     }}
                 >

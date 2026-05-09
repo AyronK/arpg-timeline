@@ -78,12 +78,14 @@ export async function GET(request: NextRequest) {
                     style={{
                         display: "flex",
                         alignItems: "center",
-                        marginBottom: 40,
+                        marginBottom: 12,
+                        paddingBottom: 12,
+                        borderBottom: `1px solid ${BORDER}`,
                     }}
                 >
                     <svg
-                        width="40"
-                        height="40"
+                        width="48"
+                        height="48"
                         viewBox="0 0 135.5 135.5"
                         xmlns="http://www.w3.org/2000/svg"
                         fill={TEXT_HEADING}
@@ -103,7 +105,7 @@ export async function GET(request: NextRequest) {
                     <span
                         style={{
                             color: TEXT_HEADING,
-                            fontSize: 22,
+                            fontSize: 32,
                             fontWeight: 400,
                             letterSpacing: "0.06em",
                             fontFamily: "Cinzel, serif",
@@ -119,7 +121,7 @@ export async function GET(request: NextRequest) {
                         fontSize: 56,
                         fontWeight: 700,
                         lineHeight: 1.15,
-                        marginBottom: 20,
+                        marginBottom: 6,
                         fontFamily: "Cinzel, serif",
                     }}
                 >
