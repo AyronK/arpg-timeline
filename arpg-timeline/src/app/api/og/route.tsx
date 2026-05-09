@@ -32,8 +32,8 @@ export async function GET(request: NextRequest) {
         notFound();
     }
 
-    const logoSrc = gameData?.seasonLogoUrl ?? gameData?.logoUrl;
-    const dateLabel = gameData?.seasonStartDate
+    const logoSrc = gameData.seasonLogoUrl ?? gameData.logoUrl;
+    const dateLabel = gameData.seasonStartDate
         ? formatSeasonDate(gameData.seasonStartDate, gameData.seasonTimeUnknown)
         : undefined;
 
