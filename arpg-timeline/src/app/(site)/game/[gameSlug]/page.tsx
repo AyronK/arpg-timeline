@@ -30,6 +30,8 @@ import {
 } from "./metadata";
 import { GamePageProps } from "./types";
 import { calculateGameStatistics, getArchivalSeasons, getOldestSeasonInfo } from "./utils";
+import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
+import { PatreonFunding } from "@/components/PatreonFunding";
 
 async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
     try {
@@ -117,19 +119,23 @@ const GamePage = async ({ params }: GamePageProps) => {
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
                 {game.categories?.includes("seasonal") && archivalSeasons.length > 0 && (
-                    <StatisticsSection
-                        game={game}
-                        statistics={statistics}
-                        oldestSeasonInfo={oldestSeasonInfo}
-                    />
+                    <div className="mb-6 grid grid-cols-1 gap-4 md:mb-8 md:grid-cols-2">
+                        <StatisticsSection
+                            game={game}
+                            statistics={statistics}
+                            oldestSeasonInfo={oldestSeasonInfo}
+                        />
+                        <div className="flex flex-col gap-2">
+                            <PatreonFunding />
+                            <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
+                        </div>
+                    </div>
                 )}
 
                 <div className="mb-6 md:mb-8">
                     <PlatformIntegrationSection
                         steamAppId={steamAppId}
                         gameNews={gameNews.slice(0, 5)}
-                        gameSlug={gameSlug}
-                        gameName={game.name}
                     />
                 </div>
 
