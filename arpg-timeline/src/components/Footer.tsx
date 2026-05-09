@@ -165,7 +165,7 @@ export const Footer = () => (
                         >
                             Transparency
                         </Link>
-<span className="text-muted-foreground">
+                        <span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}
                             <Link
                                 className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"

@@ -40,9 +40,7 @@ function makeGame(overrides: Partial<Game> = {}): Game {
 
 describe("formatUtcDateTime", () => {
     it("formats date with time when timeUnknown is false", () => {
-        expect(formatUtcDateTime("2026-04-04T12:00:00.000Z", false)).toBe(
-            "Apr 4, 2026 12:00 UTC",
-        );
+        expect(formatUtcDateTime("2026-04-04T12:00:00.000Z", false)).toBe("Apr 4, 2026 12:00 UTC");
     });
 
     it("formats date with time when timeUnknown is undefined", () => {
@@ -52,9 +50,7 @@ describe("formatUtcDateTime", () => {
     });
 
     it("formats date with time when timeUnknown is null", () => {
-        expect(formatUtcDateTime("2026-04-04T12:00:00.000Z", null)).toBe(
-            "Apr 4, 2026 12:00 UTC",
-        );
+        expect(formatUtcDateTime("2026-04-04T12:00:00.000Z", null)).toBe("Apr 4, 2026 12:00 UTC");
     });
 
     it("omits time when timeUnknown is true", () => {
@@ -62,21 +58,15 @@ describe("formatUtcDateTime", () => {
     });
 
     it("pads hours and minutes with leading zeros", () => {
-        expect(formatUtcDateTime("2026-01-01T09:05:00.000Z", false)).toBe(
-            "Jan 1, 2026 09:05 UTC",
-        );
+        expect(formatUtcDateTime("2026-01-01T09:05:00.000Z", false)).toBe("Jan 1, 2026 09:05 UTC");
     });
 
     it("handles midnight UTC correctly", () => {
-        expect(formatUtcDateTime("2026-12-25T00:00:00.000Z", false)).toBe(
-            "Dec 25, 2026 00:00 UTC",
-        );
+        expect(formatUtcDateTime("2026-12-25T00:00:00.000Z", false)).toBe("Dec 25, 2026 00:00 UTC");
     });
 
     it("handles single-digit day without padding", () => {
-        expect(formatUtcDateTime("2026-03-07T18:30:00.000Z", false)).toBe(
-            "Mar 7, 2026 18:30 UTC",
-        );
+        expect(formatUtcDateTime("2026-03-07T18:30:00.000Z", false)).toBe("Mar 7, 2026 18:30 UTC");
     });
 });
 
@@ -89,7 +79,11 @@ describe("buildGamePageTitle", () => {
                 _id: "s1",
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
-                start: { startDate: "2027-04-04T12:00:00.000Z", confirmed: true, timeUnknown: false },
+                start: {
+                    startDate: "2027-04-04T12:00:00.000Z",
+                    confirmed: true,
+                    timeUnknown: false,
+                },
             },
         });
         expect(buildGamePageTitle(game)).toBe(
@@ -160,7 +154,11 @@ describe("buildGamePageDescription", () => {
                 _id: "s1",
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
-                start: { startDate: "2027-04-04T12:00:00.000Z", confirmed: true, timeUnknown: false },
+                start: {
+                    startDate: "2027-04-04T12:00:00.000Z",
+                    confirmed: true,
+                    timeUnknown: false,
+                },
             },
         });
         expect(buildGamePageDescription(game)).toContain(
@@ -174,7 +172,11 @@ describe("buildGamePageDescription", () => {
                 _id: "s1",
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
-                start: { startDate: "2026-06-01T00:00:00.000Z", confirmed: true, timeUnknown: true },
+                start: {
+                    startDate: "2026-06-01T00:00:00.000Z",
+                    confirmed: true,
+                    timeUnknown: true,
+                },
             },
         });
         const desc = buildGamePageDescription(game);
@@ -259,7 +261,11 @@ describe("buildGamePageOgTitle", () => {
                 _id: "s1",
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
-                start: { startDate: "2027-04-04T12:00:00.000Z", confirmed: true, timeUnknown: false },
+                start: {
+                    startDate: "2027-04-04T12:00:00.000Z",
+                    confirmed: true,
+                    timeUnknown: false,
+                },
             },
         });
         expect(buildGamePageOgTitle(game)).toBe(

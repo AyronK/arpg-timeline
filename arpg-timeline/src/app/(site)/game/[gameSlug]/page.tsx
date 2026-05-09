@@ -202,7 +202,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
             locale: "en_US",
             images: [
                 {
-                    url: "/assets/seoimage.png",
+                    url: `/api/og?game=${slug}`,
                     width: 1200,
                     height: 630,
                     alt: `${game.name} Season Tracker - Track ${game.name} ${game.seasonKeyword}s and updates`,
@@ -214,7 +214,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
             card: "summary_large_image",
             title: buildGamePageOgTitle(game),
             description: buildGamePageOgDescription(game),
-            images: ["/assets/seoimage.png"],
+            images: [`/api/og?game=${slug}`],
         },
         robots: {
             index: true,
