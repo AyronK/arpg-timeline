@@ -4,10 +4,10 @@ import {
     BookOpen,
     CalendarCheck,
     CalendarDays,
+    ChevronRight,
     Code2,
     Gamepad2,
     Globe,
-    LayoutGrid,
     Monitor,
 } from "lucide-react";
 import Link from "next/link";
@@ -43,11 +43,12 @@ const LinkContent = ({
                 {description}
             </span>
         </div>
+        <ChevronRight className="text-muted-foreground ml-auto h-4 w-4 shrink-0 translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 max-md:opacity-100" />
     </>
 );
 
 const rowCls =
-    "flex w-full items-center !gap-3 transition-opacity hover:opacity-80 cursor-pointer text-left";
+    "group flex w-full items-center !gap-3 rounded-md px-3 py-3 -mx-3 cursor-pointer text-left transition-colors hover:bg-accent hover:!brightness-100";
 
 export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSectionProps) => {
     const [calendarOpen, setCalendarOpen] = useState(false);
@@ -56,8 +57,8 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
         <>
             <div className="bg-card text-card-foreground flex-1 rounded-lg border p-4 md:p-6">
                 <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Quick Links</h2>
-                <div className="flex flex-col gap-4 md:gap-5">
-                    <div className="flex flex-col gap-5">
+                <div className="flex flex-col">
+                    <div className="flex flex-col">
                         {game.url && (
                             <GuardedExternalLink
                                 href={game.url}
@@ -152,7 +153,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                 <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">
                     Tools &amp; Features
                 </h2>
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col">
                     <button
                         onClick={() => {
                             sa_event("calendar_subscribe_opened", { game: gameSlug });
@@ -167,18 +168,6 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             description="Get every season in your phone or desktop calendar"
                         />
                     </button>
-
-                    <Link
-                        href={`/embed/season-widget/${gameSlug}`}
-                        data-sa-click={`${gameSlug}-embed-widget`}
-                        className={rowCls}
-                    >
-                        <LinkContent
-                            icon={<LayoutGrid className="h-5 w-5 opacity-70" />}
-                            title="Embed the Widget"
-                            description="Drop a live countdown into your stream or site"
-                        />
-                    </Link>
 
                     <Link
                         href={`/docs/obs/${gameSlug}`}

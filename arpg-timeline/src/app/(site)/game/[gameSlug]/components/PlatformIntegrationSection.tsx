@@ -9,7 +9,6 @@ export const PlatformIntegrationSection = ({
     gameNews,
 }: PlatformIntegrationSectionProps) => (
     <div className="space-y-6 md:gap-6 md:space-y-8">
-        {steamAppId && <h2 className="font-heading text-2xl md:text-3xl">Live updates</h2>}
         <div className={"grid gap-4 md:gap-6 lg:grid-cols-2"}>
             <div className="flex flex-1 flex-col justify-between gap-4">
                 {steamAppId && (

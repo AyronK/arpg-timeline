@@ -119,7 +119,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
                 {game.categories?.includes("seasonal") && archivalSeasons.length > 0 && (
-                    <div className="mb-6 grid grid-cols-1 gap-4 md:mb-8 md:grid-cols-2">
+                    <div className="mb-6 grid grid-cols-1 gap-4 2xl:mb-8 2xl:grid-cols-2">
                         <StatisticsSection
                             game={game}
                             statistics={statistics}
