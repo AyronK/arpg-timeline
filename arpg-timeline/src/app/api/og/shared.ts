@@ -30,7 +30,11 @@ export interface OgGameData {
 
 export async function fetchOgGameData(slug: string): Promise<OgGameData | null> {
     try {
-        const result = await sanityClient.fetch(ogGameQuery, { slug }, { next: { revalidate: 3600 } });
+        const result = await sanityClient.fetch(
+            ogGameQuery,
+            { slug },
+            { next: { revalidate: 3600 } },
+        );
         if (!result) return null;
 
         const now = Date.now();
@@ -84,6 +88,50 @@ export function formatSeasonDate(startDate: string, timeUnknown?: boolean): stri
     return `${dateStr} at ${timeStr} UTC`;
 }
 
+const ogSeasonQuery = `*[_type == "season" && _id == $id][0]{
+  name,
+  "logoUrl": logo.asset->url,
+  start {
+    startDate,
+    confirmed,
+    timeUnknown
+  },
+  "game": game->{
+    name,
+    "logoUrl": logo.asset->url
+  }
+}`;
+
+export interface OgSeasonData {
+    seasonName: string;
+    seasonLogoUrl?: string;
+    seasonStartDate?: string;
+    seasonTimeUnknown?: boolean;
+    gameName: string;
+    gameLogoUrl?: string;
+}
+
+export async function fetchOgSeasonData(id: string): Promise<OgSeasonData | null> {
+    try {
+        const result = await sanityClient.fetch(
+            ogSeasonQuery,
+            { id },
+            { next: { revalidate: 3600 } },
+        );
+        if (!result?.game) return null;
+        return {
+            seasonName: result.name,
+            seasonLogoUrl: result.logoUrl ?? undefined,
+            seasonStartDate: result.start?.startDate ?? undefined,
+            seasonTimeUnknown: result.start?.timeUnknown ?? undefined,
+            gameName: result.game.name,
+            gameLogoUrl: result.game.logoUrl ?? undefined,
+        };
+    } catch {
+        return null;
+    }
+}
+
 export function getSiteLogoBase64(): string {
     try {
         const buffer = readFileSync(join(process.cwd(), "public", "assets", "logo.png"));
@@ -95,10 +143,10 @@ export function getSiteLogoBase64(): string {
 
 export async function loadCinzelFont(weight: 400 | 700 = 700): Promise<ArrayBuffer | null> {
     try {
-        const css = await fetch(
-            `https://fonts.googleapis.com/css2?family=Cinzel:wght@${weight}`,
-            { headers: { "User-Agent": "Mozilla/5.0" }, next: { revalidate: 86400 } },
-        ).then((r) => r.text());
+        const css = await fetch(`https://fonts.googleapis.com/css2?family=Cinzel:wght@${weight}`, {
+            headers: { "User-Agent": "Mozilla/5.0" },
+            next: { revalidate: 86400 },
+        }).then((r) => r.text());
         const url = css.match(/src: url\((.+?)\) format/)?.[1];
         if (!url) return null;
         return fetch(url, { next: { revalidate: 86400 } }).then((r) => r.arrayBuffer());

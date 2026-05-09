@@ -2,40 +2,36 @@ import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
 
-import { fetchOgGameData, formatSeasonDate, loadCinzelFont } from "./shared";
+import { fetchOgSeasonData, loadCinzelFont } from "../shared";
 
-const W = 1200;
-const H = 630;
+const W = 800;
+const H = 320;
 
 const BG = "#17181d";
 const BG_CARD = "#1e1f26";
 const TEXT_HEADING = "#f5f5f0";
 const TEXT_BODY = "#c8c8c0";
-const TEXT_MUTED = "#64645c";
 const BORDER = "#2e2f38";
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
-    const gameSlug = searchParams.get("game");
+    const seasonId = searchParams.get("season");
 
-    if (!gameSlug) {
+    if (!seasonId) {
         notFound();
     }
 
-    const [gameData, cinzel400, cinzel700] = await Promise.all([
-        gameSlug ? fetchOgGameData(gameSlug) : Promise.resolve(null),
+    const [data, cinzel400, cinzel700] = await Promise.all([
+        fetchOgSeasonData(seasonId),
         loadCinzelFont(400),
         loadCinzelFont(700),
     ]);
 
-    if (!gameData) {
+    if (!data) {
         notFound();
     }
 
-    const logoSrc = gameData.seasonLogoUrl ?? gameData.logoUrl;
-    const dateLabel = gameData.seasonStartDate
-        ? formatSeasonDate(gameData.seasonStartDate, gameData.seasonTimeUnknown)
-        : undefined;
+    const logoSrc = data.seasonLogoUrl ?? data.gameLogoUrl;
 
     return new ImageResponse(
         <div
@@ -55,14 +51,16 @@ export async function GET(request: NextRequest) {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: 400,
+                    width: 240,
                     height: H,
                     background: BG_CARD,
                     borderRight: `1px solid ${BORDER}`,
-                    padding: "60px 40px",
+                    padding: "28px 24px",
                 }}
             >
-                <img src={logoSrc} width={280} height={280} style={{ objectFit: "contain" }} />
+                {logoSrc && (
+                    <img src={logoSrc} width={160} height={160} style={{ objectFit: "contain" }} />
+                )}
             </div>
 
             <div
@@ -71,23 +69,17 @@ export async function GET(request: NextRequest) {
                     flexDirection: "column",
                     justifyContent: "center",
                     flex: 1,
-                    padding: "60px 64px",
+                    padding: "28px 36px",
                 }}
             >
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: 40,
-                    }}
-                >
+                <div style={{ display: "flex", alignItems: "center", marginBottom: 18 }}>
                     <svg
-                        width="40"
-                        height="40"
+                        width="22"
+                        height="22"
                         viewBox="0 0 135.5 135.5"
                         xmlns="http://www.w3.org/2000/svg"
                         fill={TEXT_HEADING}
-                        style={{ marginRight: 14 }}
+                        style={{ marginRight: 9 }}
                     >
                         <g>
                             <path d="m 70.81945,42.064616 c 0,3.981897 -0.176669,9.020496 0.867531,12.917506 0.134933,0.503576 2.215487,6.551009 2.215487,1.904734 V 42.064634 c -1.027673,3e-6 -2.055345,-3e-6 -3.083018,-1.8e-5 z" />
@@ -103,7 +95,7 @@ export async function GET(request: NextRequest) {
                     <span
                         style={{
                             color: TEXT_HEADING,
-                            fontSize: 22,
+                            fontSize: 13,
                             fontWeight: 400,
                             letterSpacing: "0.06em",
                             fontFamily: "Cinzel, serif",
@@ -116,40 +108,25 @@ export async function GET(request: NextRequest) {
                 <div
                     style={{
                         color: TEXT_HEADING,
-                        fontSize: 56,
+                        fontSize: 36,
                         fontWeight: 700,
-                        lineHeight: 1.15,
-                        marginBottom: 20,
+                        lineHeight: 1.2,
+                        marginBottom: 10,
                         fontFamily: "Cinzel, serif",
                     }}
                 >
-                    {gameData?.name ?? "Season Tracker"}
+                    {data.gameName}
                 </div>
 
-                {gameData?.seasonName && (
-                    <div
-                        style={{
-                            color: TEXT_BODY,
-                            fontSize: 28,
-                            lineHeight: 1.3,
-                            marginBottom: dateLabel ? 12 : 0,
-                        }}
-                    >
-                        {gameData.seasonName}
-                    </div>
-                )}
-
-                {dateLabel && (
-                    <div
-                        style={{
-                            color: TEXT_MUTED,
-                            fontSize: 22,
-                            lineHeight: 1.4,
-                        }}
-                    >
-                        {dateLabel}
-                    </div>
-                )}
+                <div
+                    style={{
+                        color: TEXT_BODY,
+                        fontSize: 20,
+                        lineHeight: 1.3,
+                    }}
+                >
+                    {data.seasonName}
+                </div>
             </div>
         </div>,
         {
