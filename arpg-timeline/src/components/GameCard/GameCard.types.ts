@@ -21,4 +21,5 @@ export type GameCardProps = PropsWithChildren &
     Game & {
         stats?: GameStatistics;
         noMenu?: boolean;
+        noTitle?: boolean;
     };

@@ -1,9 +1,11 @@
-import { Gamepad2 } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
+import { PatreonFunding } from "@/components/PatreonFunding";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import {
     gameDetailsQuery,
@@ -104,12 +106,12 @@ const GamePage = async ({ params }: GamePageProps) => {
                 />
             )}
             <div className="relative container mx-auto py-6 md:py-8">
-                <div className="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row">
+                <div className="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-6">
                     <h1 className="font-heading text-3xl md:text-4xl">{game.name}</h1>
-                    <Button variant="default" size="sm" asChild className="w-full md:w-auto">
+                    <Button variant="default" size="lg" asChild className="w-full md:w-auto">
                         <Link href="/" data-sa-click="back-to-homepage">
-                            <Gamepad2 className="mr-2 h-4 w-4" />
-                            Browse all games
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            See other games
                         </Link>
                     </Button>
                 </div>
@@ -117,21 +119,27 @@ const GamePage = async ({ params }: GamePageProps) => {
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
                 {game.categories?.includes("seasonal") && archivalSeasons.length > 0 && (
-                    <StatisticsSection
-                        game={game}
-                        statistics={statistics}
-                        oldestSeasonInfo={oldestSeasonInfo}
-                    />
+                    <div className="mb-4 grid grid-cols-1 gap-4 md:mb-6 md:gap-6 2xl:grid-cols-2">
+                        <StatisticsSection
+                            game={game}
+                            statistics={statistics}
+                            oldestSeasonInfo={oldestSeasonInfo}
+                        />
+                        <div className="flex flex-col gap-4">
+                            <PatreonFunding />
+                            <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
+                        </div>
+                    </div>
                 )}
 
-                <div className="mb-6 md:mb-8">
-                    <PlatformIntegrationSection
-                        steamAppId={steamAppId}
-                        gameNews={gameNews.slice(0, 5)}
-                        gameSlug={gameSlug}
-                        gameName={game.name}
-                    />
-                </div>
+                {steamAppId && (
+                    <div className="mb-4 md:mb-6">
+                        <PlatformIntegrationSection
+                            steamAppId={steamAppId}
+                            gameNews={gameNews.slice(0, 5)}
+                        />
+                    </div>
+                )}
 
                 {archivalSeasons.length > 0 && (
                     <ArchivalSeasonsSection

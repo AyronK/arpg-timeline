@@ -28,6 +28,7 @@ export const GameCard = ({
     slug,
     stats,
     noMenu,
+    noTitle,
 }: GameCardProps) => {
     const hasExternalUrl = url && url !== "#";
     const logoContent = (
@@ -40,7 +41,7 @@ export const GameCard = ({
             <div className="flex flex-col">
                 <div className="flex flex-row items-start justify-between gap-3">
                     <div className="flex min-w-0 flex-1 flex-col gap-2">
-                        <h3 className="font-heading text-xs">{name}</h3>
+                        {!noTitle && <h3 className="font-heading text-xs">{name}</h3>}
                         <div className="flex flex-row flex-wrap items-center justify-start gap-2">
                             {!official && <CommunityLabel />}
                             {stats?.steam && (

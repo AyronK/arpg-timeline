@@ -12,7 +12,7 @@ export const ArchivalSeasonsSection = ({
     }
 
     return (
-        <div className="mb-6 md:mb-8">
+        <div className="mb-4 md:mb-6">
             <div className="bg-card text-card-foreground rounded-lg border p-4 md:p-6">
                 <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">
                     Archival {seasonKeyword}s
