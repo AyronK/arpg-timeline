@@ -10,7 +10,7 @@ export const PlatformIntegrationSection = ({
 }: PlatformIntegrationSectionProps) => (
     <div className="space-y-6 md:gap-6 md:space-y-8">
         <div className={"grid gap-4 md:gap-6 lg:grid-cols-2"}>
-            <div className="flex flex-1 flex-col justify-between gap-4">
+            <div className="flex flex-1 flex-col justify-between gap-4 md:gap-6">
                 {steamAppId && (
                     <>
                         <div className="md:bg-card md:text-card-foreground md:rounded-lg md:border md:p-4">
