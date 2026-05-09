@@ -62,25 +62,7 @@ export async function GET(request: NextRequest) {
                     padding: "60px 40px",
                 }}
             >
-                {logoSrc ? (
-                    <img src={logoSrc} width={280} height={280} style={{ objectFit: "contain" }} />
-                ) : (
-                    <div
-                        style={{
-                            width: 180,
-                            height: 180,
-                            borderRadius: 16,
-                            border: `2px solid ${BORDER}`,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            color: TEXT_MUTED,
-                            fontSize: 56,
-                        }}
-                    >
-                        ⚔
-                    </div>
-                )}
+                <img src={logoSrc} width={280} height={280} style={{ objectFit: "contain" }} />
             </div>
 
             <div
