@@ -34,9 +34,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
 
     const key = useTimeBasedKey(nextDate ? new Date(nextDate) : new Date());
 
-    const parsedStreams = parseGameStreamsFromSanity({
-        games,
-    });
+    const parsedStreams = useMemo(() => parseGameStreamsFromSanity({ games }), [games]);
     const { filteredGames } = useGameFilterContext();
 
     const filteredStreams = useMemo(() => {
@@ -47,6 +45,8 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                 new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000,
         );
     }, [filteredGames, parsedStreams]);
+
+    const slideCount = filteredStreams.length + 3;
 
     const carouselPlugins = useMemo(
         () => [
@@ -116,7 +116,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                         <CalendarSubscriptionAlert />
                                     </CarouselItem>
                                 </CarouselContent>
-                                <CarouselDots className="py-2" />
+                                <CarouselDots className="py-2" slideCount={slideCount} />
                             </Carousel>
                         </div>
                     </ErrorBoundary>

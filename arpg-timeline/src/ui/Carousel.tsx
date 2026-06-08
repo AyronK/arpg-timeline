@@ -44,24 +44,16 @@ const Carousel = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement> & CarouselProps
 >(({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }, ref) => {
-    const [carouselRef, api] = useEmblaCarousel(
-        {
+    const emblaOptions = React.useMemo(
+        () => ({
             ...opts,
-            axis: orientation === "horizontal" ? "x" : "y",
-        },
-        plugins,
+            axis: (orientation === "horizontal" ? "x" : "y") as "x" | "y",
+        }),
+        [opts, orientation],
     );
+    const [carouselRef, api] = useEmblaCarousel(emblaOptions, plugins);
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
-
-    const onSelect = React.useCallback((api: CarouselApi) => {
-        if (!api) {
-            return;
-        }
-
-        setCanScrollPrev(api.canScrollPrev());
-        setCanScrollNext(api.canScrollNext());
-    }, []);
 
     const scrollPrev = React.useCallback(() => {
         api?.scrollPrev();
@@ -97,28 +89,51 @@ const Carousel = React.forwardRef<
             return;
         }
 
-        onSelect(api);
-        api.on("reInit", onSelect);
-        api.on("select", onSelect);
+        const updateScrollButtons = () => {
+            const nextCanScrollPrev = api.canScrollPrev();
+            const nextCanScrollNext = api.canScrollNext();
+            setCanScrollPrev((current) =>
+                current === nextCanScrollPrev ? current : nextCanScrollPrev,
+            );
+            setCanScrollNext((current) =>
+                current === nextCanScrollNext ? current : nextCanScrollNext,
+            );
+        };
+
+        api.on("init", updateScrollButtons);
+        api.on("select", updateScrollButtons);
 
         return () => {
-            api?.off("select", onSelect);
+            api.off("init", updateScrollButtons);
+            api.off("select", updateScrollButtons);
         };
-    }, [api, onSelect]);
+    }, [api]);
+
+    const contextValue = React.useMemo(
+        () => ({
+            carouselRef,
+            api,
+            opts,
+            orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+            scrollPrev,
+            scrollNext,
+            canScrollPrev,
+            canScrollNext,
+        }),
+        [
+            carouselRef,
+            api,
+            opts,
+            orientation,
+            scrollPrev,
+            scrollNext,
+            canScrollPrev,
+            canScrollNext,
+        ],
+    );
 
     return (
-        <CarouselContext.Provider
-            value={{
-                carouselRef,
-                api: api,
-                opts,
-                orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
-                scrollPrev,
-                scrollNext,
-                canScrollPrev,
-                canScrollNext,
-            }}
-        >
+        <CarouselContext.Provider value={contextValue}>
             <div
                 ref={ref}
                 onKeyDownCapture={handleKeyDown}
@@ -204,33 +219,33 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
 );
 CarouselPrevious.displayName = "CarouselPrevious";
 
-const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, ...props }, ref) => {
+type CarouselDotsProps = React.HTMLAttributes<HTMLDivElement> & {
+    slideCount: number;
+};
+
+const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
+    ({ className, slideCount, ...props }, ref) => {
         const { api } = useCarousel();
         const [selected, setSelected] = React.useState(0);
-        const [count, setCount] = React.useState(0);
 
         React.useEffect(() => {
             if (!api) return;
 
-            const sync = () => {
-                const nextCount = api.scrollSnapList().length;
+            const onSelect = () => {
                 const nextSelected = api.selectedScrollSnap();
-                setCount((current) => (current === nextCount ? current : nextCount));
                 setSelected((current) => (current === nextSelected ? current : nextSelected));
             };
 
-            sync();
-            api.on("select", sync);
-            api.on("reInit", sync);
+            api.on("init", onSelect);
+            api.on("select", onSelect);
 
             return () => {
-                api.off("select", sync);
-                api.off("reInit", sync);
+                api.off("init", onSelect);
+                api.off("select", onSelect);
             };
         }, [api]);
 
-        if (count <= 1) return null;
+        if (slideCount <= 1) return null;
 
         return (
             <div
@@ -238,7 +253,7 @@ const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
                 className={cn("flex items-center justify-center gap-1.5", className)}
                 {...props}
             >
-                {Array.from({ length: count }).map((_, i) => (
+                {Array.from({ length: slideCount }).map((_, i) => (
                     <button
                         key={i}
                         onClick={() => api?.scrollTo(i)}
