@@ -213,18 +213,20 @@ const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
         React.useEffect(() => {
             if (!api) return;
 
-            setCount(api.scrollSnapList().length);
-            setSelected(api.selectedScrollSnap());
+            const sync = () => {
+                const nextCount = api.scrollSnapList().length;
+                const nextSelected = api.selectedScrollSnap();
+                setCount((current) => (current === nextCount ? current : nextCount));
+                setSelected((current) => (current === nextSelected ? current : nextSelected));
+            };
 
-            const onSelect = () => setSelected(api.selectedScrollSnap());
-            api.on("select", onSelect);
-            api.on("reInit", () => {
-                setCount(api.scrollSnapList().length);
-                setSelected(api.selectedScrollSnap());
-            });
+            sync();
+            api.on("select", sync);
+            api.on("reInit", sync);
 
             return () => {
-                api.off("select", onSelect);
+                api.off("select", sync);
+                api.off("reInit", sync);
             };
         }, [api]);
 
