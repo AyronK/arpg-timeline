@@ -2,7 +2,7 @@
 
 import Autoplay from "embla-carousel-autoplay";
 import { Twitch } from "lucide-react";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -16,6 +16,44 @@ import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/ui/Caro
 
 import { BuyMeACoffee } from "./BuyMeACoffee";
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
+
+const StreamCarouselSlides = memo(function StreamCarouselSlides({
+    streams,
+}: {
+    streams: ReturnType<typeof parseGameStreamsFromSanity>;
+}) {
+    return (
+        <>
+            {streams.map((s, idx) => (
+                <CarouselItem
+                    key={s.slug}
+                    className="flex h-28 cursor-all-scroll items-center justify-center pr-4 pl-8"
+                >
+                    <div className="relative flex-1 pt-3">
+                        <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
+                        <StreamCard stream={s} priority={idx === 0} />
+                    </div>
+                </CarouselItem>
+            ))}
+        </>
+    );
+});
+
+const CtaCarouselSlides = memo(function CtaCarouselSlides() {
+    return (
+        <>
+            <CarouselItem className="flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full">
+                <PatreonFunding />
+            </CarouselItem>
+            <CarouselItem className="flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full">
+                <BuyMeACoffee />
+            </CarouselItem>
+            <CarouselItem className="flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full">
+                <CalendarSubscriptionAlert />
+            </CarouselItem>
+        </>
+    );
+});
 
 export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
     const nextDate = useMemo(
@@ -32,7 +70,11 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
         [games],
     );
 
-    const key = useTimeBasedKey(nextDate ? new Date(nextDate) : new Date());
+    const refreshTimestamp = useMemo(
+        () => (nextDate ? new Date(nextDate).getTime() : 0),
+        [nextDate],
+    );
+    const refreshKey = useTimeBasedKey(refreshTimestamp);
 
     const parsedStreams = useMemo(() => parseGameStreamsFromSanity({ games }), [games]);
     const { filteredGames } = useGameFilterContext();
@@ -69,7 +111,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
     );
 
     return (
-        <ClientOnlyVisibleWrapper key={key}>
+        <ClientOnlyVisibleWrapper key={refreshKey || undefined}>
             <div className="flex justify-center">
                 <div className="relative mx-auto max-w-screen flex-1 lg:max-w-4xl">
                     <h2 className="hidden">Streams</h2>
@@ -81,40 +123,8 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                                 opts={carouselOpts}
                             >
                                 <CarouselContent>
-                                    {filteredStreams.map((s, idx) => (
-                                        <CarouselItem
-                                            key={s.slug}
-                                            className={
-                                                "flex h-28 cursor-all-scroll items-center justify-center pr-4 pl-8"
-                                            }
-                                        >
-                                            <div className="relative flex-1 pt-3">
-                                                <Twitch className="absolute top-4 right-2 z-10 mt-auto h-4 w-4 translate-x-1/2 -translate-y-1/2 fill-white stroke-[#6441a5] motion-safe:animate-bounce" />
-                                                <StreamCard stream={s} priority={idx === 0} />
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
-                                    <CarouselItem
-                                        className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full"
-                                        }
-                                    >
-                                        <PatreonFunding />
-                                    </CarouselItem>
-                                    <CarouselItem
-                                        className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full"
-                                        }
-                                    >
-                                        <BuyMeACoffee />
-                                    </CarouselItem>
-                                    <CarouselItem
-                                        className={
-                                            "flex h-28 cursor-all-scroll items-center justify-center pt-3 pr-4 pl-8 [&>*]:h-full"
-                                        }
-                                    >
-                                        <CalendarSubscriptionAlert />
-                                    </CarouselItem>
+                                    <StreamCarouselSlides streams={filteredStreams} />
+                                    <CtaCarouselSlides />
                                 </CarouselContent>
                                 <CarouselDots className="py-2" slideCount={slideCount} />
                             </Carousel>
