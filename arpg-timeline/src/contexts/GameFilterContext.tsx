@@ -47,13 +47,12 @@ interface GameFilterProviderProps {
     category: GameFilterCategory;
 }
 
-export const useTimeBasedKey = (targetDate: Date) => {
+export const useTimeBasedKey = (targetTimestamp: number) => {
     const [key, setKey] = useState(0);
     const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        const now = new Date();
-        const timeUntilRefresh = targetDate.getTime() - now.getTime();
+        const timeUntilRefresh = targetTimestamp - Date.now();
 
         if (timeUntilRefresh <= 0) {
             return;
@@ -68,18 +67,7 @@ export const useTimeBasedKey = (targetDate: Date) => {
                 clearTimeout(refreshTimeoutRef.current);
             }
         };
-    }, [targetDate]);
-
-    useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === "visible") {
-                setKey((k) => k + 1);
-            }
-        };
-
-        document.addEventListener("visibilitychange", handleVisibilityChange);
-        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-    }, []);
+    }, [targetTimestamp]);
 
     return key;
 };
@@ -99,7 +87,11 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
         [seasons],
     );
 
-    const key = useTimeBasedKey(nextDate ? new Date(nextDate) : new Date());
+    const refreshTimestamp = useMemo(
+        () => (nextDate ? new Date(nextDate).getTime() : 0),
+        [nextDate],
+    );
+    const key = useTimeBasedKey(refreshTimestamp);
 
     return (
         <Suspense
@@ -155,17 +147,29 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         return games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
     }, [games, excludedSlugs]);
 
-    const value: GameFilterContextType = {
-        gameFilters,
-        toggleGameFilter,
-        toggleGroupFilter,
-        updateFilters,
-        filteredGames,
-        activeFilters,
-        shownGames: filteredGames.length,
-        totalGames: games.length,
-        category,
-    };
+    const value = useMemo<GameFilterContextType>(
+        () => ({
+            gameFilters,
+            toggleGameFilter,
+            toggleGroupFilter,
+            updateFilters,
+            filteredGames,
+            activeFilters,
+            shownGames: filteredGames.length,
+            totalGames: games.length,
+            category,
+        }),
+        [
+            gameFilters,
+            toggleGameFilter,
+            toggleGroupFilter,
+            updateFilters,
+            filteredGames,
+            activeFilters,
+            games.length,
+            category,
+        ],
+    );
 
     return <GameFilterContext.Provider value={value}>{children}</GameFilterContext.Provider>;
 };
