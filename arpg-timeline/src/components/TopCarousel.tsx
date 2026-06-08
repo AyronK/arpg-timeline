@@ -48,6 +48,26 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
         );
     }, [filteredGames, parsedStreams]);
 
+    const carouselPlugins = useMemo(
+        () => [
+            Autoplay({
+                delay: 5000,
+                stopOnMouseEnter: true,
+                playOnInit: true,
+                stopOnFocusIn: false,
+            }),
+        ],
+        [],
+    );
+
+    const carouselOpts = useMemo(
+        () => ({
+            loop: true,
+            active: true,
+        }),
+        [],
+    );
+
     return (
         <ClientOnlyVisibleWrapper key={key}>
             <div className="flex justify-center">
@@ -56,19 +76,9 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
                     <ErrorBoundary fallback={<WidgetDiedFallback />}>
                         <div className="mx-auto max-w-screen lg:max-w-4xl">
                             <Carousel
-                                plugins={[
-                                    Autoplay({
-                                        delay: 5000,
-                                        stopOnMouseEnter: true,
-                                        playOnInit: true,
-                                        stopOnFocusIn: false,
-                                    }),
-                                ]}
+                                plugins={carouselPlugins}
                                 className="w-full max-w-screen select-none lg:max-w-4xl"
-                                opts={{
-                                    loop: true,
-                                    active: true,
-                                }}
+                                opts={carouselOpts}
                             >
                                 <CarouselContent>
                                     {filteredStreams.map((s, idx) => (
