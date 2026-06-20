@@ -1,6 +1,5 @@
 import { DialogPortal } from "@radix-ui/react-dialog";
 import { Description } from "@radix-ui/react-toast";
-import { PropsWithChildren } from "react";
 import { PiUsersThree } from "react-icons/pi";
 import { RiSteamLine } from "react-icons/ri";
 
@@ -10,7 +9,6 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/ui/Dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
@@ -55,28 +53,19 @@ export const SteamPlayersChip = ({
     );
 };
 
-export const SteamDialogTrigger = ({
+export const SteamDialog = ({
     playersCount,
     appId,
-    gameSlug,
-    children,
-}: PropsWithChildren<{
+    open,
+    onOpenChange,
+}: {
     playersCount: number;
     appId: number;
-    gameSlug: string;
-    isComingSoon?: boolean;
-}>) => {
-    const description = `${playersCount} players online on Steam`;
-
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}) => {
     return (
-        <Dialog>
-            <DialogTrigger
-                aria-description={description}
-                data-sa-click={`steam-${gameSlug}`}
-                asChild
-            >
-                {children}
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogPortal>
                 <DialogContent className="w-[95vw] md:max-w-4xl!">
                     <DialogHeader>

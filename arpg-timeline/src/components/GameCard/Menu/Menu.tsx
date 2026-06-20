@@ -8,7 +8,7 @@ import { SiObsstudio } from "react-icons/si";
 
 import { CalendarSubscribeDialog } from "@/components/CalendarSubscribeDialog";
 import { DropdownMenuSeparator } from "@/components/DropdownMenu";
-import { SteamDialogTrigger } from "@/components/SteamPlayersChip";
+import { SteamDialog } from "@/components/SteamPlayersChip";
 import { sa_event } from "@/lib/sa_event";
 import { Button } from "@/ui/Button";
 import {
@@ -31,6 +31,7 @@ export function GameMenu({
     steamAppId?: number;
 }) {
     const [subscribeDialogOpen, setSubscribeDialogOpen] = useState(false);
+    const [steamDialogOpen, setSteamDialogOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
@@ -74,19 +75,13 @@ export function GameMenu({
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     {steamAppId && (
-                        <SteamDialogTrigger
-                            appId={steamAppId}
-                            gameSlug={game}
-                            playersCount={playersCount ?? 0}
+                        <DropdownMenuItem
+                            aria-label="View steam details"
+                            data-sa-click={`${game}-steam-dialog`}
+                            onClick={() => setSteamDialogOpen(true)}
                         >
-                            <DropdownMenuItem
-                                aria-label="View steam details"
-                                data-sa-click={`${game}-steam-dialog`}
-                                onSelect={(e) => e.preventDefault()}
-                            >
-                                <RiSteamLine className="mr-2 h-4 w-4" /> Steam Data
-                            </DropdownMenuItem>
-                        </SteamDialogTrigger>
+                            <RiSteamLine className="mr-2 h-4 w-4" /> Steam Data
+                        </DropdownMenuItem>
                     )}
                     <Link href={`/docs/html/${game}`} target="_blank" rel="noopener noreferrer">
                         <DropdownMenuItem
@@ -115,6 +110,15 @@ export function GameMenu({
                 gameSlug={game}
                 gameName={gameName}
             />
+
+            {steamAppId && (
+                <SteamDialog
+                    open={steamDialogOpen}
+                    onOpenChange={setSteamDialogOpen}
+                    appId={steamAppId}
+                    playersCount={playersCount ?? 0}
+                />
+            )}
         </>
     );
 }
