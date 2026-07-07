@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_BUY_ME_A_COFFEE_URL: process.env.BUY_ME_A_COFFEE_URL,
     },
     images: {
-        remotePatterns: [{ hostname: "cdn.sanity.io" }],
+        remotePatterns: [{ hostname: "cdn.sanity.io" }, { hostname: "images.igdb.com" }],
         dangerouslyAllowSVG: true,
         minimumCacheTTL: 31536000,
         formats: ["image/webp"],

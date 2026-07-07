@@ -35,6 +35,8 @@ export type Game = {
     categories?: GameCategory[];
     tags?: GameTag[];
     isOfficial: boolean;
+    isCustomEvent?: boolean;
+    customEventImageUrl?: string | null;
 };
 
 export type Season = {

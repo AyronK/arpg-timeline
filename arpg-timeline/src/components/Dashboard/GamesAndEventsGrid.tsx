@@ -1,14 +1,17 @@
 "use client";
 
 import { Filter } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+import { AddCustomEventDialog } from "@/components/CustomEvents/AddCustomEventDialog";
 import { GameFilters } from "@/components/GameFilters";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
+import { useCustomEvents } from "@/hooks/useCustomEvents";
 import { useGameCategories } from "@/hooks/useGameCategories";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
+import { processGamesWithGracePeriodAndSort } from "@/lib/cms/processGamesWithGracePeriodAndSort";
 import { getFilterHintDismissed } from "@/lib/storage/filterOnboardingStorage";
 import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
 import { cn } from "@/lib/utils";
@@ -29,8 +32,13 @@ export const GamesAndEventsGrid = ({
     const [hintDismissed] = useState(() => getStoredFilters() !== null || getFilterHintDismissed());
     const { filteredGames, totalGames, shownGames, category, ...filtersProps } =
         useGameFilterContext();
-    const events = useTimelineEvents(filteredGames);
-    const { allGames } = useGameCategories(filteredGames);
+    const { customGames, addCustomEvent, removeCustomEvent } = useCustomEvents();
+    const combinedGames = useMemo(
+        () => processGamesWithGracePeriodAndSort([...filteredGames, ...customGames]),
+        [filteredGames, customGames],
+    );
+    const events = useTimelineEvents(combinedGames);
+    const { allGames } = useGameCategories(combinedGames);
 
     const handleLoadingChange = (loading: boolean) => {
         setIsLoading(loading);
@@ -72,9 +80,14 @@ export const GamesAndEventsGrid = ({
                         { "opacity-0": isLoading },
                     )}
                 >
-                    <Games games={allGames} statistics={statistics} />
+                    <Games
+                        games={allGames}
+                        statistics={statistics}
+                        onRemoveCustomEvent={removeCustomEvent}
+                    />
                     <CantFindGame />
-                    {filteredGames.length > 1 && <Events events={events} />}
+                    <AddCustomEventDialog onAdd={addCustomEvent} />
+                    {combinedGames.length > 1 && <Events events={events} />}
                 </div>
             </article>
             <MobileBottomMenu

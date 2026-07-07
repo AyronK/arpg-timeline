@@ -11,6 +11,22 @@ export const useTimelineEvents = (games: Game[]) => {
         .reduce((prev: TimelineEvent[], g: Game) => {
             const next = [...prev];
 
+            if (g.isCustomEvent) {
+                if (g.nextSeason?.start?.startDate) {
+                    const startDate = new Date(g.nextSeason.start.startDate);
+                    next.push({
+                        name: "Release",
+                        game: g.name,
+                        startDate,
+                        endDate: startDate,
+                        startDateConfirmed: true,
+                        endDateConfirmed: true,
+                        endDateNotice: "n/a",
+                    } satisfies TimelineEvent);
+                }
+                return next;
+            }
+
             if (g.currentSeason?.start?.startDate) {
                 const startDate = new Date(g.currentSeason.start.startDate);
                 let endDate = g.currentSeason.end?.endDate
