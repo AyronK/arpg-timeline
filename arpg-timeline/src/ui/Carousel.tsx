@@ -114,8 +114,7 @@ const Carousel = React.forwardRef<
         setApi(api);
     }, [api, setApi]);
 
-    const resolvedOrientation =
-        orientation || (opts?.axis === "y" ? "vertical" : "horizontal");
+    const resolvedOrientation = orientation || (opts?.axis === "y" ? "vertical" : "horizontal");
 
     const apiContextValue = React.useMemo(
         () => ({
