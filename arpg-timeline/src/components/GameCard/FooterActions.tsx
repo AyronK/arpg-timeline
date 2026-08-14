@@ -18,19 +18,12 @@ const addResourceUTM = (kind: "builds" | "guides", slug: string) =>
         utm_content: slug,
     });
 
-// Base style for every footer segment (Builds, Guides, Overview). ring-inset is used instead of
-// the default ring-offset because the bar is overflow-hidden (so rounded-b-md can bleed past the
-// card's padding), which would otherwise clip an offset ring.
 const segmentClassName =
     "opacity-75 hover:opacity-100 flex items-center justify-center gap-1.5 px-5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground max-md:w-1/3 max-md:shrink-0 max-md:px-2 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
 
-// Builds' style when emphasized (see useEmphasizeBuilds): grows to fill the bar instead of sharing
-// it evenly, while Guides/Overview shrink to icon-only via emphasizedSiblingClassName below.
 const emphasizedBuildsClassName =
     "opacity-75 hover:opacity-100 flex flex-1 items-center justify-center gap-1.5 px-5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
 
-// Guides/Overview style while Builds is emphasized: icon-only, width matches the "More" button so
-// Builds has room to stretch.
 const emphasizedSiblingClassName =
     "flex w-8 shrink-0 items-center justify-center transition-colors opacity-75 hover:opacity-100 hover:bg-accent hover:text-accent-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
 
