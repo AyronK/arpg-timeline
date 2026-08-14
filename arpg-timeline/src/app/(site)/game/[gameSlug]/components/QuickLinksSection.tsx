@@ -7,6 +7,7 @@ import {
     ChevronRight,
     Code2,
     Gamepad2,
+    GitBranch,
     Globe,
     Monitor,
 } from "lucide-react";
@@ -104,40 +105,46 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             </a>
                         )}
 
-                        {game.currentSeason?.url && (
-                            <GuardedExternalLink
-                                href={game.currentSeason.url}
-                                isOfficial={game.isOfficial}
-                                noIcon
+                        {game.buildsUrl && (
+                            <a
+                                href={addUTMParameters({
+                                    utm_source: "arpg-timeline",
+                                    utm_medium: "link",
+                                    utm_campaign: "builds",
+                                    utm_content: gameSlug,
+                                })(game.buildsUrl)}
                                 target="_blank"
                                 rel="noopener noreferrer nofollow"
-                                data-sa-click={`${gameSlug}-current-season-details`}
+                                data-sa-click={`${gameSlug}-builds-quicklink`}
+                                className={rowCls}
+                            >
+                                <LinkContent
+                                    icon={<GitBranch className="h-5 w-5 opacity-70" />}
+                                    title="Builds"
+                                    description={`Find build guides for ${game.name}`}
+                                />
+                            </a>
+                        )}
+
+                        {game.guidesUrl && (
+                            <a
+                                href={addUTMParameters({
+                                    utm_source: "arpg-timeline",
+                                    utm_medium: "link",
+                                    utm_campaign: "guides",
+                                    utm_content: gameSlug,
+                                })(game.guidesUrl)}
+                                target="_blank"
+                                rel="noopener noreferrer nofollow"
+                                data-sa-click={`${gameSlug}-guides-quicklink`}
                                 className={rowCls}
                             >
                                 <LinkContent
                                     icon={<BookOpen className="h-5 w-5 opacity-70" />}
-                                    title={`Current ${game.seasonKeyword}`}
-                                    description={`Read about what's in the current ${game.seasonKeyword}`}
+                                    title="Guides"
+                                    description={`Browse guides and resources for ${game.name}`}
                                 />
-                            </GuardedExternalLink>
-                        )}
-
-                        {game.nextSeason?.url && (
-                            <GuardedExternalLink
-                                href={game.nextSeason.url}
-                                isOfficial={game.isOfficial}
-                                noIcon
-                                target="_blank"
-                                rel="noopener noreferrer nofollow"
-                                data-sa-click={`${gameSlug}-next-season-details`}
-                                className={rowCls}
-                            >
-                                <LinkContent
-                                    icon={<CalendarDays className="h-5 w-5 opacity-70" />}
-                                    title={`Next ${game.seasonKeyword}`}
-                                    description={`Preview details about the upcoming ${game.seasonKeyword}`}
-                                />
-                            </GuardedExternalLink>
+                            </a>
                         )}
                     </div>
                 </div>
