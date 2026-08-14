@@ -16,23 +16,36 @@ type Variant =
 
 const BANNER_PRODUCTS: BannerProductKey[] = ["mail", "vpn", "drive"];
 
+const PRODUCT_WEIGHT: Record<ProductKey, number> = {
+    vpn: 5,
+    pass: 3,
+    drive: 1,
+    mail: 1,
+};
+
+const repeat = <T,>(item: T, times: number): T[] => Array.from({ length: times }, () => item);
+
 // Env vars are build-time constants - compute the variant pool once at module load.
 const availableProducts = (Object.keys(PRODUCT_URLS) as ProductKey[]).filter(
     (k) => PRODUCT_URLS[k] !== null,
 );
 
 const VARIANTS: Variant[] = [
-    // All two-product combinations
+    // All two-product combinations, repeated per the average weight of the pair
     ...availableProducts.flatMap((a, i) =>
-        availableProducts.slice(i + 1).map((b) => ({ type: "two" as const, a, b })),
+        availableProducts.slice(i + 1).flatMap((b) => {
+            const weight = Math.max(1, Math.round((PRODUCT_WEIGHT[a] + PRODUCT_WEIGHT[b]) / 2));
+            return repeat({ type: "two" as const, a, b }, weight);
+        }),
     ),
-    // Single-product logo cards
-    ...availableProducts.map((product) => ({ type: "logo" as const, product })),
-    // Single-product banner cards (only products that have a banner asset)
-    ...BANNER_PRODUCTS.filter((p) => availableProducts.includes(p)).map((product) => ({
-        type: "banner" as const,
-        product,
-    })),
+    // Single-product logo cards, repeated per product weight
+    ...availableProducts.flatMap((product) =>
+        repeat({ type: "logo" as const, product }, PRODUCT_WEIGHT[product]),
+    ),
+    // Single-product banner cards (only products that have a banner asset), repeated per product weight
+    ...BANNER_PRODUCTS.filter((p) => availableProducts.includes(p)).flatMap((product) =>
+        repeat({ type: "banner" as const, product }, PRODUCT_WEIGHT[product]),
+    ),
 ];
 
 const INITIAL_HOUR_INDEX = Math.floor(Date.now() / 3_600_000);
@@ -47,7 +60,7 @@ function variantLabel(v: Variant) {
  * Picks a variant deterministically based on the current hour so that:
  * - every user sees the same card at the same time (no per-mount randomness)
  * - the slot rotates to the next variant each hour
- * - all variants get equal exposure over a full cycle
+ * - variants get exposure proportional to PRODUCT_WEIGHT over a full cycle
  *
  * Returns null when no affiliate URLs are configured.
  */
