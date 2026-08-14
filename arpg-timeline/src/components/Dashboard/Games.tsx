@@ -56,6 +56,10 @@ export const Games = ({
                             url={game.url!}
                             buildsUrl={game.buildsUrl}
                             guidesUrl={game.guidesUrl}
+                            nextSeasonStartDate={game.nextSeason?.start?.startDate}
+                            nextSeasonConfirmed={game.nextSeason?.start?.confirmed}
+                            currentSeasonStartDate={game.currentSeason?.start?.startDate}
+                            currentSeasonEndDate={game.currentSeason?.end?.endDate}
                             official={game.isOfficial}
                             stats={statistics[game.slug]}
                         >
