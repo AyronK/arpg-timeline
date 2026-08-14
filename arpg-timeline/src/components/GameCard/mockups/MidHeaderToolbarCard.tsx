@@ -5,13 +5,24 @@ import Link from "next/link";
 
 import { CommunityLabel } from "@/components/CommunityLabel";
 import { GameCardProps } from "@/components/GameCard/GameCard.types";
+import { GameMenu } from "@/components/GameCard/Menu/Menu";
 import { GuardedExternalLink } from "@/components/GuardedExternalLink";
+import { SteamPlayersChip } from "@/components/SteamPlayersChip";
 import { sa_event } from "@/lib/sa_event";
 import { addUTMParameters } from "@/lib/utm";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
-import { SteamPlayersChip } from "../SteamPlayersChip";
-import { GameMenu } from "./Menu/Menu";
+/**
+ * MOCKUP ONLY — a third position for the real GameCard's action toolbar (Builds, Guides,
+ * Overview, More): sandwiched between the title/badges row and the logo, rather than pinned to
+ * the top or bottom edge. Deliberate visual fork of GameCard.tsx (same real GameMenu,
+ * CommunityLabel, SteamPlayersChip, UTM/analytics wiring — this is a layout comparison, not a new
+ * concept), not a shared component.
+ *
+ * Since it doesn't touch either card edge, it doesn't bleed vertically or round any corners —
+ * only horizontal bleed (-mx-4) to stay full-width, with a divider on both the top and bottom
+ * edge to separate it from its two neighbours.
+ */
 
 const addUTM = addUTMParameters({
     utm_source: "arpg-timeline",
@@ -26,16 +37,10 @@ const addResourceUTM = (kind: "builds" | "guides", slug: string) =>
         utm_content: slug,
     });
 
-// Shared by every footer segment (Builds, Guides, Overview). On mobile, each present segment takes
-// a fixed 1/3 of the available space (the bar minus the fixed-width "More" button) regardless of
-// how many render — see the flex-1/justify-end wrapper below for why that's "available space".
-// The focus ring uses ring-inset (rather than the default ring-offset) since the bar itself is
-// overflow-hidden (for rounded-b-md to bleed cleanly past the card's padding) and an offset ring
-// would get clipped by it.
 const segmentClassName =
-    "opacity-75 hover:opacity-100 flex items-center justify-center gap-1.5 px-5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground max-md:w-1/3 max-md:shrink-0 max-md:px-2 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
+    "flex items-center justify-center gap-1.5 px-5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground max-md:w-1/3 max-md:shrink-0 max-md:px-2 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
 
-export const GameCard = ({
+export const MidHeaderToolbarCard = ({
     name,
     gameLogo,
     url,
@@ -50,7 +55,7 @@ export const GameCard = ({
 }: GameCardProps) => {
     const hasExternalUrl = url && url !== "#";
     const showOverviewAndMenu = !noMenu;
-    const hasFooterActions = Boolean(buildsUrl) || Boolean(guidesUrl) || showOverviewAndMenu;
+    const hasToolbarActions = Boolean(buildsUrl) || Boolean(guidesUrl) || showOverviewAndMenu;
     const logoContent = (
         <div className="flex h-[96px] w-[180px] items-center justify-center p-2 md:h-[140px] md:w-[220px] md:p-4">
             {gameLogo}
@@ -71,30 +76,8 @@ export const GameCard = ({
                         )}
                     </div>
                 </div>
-                <div className="relative flex flex-col items-center gap-1">
-                    <div className="relative flex min-h-[80px] w-[180px] flex-row justify-center place-self-center md:h-[140px] md:w-[220px]">
-                        {hasExternalUrl ? (
-                            <GuardedExternalLink
-                                href={addUTM(url)}
-                                isOfficial={official}
-                                rel="noopener noreferrer"
-                                className="select-none hover:scale-105"
-                                target="_blank"
-                                noIcon
-                                onClick={() => sa_event(`${slug}-logo-click`)}
-                            >
-                                {logoContent}
-                            </GuardedExternalLink>
-                        ) : (
-                            logoContent
-                        )}
-                    </div>
-                </div>
-            </div>
-            <div className="flex flex-1 flex-col gap-3 md:gap-4">
-                {children}
-                {hasFooterActions && (
-                    <div className="border-foreground/10 divide-foreground/10 -mx-4 mt-auto -mb-4 flex h-8 flex-row divide-x overflow-hidden rounded-b-md border-t">
+                {hasToolbarActions && (
+                    <div className="border-foreground/10 divide-foreground/10 -mx-4 flex h-8 flex-row divide-x overflow-hidden border-t border-b">
                         <div className="divide-foreground/10 flex flex-1 flex-row justify-end divide-x">
                             {buildsUrl && (
                                 <Tooltip>
@@ -165,7 +148,27 @@ export const GameCard = ({
                         )}
                     </div>
                 )}
+                <div className="relative flex flex-col items-center gap-1">
+                    <div className="relative flex min-h-[80px] w-[180px] flex-row justify-center place-self-center md:h-[140px] md:w-[220px]">
+                        {hasExternalUrl ? (
+                            <GuardedExternalLink
+                                href={addUTM(url)}
+                                isOfficial={official}
+                                rel="noopener noreferrer"
+                                className="select-none hover:scale-105"
+                                target="_blank"
+                                noIcon
+                                onClick={() => sa_event(`${slug}-logo-click`)}
+                            >
+                                {logoContent}
+                            </GuardedExternalLink>
+                        ) : (
+                            logoContent
+                        )}
+                    </div>
+                </div>
             </div>
+            <div className="flex flex-1 flex-col gap-3 md:gap-4">{children}</div>
         </section>
     );
 };

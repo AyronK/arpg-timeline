@@ -65,7 +65,7 @@ export function GameMenu({
                         Calendar Subscription
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    {steamAppId && (
+                    {typeof steamAppId === "number" && steamAppId > 0 && (
                         <DropdownMenuItem
                             aria-label="View steam details"
                             data-sa-click={`${game}-steam-dialog`}
@@ -102,7 +102,7 @@ export function GameMenu({
                 gameName={gameName}
             />
 
-            {steamAppId && (
+            {typeof steamAppId === "number" && steamAppId > 0 && (
                 <SteamDialog
                     open={steamDialogOpen}
                     onOpenChange={setSteamDialogOpen}
