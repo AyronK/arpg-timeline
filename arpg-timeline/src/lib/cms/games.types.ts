@@ -26,6 +26,8 @@ export type Game = {
     slug: string;
     seasonKeyword: string;
     url: string | null | undefined;
+    buildsUrl?: string | null | undefined;
+    guidesUrl?: string | null | undefined;
     group: string | null | undefined;
     logo: SanityImageAssetDocument;
     currentSeason?: Season | null | undefined;

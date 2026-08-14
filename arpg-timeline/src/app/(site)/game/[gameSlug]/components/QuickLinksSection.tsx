@@ -3,12 +3,14 @@
 import {
     BookOpen,
     CalendarCheck,
-    CalendarDays,
     ChevronRight,
     Code2,
+    FastForward,
     Gamepad2,
+    GitBranch,
     Globe,
     Monitor,
+    Play,
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
@@ -55,91 +57,129 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
 
     return (
         <>
-            <div className="bg-card text-card-foreground flex-1 rounded-lg border p-4 md:p-6">
+            <div className="bg-card text-card-foreground flex min-h-0 flex-1 flex-col rounded-lg border p-4 md:p-6">
                 <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Quick Links</h2>
-                <div className="flex flex-col">
-                    <div className="flex flex-col">
-                        {game.url && (
-                            <GuardedExternalLink
-                                href={game.url}
-                                isOfficial={game.isOfficial}
-                                noIcon
-                                target="_blank"
-                                rel="noopener noreferrer nofollow"
-                                data-sa-click={`${gameSlug}-official-website`}
-                                className={rowCls}
-                            >
-                                <LinkContent
-                                    icon={<Globe className="h-5 w-5 opacity-70" />}
-                                    title={
-                                        game.isOfficial ? "Official Website" : "Community Website"
-                                    }
-                                    description={
-                                        game.isOfficial
-                                            ? `Visit the official ${game.name} website`
-                                            : `Visit the community-run ${game.name} website`
-                                    }
-                                />
-                            </GuardedExternalLink>
-                        )}
+                <div className="flex max-h-64 min-h-0 flex-1 flex-col overflow-y-auto">
+                    {game.url && (
+                        <GuardedExternalLink
+                            href={game.url}
+                            isOfficial={game.isOfficial}
+                            noIcon
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-official-website`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<Globe className="h-5 w-5 opacity-70" />}
+                                title={game.isOfficial ? "Official Website" : "Community Website"}
+                                description={
+                                    game.isOfficial
+                                        ? `Visit the official ${game.name} website`
+                                        : `Visit the community-run ${game.name} website`
+                                }
+                            />
+                        </GuardedExternalLink>
+                    )}
 
-                        {steamAppId && (
-                            <a
-                                href={addUTMParameters({
-                                    utm_source: "arpg-timeline",
-                                    utm_medium: "link",
-                                    utm_campaign: "steam-store",
-                                    utm_content: gameSlug,
-                                })(`https://store.steampowered.com/app/${steamAppId}`)}
-                                target="_blank"
-                                rel="noopener noreferrer nofollow"
-                                data-sa-click={`${gameSlug}-steam-page`}
-                                className={rowCls}
-                            >
-                                <LinkContent
-                                    icon={<Gamepad2 className="h-5 w-5 opacity-70" />}
-                                    title="Steam Page"
-                                    description={`View ${game.name} on the Steam store`}
-                                />
-                            </a>
-                        )}
+                    {steamAppId && (
+                        <a
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "steam-store",
+                                utm_content: gameSlug,
+                            })(`https://store.steampowered.com/app/${steamAppId}`)}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-steam-page`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<Gamepad2 className="h-5 w-5 opacity-70" />}
+                                title="Steam Page"
+                                description={`View ${game.name} on the Steam store`}
+                            />
+                        </a>
+                    )}
 
-                        {game.currentSeason?.url && (
-                            <GuardedExternalLink
-                                href={game.currentSeason.url}
-                                isOfficial={game.isOfficial}
-                                noIcon
-                                target="_blank"
-                                rel="noopener noreferrer nofollow"
-                                data-sa-click={`${gameSlug}-current-season-details`}
-                                className={rowCls}
-                            >
-                                <LinkContent
-                                    icon={<BookOpen className="h-5 w-5 opacity-70" />}
-                                    title={`Current ${game.seasonKeyword}`}
-                                    description={`Read about what's in the current ${game.seasonKeyword}`}
-                                />
-                            </GuardedExternalLink>
-                        )}
+                    {game.buildsUrl && (
+                        <a
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "builds",
+                                utm_content: gameSlug,
+                            })(game.buildsUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-builds-quicklink`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<GitBranch className="h-5 w-5 opacity-70" />}
+                                title="Builds"
+                                description={`Find build guides for ${game.name}`}
+                            />
+                        </a>
+                    )}
 
-                        {game.nextSeason?.url && (
-                            <GuardedExternalLink
-                                href={game.nextSeason.url}
-                                isOfficial={game.isOfficial}
-                                noIcon
-                                target="_blank"
-                                rel="noopener noreferrer nofollow"
-                                data-sa-click={`${gameSlug}-next-season-details`}
-                                className={rowCls}
-                            >
-                                <LinkContent
-                                    icon={<CalendarDays className="h-5 w-5 opacity-70" />}
-                                    title={`Next ${game.seasonKeyword}`}
-                                    description={`Preview details about the upcoming ${game.seasonKeyword}`}
-                                />
-                            </GuardedExternalLink>
-                        )}
-                    </div>
+                    {game.guidesUrl && (
+                        <a
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "guides",
+                                utm_content: gameSlug,
+                            })(game.guidesUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-guides-quicklink`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<BookOpen className="h-5 w-5 opacity-70" />}
+                                title="Guides"
+                                description={`Browse guides and resources for ${game.name}`}
+                            />
+                        </a>
+                    )}
+
+                    {game.currentSeason?.url && (
+                        <GuardedExternalLink
+                            href={game.currentSeason.url}
+                            isOfficial={game.isOfficial}
+                            noIcon
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-current-season-details`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<Play className="h-5 w-5 opacity-70" />}
+                                title={`Current ${game.seasonKeyword}`}
+                                description={`Read about what's in the current ${game.seasonKeyword}`}
+                            />
+                        </GuardedExternalLink>
+                    )}
+
+                    {game.nextSeason?.url && (
+                        <GuardedExternalLink
+                            href={game.nextSeason.url}
+                            isOfficial={game.isOfficial}
+                            noIcon
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-next-season-details`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<FastForward className="h-5 w-5 opacity-70" />}
+                                title={`Next ${game.seasonKeyword}`}
+                                description={`Preview details about the upcoming ${game.seasonKeyword}`}
+                            />
+                        </GuardedExternalLink>
+                    )}
                 </div>
 
                 <CalendarSubscribeDialog

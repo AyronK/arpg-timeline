@@ -81,6 +81,8 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
             slug: g.slug,
             seasonKeyword: g.seasonKeyword ?? "",
             url: g.url ?? "",
+            buildsUrl: g.buildsUrl ?? "",
+            guidesUrl: g.guidesUrl ?? "",
             group: g.group ?? "",
             logo: g.logo,
             currentSeason: undefined,

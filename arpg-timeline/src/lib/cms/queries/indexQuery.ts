@@ -14,12 +14,14 @@ export const indexQuery = `{
     isComingSoon,
     seasonKeyword,
     url,
+    buildsUrl,
+    guidesUrl,
     group,
     "categories": coalesce(categories, []),
     "tags": coalesce(tags, []),
     "logo": logo.asset->{
       _id,
-      url      
+      url
     },
     steam,
     "latestLiveStream": *[_type == "liveStreamTwitch" && ^._id == game._ref]
@@ -109,15 +111,17 @@ export const gameDetailsQuery = `{
     isComingSoon,
     seasonKeyword,
     url,
+    buildsUrl,
+    guidesUrl,
     group,
     "categories": coalesce(categories, []),
     "tags": coalesce(tags, []),
     "logo": logo.asset->{
       _id,
-      url      
+      url
     },
     steam,
-    "recentSeasons": *[_type == "season" && ^._id == game._ref] 
+    "recentSeasons": *[_type == "season" && ^._id == game._ref]
       | order(start.startDate desc)[0..1]{
       _id,
       _updatedAt,
@@ -126,7 +130,7 @@ export const gameDetailsQuery = `{
       url,
       "logo": logo.asset->{
         _id,
-        url      
+        url
       },
       patchNotesUrl,
       start {
@@ -153,7 +157,7 @@ export const gameDetailsQuery = `{
     url,
     "logo": logo.asset->{
       _id,
-      url      
+      url
     },
     patchNotesUrl,
     isSideEvent,
@@ -191,6 +195,8 @@ export interface SanityGame extends SanityDocumentBase {
     isComingSoon?: boolean;
     seasonKeyword?: string;
     url?: string;
+    buildsUrl?: string;
+    guidesUrl?: string;
     group?: string;
     categories?: GameCategory[];
     tags?: GameTag[];

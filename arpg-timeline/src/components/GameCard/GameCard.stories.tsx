@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { CalendarClock, CalendarOff, Info, Sword, TimerReset } from "lucide-react";
+import { CalendarClock, CalendarOff, Info, Sword, TimerReset, Twitch } from "lucide-react";
+import Link from "next/link";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
 import { Countdown } from "@/components/Countdown";
@@ -8,6 +9,7 @@ import { IconLabel } from "@/components/IconLabel/IconLabel";
 import { ProgressBar } from "@/components/ProgressBar";
 import { SeasonWidget } from "@/components/SeasonWidget/SeasonWidget";
 import { ShareMenu } from "@/components/ShareMenu";
+import { Button } from "@/ui/Button";
 
 import { GameCard } from "./GameCard";
 
@@ -17,6 +19,12 @@ const daysMs = (n: number) => n * 24 * 60 * 60 * 1000;
 
 const NEXT_CONFIRMED = new Date(NOW.getTime() + daysMs(15)).toISOString(); // Apr 05
 const NEXT_SOON = new Date(NOW.getTime() + daysMs(5)).toISOString(); // Mar 26
+
+// useEmphasizeBuilds compares against the real wall clock, not the fictional NOW above — these
+// stay relative to Date.now() so the Builds-emphasis stories work regardless of when they're viewed.
+const REAL_NEXT_SEASON_SOON = new Date(Date.now() + daysMs(3)).toISOString();
+const REAL_GRACE_PERIOD_START = new Date(Date.now() - daysMs(0.1)).toISOString(); // ~2.4h ago
+const REAL_GRACE_PERIOD_END = new Date(Date.now() + daysMs(90)).toISOString();
 
 const Logo = ({ label }: { label: string }) => (
     <div className="bg-muted text-muted-foreground flex h-full w-full items-center justify-center rounded text-xs">
@@ -464,6 +472,246 @@ export const ComingSoon: Story = {
                     <i>To be announced</i>
                 </IconLabel>
             </SeasonWidget>
+        ),
+    },
+};
+
+/**
+ * Optional "Builds" and "Guides" footer links, alongside the existing
+ * "Details"/"More" cluster — all packed and right-anchored in the footer bar.
+ */
+export const WithBuildsAndGuides: Story = {
+    name: "Active + Builds & Guides footer links",
+    args: {
+        name: "Last Epoch",
+        slug: "last-epoch",
+        official: true,
+        url: "https://lastepoch.com",
+        buildsUrl: "https://maxroll.gg/last-epoch/build-guides",
+        guidesUrl: "https://maxroll.gg/last-epoch/guides",
+        gameLogo: <Logo label="Last Epoch" />,
+        stats: { steam: { currentPlayers: 12400, appId: 899770 } },
+        children: (
+            <>
+                <SeasonWidget chip="now" name="Season 3: Beneath Ancient Skies">
+                    <div className="flex flex-row flex-wrap justify-between">
+                        <IconLabel icon={TimerReset}>Started 15 days ago</IconLabel>
+                        <IconLabel icon={CalendarClock} iconPosition="end">
+                            <i>Avg. 4 months</i>
+                        </IconLabel>
+                    </div>
+                    <ProgressBar progress={15} clamp />
+                </SeasonWidget>
+                <SeasonWidget chip="next" name="Season 4 - Shattered Omens">
+                    <div className="flex flex-row flex-nowrap justify-between">
+                        <IconLabel icon={TimerReset}>
+                            Starts <span className="font-semibold">Mar 26, 14:00</span>
+                        </IconLabel>
+                    </div>
+                    <div className="mt-auto">
+                        <FramedAction
+                            prepend={
+                                <ShareMenu
+                                    startDate={NEXT_CONFIRMED}
+                                    title="Hey, Last Epoch Season 4 - Shattered Omens launch is happening"
+                                />
+                            }
+                            append={
+                                <CalendarMenu
+                                    startDate={NEXT_CONFIRMED}
+                                    title="Last Epoch Season 4 - Shattered Omens launch"
+                                    gameSlug="last-epoch"
+                                    gameName="Last Epoch"
+                                />
+                            }
+                        >
+                            <Countdown date={new Date(NEXT_CONFIRMED)} />
+                        </FramedAction>
+                    </div>
+                </SeasonWidget>
+            </>
+        ),
+    },
+};
+
+/**
+ * `noMenu` suppresses "Details"/"More" as before, but Builds/Guides are
+ * independent and still render — used on the game detail page header card.
+ */
+export const NoMenuWithResourcesOnly: Story = {
+    name: "noMenu + Builds & Guides only (game detail page header)",
+    args: {
+        name: "Last Epoch",
+        slug: "last-epoch",
+        official: true,
+        noMenu: true,
+        noTitle: true,
+        url: "https://lastepoch.com",
+        buildsUrl: "https://maxroll.gg/last-epoch/build-guides",
+        guidesUrl: "https://maxroll.gg/last-epoch/guides",
+        gameLogo: <Logo label="Last Epoch" />,
+        stats: { steam: { currentPlayers: 12400, appId: 899770 } },
+        children: (
+            <SeasonWidget chip="now" name="Season 3: Beneath Ancient Skies">
+                <div className="flex flex-row flex-wrap justify-between">
+                    <IconLabel icon={TimerReset}>Started 15 days ago</IconLabel>
+                    <IconLabel icon={CalendarClock} iconPosition="end">
+                        <i>Avg. 4 months</i>
+                    </IconLabel>
+                </div>
+                <ProgressBar progress={15} clamp />
+            </SeasonWidget>
+        ),
+    },
+};
+
+/**
+ * Next season is confirmed and under a week away — "Builds" stretches to fill the bar and
+ * relabels to "Find a build", while Guides/Overview shrink to icon-only to make room.
+ */
+export const BuildsEmphasizedSoon: Story = {
+    name: "Active + Builds emphasized (next season <1 week away)",
+    args: {
+        name: "Last Epoch",
+        slug: "last-epoch",
+        official: true,
+        url: "https://lastepoch.com",
+        buildsUrl: "https://maxroll.gg/last-epoch/build-guides",
+        guidesUrl: "https://maxroll.gg/last-epoch/guides",
+        nextSeasonStartDate: REAL_NEXT_SEASON_SOON,
+        nextSeasonConfirmed: true,
+        gameLogo: <Logo label="Last Epoch" />,
+        stats: { steam: { currentPlayers: 12400, appId: 899770 } },
+        children: (
+            <>
+                <SeasonWidget chip="now" name="Season 3: Beneath Ancient Skies">
+                    <div className="flex flex-row flex-wrap justify-between">
+                        <IconLabel icon={TimerReset}>Started 4 months ago</IconLabel>
+                        <IconLabel icon={CalendarClock} iconPosition="end">
+                            <i>Avg. 4 months</i>
+                        </IconLabel>
+                    </div>
+                    <ProgressBar progress={92} clamp />
+                </SeasonWidget>
+                <SeasonWidget chip="next" name="Season 4 - Shattered Omens">
+                    <div className="mt-auto">
+                        <FramedAction
+                            prepend={
+                                <ShareMenu
+                                    startDate={REAL_NEXT_SEASON_SOON}
+                                    title="Hey, Last Epoch Season 4 - Shattered Omens launch is happening"
+                                />
+                            }
+                            append={
+                                <CalendarMenu
+                                    startDate={REAL_NEXT_SEASON_SOON}
+                                    title="Last Epoch Season 4 - Shattered Omens launch"
+                                    gameSlug="last-epoch"
+                                    gameName="Last Epoch"
+                                />
+                            }
+                        >
+                            <Countdown date={new Date(REAL_NEXT_SEASON_SOON)} />
+                        </FramedAction>
+                    </div>
+                </SeasonWidget>
+            </>
+        ),
+    },
+};
+
+/**
+ * Season just launched (grace period): emphasis persists even though nextSeason has flipped to
+ * an unconfirmed placeholder — this story sets no next-season date at all, isolating the grace-
+ * period condition as the sole trigger.
+ */
+export const BuildsEmphasizedGracePeriod: Story = {
+    name: "Live (grace period) + Builds emphasized",
+    args: {
+        name: "Diablo III",
+        slug: "d3",
+        official: true,
+        url: "https://diablo3.com",
+        buildsUrl: "https://maxroll.gg/d3/builds",
+        guidesUrl: "https://maxroll.gg/d3/guides",
+        currentSeasonStartDate: REAL_GRACE_PERIOD_START,
+        currentSeasonEndDate: REAL_GRACE_PERIOD_END,
+        gameLogo: <Logo label="Diablo III" />,
+        stats: { steam: { currentPlayers: 5000000, appId: 0 } },
+        children: (
+            <>
+                <SeasonWidget chip="live" name="Season 37: The Forbidden Archives">
+                    <div className="flex flex-row flex-wrap justify-between">
+                        <IconLabel icon={TimerReset}>Started 2h ago</IconLabel>
+                    </div>
+                    <ProgressBar progress={1} clamp pulse />
+                </SeasonWidget>
+                {/* Matches GracePeriodSeasonWidgetHoC's real output: during grace period the
+                 * "next" SeasonWidget is replaced entirely by this "Play (and watch) now!" bar. */}
+                <div className="mt-auto flex flex-col gap-2">
+                    <FramedAction
+                        appendClassName="!bg-[#6441a5]"
+                        append={
+                            <Button
+                                asChild
+                                size="icon"
+                                className="mt-auto ml-auto h-[32px]! w-[32px]! flex-1 !rounded-l-none !bg-[#6441a5] md:h-[40px]! md:w-[40px]!"
+                                variant="destructive"
+                            >
+                                <Link
+                                    target="_blank"
+                                    rel="noopener noreferrer nofollow"
+                                    href="https://www.twitch.tv/directory/category/diablo-iii"
+                                >
+                                    <Twitch className="h-4 w-4" />
+                                </Link>
+                            </Button>
+                        }
+                    >
+                        Play and watch now!
+                    </FramedAction>
+                </div>
+            </>
+        ),
+    },
+};
+
+/**
+ * Next season is within the emphasis window, but this game has no Builds link configured —
+ * Guides/Overview must stay their normal size, since shrinking them would free up space for a
+ * Builds button that doesn't exist.
+ */
+export const EmphasisTimingWithoutBuildsUrl: Story = {
+    name: "Active + next season soon, but no Builds link (siblings stay normal)",
+    args: {
+        name: "Path of Exile 2",
+        slug: "poe2",
+        official: true,
+        url: "https://pathofexile2.com",
+        guidesUrl: "https://maxroll.gg/poe2/guides",
+        nextSeasonStartDate: REAL_NEXT_SEASON_SOON,
+        nextSeasonConfirmed: true,
+        gameLogo: <Logo label="PoE 2" />,
+        stats: { steam: { currentPlayers: 45000, appId: 2694490 } },
+        children: (
+            <>
+                <SeasonWidget chip="now" name="0.40 - The Last of the Druids">
+                    <div className="flex flex-row flex-wrap justify-between">
+                        <IconLabel icon={TimerReset}>Started 4 months ago</IconLabel>
+                        <IconLabel icon={CalendarClock} iconPosition="end">
+                            <i>Avg. 4 months</i>
+                        </IconLabel>
+                    </div>
+                    <ProgressBar progress={92} clamp />
+                </SeasonWidget>
+                <SeasonWidget chip="next" name="Next League">
+                    <div className="mt-auto">
+                        <FramedAction>
+                            <Countdown date={new Date(REAL_NEXT_SEASON_SOON)} />
+                        </FramedAction>
+                    </div>
+                </SeasonWidget>
+            </>
         ),
     },
 };

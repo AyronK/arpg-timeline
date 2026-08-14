@@ -8,7 +8,7 @@ import { GameHeaderSectionProps } from "../types";
 import { QuickLinksSection } from "./QuickLinksSection";
 
 export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSectionProps) => (
-    <div className="mb-4 flex flex-col gap-4 md:mb-6 md:gap-6 lg:flex-row">
+    <div className="mb-4 grid grid-cols-1 gap-4 md:mb-6 md:gap-6 xl:grid-cols-3 xl:grid-rows-[minmax(0,1fr)]">
         <GameCard
             noMenu
             name={game.name}

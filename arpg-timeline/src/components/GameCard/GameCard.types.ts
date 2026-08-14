@@ -8,6 +8,12 @@ export type Game = {
     readonly shortName: string | null;
     readonly official: boolean;
     readonly url?: string | null;
+    readonly buildsUrl?: string | null;
+    readonly guidesUrl?: string | null;
+    readonly nextSeasonStartDate?: string | null;
+    readonly nextSeasonConfirmed?: boolean | null;
+    readonly currentSeasonStartDate?: string | null;
+    readonly currentSeasonEndDate?: string | null;
     readonly gameLogo: ReactNode;
 };
 
