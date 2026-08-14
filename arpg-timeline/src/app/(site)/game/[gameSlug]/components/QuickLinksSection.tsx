@@ -3,13 +3,14 @@
 import {
     BookOpen,
     CalendarCheck,
-    CalendarDays,
     ChevronRight,
     Code2,
+    FastForward,
     Gamepad2,
     GitBranch,
     Globe,
     Monitor,
+    Play,
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
@@ -155,7 +156,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             className={rowCls}
                         >
                             <LinkContent
-                                icon={<BookOpen className="h-5 w-5 opacity-70" />}
+                                icon={<Play className="h-5 w-5 opacity-70" />}
                                 title={`Current ${game.seasonKeyword}`}
                                 description={`Read about what's in the current ${game.seasonKeyword}`}
                             />
@@ -173,7 +174,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             className={rowCls}
                         >
                             <LinkContent
-                                icon={<CalendarDays className="h-5 w-5 opacity-70" />}
+                                icon={<FastForward className="h-5 w-5 opacity-70" />}
                                 title={`Next ${game.seasonKeyword}`}
                                 description={`Preview details about the upcoming ${game.seasonKeyword}`}
                             />
