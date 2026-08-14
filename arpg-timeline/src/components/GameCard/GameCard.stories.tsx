@@ -566,8 +566,8 @@ export const NoMenuWithResourcesOnly: Story = {
 };
 
 /**
- * Next season is confirmed and under a week away — "Builds" picks up the warm/emphasized
- * treatment (bg-warning tint, bolder text) so players hunting for build guides notice it.
+ * Next season is confirmed and under a week away — "Builds" stretches to fill the bar and
+ * relabels to "Find a build", while Guides/Overview shrink to icon-only to make room.
  */
 export const BuildsEmphasizedSoon: Story = {
     name: "Active + Builds emphasized (next season <1 week away)",
@@ -671,6 +671,46 @@ export const BuildsEmphasizedGracePeriod: Story = {
                         Play and watch now!
                     </FramedAction>
                 </div>
+            </>
+        ),
+    },
+};
+
+/**
+ * Next season is within the emphasis window, but this game has no Builds link configured —
+ * Guides/Overview must stay their normal size, since shrinking them would free up space for a
+ * Builds button that doesn't exist.
+ */
+export const EmphasisTimingWithoutBuildsUrl: Story = {
+    name: "Active + next season soon, but no Builds link (siblings stay normal)",
+    args: {
+        name: "Path of Exile 2",
+        slug: "poe2",
+        official: true,
+        url: "https://pathofexile2.com",
+        guidesUrl: "https://maxroll.gg/poe2/guides",
+        nextSeasonStartDate: REAL_NEXT_SEASON_SOON,
+        nextSeasonConfirmed: true,
+        gameLogo: <Logo label="PoE 2" />,
+        stats: { steam: { currentPlayers: 45000, appId: 2694490 } },
+        children: (
+            <>
+                <SeasonWidget chip="now" name="0.40 - The Last of the Druids">
+                    <div className="flex flex-row flex-wrap justify-between">
+                        <IconLabel icon={TimerReset}>Started 4 months ago</IconLabel>
+                        <IconLabel icon={CalendarClock} iconPosition="end">
+                            <i>Avg. 4 months</i>
+                        </IconLabel>
+                    </div>
+                    <ProgressBar progress={92} clamp />
+                </SeasonWidget>
+                <SeasonWidget chip="next" name="Next League">
+                    <div className="mt-auto">
+                        <FramedAction>
+                            <Countdown date={new Date(REAL_NEXT_SEASON_SOON)} />
+                        </FramedAction>
+                    </div>
+                </SeasonWidget>
             </>
         ),
     },

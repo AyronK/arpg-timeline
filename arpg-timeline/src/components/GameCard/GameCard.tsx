@@ -69,12 +69,13 @@ export const GameCard = ({
     const hasExternalUrl = url && url !== "#";
     const showOverviewAndMenu = !noMenu;
     const hasFooterActions = Boolean(buildsUrl) || Boolean(guidesUrl) || showOverviewAndMenu;
-    const emphasizeBuilds = useEmphasizeBuilds(
+    const emphasizeBuildsTiming = useEmphasizeBuilds(
         nextSeasonStartDate,
         nextSeasonConfirmed,
         currentSeasonStartDate,
         currentSeasonEndDate,
     );
+    const emphasizeBuilds = emphasizeBuildsTiming && Boolean(buildsUrl);
     const logoContent = (
         <div className="flex h-[96px] w-[180px] items-center justify-center p-2 md:h-[140px] md:w-[220px] md:p-4">
             {gameLogo}
