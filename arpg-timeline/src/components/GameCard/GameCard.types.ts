@@ -8,6 +8,8 @@ export type Game = {
     readonly shortName: string | null;
     readonly official: boolean;
     readonly url?: string | null;
+    readonly buildsUrl?: string | null;
+    readonly guidesUrl?: string | null;
     readonly gameLogo: ReactNode;
 };
 

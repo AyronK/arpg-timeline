@@ -467,3 +467,92 @@ export const ComingSoon: Story = {
         ),
     },
 };
+
+/**
+ * Optional "Builds" and "Guides" footer links, alongside the existing
+ * "Details"/"More" cluster — all packed and right-anchored in the footer bar.
+ */
+export const WithBuildsAndGuides: Story = {
+    name: "Active + Builds & Guides footer links",
+    args: {
+        name: "Last Epoch",
+        slug: "last-epoch",
+        official: true,
+        url: "https://lastepoch.com",
+        buildsUrl: "https://maxroll.gg/last-epoch/build-guides",
+        guidesUrl: "https://maxroll.gg/last-epoch/guides",
+        gameLogo: <Logo label="Last Epoch" />,
+        stats: { steam: { currentPlayers: 12400, appId: 899770 } },
+        children: (
+            <>
+                <SeasonWidget chip="now" name="Season 3: Beneath Ancient Skies">
+                    <div className="flex flex-row flex-wrap justify-between">
+                        <IconLabel icon={TimerReset}>Started 15 days ago</IconLabel>
+                        <IconLabel icon={CalendarClock} iconPosition="end">
+                            <i>Avg. 4 months</i>
+                        </IconLabel>
+                    </div>
+                    <ProgressBar progress={15} clamp />
+                </SeasonWidget>
+                <SeasonWidget chip="next" name="Season 4 - Shattered Omens">
+                    <div className="flex flex-row flex-nowrap justify-between">
+                        <IconLabel icon={TimerReset}>
+                            Starts <span className="font-semibold">Mar 26, 14:00</span>
+                        </IconLabel>
+                    </div>
+                    <div className="mt-auto">
+                        <FramedAction
+                            prepend={
+                                <ShareMenu
+                                    startDate={NEXT_CONFIRMED}
+                                    title="Hey, Last Epoch Season 4 - Shattered Omens launch is happening"
+                                />
+                            }
+                            append={
+                                <CalendarMenu
+                                    startDate={NEXT_CONFIRMED}
+                                    title="Last Epoch Season 4 - Shattered Omens launch"
+                                    gameSlug="last-epoch"
+                                    gameName="Last Epoch"
+                                />
+                            }
+                        >
+                            <Countdown date={new Date(NEXT_CONFIRMED)} />
+                        </FramedAction>
+                    </div>
+                </SeasonWidget>
+            </>
+        ),
+    },
+};
+
+/**
+ * `noMenu` suppresses "Details"/"More" as before, but Builds/Guides are
+ * independent and still render — used on the game detail page header card.
+ */
+export const NoMenuWithResourcesOnly: Story = {
+    name: "noMenu + Builds & Guides only (game detail page header)",
+    args: {
+        name: "Last Epoch",
+        slug: "last-epoch",
+        official: true,
+        noMenu: true,
+        noTitle: true,
+        url: "https://lastepoch.com",
+        buildsUrl: "https://maxroll.gg/last-epoch/build-guides",
+        guidesUrl: "https://maxroll.gg/last-epoch/guides",
+        gameLogo: <Logo label="Last Epoch" />,
+        stats: { steam: { currentPlayers: 12400, appId: 899770 } },
+        children: (
+            <SeasonWidget chip="now" name="Season 3: Beneath Ancient Skies">
+                <div className="flex flex-row flex-wrap justify-between">
+                    <IconLabel icon={TimerReset}>Started 15 days ago</IconLabel>
+                    <IconLabel icon={CalendarClock} iconPosition="end">
+                        <i>Avg. 4 months</i>
+                    </IconLabel>
+                </div>
+                <ProgressBar progress={15} clamp />
+            </SeasonWidget>
+        ),
+    },
+};

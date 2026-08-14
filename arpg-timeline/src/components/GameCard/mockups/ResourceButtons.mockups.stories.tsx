@@ -46,14 +46,12 @@ type CardVariant = {
 };
 
 const CARD_VARIANTS: CardVariant[] = [
-    ...RESOURCE_VARIANTS.map(
-        (variant): CardVariant => ({
-            key: variant.key,
-            label: variant.label,
-            description: variant.description,
-            render: (entry) => renderSlotCard(entry, variant),
-        }),
-    ),
+    ...RESOURCE_VARIANTS.map((variant): CardVariant => ({
+        key: variant.key,
+        label: variant.label,
+        description: variant.description,
+        render: (entry) => renderSlotCard(entry, variant),
+    })),
     {
         key: "headerLabeled",
         label: "Header actions + labeled Details",

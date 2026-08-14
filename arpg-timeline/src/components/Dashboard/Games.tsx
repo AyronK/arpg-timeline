@@ -54,6 +54,8 @@ export const Games = ({
                             slug={game.slug}
                             shortName={game.shortName!}
                             url={game.url!}
+                            buildsUrl={game.buildsUrl}
+                            guidesUrl={game.guidesUrl}
                             official={game.isOfficial}
                             stats={statistics[game.slug]}
                         >

@@ -1,6 +1,6 @@
 "use client";
 
-import { CodeXml, Info, MoreHorizontal, Rss } from "lucide-react";
+import { CodeXml, MoreHorizontal, Rss } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { RiSteamLine } from "react-icons/ri";
@@ -45,7 +45,7 @@ export function GameMenu({
                                 size={"icon"}
                                 aria-label="Share"
                                 data-sa-click="game-menu"
-                                className="h-8 w-8"
+                                className="h-8 w-8 focus-visible:ring-inset"
                             >
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
@@ -54,15 +54,6 @@ export function GameMenu({
                     <TooltipContent side="bottom">More options</TooltipContent>
                 </Tooltip>
                 <DropdownMenuContent align="end">
-                    <Link href={`/game/${game}`} target="_blank" rel="noopener">
-                        <DropdownMenuItem
-                            aria-label="View game details"
-                            data-sa-click={`${game}-view-details`}
-                        >
-                            <Info className="mr-2 h-4 w-4" />
-                            Game Details
-                        </DropdownMenuItem>
-                    </Link>
                     <DropdownMenuItem
                         onClick={() => {
                             sa_event("calendar_subscribe_opened", { game });

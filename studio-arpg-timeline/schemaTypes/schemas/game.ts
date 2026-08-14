@@ -237,6 +237,20 @@ export default defineType({
             group: "main",
         },
         {
+            name: "buildsUrl",
+            title: "Builds URL",
+            description: "Optional link to a build-guide resource for this game",
+            type: "url",
+            group: "main",
+        },
+        {
+            name: "guidesUrl",
+            title: "Guides URL",
+            description: "Optional link to a guides resource for this game",
+            type: "url",
+            group: "main",
+        },
+        {
             name: "crawlerSettings",
             title: "Crawler settings",
             type: "object",
