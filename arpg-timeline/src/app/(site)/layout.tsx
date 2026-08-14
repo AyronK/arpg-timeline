@@ -65,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </PartnerPromosProvider>
             </body>
             <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
+            <Script src="https://scripts.simpleanalyticscdn.com/auto-events.js" />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

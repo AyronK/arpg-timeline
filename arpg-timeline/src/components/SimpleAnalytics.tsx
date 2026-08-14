@@ -12,7 +12,7 @@ export const SimpleAnalytics = () => {
 
         const listener = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            const saClickSource = target.dataset.saClick;
+            const saClickSource = target.closest<HTMLElement>("[data-sa-click]")?.dataset.saClick;
             if (!saClickSource) {
                 return;
             }
