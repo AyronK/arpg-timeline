@@ -27,7 +27,7 @@ export const ProtonSupportCards = () => {
                     <CtaBannerContent
                         icon={<ShieldCheck className="h-6 w-6 text-violet-400 md:h-7 md:w-7" />}
                         title="Why we recommend Proton"
-                        description="Our own inbox runs on Proton Mail with aliases for every site we sign up to, Pass holds every password and secret we have, and we use Proton Calendar to subscribe to season and event reminders - the same kind this site tracks. This link gets you a deal and supports aRPG Timeline directly."
+                        description="Our own inbox runs on Proton Mail, Pass holds every password and secret we have, and we use Calendar to subscribe to season and event reminders - the same kind this site tracks. This link gets you a deal and supports aRPG Timeline directly."
                         actionLabel="Get Proton"
                         color="violet"
                         layout="mobile-stacked"
