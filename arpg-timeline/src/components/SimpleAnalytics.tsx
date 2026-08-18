@@ -30,7 +30,7 @@ export const SimpleAnalytics = () => {
             const isHttpLink = anchor?.protocol === "http:" || anchor?.protocol === "https:";
             const opensInNewTab = !!anchor?.target && anchor.target !== "_self";
             const isExternalDomain = !!anchor && anchor.hostname !== window.location.hostname;
-            
+
             // Same-tab, same-domain navigation isn't at risk: the pixel fires well before
             // the page unloads and there's no backgrounded-tab throttling to worry about.
             const needsDelay = isHttpLink && (opensInNewTab || isExternalDomain);

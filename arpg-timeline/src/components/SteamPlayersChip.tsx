@@ -3,13 +3,7 @@ import { Description } from "@radix-ui/react-toast";
 import { PiUsersThree } from "react-icons/pi";
 import { RiSteamLine } from "react-icons/ri";
 
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from "@/ui/Dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/Dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 import { SteamDBEmbed } from "./SteamDBEmbed";
