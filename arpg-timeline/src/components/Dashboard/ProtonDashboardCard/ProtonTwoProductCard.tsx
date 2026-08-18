@@ -25,7 +25,7 @@ export const ProtonTwoProductCard = ({ a, b, onHide }: Props) => {
                 <ProtonLogoLink product={b} url={urlB} displayHeight={64} />
             </div>
             <p className="text-muted-foreground pb-2 text-center text-xs text-balance">
-                Privacy tools from Proton. <br />
+                Tools worth having before your account needs them. <br />
                 Get a great deal - and keep aRPG Timeline running.
             </p>
             <div className="flex flex-row gap-6 px-2">

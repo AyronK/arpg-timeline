@@ -16,17 +16,17 @@ export const PRODUCT_LABELS: Record<ProductKey, string> = {
 };
 
 export const PRODUCT_PITCH: Record<ProductKey, string> = {
-    mail: "Private email from Proton.\nGet a great deal - and keep aRPG Timeline running.",
-    vpn: "Private browsing from Proton.\nGet a great deal - and keep aRPG Timeline running.",
-    pass: "Password manager from Proton.\nGet a great deal - and keep aRPG Timeline running.",
-    drive: "Encrypted cloud storage from Proton.\nGet a great deal - and keep aRPG Timeline running.",
+    mail: "Trade sites and third-party tools don't need your real inbox.\nProton Mail keeps it separate - deal included.",
+    vpn: "Access other regional game servers, or just browse privately.\nProton VPN deal - and keep aRPG Timeline running.",
+    pass: "Your account is worth more than you think.\nProton Pass keeps the login safe - deal included.",
+    drive: "Back up settings, screenshots and clips before a drive dies.\nProton Drive deal - and keep aRPG Timeline running.",
 };
 
 export const PRODUCT_CTA: Record<ProductKey, string> = {
-    mail: "Get the Proton Mail deal",
+    mail: "Get a private inbox",
     vpn: "Get the Proton VPN deal",
-    pass: "Get the Proton Pass deal",
-    drive: "Get the Proton Drive deal",
+    pass: "Secure your account with Pass",
+    drive: "Back it up with Drive",
 };
 
 export const LOGO_ASSETS: Record<ProductKey, { src: string; w: number; h: number }> = {

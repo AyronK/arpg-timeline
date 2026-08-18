@@ -33,8 +33,7 @@ export const NewsContent = ({ gamesNews }: NewsContentProps) => {
         useGameFilterContext();
     const pathname = usePathname();
     const currentCategory = (pathname === "/games/news" ? "news" : category) as
-        | GameFilterCategory
-        | "news";
+        GameFilterCategory | "news";
 
     const handleLoadingChange = (loading: boolean) => {
         setIsLoading(loading);
