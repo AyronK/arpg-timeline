@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 
 import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { DiscordServerBoost } from "@/components/DiscordServerBoost";
@@ -44,8 +45,13 @@ export default async function SupportPage() {
 
                 <h3 className="font-heading mb-2 text-lg">Partner - Proton</h3>
                 <p className="text-muted-foreground mb-4 text-sm">
-                    aRPG Timeline partners with Proton. Every signup through these links directly
-                    supports the project and has a great deal for you.
+                    aRPG Timeline partners with Proton. Signing up through these links gets you a
+                    deal and supports the project directly - no personal data changes hands, and the
+                    same{" "}
+                    <Link className="underline hover:opacity-80" href="/transparency">
+                        transparency
+                    </Link>{" "}
+                    rules apply as everywhere else on the site.
                 </p>
                 <ProtonSupportCards />
 
