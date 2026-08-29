@@ -40,20 +40,27 @@ export const GamesAndEventsGrid = ({
         <>
             <OnboardingModal />
             <article className="relative mt-2 flex flex-col gap-2 lg:mt-0 lg:gap-0">
-                <h2 className="sr-only">Seasons</h2>
-                <div className="lg:bg-background relative sticky -mt-2 -mt-4 flex flex-col gap-1.5 lg:top-0 lg:z-10 lg:pb-4">
-                    <div className="flex flex-row items-end justify-center gap-2 lg:justify-between">
+                <div className="lg:bg-background relative sticky -mt-2 flex flex-col gap-1.5 lg:top-0 lg:z-10 lg:pb-4">
+                    <p className="sr-only">
+                        {totalGames} games tracked, from Path of Exile and Diablo to the community
+                        servers most trackers skip - every league start, content update, and expansion
+                        counted down in one place.
+                    </p>
+                    <div className="flex flex-col lg:flex-row gap-1 lg:gap-2 justify-between">
+                        <h1 className="font-heading text-foreground leading-4 text-base text-pretty sm:text-md">
+                            The most complete aRPG season tracker
+                        </h1>
+                        <div className="hidden lg:flex flex-row gap-1 items-end">
                         {category === "featured" && !hintDismissed && (
-                            <p className="text-muted-foreground flex items-center gap-1.5 text-xs">
-                                <Filter className="h-3 w-3 shrink-0 opacity-60" />
+                            <p className="text-warning/70 flex items-center gap-1.5 text-center text-xs hidden xl:flex">
+                                <Filter className="h-4 w-4 shrink-0 opacity-60" />
                                 <span>
-                                    Some games are hidden by default -{" "}
-                                    <span className="text-foreground/80">Filter</span> to customize
-                                    your view
+                                    Some games are hidden by default - use {" "}
+                                    <span className="text-warning tracking-[0.11rem]">"Filters"</span> to customize
+                                    your view -
                                 </span>
                             </p>
                         )}
-                        <div className="ml-auto hidden lg:block">
                             <GameCountDisplay shownGames={shownGames} totalGames={totalGames} />
                         </div>
                     </div>
@@ -66,6 +73,7 @@ export const GamesAndEventsGrid = ({
                         <GameFilters {...filtersProps} disabled={category === "all"} />
                     </div>
                 </div>
+                <h2 className="sr-only">Seasons</h2>
                 <div
                     className={cn(
                         "4xl:grid-cols-5 transition- relative z-0 grid grid-cols-1 gap-4 transition-all ease-in-out ease-out md:grid-cols-2 md:gap-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 [&>*]:min-h-52 md:[&>*]:min-h-80",
@@ -94,6 +102,9 @@ export const GamesAndEventsGridFallback = ({ games }: { games: Game[] }) => {
         <article className="opacity-0">
             <h2 className="sr-only">Seasons</h2>
             <div className="relative -mt-4 flex flex-col gap-1 lg:mt-0">
+                <h1 className="font-heading text-foreground text-base text-pretty sm:text-lg">
+                    The most complete aRPG season tracker
+                </h1>
                 <div className="hidden lg:block">
                     <GameCountDisplay shownGames={games.length} totalGames={games.length} />
                 </div>
