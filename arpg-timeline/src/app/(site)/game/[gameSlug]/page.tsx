@@ -129,8 +129,8 @@ const GamePage = async ({ params }: GamePageProps) => {
                         />
                         <div className="flex flex-col justify-between gap-4">
                             <PatreonFunding />
-                            <BuyMeACoffee />
                             <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
+                            <BuyMeACoffee />
                         </div>
                     </div>
                 )}
