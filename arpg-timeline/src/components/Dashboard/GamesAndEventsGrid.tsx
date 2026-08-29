@@ -43,24 +43,26 @@ export const GamesAndEventsGrid = ({
                 <div className="lg:bg-background relative sticky -mt-2 flex flex-col gap-1.5 lg:top-0 lg:z-10 lg:pb-4">
                     <p className="sr-only">
                         {totalGames} games tracked, from Path of Exile and Diablo to the community
-                        servers most trackers skip - every league start, content update, and expansion
-                        counted down in one place.
+                        servers most trackers skip - every league start, content update, and
+                        expansion counted down in one place.
                     </p>
-                    <div className="flex flex-col lg:flex-row gap-1 lg:gap-2 justify-between">
-                        <h1 className="font-heading text-foreground leading-4 text-base text-pretty sm:text-md">
+                    <div className="flex flex-col justify-between gap-1 lg:flex-row lg:gap-2">
+                        <h1 className="font-heading text-foreground sm:text-md text-base leading-4 text-pretty">
                             The most complete aRPG season tracker
                         </h1>
-                        <div className="hidden lg:flex flex-row gap-1 items-end">
-                        {category === "featured" && !hintDismissed && (
-                            <p className="text-warning/70 flex items-center gap-1.5 text-center text-xs hidden xl:flex">
-                                <Filter className="h-4 w-4 shrink-0 opacity-60" />
-                                <span>
-                                    Some games are hidden by default - use {" "}
-                                    <span className="text-warning tracking-[0.11rem]">"Filters"</span> to customize
-                                    your view -
-                                </span>
-                            </p>
-                        )}
+                        <div className="hidden flex-row items-end gap-1 lg:flex">
+                            {category === "featured" && !hintDismissed && (
+                                <p className="text-warning/70 flex hidden items-center gap-1.5 text-center text-xs xl:flex">
+                                    <Filter className="h-4 w-4 shrink-0 opacity-60" />
+                                    <span>
+                                        Some games are hidden by default - use{" "}
+                                        <span className="text-warning tracking-[0.11rem]">
+                                            &quot;Filters&quot;
+                                        </span>{" "}
+                                        to customize your view -
+                                    </span>
+                                </p>
+                            )}
                             <GameCountDisplay shownGames={shownGames} totalGames={totalGames} />
                         </div>
                     </div>

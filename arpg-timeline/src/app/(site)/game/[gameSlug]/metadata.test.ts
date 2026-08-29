@@ -275,9 +275,7 @@ describe("buildGamePageOgTitle", () => {
                 },
             },
         });
-        expect(buildGamePageOgTitle(game)).toBe(
-            `Test Game – Season 2 starts ${FUTURE_APR_4_UTC}`,
-        );
+        expect(buildGamePageOgTitle(game)).toBe(`Test Game – Season 2 starts ${FUTURE_APR_4_UTC}`);
     });
 
     it("falls back to generic tracker title otherwise", () => {
