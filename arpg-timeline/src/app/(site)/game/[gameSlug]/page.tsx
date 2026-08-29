@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
@@ -16,6 +17,7 @@ import {
 import { GameNewsService } from "@/lib/gameNewsService";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { sanitizeNewsDescription } from "@/lib/steam/sanitizeNewsDescription";
 import { Button } from "@/ui/Button";
 
 import {
@@ -41,7 +43,7 @@ async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
         return dbNews.map((news) => ({
             title: news.title,
             link: news.link,
-            description: news.description,
+            description: sanitizeNewsDescription(news.description),
             pubDate: news.pub_date,
         }));
     } catch (error) {
@@ -125,9 +127,10 @@ const GamePage = async ({ params }: GamePageProps) => {
                             statistics={statistics}
                             oldestSeasonInfo={oldestSeasonInfo}
                         />
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col justify-between gap-4">
                             <PatreonFunding />
                             <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
+                            <BuyMeACoffee />
                         </div>
                     </div>
                 )}

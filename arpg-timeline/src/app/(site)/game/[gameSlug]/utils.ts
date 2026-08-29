@@ -76,6 +76,12 @@ export const calculateUsualStartTime = (gameSeasons: LocalSeason[]): string => {
     return utcDate.toISOString();
 };
 
+export const calculateConfirmedStartDates = (gameSeasons: LocalSeason[]): string[] =>
+    gameSeasons
+        .filter((s) => s?.start?.startDate && s?.start?.confirmed)
+        .map((s) => s.start?.startDate)
+        .filter((d): d is string => typeof d === "string");
+
 export const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDuration[] => {
     const now = new Date();
     const completedSeasons = gameSeasons.filter((s, index) => {
@@ -98,6 +104,25 @@ export const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDura
         .filter((s): s is NonNullable<typeof s> => s !== null);
 };
 
+export const calculateMedianDuration = (seasonDurations: SeasonDuration[]): number | null => {
+    if (seasonDurations.length === 0) return null;
+
+    const sorted = seasonDurations.map((s) => s.duration).sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+
+    return sorted.length % 2 !== 0 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+};
+
+export const calculateDurationStdDev = (seasonDurations: SeasonDuration[]): number | null => {
+    if (seasonDurations.length === 0) return null;
+
+    const values = seasonDurations.map((s) => s.duration);
+    const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+    const variance = values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / values.length;
+
+    return Math.round(Math.sqrt(variance));
+};
+
 export const calculateGameStatistics = (
     data: GameDetailsQueryResult,
     gameSlug: string,
@@ -117,8 +142,11 @@ export const calculateGameStatistics = (
         return {
             averagePerYear: "N/A",
             usualStartTime: "N/A",
-            maxDuration: { days: "N/A", name: "N/A" },
-            minDuration: { days: "N/A", name: "N/A" },
+            confirmedStartDates: calculateConfirmedStartDates(gameSeasons),
+            maxDuration: { days: null, name: "N/A" },
+            minDuration: { days: null, name: "N/A" },
+            medianDuration: null,
+            durationStdDev: null,
         };
     }
 
@@ -133,8 +161,11 @@ export const calculateGameStatistics = (
     return {
         averagePerYear: calculateAveragePerYear(gameSeasons),
         usualStartTime: calculateUsualStartTime(gameSeasons),
-        maxDuration: { days: `${maxSeason.duration} days`, name: maxSeason.name },
-        minDuration: { days: `${minSeason.duration} days`, name: minSeason.name },
+        confirmedStartDates: calculateConfirmedStartDates(gameSeasons),
+        maxDuration: { days: maxSeason.duration, name: maxSeason.name },
+        minDuration: { days: minSeason.duration, name: minSeason.name },
+        medianDuration: calculateMedianDuration(seasonDurations),
+        durationStdDev: calculateDurationStdDev(seasonDurations),
     };
 };
 
