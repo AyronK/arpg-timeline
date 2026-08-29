@@ -4,15 +4,11 @@ import { sanitizeNewsDescription } from "./sanitizeNewsDescription";
 
 describe("sanitizeNewsDescription", () => {
     it("returns plain text unchanged", () => {
-        expect(sanitizeNewsDescription("A new season has begun.")).toBe(
-            "A new season has begun.",
-        );
+        expect(sanitizeNewsDescription("A new season has begun.")).toBe("A new season has begun.");
     });
 
     it("strips emoji pictographs", () => {
-        expect(sanitizeNewsDescription("Patch notes 🎉 are live 🚀")).toBe(
-            "Patch notes are live",
-        );
+        expect(sanitizeNewsDescription("Patch notes 🎉 are live 🚀")).toBe("Patch notes are live");
     });
 
     it("strips flag (regional indicator) emojis", () => {
@@ -20,9 +16,7 @@ describe("sanitizeNewsDescription", () => {
     });
 
     it("strips emojis with skin-tone modifiers and ZWJ sequences", () => {
-        expect(sanitizeNewsDescription("Thanks 👍🏽 from the team 👨‍👩‍👧")).toBe(
-            "Thanks from the team",
-        );
+        expect(sanitizeNewsDescription("Thanks 👍🏽 from the team 👨‍👩‍👧")).toBe("Thanks from the team");
     });
 
     it("strips keycap emojis", () => {
@@ -30,9 +24,9 @@ describe("sanitizeNewsDescription", () => {
     });
 
     it("removes http and https URLs", () => {
-        expect(
-            sanitizeNewsDescription("Read more at https://example.com/news?id=1 today"),
-        ).toBe("Read more at today");
+        expect(sanitizeNewsDescription("Read more at https://example.com/news?id=1 today")).toBe(
+            "Read more at today",
+        );
     });
 
     it("removes bare www URLs", () => {
