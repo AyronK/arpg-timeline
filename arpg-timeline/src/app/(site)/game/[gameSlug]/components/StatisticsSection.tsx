@@ -47,19 +47,19 @@ export const StatisticsSection = ({
                         value={averageDurationDays ?? "N/A"}
                         unit={averageDurationDays !== null ? "days" : undefined}
                         label="Average"
-                        info="Mean length of all completed seasons - the total days played divided by the number of seasons."
+                        info="Typical season length across every finished season."
                     />
                     <StatisticsCard
                         value={medianDuration ?? "N/A"}
                         unit={medianDuration !== null ? "days" : undefined}
                         label="Median"
-                        info="The middle season length - half of seasons ran shorter, half ran longer. Less skewed by outliers than the average."
+                        info="Half of past seasons were shorter than this, half were longer."
                     />
                     <StatisticsCard
                         value={durationStdDev !== null ? `±${durationStdDev}` : "N/A"}
                         unit={durationStdDev !== null ? "days" : undefined}
                         label="Spread"
-                        info="Standard deviation - how far season lengths typically stray from the average."
+                        info="How much season length varies from one season to the next."
                     />
                     <StatisticsCard
                         value={hasRange ? `${minDuration.days}-${maxDuration.days}` : "N/A"}
@@ -79,14 +79,15 @@ export const StatisticsSection = ({
             </section>
 
             <section className="mt-6 border-t pt-5">
-                <h3 className={groupHeadingClass}>Cadence</h3>
+                <h3 className={groupHeadingClass}>Schedule</h3>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
                     <StatisticsCard
                         className="col-span-2 sm:col-span-1"
                         value={formatPerYear(averagePerYear)}
                         unit={averagePerYear !== "N/A" ? "/ year" : undefined}
-                        label="Seasons per year"
+                        label="New seasons a year"
                         subValue="on average"
+                        info="Based on the gaps between past season starts."
                     />
                     <StatisticsCard
                         value={
@@ -100,8 +101,9 @@ export const StatisticsSection = ({
                                 </span>
                             )
                         }
-                        label="Usual start day"
-                        subValue="local timezone"
+                        label="Usual launch day"
+                        subValue="your timezone"
+                        info="Weekday past seasons launched on most often, in your time."
                     />
                     <StatisticsCard
                         value={
@@ -115,8 +117,9 @@ export const StatisticsSection = ({
                                 </span>
                             )
                         }
-                        label="Usual start time"
-                        subValue="local timezone"
+                        label="Usual launch time"
+                        subValue="your timezone"
+                        info="Time of day past seasons launched most often, in your time."
                     />
                 </div>
             </section>
