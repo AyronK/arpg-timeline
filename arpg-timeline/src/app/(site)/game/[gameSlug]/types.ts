@@ -15,8 +15,11 @@ export interface SeasonDuration {
 export interface GameStatistics {
     averagePerYear: string;
     usualStartTime: string;
-    maxDuration: { days: string; name: string };
-    minDuration: { days: string; name: string };
+    confirmedStartDates: string[];
+    maxDuration: { days: number | null; name: string };
+    minDuration: { days: number | null; name: string };
+    medianDuration: number | null;
+    durationStdDev: number | null;
 }
 
 export interface LocalSeason {
@@ -28,6 +31,7 @@ export interface LocalSeason {
 
 export interface StatisticsCardProps {
     value: string;
+    unit?: string;
     label: string;
     subValue?: string | null;
     className?: string;

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
@@ -125,8 +126,9 @@ const GamePage = async ({ params }: GamePageProps) => {
                             statistics={statistics}
                             oldestSeasonInfo={oldestSeasonInfo}
                         />
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col justify-between gap-4">
                             <PatreonFunding />
+                            <BuyMeACoffee />
                             <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
                         </div>
                     </div>
