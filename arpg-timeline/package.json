@@ -8,6 +8,8 @@
         "start": "next start",
         "lint": "eslint .",
         "typecheck": "tsc --noEmit",
+        "test": "vitest run --project unit",
+        "test:watch": "vitest --project unit",
         "lint:fix": "npm run lint -- --fix",
         "prettier": "prettier --write .",
         "format:all": "npm run lint:fix && npm run prettier",

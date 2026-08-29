@@ -15,6 +15,13 @@ import {
 const FUTURE = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 const PAST = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
+// A fixed Jun 1 that is always a couple of years ahead of "now", so tests that
+// assert the formatted date string stay deterministic without going stale.
+const FUTURE_YEAR = new Date().getUTCFullYear() + 2;
+const FUTURE_JUN_1 = `${FUTURE_YEAR}-06-01T00:00:00.000Z`;
+const FUTURE_APR_4 = `${FUTURE_YEAR}-04-04T12:00:00.000Z`;
+const FUTURE_APR_4_UTC = `Apr 4, ${FUTURE_YEAR} 12:00 UTC`;
+
 function makeGame(overrides: Partial<Game> = {}): Game {
     return {
         _id: "game-1",
@@ -80,14 +87,14 @@ describe("buildGamePageTitle", () => {
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
                 start: {
-                    startDate: "2027-04-04T12:00:00.000Z",
+                    startDate: FUTURE_APR_4,
                     confirmed: true,
                     timeUnknown: false,
                 },
             },
         });
         expect(buildGamePageTitle(game)).toBe(
-            "Test Game – Season 2 starts Apr 4, 2027 12:00 UTC | aRPG Timeline",
+            `Test Game – Season 2 starts ${FUTURE_APR_4_UTC} | aRPG Timeline`,
         );
     });
 
@@ -155,14 +162,14 @@ describe("buildGamePageDescription", () => {
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
                 start: {
-                    startDate: "2027-04-04T12:00:00.000Z",
+                    startDate: FUTURE_APR_4,
                     confirmed: true,
                     timeUnknown: false,
                 },
             },
         });
         expect(buildGamePageDescription(game)).toContain(
-            "Next season: Season 2 (starts Apr 4, 2027 12:00 UTC)",
+            `Next season: Season 2 (starts ${FUTURE_APR_4_UTC})`,
         );
     });
 
@@ -173,14 +180,14 @@ describe("buildGamePageDescription", () => {
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
                 start: {
-                    startDate: "2026-06-01T00:00:00.000Z",
+                    startDate: FUTURE_JUN_1,
                     confirmed: true,
                     timeUnknown: true,
                 },
             },
         });
         const desc = buildGamePageDescription(game);
-        expect(desc).toContain("Season 2 (starts Jun 1, 2026)");
+        expect(desc).toContain(`Season 2 (starts Jun 1, ${FUTURE_YEAR})`);
         expect(desc).not.toContain("UTC");
     });
 
@@ -262,14 +269,14 @@ describe("buildGamePageOgTitle", () => {
                 _updatedAt: "2026-01-01T00:00:00Z",
                 name: "Season 2",
                 start: {
-                    startDate: "2027-04-04T12:00:00.000Z",
+                    startDate: FUTURE_APR_4,
                     confirmed: true,
                     timeUnknown: false,
                 },
             },
         });
         expect(buildGamePageOgTitle(game)).toBe(
-            "Test Game – Season 2 starts Apr 4, 2027 12:00 UTC",
+            `Test Game – Season 2 starts ${FUTURE_APR_4_UTC}`,
         );
     });
 
