@@ -17,6 +17,7 @@ import {
 import { GameNewsService } from "@/lib/gameNewsService";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
+import { sanitizeNewsDescription } from "@/lib/steam/sanitizeNewsDescription";
 import { Button } from "@/ui/Button";
 
 import {
@@ -42,7 +43,7 @@ async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
         return dbNews.map((news) => ({
             title: news.title,
             link: news.link,
-            description: news.description,
+            description: sanitizeNewsDescription(news.description),
             pubDate: news.pub_date,
         }));
     } catch (error) {
