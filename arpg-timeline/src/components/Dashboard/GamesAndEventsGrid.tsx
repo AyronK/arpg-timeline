@@ -40,7 +40,7 @@ export const GamesAndEventsGrid = ({
         <>
             <OnboardingModal />
             <article className="relative mt-2 flex flex-col gap-2 lg:mt-0 lg:gap-0">
-                <div className="lg:bg-background relative sticky -mt-2 flex flex-col gap-1.5 lg:top-0 lg:z-10 lg:pb-4">
+                <div className="lg:bg-background relative sticky -mt-4 pt-2 flex flex-col gap-1.5 lg:top-0 lg:z-10 lg:mb-3 lg:pb-1">
                     <p className="sr-only">
                         {totalGames} games tracked, from Path of Exile and Diablo to the community
                         servers most trackers skip - every league start, content update, and
