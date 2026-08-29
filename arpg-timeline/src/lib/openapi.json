@@ -100,9 +100,20 @@
                                             "slug": "path-of-exile",
                                             "name": "Path of Exile",
                                             "seasonKeyword": "league",
-                                            "categories": ["seasonal"]
+                                            "categories": ["seasonal"],
+                                            "lastModified": "2024-12-06T21:00:00Z"
                                         }
                                     ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - missing/invalid token or insufficient scope (required scope: read_games)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -142,17 +153,16 @@
                         "name": "scope",
                         "in": "query",
                         "required": true,
-                        "description": "The scope of seasons to return",
+                        "description": "The scope of seasons to return. Only 'active' is currently supported.",
                         "schema": {
                             "type": "string",
-                            "enum": ["active"],
-                            "default": "active"
+                            "enum": ["active"]
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "Successful response. `current` and `next` are `null` when the game has no confirmed season for that slot.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -160,20 +170,24 @@
                                 },
                                 "example": {
                                     "current": {
+                                        "id": "2eab3b20-c72f-45ed-8690-081e55524b40",
                                         "name": "Settlers of Kalguur",
                                         "game": "path-of-exile",
-                                        "url": "https://www.pathofexile.com/settlers",
-                                        "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/3587981",
+                                        "url": "https://www.pathofexile.com/settlers?utm_source=arpg-timeline&utm_medium=api",
+                                        "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/3587981?utm_source=arpg-timeline&utm_medium=api",
                                         "start": "2024-07-26T19:00:00Z",
-                                        "end": "2024-12-06T21:00:00Z"
+                                        "end": "2024-12-06T21:00:00Z",
+                                        "lastModified": "2024-12-06T21:00:00Z"
                                     },
                                     "next": {
+                                        "id": "8b1f0c34-2a77-4e1d-9c22-3f9a55b7e401",
                                         "name": "Next league",
                                         "game": "path-of-exile",
                                         "url": null,
                                         "patchNotesUrl": null,
                                         "start": "2024-12-06T21:00:00Z",
-                                        "end": null
+                                        "end": null,
+                                        "lastModified": "2024-12-06T21:00:00Z"
                                     }
                                 }
                             }
@@ -181,6 +195,16 @@
                     },
                     "400": {
                         "description": "Bad request - invalid scope",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - missing/invalid token or insufficient scope (required scope: read_active_seasons or read_all_seasons)",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -224,17 +248,16 @@
                         "name": "scope",
                         "in": "query",
                         "required": true,
-                        "description": "The scope of seasons to return",
+                        "description": "The scope of seasons to return. Only 'active' is currently supported.",
                         "schema": {
                             "type": "string",
-                            "enum": ["active"],
-                            "default": "active"
+                            "enum": ["active"]
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "Successful response. Within each entry, `current` and `next` are `null` when the game has no confirmed season for that slot.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -245,20 +268,24 @@
                                         {
                                             "game": "path-of-exile-2",
                                             "current": {
+                                                "id": "c1d2e3f4-5678-4abc-9def-0123456789ab",
                                                 "name": "Early Access League 3",
                                                 "game": "path-of-exile-2",
-                                                "url": "https://www.pathofexile.com/pathofexile2",
-                                                "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/poe2-updates",
+                                                "url": "https://www.pathofexile.com/pathofexile2?utm_source=arpg-timeline&utm_medium=api",
+                                                "patchNotesUrl": "https://www.pathofexile.com/forum/view-thread/poe2-updates?utm_source=arpg-timeline&utm_medium=api",
                                                 "start": "2025-07-15T19:00:00Z",
-                                                "end": "2025-09-30T19:00:00Z"
+                                                "end": "2025-09-30T19:00:00Z",
+                                                "lastModified": "2025-07-15T19:00:00Z"
                                             },
                                             "next": {
+                                                "id": "d4e5f6a7-8901-4bcd-8ef0-123456789abc",
                                                 "name": "Early Access League 4",
                                                 "game": "path-of-exile-2",
                                                 "url": null,
                                                 "patchNotesUrl": null,
                                                 "start": "2025-10-01T19:00:00Z",
-                                                "end": null
+                                                "end": null,
+                                                "lastModified": "2025-07-15T19:00:00Z"
                                             }
                                         }
                                     ]
@@ -268,6 +295,16 @@
                     },
                     "400": {
                         "description": "Bad request - invalid scope",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - missing/invalid token or insufficient scope (required scope: read_active_seasons or read_all_seasons)",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -344,7 +381,7 @@
             },
             "Game": {
                 "type": "object",
-                "required": ["slug", "name", "seasonKeyword", "lastModified"],
+                "required": ["slug", "name", "lastModified"],
                 "properties": {
                     "slug": {
                         "type": "string",
@@ -393,6 +430,7 @@
             "SeasonInfo": {
                 "type": "object",
                 "required": [
+                    "id",
                     "name",
                     "game",
                     "url",
@@ -455,18 +493,23 @@
             },
             "GameSeasonsResponse": {
                 "type": "object",
+                "required": ["current", "next"],
                 "properties": {
                     "current": {
-                        "$ref": "#/components/schemas/SeasonInfo"
+                        "nullable": true,
+                        "description": "The active season, or null if none is confirmed",
+                        "allOf": [{ "$ref": "#/components/schemas/SeasonInfo" }]
                     },
                     "next": {
-                        "$ref": "#/components/schemas/SeasonInfo"
+                        "nullable": true,
+                        "description": "The upcoming season, or null if none is confirmed",
+                        "allOf": [{ "$ref": "#/components/schemas/SeasonInfo" }]
                     }
                 }
             },
             "GameSeasonEntry": {
                 "type": "object",
-                "required": ["game"],
+                "required": ["game", "current", "next"],
                 "properties": {
                     "game": {
                         "type": "string",
@@ -474,10 +517,14 @@
                         "example": "path-of-exile-2"
                     },
                     "current": {
-                        "$ref": "#/components/schemas/SeasonInfo"
+                        "nullable": true,
+                        "description": "The active season, or null if none is confirmed",
+                        "allOf": [{ "$ref": "#/components/schemas/SeasonInfo" }]
                     },
                     "next": {
-                        "$ref": "#/components/schemas/SeasonInfo"
+                        "nullable": true,
+                        "description": "The upcoming season, or null if none is confirmed",
+                        "allOf": [{ "$ref": "#/components/schemas/SeasonInfo" }]
                     }
                 }
             },
