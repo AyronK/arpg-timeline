@@ -30,7 +30,7 @@ function buildDescription(dashboard: GameFilterCategory, gameCount: number): str
         case "early-access":
             return `Season dates and launch countdowns for early access aRPGs - calendar exports and real-time updates so you never miss a season or major update.`;
         default:
-            return `Season dates and countdowns for the most popular aRPGs - Diablo 4, Path of Exile 2, Last Epoch, and more, with calendar exports and real-time updates.`;
+            return `The most complete aRPG season tracker - ${gameCount} games from Diablo and Path of Exile to community servers others skip, with live countdowns and calendar sync.`;
     }
 }
 
@@ -44,7 +44,7 @@ export async function generateDashboardMetadata(
     const isDefault = dashboard === "featured";
 
     const title = isDefault
-        ? "aRPG Timeline | Every season. Just on time."
+        ? `aRPG Timeline | ${data.games.length} aRPGs, Every Season Just On Time`
         : `${dashboardLabels[dashboard]} | aRPG Timeline`;
 
     const description = buildDescription(dashboard, data.games.length);
