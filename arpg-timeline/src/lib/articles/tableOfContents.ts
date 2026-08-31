@@ -6,7 +6,6 @@ export interface TocHeading {
     level: 2 | 3;
 }
 
-/** Slug used for heading `id`s and TOC anchor targets. */
 export function slugifyHeading(text: string): string {
     return text
         .toLowerCase()
@@ -17,7 +16,6 @@ export function slugifyHeading(text: string): string {
         .replace(/^-|-$/g, "");
 }
 
-/** Plain text of a Portable Text block (spans concatenated). */
 export function blockToPlainText(block: PortableTextBlock): string {
     const children = (block as { children?: { text?: string }[] }).children;
     if (!Array.isArray(children)) return "";
@@ -27,10 +25,7 @@ export function blockToPlainText(block: PortableTextBlock): string {
         .trim();
 }
 
-/**
- * Build the table of contents from H2/H3 blocks in the body. Ids are made
- * unique by suffixing `-2`, `-3`, … on collision so anchors always resolve.
- */
+/** H2/H3 headings from the body, with collision-suffixed ids matching `ArticleBody`. */
 export function extractToc(body: PortableTextBlock[] | undefined | null): TocHeading[] {
     if (!Array.isArray(body)) return [];
 

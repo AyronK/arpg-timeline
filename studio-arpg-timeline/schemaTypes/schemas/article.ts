@@ -33,8 +33,7 @@ export default {
             options: {
                 source: "title",
                 maxLength: 96,
-                // Unique within the same (category, game) namespace - that pair maps 1:1
-                // to a URL prefix, so a slug may legitimately repeat across namespaces.
+                // Unique per (category, game) — a slug may repeat across namespaces.
                 isUnique: async (slug: string, context: any) => {
                     const { document, getClient } = context;
                     if (!document) return true;
@@ -267,9 +266,7 @@ export default {
                         },
                     },
                 },
-                // Registered by the `table()` plugin in sanity.config.tsx.
-                // Shape: { _type: "table", rows: [{ _key, cells: string[] }] };
-                // first row is rendered as the header on the site.
+                // `@sanity/table` plugin; first row renders as the header on the site.
                 { type: "table" },
             ],
             validation: (Rule: Rule) => Rule.required(),

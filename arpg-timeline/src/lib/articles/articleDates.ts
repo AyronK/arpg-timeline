@@ -3,9 +3,6 @@ interface HasModified {
     _updatedAt: string;
 }
 
-/**
- * The article's effective "last modified" timestamp: the author-set `updatedAt`
- * override when present, otherwise the document's own last-edit time.
- */
+/** Author-set `updatedAt` override, falling back to the document's own edit time. */
 export const getArticleModified = (article: HasModified): string =>
     article.updatedAt || article._updatedAt;

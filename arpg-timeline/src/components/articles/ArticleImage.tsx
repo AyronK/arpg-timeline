@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 
 interface ArticleImageProps {
     image: ArticleImageData;
-    /** Cover images render eager + high priority. */
     priority?: boolean;
     className?: string;
     sizes?: string;
@@ -13,11 +12,7 @@ interface ArticleImageProps {
 
 const DEFAULT_SIZES = "(min-width: 880px) 830px, 100vw";
 
-/**
- * Body / cover image for articles. Uses the real asset dimensions so the layout
- * doesn't shift on load (plan G3), with the LQIP blur as a placeholder.
- * `SanityImage` assumes a pre-sized parent, so it isn't a fit here.
- */
+// Real asset dimensions + LQIP so the article body doesn't shift as images load.
 export const ArticleImage = ({ image, priority, className, sizes }: ArticleImageProps) => {
     const asset = image?.asset;
     if (!asset?.url) return null;

@@ -4,10 +4,6 @@ import { Fragment } from "react";
 
 import type { Crumb } from "@/lib/articles/breadcrumbs";
 
-/**
- * Visible breadcrumb trail. The last crumb is the current page (not a link).
- * Pairs with <BreadcrumbSchema crumbs={…} /> for the JSON-LD.
- */
 export const Breadcrumbs = ({ crumbs }: { crumbs: Crumb[] }) => {
     if (crumbs.length === 0) return null;
 

@@ -11,7 +11,7 @@ import { getYouTubeEmbedUrl, parseYouTubeId } from "@/lib/articles/youtube";
 import type { ArticleImage as ArticleImageData } from "@/lib/cms/queries/articleQuery";
 import { cn } from "@/lib/utils";
 
-/** Same collision logic as `extractToc`, keyed by block `_key`. */
+// Must produce the same ids as `extractToc` so TOC anchors resolve.
 function buildHeadingIdMap(body: PortableTextBlock[]): Map<string, string> {
     const seen = new Map<string, number>();
     const ids = new Map<string, string>();

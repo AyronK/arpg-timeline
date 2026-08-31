@@ -1,6 +1,5 @@
 interface Crumb {
     name: string;
-    /** Absolute URL or a site-root-relative path. */
     href?: string;
     url?: string;
 }
@@ -11,9 +10,8 @@ const toAbsolute = (value: string) =>
     value.startsWith("http") ? value : `${SITE_URL}${value.startsWith("/") ? "" : "/"}${value}`;
 
 interface BreadcrumbSchemaProps {
-    /** Legacy: derive crumbs from a "/"-joined path, title-casing each segment. */
+    // `path`: title-cased from slug segments. `crumbs`: explicit labels (preferred).
     path?: string;
-    /** Preferred: explicit crumbs with real labels. */
     crumbs?: Crumb[];
 }
 

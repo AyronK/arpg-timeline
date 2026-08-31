@@ -15,7 +15,6 @@ interface RouteArgs {
     gameSlug?: string;
 }
 
-/** Shared page body for all four article `[slug]` routes. */
 export async function renderArticlePage({ category, slug, gameSlug }: RouteArgs) {
     const article = await getArticle({ category, slug, gameSlug });
 
@@ -36,7 +35,6 @@ export async function renderArticlePage({ category, slug, gameSlug }: RouteArgs)
     );
 }
 
-/** Shared generateMetadata for all four article `[slug]` routes. */
 export async function resolveArticleMetadata({
     category,
     slug,
@@ -47,7 +45,6 @@ export async function resolveArticleMetadata({
     return generateArticleMetadata(article);
 }
 
-/** Static params for a given route shape. */
 export async function articleStaticParams(
     category: ArticleCategory,
     scope: "root" | "game",

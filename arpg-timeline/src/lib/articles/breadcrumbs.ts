@@ -11,10 +11,6 @@ const CATEGORY_LABEL: Record<Article["category"], string> = {
     resources: "Resources",
 };
 
-/**
- * Explicit crumb trail for an article page — real game name + article title
- * instead of title-cased slug segments (plan G2).
- */
 export function buildArticleCrumbs(article: Article): Crumb[] {
     const crumbs: Crumb[] = [{ name: "Home", href: "/" }];
 

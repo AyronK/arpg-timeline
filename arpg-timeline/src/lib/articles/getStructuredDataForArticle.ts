@@ -29,10 +29,6 @@ export interface ArticleStructuredData {
     "@graph": ArticleNode[];
 }
 
-/**
- * Plain schema.org `Article` for both categories (plan decision 17 - `NewsArticle`
- * carries Google-News publisher expectations we don't want to claim).
- */
 export function getStructuredDataForArticle(article: Article): ArticleStructuredData {
     const url = getArticleAbsoluteUrl({
         category: article.category,

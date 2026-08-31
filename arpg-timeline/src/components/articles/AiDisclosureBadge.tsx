@@ -16,11 +16,6 @@ const TONE_CLASSES: Record<AiDisclosureTone, string> = {
     caution: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
 };
 
-/**
- * AI-usage disclosure under the article byline (plan decision 24 - never on
- * cards). Shows a 0–N degree meter; the label is in the tooltip and the full
- * explanation is on /ai-usage.
- */
 export const AiDisclosureBadge = ({ value }: { value: AiDisclosure }) => {
     const meta = getAiDisclosureMeta(value);
 

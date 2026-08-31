@@ -1,10 +1,6 @@
 import type { Article, ArticleCategory } from "@/lib/cms/queries/articleQuery";
 
-/**
- * True when a fetched article legitimately belongs to the route it was reached
- * through. The GROQ queries already filter on this, but the guard makes a
- * projection regression fail closed (404) instead of cross-resolving (plan G1).
- */
+/** Guard against a slug reused across category/game namespaces cross-resolving. */
 export function articleMatchesRoute(
     article: Pick<Article, "category" | "game">,
     route: { category: ArticleCategory; gameSlug?: string },

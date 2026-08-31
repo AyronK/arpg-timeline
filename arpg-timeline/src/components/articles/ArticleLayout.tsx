@@ -11,6 +11,8 @@ import { extractToc } from "@/lib/articles/tableOfContents";
 import type { Article } from "@/lib/cms/queries/articleQuery";
 import { cn } from "@/lib/utils";
 import { Chip } from "@/ui/Chip";
+import { PatreonFunding } from "../PatreonFunding";
+import { BuyMeACoffee } from "../BuyMeACoffee";
 
 const sameDay = (a: string, b: string) => a.slice(0, 10) === b.slice(0, 10);
 
@@ -31,7 +33,7 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
             <div
                 className={cn(
                     hasToc &&
-                        "lg:grid lg:grid-cols-[14rem_minmax(0,52rem)] lg:justify-center lg:gap-10",
+                    "lg:grid lg:grid-cols-[14rem_minmax(0,52rem)] lg:justify-center lg:gap-10",
                 )}
             >
                 {hasToc && (
@@ -43,6 +45,9 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
                 )}
 
                 <article className={cn("mx-auto max-w-[55rem] min-w-0", hasToc && "lg:mx-0")}>
+                    <div className="mb-6">
+                        <PatreonFunding />
+                    </div>
                     <Breadcrumbs crumbs={crumbs} />
 
                     <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -90,7 +95,10 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
                     <div className="mt-8">
                         <ArticleBody body={article.body} />
                     </div>
+
+                    <BuyMeACoffee />
                 </article>
+
             </div>
 
             <ArticleToc headings={toc} variant="bottom" />

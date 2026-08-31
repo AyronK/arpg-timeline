@@ -222,10 +222,8 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
-            // Article `[slug]` pages are near-static: the Sanity `article` webhook
-            // tag-purge is the only invalidation path, so cache hard at the CDN.
-            // NB single-segment on purpose — the /news and /resources index pages
-            // (Phase 2) read Supabase and keep a shorter revalidate.
+            // Article `[slug]` pages: webhook tag-purge is the only invalidation, so
+            // cache hard. Single-segment on purpose — the index pages revalidate faster.
             ...[
                 "/news/:slug",
                 "/resources/:slug",

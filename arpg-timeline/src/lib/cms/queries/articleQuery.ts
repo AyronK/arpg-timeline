@@ -1,18 +1,5 @@
 import { PortableTextBlock } from "next-sanity";
 
-/**
- * Articles / editorial content. See the plan at
- * ~/.claude/plans/plan-integrating-an-glistening-bachman.md
- *
- * `category` + `game` together map 1:1 onto a URL prefix:
- *   - no game  → /news/{slug}            /resources/{slug}
- *   - a game   → /game/{g}/news/{slug}   /game/{g}/resources/{slug}
- *
- * Every by-slug query filters on `category` so a slug reused across categories
- * cannot cross-resolve (see plan G1). "Live" == published in Sanity - the read
- * token already excludes drafts, so there is no extra visibility filter.
- */
-
 export type ArticleCategory = "news" | "resources";
 
 export type AiDisclosure = "none" | "styling" | "assisted" | "redacted" | "fully-generated";
@@ -36,7 +23,6 @@ export interface ArticleGameRef {
     logo?: { url: string } | null;
 }
 
-/** Fields shared by list cards and the full article. */
 const LIST_PROJECTION = `
   _id,
   "slug": slug.current,
@@ -55,7 +41,6 @@ const LIST_PROJECTION = `
   }
 `;
 
-/** Portable Text body with image assets dereferenced. */
 const BODY_PROJECTION = `
   body[]{
     ...,
@@ -82,7 +67,6 @@ export interface ArticleListItem {
     excerpt: string;
     aiDisclosure: AiDisclosure;
     publishedAt: string;
-    /** Author-set "last modified" override; falls back to `_updatedAt`. */
     updatedAt: string | null;
     _updatedAt: string;
     game: ArticleGameRef | null;
@@ -96,11 +80,7 @@ export interface Article extends ArticleListItem {
     body: PortableTextBlock[];
 }
 
-/* -------------------------------------------------------------------------- */
-/* Single-article fetches (Phase 1)                                          */
-/* -------------------------------------------------------------------------- */
-
-/** Root (no game) article, scoped to a category. */
+// The `category` clause keeps a slug reused across namespaces from cross-resolving.
 export const articleBySlugQuery = `*[
   _type == "article" &&
   slug.current == $slug &&
@@ -110,7 +90,6 @@ export const articleBySlugQuery = `*[
   ${FULL_PROJECTION}
 }`;
 
-/** Game-scoped article, matched on game slug + category. */
 export const articleByGameAndSlugQuery = `*[
   _type == "article" &&
   slug.current == $slug &&
@@ -128,7 +107,6 @@ export interface ArticleStaticParam {
     _updatedAt: string;
 }
 
-/** Every article, minimal shape - feeds generateStaticParams + the sitemap. */
 export const articleStaticParamsQuery = `*[_type == "article"]{
   "slug": slug.current,
   category,
@@ -137,18 +115,13 @@ export const articleStaticParamsQuery = `*[_type == "article"]{
   _updatedAt
 }`;
 
-/* -------------------------------------------------------------------------- */
-/* List fetches (index pages - Phase 2 wires these up)                        */
-/* -------------------------------------------------------------------------- */
-
-/** All articles of a category (root + every game), newest first. */
+// Index pages (Phase 2).
 export const articlesByCategoryQuery = `*[
   _type == "article" && category == $category
 ] | order(publishedAt desc){
   ${LIST_PROJECTION}
 }`;
 
-/** A single game's articles in a category, newest first. */
 export const gameArticlesByCategoryQuery = `*[
   _type == "article" &&
   category == $category &&

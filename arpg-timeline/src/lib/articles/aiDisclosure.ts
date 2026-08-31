@@ -1,21 +1,17 @@
 import type { AiDisclosure } from "@/lib/cms/queries/articleQuery";
 
-/** Highest degree on the reader-facing 0–N scale. */
 export const AI_DISCLOSURE_MAX = 4;
 
 export type AiDisclosureTone = "neutral" | "info" | "caution";
 
 export interface AiDisclosureMeta {
-    /** Position on the 0…AI_DISCLOSURE_MAX scale. */
     degree: number;
-    /** Short human name (tooltip heading + aria label; not shown as badge text). */
     label: string;
-    /** Terse tooltip line. Full explanation lives on /ai-usage. */
     description: string;
     tone: AiDisclosureTone;
 }
 
-// Cumulative scale: each level includes everything below it and adds more AI.
+// Cumulative 0–4 scale: each level includes everything below it, plus more AI.
 export const AI_DISCLOSURE_META: Record<AiDisclosure, AiDisclosureMeta> = {
     none: {
         degree: 0,
