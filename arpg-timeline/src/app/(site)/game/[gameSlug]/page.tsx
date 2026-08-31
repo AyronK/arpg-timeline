@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
@@ -33,7 +32,14 @@ import {
     buildGamePageTitle,
 } from "./metadata";
 import { GamePageProps } from "./types";
-import { calculateGameStatistics, getArchivalSeasons, getOldestSeasonInfo } from "./utils";
+import {
+    calculateGameStatistics,
+    countTrackedSeasons,
+    getArchivalSeasons,
+    getOldestSeasonInfo,
+} from "./utils";
+
+const RECENT_SEASON_COUNT = 3;
 
 async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
     try {
@@ -75,6 +81,10 @@ const GamePage = async ({ params }: GamePageProps) => {
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
     const gameNews = await getSteamNewsFromDb(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
+    const recentStatistics =
+        countTrackedSeasons(data, gameSlug) > RECENT_SEASON_COUNT
+            ? calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT })
+            : undefined;
     const oldestSeasonInfo = getOldestSeasonInfo(data, game);
     const archivalSeasons = getArchivalSeasons(data, game);
     const structuredData = getStructuredDataForGame(game);
@@ -120,18 +130,25 @@ const GamePage = async ({ params }: GamePageProps) => {
 
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
+                <div className="mb-4 flex flex-col justify-between gap-4 md:mb-6 md:gap-6 lg:flex-row">
+                    <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
+                    <PatreonFunding />
+                </div>
+
                 {game.categories?.includes("seasonal") && archivalSeasons.length > 0 && (
                     <div className="mb-4 grid grid-cols-1 gap-4 md:mb-6 md:gap-6 2xl:grid-cols-2">
                         <StatisticsSection
                             game={game}
                             statistics={statistics}
+                            recentStatistics={recentStatistics}
+                            recentSeasonCount={RECENT_SEASON_COUNT}
                             oldestSeasonInfo={oldestSeasonInfo}
                         />
-                        <div className="flex flex-col justify-between gap-4">
-                            <PatreonFunding />
-                            <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
-                            <BuyMeACoffee />
-                        </div>
+                        <ArchivalSeasonsSection
+                            seasons={archivalSeasons}
+                            gameLogo={game.logo}
+                            seasonKeyword={game.seasonKeyword}
+                        />
                     </div>
                 )}
 
@@ -142,14 +159,6 @@ const GamePage = async ({ params }: GamePageProps) => {
                             gameNews={gameNews.slice(0, 5)}
                         />
                     </div>
-                )}
-
-                {archivalSeasons.length > 0 && (
-                    <ArchivalSeasonsSection
-                        seasons={archivalSeasons}
-                        gameLogo={game.logo}
-                        seasonKeyword={game.seasonKeyword}
-                    />
                 )}
             </div>
         </>
