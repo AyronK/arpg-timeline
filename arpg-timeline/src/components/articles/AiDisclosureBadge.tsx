@@ -1,4 +1,5 @@
 import { Sparkles } from "lucide-react";
+import Link from "next/link";
 
 import {
     AI_DISCLOSURE_MAX,
@@ -17,7 +18,8 @@ const TONE_CLASSES: Record<AiDisclosureTone, string> = {
 
 /**
  * AI-usage disclosure under the article byline (plan decision 24 - never on
- * cards). Shows a 0–N degree meter only; the wording is in the tooltip.
+ * cards). Shows a 0–N degree meter; the label is in the tooltip and the full
+ * explanation is on /ai-usage.
  */
 export const AiDisclosureBadge = ({ value }: { value: AiDisclosure }) => {
     const meta = getAiDisclosureMeta(value);
@@ -25,13 +27,13 @@ export const AiDisclosureBadge = ({ value }: { value: AiDisclosure }) => {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <span
+                <Link
+                    href="/ai-usage#articles"
                     className={cn(
-                        "inline-flex cursor-help items-center gap-1.5 rounded-full border px-2 py-1",
+                        "focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-full border px-2 py-1 outline-none focus-visible:ring-2",
                         TONE_CLASSES[meta.tone],
                     )}
-                    role="img"
-                    aria-label={`AI involvement: ${meta.label} (${meta.degree} of ${AI_DISCLOSURE_MAX})`}
+                    aria-label={`AI involvement: ${meta.label} (${meta.degree} of ${AI_DISCLOSURE_MAX}). Learn more.`}
                 >
                     <Sparkles className="h-3 w-3" aria-hidden />
                     <span className="flex gap-0.5" aria-hidden>
@@ -45,14 +47,14 @@ export const AiDisclosureBadge = ({ value }: { value: AiDisclosure }) => {
                             />
                         ))}
                     </span>
-                </span>
+                </Link>
             </TooltipTrigger>
-            <TooltipContent className="max-w-56">
-                <span className="font-semibold">
-                    AI involvement {meta.degree}/{AI_DISCLOSURE_MAX} - {meta.label}
-                </span>
+            <TooltipContent className="max-w-56 text-center">
+                <span className="font-semibold">{meta.label}</span>
                 <br />
                 {meta.description}
+                <br />
+                <span className="text-muted-foreground">Click to learn more</span>
             </TooltipContent>
         </Tooltip>
     );
