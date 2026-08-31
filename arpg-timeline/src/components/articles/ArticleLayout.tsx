@@ -36,7 +36,7 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
             >
                 {hasToc && (
                     <aside className="hidden lg:block">
-                        <div className="sticky top-24">
+                        <div className="sticky top-12">
                             <ArticleToc headings={toc} variant="sidebar" />
                         </div>
                     </aside>

@@ -63,18 +63,27 @@ export const ArticleToc = ({ headings, variant }: Props) => {
 
     return (
         <div className="bg-background/95 border-border/60 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur lg:hidden">
-            {open && (
-                <nav
-                    aria-label="Table of contents"
-                    className="border-border/60 max-h-[55vh] overflow-y-auto border-b px-4 pt-3 pb-2 text-sm"
-                >
-                    <ul>
-                        {headings.map((h) => (
-                            <li key={h.id}>{link(h, () => setOpen(false))}</li>
-                        ))}
-                    </ul>
-                </nav>
-            )}
+            <div
+                className={cn(
+                    "grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none",
+                    open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+                )}
+            >
+                <div className="overflow-hidden">
+                    <nav
+                        aria-label="Table of contents"
+                        aria-hidden={!open}
+                        inert={!open}
+                        className="border-border/60 max-h-[55vh] overflow-y-auto border-b px-4 pt-3 pb-2 text-sm"
+                    >
+                        <ul>
+                            {headings.map((h) => (
+                                <li key={h.id}>{link(h, () => setOpen(false))}</li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
             <button
                 type="button"
                 onClick={() => setOpen((o) => !o)}
