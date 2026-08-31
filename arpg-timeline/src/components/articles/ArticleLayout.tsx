@@ -32,8 +32,7 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
         <div className="relative container mx-auto pt-6 pb-24 md:pt-10 lg:pb-10">
             <div
                 className={cn(
-                    hasToc &&
-                        "xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:items-start xl:gap-x-8",
+                    hasToc && "xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:gap-x-8",
                 )}
             >
                 {hasToc && (
