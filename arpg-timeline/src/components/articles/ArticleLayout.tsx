@@ -1,18 +1,15 @@
 import { AiDisclosureBadge } from "@/components/articles/AiDisclosureBadge";
 import { ArticleBody } from "@/components/articles/ArticleBody";
+import { ArticleDate } from "@/components/articles/ArticleDate";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { ArticleToc } from "@/components/articles/ArticleToc";
 import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
+import { getArticleModified } from "@/lib/articles/articleDates";
+import { ARTICLE_AUTHOR_NAME } from "@/lib/articles/author";
 import { buildArticleCrumbs } from "@/lib/articles/breadcrumbs";
 import { extractToc } from "@/lib/articles/tableOfContents";
 import type { Article } from "@/lib/cms/queries/articleQuery";
 import { Chip } from "@/ui/Chip";
-
-const DATE_FMT = new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-});
 
 const sameDay = (a: string, b: string) => a.slice(0, 10) === b.slice(0, 10);
 
@@ -24,7 +21,8 @@ const CATEGORY_LABEL: Record<Article["category"], string> = {
 export const ArticleLayout = ({ article }: { article: Article }) => {
     const crumbs = buildArticleCrumbs(article);
     const toc = extractToc(article.body);
-    const showPublished = !sameDay(article.publishedAt, article._updatedAt);
+    const modified = getArticleModified(article);
+    const showPublished = !sameDay(article.publishedAt, modified);
 
     return (
         <article className="relative container mx-auto max-w-[55rem] py-6 md:py-10">
@@ -38,24 +36,18 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
             <h1 className="font-heading text-3xl leading-tight md:text-4xl">{article.title}</h1>
 
             <div className="text-muted-foreground mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-                <span className="text-foreground font-medium">aRPG Timeline</span>
+                <span className="text-foreground font-medium">{ARTICLE_AUTHOR_NAME}</span>
                 <span aria-hidden>·</span>
                 <AiDisclosureBadge value={article.aiDisclosure} />
                 <span aria-hidden>·</span>
                 <span>
-                    Updated{" "}
-                    <time dateTime={article._updatedAt}>
-                        {DATE_FMT.format(new Date(article._updatedAt))}
-                    </time>
+                    Updated <ArticleDate iso={modified} />
                 </span>
                 {showPublished && (
                     <>
                         <span aria-hidden>·</span>
                         <span>
-                            Published{" "}
-                            <time dateTime={article.publishedAt}>
-                                {DATE_FMT.format(new Date(article.publishedAt))}
-                            </time>
+                            Published <ArticleDate iso={article.publishedAt} />
                         </span>
                     </>
                 )}

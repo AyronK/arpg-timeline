@@ -1,11 +1,12 @@
 import type { Rule } from "sanity";
 
+// Ordered least → most AI involvement; the site shows this as a 0–4 scale.
 const AI_DISCLOSURE_OPTIONS = [
-    { title: "None – written entirely by a human", value: "none" },
-    { title: "Styling – AI used for formatting / layout only", value: "styling" },
-    { title: "Assisted – AI research / outline, human-written", value: "assisted" },
-    { title: "Redacted – AI-generated, human-reviewed & edited", value: "redacted" },
-    { title: "Fully generated – AI-generated, minimal human review", value: "fully-generated" },
+    { title: "None - written entirely by a human", value: "none" },
+    { title: "Styling - AI used for formatting / layout only", value: "styling" },
+    { title: "Assisted - AI research / outline, human-written", value: "assisted" },
+    { title: "Redacted - AI-generated, human-reviewed & edited", value: "redacted" },
+    { title: "Fully generated - AI-generated, minimal human review", value: "fully-generated" },
 ];
 
 export default {
@@ -32,7 +33,7 @@ export default {
             options: {
                 source: "title",
                 maxLength: 96,
-                // Unique within the same (category, game) namespace — that pair maps 1:1
+                // Unique within the same (category, game) namespace - that pair maps 1:1
                 // to a URL prefix, so a slug may legitimately repeat across namespaces.
                 isUnique: async (slug: string, context: any) => {
                     const { document, getClient } = context;
@@ -60,6 +61,22 @@ export default {
                 },
             },
             validation: (Rule: Rule) => Rule.required(),
+        },
+        {
+            name: "publishedAt",
+            title: "Published at",
+            type: "datetime",
+            group: "main",
+            initialValue: () => new Date().toISOString(),
+            validation: (Rule: Rule) => Rule.required(),
+        },
+        {
+            name: "updatedAt",
+            title: "Last modified at",
+            description:
+                "Optional. The visible “Updated” date and structured-data dateModified use this when set, otherwise the document’s own last-edit time.",
+            type: "datetime",
+            group: "main",
         },
         {
             name: "category",
@@ -261,19 +278,11 @@ export default {
             name: "aiDisclosure",
             title: "AI-usage disclosure",
             description:
-                "How much AI was involved in writing this article. Shown as a badge on the page.",
+                "How much AI was involved in writing this article. Shown on the page as a 0–4 scale with a tooltip.",
             type: "string",
             group: "main",
             initialValue: "none",
-            options: { list: AI_DISCLOSURE_OPTIONS, layout: "dropdown" },
-            validation: (Rule: Rule) => Rule.required(),
-        },
-        {
-            name: "publishedAt",
-            title: "Published at",
-            type: "datetime",
-            group: "main",
-            initialValue: () => new Date().toISOString(),
+            options: { list: AI_DISCLOSURE_OPTIONS, layout: "radio" },
             validation: (Rule: Rule) => Rule.required(),
         },
         {

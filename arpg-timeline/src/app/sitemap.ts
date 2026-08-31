@@ -135,7 +135,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                     slug: article.slug,
                     gameSlug: article.gameSlug,
                 })}`,
-                lastModified: article._updatedAt ? new Date(article._updatedAt) : new Date(),
+                lastModified: new Date(article.updatedAt || article._updatedAt || Date.now()),
                 changeFrequency: "weekly",
                 priority: 0.7,
             });

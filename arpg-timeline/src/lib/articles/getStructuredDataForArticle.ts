@@ -1,4 +1,6 @@
+import { getArticleModified } from "@/lib/articles/articleDates";
 import { getArticleAbsoluteUrl } from "@/lib/articles/articleUrl";
+import { ARTICLE_AUTHOR_NAME, ARTICLE_AUTHOR_URL } from "@/lib/articles/author";
 import type { Article } from "@/lib/cms/queries/articleQuery";
 
 const SITE_URL = "https://www.arpg-timeline.com";
@@ -12,7 +14,7 @@ type ArticleNode = {
     datePublished: string;
     dateModified: string;
     mainEntityOfPage: { "@type": "WebPage"; "@id": string };
-    author: { "@type": "Organization"; name: string; url: string };
+    author: { "@type": "Person"; name: string; url: string };
     publisher: {
         "@type": "Organization";
         name: string;
@@ -28,7 +30,7 @@ export interface ArticleStructuredData {
 }
 
 /**
- * Plain schema.org `Article` for both categories (plan decision 17 — `NewsArticle`
+ * Plain schema.org `Article` for both categories (plan decision 17 - `NewsArticle`
  * carries Google-News publisher expectations we don't want to claim).
  */
 export function getStructuredDataForArticle(article: Article): ArticleStructuredData {
@@ -45,12 +47,12 @@ export function getStructuredDataForArticle(article: Article): ArticleStructured
         description: article.excerpt,
         url,
         datePublished: article.publishedAt,
-        dateModified: article._updatedAt,
+        dateModified: getArticleModified(article),
         mainEntityOfPage: { "@type": "WebPage", "@id": url },
         author: {
-            "@type": "Organization",
-            name: "aRPG Timeline",
-            url: SITE_URL,
+            "@type": "Person",
+            name: ARTICLE_AUTHOR_NAME,
+            url: ARTICLE_AUTHOR_URL,
         },
         publisher: {
             "@type": "Organization",

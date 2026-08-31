@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { getArticleModified } from "@/lib/articles/articleDates";
 import { getArticleAbsoluteUrl, getArticlePath } from "@/lib/articles/articleUrl";
 import type { Article } from "@/lib/cms/queries/articleQuery";
 
@@ -43,7 +44,7 @@ export function generateArticleMetadata(article: Article): Metadata {
             siteName: "aRPG Timeline",
             locale: "en_US",
             publishedTime: article.publishedAt,
-            modifiedTime: article._updatedAt,
+            modifiedTime: getArticleModified(article),
             images: [{ url: imageUrl, width: 1200, height: 630, alt: article.title }],
         },
         twitter: {

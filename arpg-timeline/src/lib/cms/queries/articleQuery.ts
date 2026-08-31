@@ -9,7 +9,7 @@ import { PortableTextBlock } from "next-sanity";
  *   - a game   → /game/{g}/news/{slug}   /game/{g}/resources/{slug}
  *
  * Every by-slug query filters on `category` so a slug reused across categories
- * cannot cross-resolve (see plan G1). "Live" == published in Sanity — the read
+ * cannot cross-resolve (see plan G1). "Live" == published in Sanity - the read
  * token already excludes drafts, so there is no extra visibility filter.
  */
 
@@ -45,6 +45,7 @@ const LIST_PROJECTION = `
   excerpt,
   aiDisclosure,
   publishedAt,
+  updatedAt,
   _updatedAt,
   "game": game->{ "slug": slug.current, name, "logo": logo.asset->{ url } },
   "coverImage": coverImage{
@@ -81,6 +82,8 @@ export interface ArticleListItem {
     excerpt: string;
     aiDisclosure: AiDisclosure;
     publishedAt: string;
+    /** Author-set "last modified" override; falls back to `_updatedAt`. */
+    updatedAt: string | null;
     _updatedAt: string;
     game: ArticleGameRef | null;
     coverImage: ArticleImage;
@@ -121,19 +124,21 @@ export interface ArticleStaticParam {
     slug: string;
     category: ArticleCategory;
     gameSlug: string | null;
+    updatedAt: string | null;
     _updatedAt: string;
 }
 
-/** Every article, minimal shape — feeds generateStaticParams + the sitemap. */
+/** Every article, minimal shape - feeds generateStaticParams + the sitemap. */
 export const articleStaticParamsQuery = `*[_type == "article"]{
   "slug": slug.current,
   category,
   "gameSlug": game->slug.current,
+  updatedAt,
   _updatedAt
 }`;
 
 /* -------------------------------------------------------------------------- */
-/* List fetches (index pages — Phase 2 wires these up)                        */
+/* List fetches (index pages - Phase 2 wires these up)                        */
 /* -------------------------------------------------------------------------- */
 
 /** All articles of a category (root + every game), newest first. */

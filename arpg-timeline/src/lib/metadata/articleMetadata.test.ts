@@ -12,6 +12,7 @@ const baseArticle: Article = {
     excerpt: "A short excerpt.",
     aiDisclosure: "none",
     publishedAt: "2026-08-01T00:00:00Z",
+    updatedAt: null,
     _updatedAt: "2026-08-10T00:00:00Z",
     game: null,
     coverImage: {
