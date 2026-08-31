@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
@@ -16,18 +15,9 @@ interface RouteArgs {
     gameSlug?: string;
 }
 
-async function isPreview(): Promise<boolean> {
-    try {
-        return (await draftMode()).isEnabled;
-    } catch {
-        return false;
-    }
-}
-
 /** Shared page body for all four article `[slug]` routes. */
 export async function renderArticlePage({ category, slug, gameSlug }: RouteArgs) {
-    const preview = await isPreview();
-    const article = await getArticle({ category, slug, gameSlug, preview });
+    const article = await getArticle({ category, slug, gameSlug });
 
     if (!article) notFound();
 
@@ -52,8 +42,7 @@ export async function resolveArticleMetadata({
     slug,
     gameSlug,
 }: RouteArgs): Promise<Metadata> {
-    const preview = await isPreview();
-    const article = await getArticle({ category, slug, gameSlug, preview });
+    const article = await getArticle({ category, slug, gameSlug });
     if (!article) return { title: "Article not found | aRPG Timeline" };
     return generateArticleMetadata(article);
 }

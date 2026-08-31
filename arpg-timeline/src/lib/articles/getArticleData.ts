@@ -9,15 +9,13 @@ import {
     ArticleStaticParam,
     articleStaticParamsQuery,
 } from "@/lib/cms/queries/articleQuery";
-import { previewClient, sanityClient } from "@/lib/sanity/sanityClient";
+import { sanityClient } from "@/lib/sanity/sanityClient";
 
 interface GetArticleArgs {
     category: ArticleCategory;
     slug: string;
     /** Present for game-scoped routes; the fetched article must match it. */
     gameSlug?: string;
-    /** True inside Next draftMode() — fetch unpublished drafts. */
-    preview?: boolean;
 }
 
 /**
@@ -27,14 +25,12 @@ interface GetArticleArgs {
  * one network call per request.
  */
 export const getArticle = cache(
-    async ({ category, slug, gameSlug, preview }: GetArticleArgs): Promise<Article | null> => {
-        const client = preview ? previewClient : sanityClient;
-
+    async ({ category, slug, gameSlug }: GetArticleArgs): Promise<Article | null> => {
         const query = gameSlug ? articleByGameAndSlugQuery : articleBySlugQuery;
         const params = gameSlug ? { slug, category, gameSlug } : { slug, category };
 
-        const article = await client.fetch<Article | null>(query, params, {
-            next: preview ? { revalidate: 0 } : { revalidate: false, tags: ["article"] },
+        const article = await sanityClient.fetch<Article | null>(query, params, {
+            next: { revalidate: false, tags: ["article"] },
         });
 
         if (!article) return null;

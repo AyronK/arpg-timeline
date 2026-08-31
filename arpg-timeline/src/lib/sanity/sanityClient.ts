@@ -8,17 +8,6 @@ export const sanityClient = createClient({
     useCdn: true,
 });
 
-/**
- * Draft-aware client for the article preview route (Next `draftMode()`).
- * Never used for the public, cached render path.
- */
-export const previewClient = sanityClient.withConfig({
-    useCdn: false,
-    perspective: "drafts",
-    token: process.env.SANITY_STUDIO_READ_TOKEN,
-    stega: false,
-});
-
 export async function sanityFetch<const QueryString extends string>({
     query,
     params = {},
