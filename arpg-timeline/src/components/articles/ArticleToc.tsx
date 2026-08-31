@@ -1,27 +1,95 @@
+"use client";
+
+import { ChevronUp } from "lucide-react";
+import { useMemo, useState } from "react";
+
 import type { TocHeading } from "@/lib/articles/tableOfContents";
+import { useActiveHeading } from "@/lib/articles/useActiveHeading";
 import { cn } from "@/lib/utils";
 
-/** In-page table of contents. Rendered only when there are >= 2 headings. */
-export const ArticleToc = ({ headings }: { headings: TocHeading[] }) => {
+type Variant = "sidebar" | "bottom";
+
+interface Props {
+    headings: TocHeading[];
+    variant: Variant;
+}
+
+export const ArticleToc = ({ headings, variant }: Props) => {
+    const ids = useMemo(() => headings.map((h) => h.id), [headings]);
+    const active = useActiveHeading(ids);
+    const [open, setOpen] = useState(false);
+
     if (headings.length < 2) return null;
 
-    return (
-        <nav aria-label="Table of contents" className="bg-muted/40 my-6 rounded-lg border p-4">
-            <p className="font-heading mb-2 text-sm font-semibold tracking-wide uppercase">
-                On this page
-            </p>
-            <ul className="space-y-1 text-sm">
-                {headings.map((h) => (
-                    <li key={h.id} className={cn(h.level === 3 && "ml-4")}>
-                        <a
-                            href={`#${h.id}`}
-                            className="text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+    const activeHeading = headings.find((h) => h.id === active) ?? headings[0];
+
+    const link = (h: TocHeading, onClick?: () => void) => (
+        <a
+            href={`#${h.id}`}
+            onClick={onClick}
+            aria-current={h.id === active ? "location" : undefined}
+            className={cn(
+                "hover:text-foreground block py-1 underline-offset-2 hover:underline",
+                h.level === 3 && "pl-3",
+                h.id === active ? "text-foreground font-medium" : "text-muted-foreground",
+            )}
+        >
+            {h.text}
+        </a>
+    );
+
+    if (variant === "sidebar") {
+        return (
+            <nav aria-label="Table of contents" className="border-border/60 border-l pl-4 text-sm">
+                <p className="font-heading mb-2 text-xs font-semibold tracking-wide uppercase">
+                    On this page
+                </p>
+                <ul>
+                    {headings.map((h) => (
+                        <li
+                            key={h.id}
+                            className={cn(
+                                "-ml-4 border-l-2 pl-4",
+                                h.id === active ? "border-primary" : "border-transparent",
+                            )}
                         >
-                            {h.text}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </nav>
+                            {link(h)}
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+        );
+    }
+
+    return (
+        <div className="bg-background/95 border-border/60 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur lg:hidden">
+            {open && (
+                <nav
+                    aria-label="Table of contents"
+                    className="border-border/60 max-h-[55vh] overflow-y-auto border-b px-4 pt-3 pb-2 text-sm"
+                >
+                    <ul>
+                        {headings.map((h) => (
+                            <li key={h.id}>{link(h, () => setOpen(false))}</li>
+                        ))}
+                    </ul>
+                </nav>
+            )}
+            <button
+                type="button"
+                onClick={() => setOpen((o) => !o)}
+                aria-expanded={open}
+                className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm"
+            >
+                <span className="min-w-0 truncate">
+                    <span className="text-muted-foreground">On this page: </span>
+                    {activeHeading.text}
+                </span>
+                <ChevronUp
+                    className={cn("h-4 w-4 shrink-0 transition-transform", open && "rotate-180")}
+                    aria-hidden
+                />
+            </button>
+        </div>
     );
 };
