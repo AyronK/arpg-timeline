@@ -33,18 +33,18 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
             <div
                 className={cn(
                     hasToc &&
-                    "lg:grid lg:grid-cols-[14rem_minmax(0,52rem)] lg:justify-center lg:gap-10",
+                        "xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:items-start xl:gap-x-8",
                 )}
             >
                 {hasToc && (
-                    <aside className="hidden lg:block">
-                        <div className="sticky top-12">
+                    <aside className="hidden xl:block xl:justify-self-end">
+                        <div className="sticky top-12 w-56">
                             <ArticleToc headings={toc} variant="sidebar" />
                         </div>
                     </aside>
                 )}
 
-                <article className={cn("mx-auto max-w-[55rem] min-w-0", hasToc && "lg:mx-0")}>
+                <article className="mx-auto max-w-[55rem] min-w-0">
                     <div className="mb-6">
                         <PatreonFunding />
                     </div>
@@ -98,7 +98,6 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
 
                     <BuyMeACoffee />
                 </article>
-
             </div>
 
             <ArticleToc headings={toc} variant="bottom" />

@@ -62,7 +62,7 @@ export const ArticleToc = ({ headings, variant }: Props) => {
     }
 
     return (
-        <div className="bg-background/95 border-border/60 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur lg:hidden">
+        <div className="bg-background/95 border-border/60 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur xl:hidden">
             <div
                 className={cn(
                     "grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none",
