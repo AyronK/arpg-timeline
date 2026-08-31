@@ -33,7 +33,14 @@ import {
     buildGamePageTitle,
 } from "./metadata";
 import { GamePageProps } from "./types";
-import { calculateGameStatistics, getArchivalSeasons, getOldestSeasonInfo } from "./utils";
+import {
+    calculateGameStatistics,
+    countTrackedSeasons,
+    getArchivalSeasons,
+    getOldestSeasonInfo,
+} from "./utils";
+
+const RECENT_SEASON_COUNT = 3;
 
 async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
     try {
@@ -75,6 +82,10 @@ const GamePage = async ({ params }: GamePageProps) => {
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
     const gameNews = await getSteamNewsFromDb(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
+    const recentStatistics =
+        countTrackedSeasons(data, gameSlug) > RECENT_SEASON_COUNT
+            ? calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT })
+            : undefined;
     const oldestSeasonInfo = getOldestSeasonInfo(data, game);
     const archivalSeasons = getArchivalSeasons(data, game);
     const structuredData = getStructuredDataForGame(game);
@@ -125,6 +136,8 @@ const GamePage = async ({ params }: GamePageProps) => {
                         <StatisticsSection
                             game={game}
                             statistics={statistics}
+                            recentStatistics={recentStatistics}
+                            recentSeasonCount={RECENT_SEASON_COUNT}
                             oldestSeasonInfo={oldestSeasonInfo}
                         />
                         <div className="flex flex-col justify-between gap-4">

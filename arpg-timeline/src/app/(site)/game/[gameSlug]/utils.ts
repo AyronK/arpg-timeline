@@ -123,11 +123,26 @@ export const calculateDurationStdDev = (seasonDurations: SeasonDuration[]): numb
     return Math.round(Math.sqrt(variance));
 };
 
+export const calculateAverageDurationDays = (seasonDurations: SeasonDuration[]): number | null => {
+    if (seasonDurations.length === 0) return null;
+
+    const total = seasonDurations.reduce((sum, s) => sum + s.duration, 0);
+    return Math.round(total / seasonDurations.length);
+};
+
+const isTrackedSeason = (s: LocalSeason): boolean =>
+    !!s?.start?.startDate && !!s?.start?.confirmed && new Date(s.start.startDate) <= new Date();
+
+export const countTrackedSeasons = (data: GameDetailsQueryResult, gameSlug: string): number =>
+    data.seasons.filter((s) => s?.game === gameSlug && !s?.isSideEvent && isTrackedSeason(s))
+        .length;
+
 export const calculateGameStatistics = (
     data: GameDetailsQueryResult,
     gameSlug: string,
+    options?: { recentCount?: number },
 ): GameStatistics => {
-    const gameSeasons = data.seasons
+    let gameSeasons = data.seasons
         .filter((s) => s?.game === gameSlug && !s?.isSideEvent)
         .sort(
             (a, b) =>
@@ -136,6 +151,12 @@ export const calculateGameStatistics = (
 
     adjustMissingEndDates(gameSeasons);
 
+    gameSeasons = gameSeasons.filter(isTrackedSeason);
+
+    if (options?.recentCount && options.recentCount > 0) {
+        gameSeasons = gameSeasons.slice(-options.recentCount);
+    }
+
     const seasonDurations = calculateSeasonDurations(gameSeasons);
 
     if (seasonDurations.length === 0) {
@@ -143,6 +164,7 @@ export const calculateGameStatistics = (
             averagePerYear: "N/A",
             usualStartTime: "N/A",
             confirmedStartDates: calculateConfirmedStartDates(gameSeasons),
+            averageDurationDays: null,
             maxDuration: { days: null, name: "N/A" },
             minDuration: { days: null, name: "N/A" },
             medianDuration: null,
@@ -162,6 +184,7 @@ export const calculateGameStatistics = (
         averagePerYear: calculateAveragePerYear(gameSeasons),
         usualStartTime: calculateUsualStartTime(gameSeasons),
         confirmedStartDates: calculateConfirmedStartDates(gameSeasons),
+        averageDurationDays: calculateAverageDurationDays(seasonDurations),
         maxDuration: { days: maxSeason.duration, name: maxSeason.name },
         minDuration: { days: minSeason.duration, name: minSeason.name },
         medianDuration: calculateMedianDuration(seasonDurations),

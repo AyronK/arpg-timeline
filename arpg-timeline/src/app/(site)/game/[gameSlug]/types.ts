@@ -16,6 +16,7 @@ export interface GameStatistics {
     averagePerYear: string;
     usualStartTime: string;
     confirmedStartDates: string[];
+    averageDurationDays: number | null;
     maxDuration: { days: number | null; name: string };
     minDuration: { days: number | null; name: string };
     medianDuration: number | null;
@@ -73,5 +74,9 @@ export interface GameHeaderSectionProps {
 export interface StatisticsSectionProps {
     game: CMSGame;
     statistics: GameStatistics;
+    /** Same statistics scoped to the most recent seasons. Omit to render without tabs. */
+    recentStatistics?: GameStatistics;
+    /** Number of seasons the recent scope is based on (used for labels/headings). */
+    recentSeasonCount?: number;
     oldestSeasonInfo: string;
 }
