@@ -7,6 +7,8 @@ import {
     FiMessageCircle,
     FiBell,
     FiHeart,
+    FiFileText,
+    FiBookOpen,
 } from "react-icons/fi";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { SiSteam, SiReddit } from "react-icons/si";
@@ -108,6 +110,49 @@ export const structure = {
                                         S.documentTypeList("liveStreamPlatformTwitch").title(
                                             "Twitch Platforms",
                                         ),
+                                    ),
+                            ]),
+                    ),
+
+                // Articles
+                S.listItem()
+                    .title("Articles")
+                    .icon(FiFileText)
+                    .child(
+                        S.list()
+                            .title("Articles")
+                            .items([
+                                S.listItem()
+                                    .title("News")
+                                    .icon(FiFileText)
+                                    .child(
+                                        S.documentList()
+                                            .title("News")
+                                            .filter('_type == "article" && category == "news"')
+                                            .defaultOrdering([
+                                                { field: "publishedAt", direction: "desc" },
+                                            ]),
+                                    ),
+                                S.listItem()
+                                    .title("Resources")
+                                    .icon(FiBookOpen)
+                                    .child(
+                                        S.documentList()
+                                            .title("Resources")
+                                            .filter('_type == "article" && category == "resources"')
+                                            .defaultOrdering([
+                                                { field: "publishedAt", direction: "desc" },
+                                            ]),
+                                    ),
+                                S.listItem()
+                                    .title("All articles")
+                                    .icon(FiFileText)
+                                    .child(
+                                        S.documentTypeList("article")
+                                            .title("All articles")
+                                            .defaultOrdering([
+                                                { field: "publishedAt", direction: "desc" },
+                                            ]),
                                     ),
                             ]),
                     ),

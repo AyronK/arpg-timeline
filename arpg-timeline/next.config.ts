@@ -222,6 +222,32 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
+            // Article `[slug]` pages are near-static: the Sanity `article` webhook
+            // tag-purge is the only invalidation path, so cache hard at the CDN.
+            // NB single-segment on purpose — the /news and /resources index pages
+            // (Phase 2) read Supabase and keep a shorter revalidate.
+            ...[
+                "/news/:slug",
+                "/resources/:slug",
+                "/game/:gameSlug/news/:articleSlug",
+                "/game/:gameSlug/resources/:articleSlug",
+            ].map((source) => ({
+                source,
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=0, must-revalidate",
+                    },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=31536000, stale-while-revalidate=86400",
+                    },
+                    {
+                        key: "CDN-Cache-Control",
+                        value: "public, max-age=31536000, stale-while-revalidate=86400",
+                    },
+                ],
+            })),
             {
                 source: "/support",
                 headers: [

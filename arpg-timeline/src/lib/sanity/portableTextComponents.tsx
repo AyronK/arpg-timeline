@@ -1,7 +1,5 @@
 import { PortableText, PortableTextBlock, PortableTextReactComponents } from "@portabletext/react";
 
-import { cn } from "@/lib/utils";
-
 export const portableTextComponents: Partial<PortableTextReactComponents> = {
     block: {
         h1: ({ children }) => <h1 className="mb-6 text-4xl leading-tight font-bold">{children}</h1>,
@@ -51,7 +49,7 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
                 <a
                     href={value?.href}
                     target={target}
-                    rel={target === "_blank" ? "noindex nofollow" : undefined}
+                    rel={target === "_blank" ? "nofollow noopener noreferrer" : undefined}
                     className="underline transition-all hover:brightness-150"
                 >
                     {children}
@@ -82,20 +80,6 @@ export function RichTextRenderer({ content }: { content: PortableTextBlock[] }) 
 
     return (
         <div className="prose prose-lg max-w-none">
-            <PortableText value={content} components={portableTextComponents} />
-        </div>
-    );
-}
-
-export function StyledRichText({
-    content,
-    className = "",
-}: {
-    content: PortableTextBlock[];
-    className?: string | undefined;
-}) {
-    return (
-        <div className={cn("rich-text-content", className)}>
             <PortableText value={content} components={portableTextComponents} />
         </div>
     );

@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
+import { getArticlePath } from "@/lib/articles/articleUrl";
+import { getArticleStaticParams } from "@/lib/articles/getArticleData";
 import { indexQuery } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 
@@ -61,6 +63,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: "monthly",
             priority: 0.6,
         },
+        {
+            url: `${baseUrl}/news`,
+            lastModified: new Date(),
+            changeFrequency: "daily",
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/resources`,
+            lastModified: new Date(),
+            changeFrequency: "weekly",
+            priority: 0.6,
+        },
     ];
 
     try {
@@ -109,6 +123,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             });
     } catch (error) {
         console.error("Error fetching data for sitemap:", error);
+    }
+
+    try {
+        const articles = await getArticleStaticParams();
+        articles.forEach((article) => {
+            if (!article.slug) return;
+            sitemap.push({
+                url: `${baseUrl}${getArticlePath({
+                    category: article.category,
+                    slug: article.slug,
+                    gameSlug: article.gameSlug,
+                })}`,
+                lastModified: article._updatedAt ? new Date(article._updatedAt) : new Date(),
+                changeFrequency: "weekly",
+                priority: 0.7,
+            });
+        });
+    } catch (error) {
+        console.error("Error fetching articles for sitemap:", error);
     }
 
     return sitemap;
