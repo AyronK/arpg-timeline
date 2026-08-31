@@ -12,12 +12,10 @@ export const ArchivalSeasonsSection = ({
     }
 
     return (
-        <div className="mb-4 md:mb-6">
-            <div className="bg-card text-card-foreground rounded-lg border p-4 md:p-6">
-                <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">
-                    Archival {seasonKeyword}s
-                </h2>
-                <div className="max-h-64 space-y-2 overflow-y-auto">
+        <div className="h-full">
+            <div className="bg-card text-card-foreground flex h-full flex-col gap-2 rounded-lg border p-4 md:p-6">
+                <h2 className="font-heading text-lg md:text-xl">Archival {seasonKeyword}s</h2>
+                <div className="mt-2 max-h-72 space-y-2 overflow-y-auto">
                     {seasons.map((season, index) => {
                         const endDate = season.endDate ?? seasons[index - 1]?.startDate;
                         return (
@@ -26,13 +24,13 @@ export const ArchivalSeasonsSection = ({
                                 className="border-muted-foreground/20 rounded-md border p-3"
                             >
                                 <div className="flex items-stretch gap-3 md:gap-6">
-                                    <div className="my-auto grid h-16 min-h-16 w-16 min-w-16 shrink-0 place-items-center md:h-24 md:min-h-24 md:w-24 md:min-w-24">
+                                    <div className="my-auto grid h-16 min-h-16 w-16 min-w-16 shrink-0 place-items-center">
                                         <SanityImage
                                             loading="lazy"
                                             src={season.logo ?? gameLogo}
                                             alt={`${season.name} logo`}
-                                            width={128}
-                                            height={128}
+                                            width={64}
+                                            height={64}
                                             objectFit="contain"
                                             className="h-full w-full"
                                         />
