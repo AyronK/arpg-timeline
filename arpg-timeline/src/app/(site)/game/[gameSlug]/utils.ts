@@ -219,7 +219,8 @@ export const getOldestSeasonInfo = (data: GameDetailsQueryResult, game: Game): s
     });
 
     const count = getArchivalSeasons(data, game).length;
-    return `Based on ${count} seasons tracked since ${formattedOldestDate}.`;
+    const seasonKeyword = game.seasonKeyword?.trim() || "season";
+    return `Based on ${count} ${seasonKeyword}s tracked since ${formattedOldestDate}.`;
 };
 
 export const getArchivalSeasons = (data: GameDetailsQueryResult, game: Game): ArchivalSeason[] => {

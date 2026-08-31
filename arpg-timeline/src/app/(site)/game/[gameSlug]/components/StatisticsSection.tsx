@@ -1,6 +1,7 @@
 import ClientOnlyVisibleWrapper from "@/components/ClientOnlyVisibleWrapper";
 import LocalStartDay from "@/components/LocalStartDay";
 import LocalTime from "@/components/LocalTime";
+import { buildSeasonTerms, SeasonTerms } from "@/lib/seasonTerms";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/Tabs";
 
 import { GameStatistics, StatisticsSectionProps } from "../types";
@@ -16,7 +17,13 @@ const formatPerYear = (averagePerYear: string) => {
 
 const groupHeadingClass = "text-muted-foreground mb-3 text-xs font-medium tracking-wide uppercase";
 
-const StatisticsGroups = ({ statistics }: { statistics: GameStatistics }) => {
+const StatisticsGroups = ({
+    statistics,
+    terms,
+}: {
+    statistics: GameStatistics;
+    terms: SeasonTerms;
+}) => {
     const {
         minDuration,
         maxDuration,
@@ -33,25 +40,25 @@ const StatisticsGroups = ({ statistics }: { statistics: GameStatistics }) => {
     return (
         <>
             <section>
-                <h4 className={groupHeadingClass}>Season length</h4>
+                <h4 className={groupHeadingClass}>{terms.One} length</h4>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4">
                     <StatisticsCard
                         value={averageDurationDays ?? "N/A"}
                         unit={averageDurationDays !== null ? "days" : undefined}
                         label="Average"
-                        info="Typical season length across every finished season."
+                        info={`Typical ${terms.one} length across every finished ${terms.one}.`}
                     />
                     <StatisticsCard
                         value={medianDuration ?? "N/A"}
                         unit={medianDuration !== null ? "days" : undefined}
                         label="Median"
-                        info="Half of past seasons were shorter than this, half were longer."
+                        info={`Half of past ${terms.many} were shorter than this, half were longer.`}
                     />
                     <StatisticsCard
                         value={durationStdDev !== null ? `±${durationStdDev}` : "N/A"}
                         unit={durationStdDev !== null ? "days" : undefined}
                         label="Spread"
-                        info="How much season length varies from one season to the next."
+                        info={`How much ${terms.one} length varies from one ${terms.one} to the next.`}
                     />
                     <StatisticsCard
                         value={hasRange ? `${minDuration.days}-${maxDuration.days}` : "N/A"}
@@ -77,9 +84,9 @@ const StatisticsGroups = ({ statistics }: { statistics: GameStatistics }) => {
                         className="col-span-2 sm:col-span-1"
                         value={formatPerYear(averagePerYear)}
                         unit={averagePerYear !== "N/A" ? "/ year" : undefined}
-                        label="New seasons a year"
+                        label={`New ${terms.many} a year`}
                         subValue="on average"
-                        info="Based on the gaps between past season starts."
+                        info={`Based on the gaps between past ${terms.one} starts.`}
                     />
                     <StatisticsCard
                         value={
@@ -95,7 +102,7 @@ const StatisticsGroups = ({ statistics }: { statistics: GameStatistics }) => {
                         }
                         label="Usual launch day"
                         subValue="your timezone"
-                        info="Weekday past seasons launched on most often, in your time."
+                        info={`Weekday past ${terms.many} launched on most often, in your time.`}
                     />
                     <StatisticsCard
                         value={
@@ -111,7 +118,7 @@ const StatisticsGroups = ({ statistics }: { statistics: GameStatistics }) => {
                         }
                         label="Usual launch time"
                         subValue="your timezone"
-                        info="Time of day past seasons launched most often, in your time."
+                        info={`Time of day past ${terms.many} launched most often, in your time.`}
                     />
                 </div>
             </section>
@@ -126,17 +133,20 @@ const tabsTriggerClass =
     "transition-colors hover:data-[state=inactive]:text-foreground data-[state=active]:bg-accent data-[state=active]:text-foreground dark:data-[state=active]:bg-accent";
 
 export const StatisticsSection = ({
+    game,
     statistics,
     recentStatistics,
     recentSeasonCount = 3,
     oldestSeasonInfo,
 }: StatisticsSectionProps) => {
+    const terms = buildSeasonTerms(game.seasonKeyword);
+
     if (!recentStatistics) {
         return (
             <div className="bg-card text-card-foreground h-full rounded-lg border p-4 md:p-6">
-                <h2 className="font-heading mb-3 text-lg md:text-xl">Seasonal Statistics</h2>
-                <h3 className="sr-only">All-time seasonal statistics</h3>
-                <StatisticsGroups statistics={statistics} />
+                <h2 className="font-heading mb-3 text-lg md:text-xl">{terms.One} statistics</h2>
+                <h3 className="sr-only">All-time {terms.one} statistics</h3>
+                <StatisticsGroups statistics={statistics} terms={terms} />
                 <div className={captionClass}>{oldestSeasonInfo}</div>
             </div>
         );
@@ -146,28 +156,30 @@ export const StatisticsSection = ({
         <div className="bg-card text-card-foreground h-full rounded-lg border p-4 md:p-6">
             <Tabs defaultValue="all-time">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                    <h2 className="font-heading text-lg md:text-xl">Seasonal Statistics</h2>
+                    <h2 className="font-heading text-lg md:text-xl">{terms.One} statistics</h2>
                     <TabsList className={tabsListClass}>
                         <TabsTrigger className={tabsTriggerClass} value="all-time">
-                            All seasons
+                            All {terms.many}
                         </TabsTrigger>
                         <TabsTrigger className={tabsTriggerClass} value="recent">
-                            Last {recentSeasonCount} seasons
+                            Last {recentSeasonCount} {terms.many}
                         </TabsTrigger>
                     </TabsList>
                 </div>
 
                 <TabsContent value="all-time" forceMount className="data-[state=inactive]:hidden">
-                    <h3 className="sr-only">All-time seasonal statistics</h3>
-                    <StatisticsGroups statistics={statistics} />
+                    <h3 className="sr-only">All-time {terms.one} statistics</h3>
+                    <StatisticsGroups statistics={statistics} terms={terms} />
                     <div className={captionClass}>{oldestSeasonInfo}</div>
                 </TabsContent>
 
                 <TabsContent value="recent" forceMount className="data-[state=inactive]:hidden">
-                    <h3 className="sr-only">Last {recentSeasonCount} seasons statistics</h3>
-                    <StatisticsGroups statistics={recentStatistics} />
+                    <h3 className="sr-only">
+                        Last {recentSeasonCount} {terms.many} statistics
+                    </h3>
+                    <StatisticsGroups statistics={recentStatistics} terms={terms} />
                     <div className={captionClass}>
-                        Based on the {recentSeasonCount} most recently recorded seasons.
+                        Based on the {recentSeasonCount} most recently recorded {terms.many}.
                     </div>
                 </TabsContent>
             </Tabs>
