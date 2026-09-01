@@ -14,16 +14,10 @@ import {
 export const useDashboardArticles = (options: DashboardArticlesOptions = {}): RankedArticle[] => {
     const pool = useDashboardArticlePool();
     const { filteredGames } = useGameFilterContext();
-    const { limit, minScore, genericShare, maxAgeDays } = options;
+    const { maxAgeDays } = options;
 
     return useMemo(
-        () =>
-            selectDashboardArticles(pool, filteredGames, {
-                limit,
-                minScore,
-                genericShare,
-                maxAgeDays,
-            }),
-        [pool, filteredGames, limit, minScore, genericShare, maxAgeDays],
+        () => selectDashboardArticles(pool, filteredGames, { maxAgeDays }),
+        [pool, filteredGames, maxAgeDays],
     );
 };

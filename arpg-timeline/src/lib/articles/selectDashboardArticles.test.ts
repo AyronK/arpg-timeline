@@ -126,8 +126,8 @@ describe("game filtering", () => {
     });
 });
 
-describe("uncapped slot", () => {
-    it("returns everything recent that survives the filters", () => {
+describe("ordering", () => {
+    it("returns everything recent that survives the filters, best first", () => {
         const pool = [
             article("a", { game: gameRef("poe"), publishedAt: daysAgo(1) }),
             article("b", { game: gameRef("poe"), publishedAt: daysAgo(2) }),
@@ -144,68 +144,21 @@ describe("uncapped slot", () => {
         ]);
     });
 
-    it("ignores genericShare when there is no limit", () => {
-        const pool = [article("g1"), article("g2"), article("g3")];
-
-        expect(selectDashboardArticles(pool, [], { genericShare: 0.1 }, NOW)).toHaveLength(3);
-    });
-});
-
-describe("capped slot", () => {
-    const pool = [
-        article("s1", { game: gameRef("poe"), publishedAt: daysAgo(1) }),
-        article("s2", { game: gameRef("poe"), publishedAt: daysAgo(2) }),
-        article("s3", { game: gameRef("poe"), publishedAt: daysAgo(3) }),
-        article("g1", { publishedAt: daysAgo(4) }),
-        article("g2", { publishedAt: daysAgo(5) }),
-    ];
-
-    it("never returns more than the limit", () => {
-        expect(selectDashboardArticles(pool, [game("poe")], { limit: 2 }, NOW)).toHaveLength(2);
-    });
-
-    it("caps how much of the slot generic articles claim", () => {
-        // genericShare 0.5 of 2 -> at most 1 generic while scoped ones are available.
-        const result = ids(selectDashboardArticles(pool, [game("poe")], { limit: 2 }, NOW));
-
-        expect(result.filter((id) => id.startsWith("g"))).toHaveLength(0);
-        expect(result).toEqual(["s1", "s2"]);
-    });
-
-    it("backfills with generic articles when scoped ones run out", () => {
-        const result = ids(selectDashboardArticles(pool, [], { limit: 3 }, NOW));
-
-        expect(result).toEqual(["g1", "g2"]);
-    });
-
-    it("keeps score order when generic articles backfill a short slot", () => {
-        const backfillPool = [
-            article("g0", { publishedAt: daysAgo(1) }),
-            article("g1", { publishedAt: daysAgo(2) }),
-            article("g2", { publishedAt: daysAgo(3) }),
-            article("weak-scoped", { game: gameRef("poe"), publishedAt: daysAgo(20) }),
+    it("is sorted by score throughout", () => {
+        const pool = [
+            article("old-generic", { publishedAt: daysAgo(200) }),
+            article("fresh-poe", { game: gameRef("poe"), publishedAt: daysAgo(1) }),
+            article("mid-generic", { publishedAt: daysAgo(3) }),
         ];
 
-        const result = selectDashboardArticles(backfillPool, [game("poe")], { limit: 4 }, NOW);
-        const scores = result.map((r) => r.score);
+        const scores = selectDashboardArticles(pool, [game("poe")], {}, NOW).map((r) => r.score);
 
-        expect(ids(result)).toEqual(["g0", "g1", "g2", "weak-scoped"]);
         expect(scores).toEqual([...scores].sort((a, b) => b - a));
     });
 
-    it("returns nothing for a zero or negative limit", () => {
-        expect(selectDashboardArticles(pool, [game("poe")], { limit: 0 }, NOW)).toEqual([]);
-        expect(selectDashboardArticles(pool, [game("poe")], { limit: -1 }, NOW)).toEqual([]);
-    });
+    it("returns an empty list when nothing survives", () => {
+        const pool = [article("stale", { game: gameRef("poe"), publishedAt: daysAgo(90) })];
 
-    it("applies minScore on top of everything else", () => {
-        const result = selectDashboardArticles(
-            pool,
-            [game("poe")],
-            { limit: 5, minScore: 0.99 },
-            NOW,
-        );
-
-        expect(result.every((r) => r.score >= 0.99)).toBe(true);
+        expect(selectDashboardArticles(pool, [game("poe")], {}, NOW)).toEqual([]);
     });
 });
