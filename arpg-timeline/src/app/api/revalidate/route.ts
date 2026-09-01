@@ -24,8 +24,6 @@ export async function POST(req: NextRequest) {
             return new Response(body, { status: 400 });
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 5000)); // 5 second delay to ensure Sanity CDN is updated
-
         revalidateTag(body._type, { expire: 0 });
 
         return NextResponse.json({
