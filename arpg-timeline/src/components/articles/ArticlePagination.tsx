@@ -31,7 +31,7 @@ export const ArticlePagination = ({ basePath, page, pageCount }: ArticlePaginati
                     Previous
                 </Link>
             ) : (
-                <span className={cn(linkClass, "opacity-40")} aria-hidden>
+                <span className={cn(linkClass, "opacity-40")} aria-disabled="true">
                     Previous
                 </span>
             )}
@@ -67,7 +67,7 @@ export const ArticlePagination = ({ basePath, page, pageCount }: ArticlePaginati
                     Next
                 </Link>
             ) : (
-                <span className={cn(linkClass, "opacity-40")} aria-hidden>
+                <span className={cn(linkClass, "opacity-40")} aria-disabled="true">
                     Next
                 </span>
             )}

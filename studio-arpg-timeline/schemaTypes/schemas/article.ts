@@ -73,7 +73,7 @@ export default {
             name: "updatedAt",
             title: "Last modified at",
             description:
-                "Optional. The visible “Updated” date and structured-data dateModified use this when set, otherwise the document’s own last-edit time.",
+                'Optional. The visible "Updated" date and structured-data dateModified use this when set, otherwise the document\'s own last-edit time.',
             type: "datetime",
             group: "main",
         },
@@ -96,7 +96,7 @@ export default {
             name: "game",
             title: "Game",
             description:
-                "Optional. When set, the article lives under /game/{slug}/{category}/… and is scoped to that game.",
+                "Optional. When set, the article lives under /game/{slug}/{category}/... and is scoped to that game.",
             type: "reference",
             to: [{ type: "game" }],
             group: "main",
@@ -221,7 +221,42 @@ export default {
                             name: "body",
                             title: "Content",
                             type: "array",
-                            of: [{ type: "block" }],
+                            // Callouts are short: no headings, quotes, or nested blocks.
+                            of: [
+                                {
+                                    type: "block",
+                                    styles: [{ title: "Normal", value: "normal" }],
+                                    lists: [
+                                        { title: "Bulleted", value: "bullet" },
+                                        { title: "Numbered", value: "number" },
+                                    ],
+                                    marks: {
+                                        decorators: [
+                                            { title: "Strong", value: "strong" },
+                                            { title: "Emphasis", value: "em" },
+                                            { title: "Code", value: "code" },
+                                        ],
+                                        annotations: [
+                                            {
+                                                name: "link",
+                                                type: "object",
+                                                title: "Link",
+                                                fields: [
+                                                    {
+                                                        name: "href",
+                                                        type: "url",
+                                                        title: "URL",
+                                                        validation: (Rule: Rule) =>
+                                                            Rule.required().uri({
+                                                                scheme: ["http", "https", "mailto"],
+                                                            }),
+                                                    },
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
                             validation: (Rule: Rule) => Rule.required(),
                         },
                     ],

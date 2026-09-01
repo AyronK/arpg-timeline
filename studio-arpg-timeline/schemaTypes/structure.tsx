@@ -131,6 +131,9 @@ export const structure = {
                                             .filter('_type == "article" && category == "news"')
                                             .defaultOrdering([
                                                 { field: "publishedAt", direction: "desc" },
+                                            ])
+                                            .initialValueTemplates([
+                                                S.initialValueTemplateItem("article-news"),
                                             ]),
                                     ),
                                 S.listItem()
@@ -142,6 +145,9 @@ export const structure = {
                                             .filter('_type == "article" && category == "resources"')
                                             .defaultOrdering([
                                                 { field: "publishedAt", direction: "desc" },
+                                            ])
+                                            .initialValueTemplates([
+                                                S.initialValueTemplateItem("article-resources"),
                                             ]),
                                     ),
                                 S.listItem()

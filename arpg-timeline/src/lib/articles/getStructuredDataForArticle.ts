@@ -2,8 +2,7 @@ import { getArticleModified } from "@/lib/articles/articleDates";
 import { getArticleAbsoluteUrl } from "@/lib/articles/articleUrl";
 import { ARTICLE_AUTHOR_NAME, ARTICLE_AUTHOR_URL } from "@/lib/articles/author";
 import type { Article } from "@/lib/cms/queries/articleQuery";
-
-const SITE_URL = "https://www.arpg-timeline.com";
+import { SITE_URL } from "@/lib/siteUrl";
 
 type ArticleNode = {
     "@type": "Article";

@@ -1,4 +1,5 @@
 import type { ArticleCategory } from "@/lib/cms/queries/articleQuery";
+import { SITE_URL } from "@/lib/siteUrl";
 
 export interface ArticleUrlParts {
     category: ArticleCategory;
@@ -14,8 +15,6 @@ export const getArticleIndexPath = ({
     gameSlug,
 }: Pick<ArticleUrlParts, "category" | "gameSlug">): string =>
     gameSlug ? `/game/${gameSlug}/${category}` : `/${category}`;
-
-const SITE_URL = "https://www.arpg-timeline.com";
 
 export const getArticleAbsoluteUrl = (parts: ArticleUrlParts): string =>
     `${SITE_URL}${getArticlePath(parts)}`;

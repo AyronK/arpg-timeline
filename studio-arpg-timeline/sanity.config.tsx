@@ -23,5 +23,21 @@ export default defineConfig({
 
     schema: {
         types: schemaTypes as any,
+        // Category-scoped "New" buttons for the Articles desk lists.
+        templates: (prev: any[]) => [
+            ...prev,
+            {
+                id: "article-news",
+                title: "Article: News",
+                schemaType: "article",
+                value: { category: "news" },
+            },
+            {
+                id: "article-resources",
+                title: "Article: Resources",
+                schemaType: "article",
+                value: { category: "resources" },
+            },
+        ],
     },
 });

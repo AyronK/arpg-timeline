@@ -13,6 +13,7 @@ import {
 } from "@/lib/articles/getArticleListData";
 import { buildPageHref, parsePageParam } from "@/lib/articles/pagination";
 import type { ArticleCategory } from "@/lib/cms/queries/articleQuery";
+import { DEFAULT_OG_IMAGE } from "@/lib/siteUrl";
 
 interface IndexArgs {
     category: ArticleCategory;
@@ -24,8 +25,6 @@ const CATEGORY_LABEL: Record<ArticleCategory, string> = {
     news: "News",
     resources: "Resources",
 };
-
-const OG_IMAGE = "https://www.arpg-timeline.com/assets/seoimage.png";
 
 const rootCopy = (category: ArticleCategory) =>
     category === "news"
@@ -104,13 +103,13 @@ export async function resolveArticleIndexMetadata(args: IndexArgs): Promise<Meta
             type: "website",
             url: canonical,
             siteName: "aRPG Timeline",
-            images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "aRPG Timeline" }],
+            images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: "aRPG Timeline" }],
         },
         twitter: {
             card: "summary_large_image",
             title: `${title}${suffix} | aRPG Timeline`,
             description: intro,
-            images: [OG_IMAGE],
+            images: [DEFAULT_OG_IMAGE],
         },
         robots: {
             index: page <= pageCount,

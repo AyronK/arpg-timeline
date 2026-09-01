@@ -3,9 +3,7 @@ import type { Metadata } from "next";
 import { getArticleModified } from "@/lib/articles/articleDates";
 import { getArticleAbsoluteUrl, getArticlePath } from "@/lib/articles/articleUrl";
 import type { Article } from "@/lib/cms/queries/articleQuery";
-
-const SITE_URL = "https://www.arpg-timeline.com";
-const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/seoimage.png`;
+import { DEFAULT_OG_IMAGE } from "@/lib/siteUrl";
 
 /** Crop a Sanity CDN asset URL to the 1200×630 OG frame. */
 function toOgImageUrl(assetUrl: string | undefined): string {

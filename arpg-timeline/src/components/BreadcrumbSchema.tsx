@@ -1,10 +1,5 @@
-interface Crumb {
-    name: string;
-    href?: string;
-    url?: string;
-}
-
-const SITE_URL = "https://www.arpg-timeline.com";
+import type { Crumb } from "@/lib/articles/breadcrumbs";
+import { SITE_URL } from "@/lib/siteUrl";
 
 const toAbsolute = (value: string) =>
     value.startsWith("http") ? value : `${SITE_URL}${value.startsWith("/") ? "" : "/"}${value}`;
@@ -17,7 +12,7 @@ interface BreadcrumbSchemaProps {
 
 export const BreadcrumbSchema = ({ path, crumbs }: BreadcrumbSchemaProps) => {
     const items: { name: string; item: string }[] = crumbs
-        ? crumbs.map((c) => ({ name: c.name, item: toAbsolute(c.href ?? c.url ?? "/") }))
+        ? crumbs.map((c) => ({ name: c.name, item: toAbsolute(c.href) }))
         : (path ?? "")
               .split("/")
               .filter(Boolean)
