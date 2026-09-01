@@ -33,33 +33,76 @@ const ids = (result: ReturnType<typeof selectDashboardArticles>) =>
     result.map((r) => r.article._id);
 
 describe("age cutoff", () => {
-    it("drops articles past the default window", () => {
+    const poe = [game("poe")];
+
+    it("drops game-specific articles past the default window", () => {
         const pool = [
-            article("fresh", { publishedAt: daysAgo(2) }),
-            article("stale", { publishedAt: daysAgo(DEFAULT_MAX_ARTICLE_AGE_DAYS + 1) }),
+            article("fresh", { game: gameRef("poe"), publishedAt: daysAgo(2) }),
+            article("stale", {
+                game: gameRef("poe"),
+                publishedAt: daysAgo(DEFAULT_MAX_ARTICLE_AGE_DAYS + 1),
+            }),
         ];
 
-        expect(ids(selectDashboardArticles(pool, [], {}, NOW))).toEqual(["fresh"]);
+        expect(ids(selectDashboardArticles(pool, poe, {}, NOW))).toEqual(["fresh"]);
     });
 
-    it("drops stale resources too, despite their slower decay", () => {
-        const pool = [article("guide", { category: "resources", publishedAt: daysAgo(40) })];
+    it("drops stale game resources too, despite their slower decay", () => {
+        const pool = [
+            article("guide", {
+                game: gameRef("poe"),
+                category: "resources",
+                publishedAt: daysAgo(40),
+            }),
+        ];
 
-        expect(selectDashboardArticles(pool, [], {}, NOW)).toEqual([]);
+        expect(selectDashboardArticles(pool, poe, {}, NOW)).toEqual([]);
     });
 
-    it("keeps an article sitting exactly on the boundary", () => {
-        const pool = [article("edge", { publishedAt: daysAgo(DEFAULT_MAX_ARTICLE_AGE_DAYS) })];
+    it("keeps a game article sitting exactly on the boundary", () => {
+        const pool = [
+            article("edge", {
+                game: gameRef("poe"),
+                publishedAt: daysAgo(DEFAULT_MAX_ARTICLE_AGE_DAYS),
+            }),
+        ];
 
-        expect(ids(selectDashboardArticles(pool, [], {}, NOW))).toEqual(["edge"]);
+        expect(ids(selectDashboardArticles(pool, poe, {}, NOW))).toEqual(["edge"]);
     });
 
     it("honours a custom window", () => {
-        const pool = [article("week-old", { publishedAt: daysAgo(7) })];
+        const pool = [article("week-old", { game: gameRef("poe"), publishedAt: daysAgo(7) })];
 
-        expect(selectDashboardArticles(pool, [], { maxAgeDays: 3 }, NOW)).toEqual([]);
-        expect(ids(selectDashboardArticles(pool, [], { maxAgeDays: 14 }, NOW))).toEqual([
+        expect(selectDashboardArticles(pool, poe, { maxAgeDays: 3 }, NOW)).toEqual([]);
+        expect(ids(selectDashboardArticles(pool, poe, { maxAgeDays: 14 }, NOW))).toEqual([
             "week-old",
+        ]);
+    });
+
+    it("never expires generic articles", () => {
+        const pool = [article("evergreen", { publishedAt: daysAgo(400) })];
+
+        expect(ids(selectDashboardArticles(pool, poe, {}, NOW))).toEqual(["evergreen"]);
+    });
+
+    it("keeps the slot populated when every game article has gone stale", () => {
+        const pool = [
+            article("stale-poe", { game: gameRef("poe"), publishedAt: daysAgo(90) }),
+            article("old-generic", { publishedAt: daysAgo(200) }),
+        ];
+
+        expect(ids(selectDashboardArticles(pool, poe, {}, NOW))).toEqual(["old-generic"]);
+    });
+
+    it("still ranks a stale generic article below fresh game news", () => {
+        const pool = [
+            article("old-generic", { publishedAt: daysAgo(200) }),
+            article("fresh-poe", { game: gameRef("poe"), publishedAt: daysAgo(1) }),
+        ];
+
+        expect(ids(selectDashboardArticles(pool, poe, {}, NOW))).toEqual([
+            "fresh-poe",
+            "old-generic",
         ]);
     });
 });

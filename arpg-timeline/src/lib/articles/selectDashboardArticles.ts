@@ -4,7 +4,11 @@ import type { ArticleListItem } from "@/lib/cms/queries/articleQuery";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/** Nothing older than this reaches a dashboard slot, however well it scores. */
+/**
+ * No game-specific article older than this reaches a dashboard slot, however well it
+ * scores. Generic articles are exempt - they describe the site rather than a patch
+ * cycle, so they stay available as a floor when nothing recent has been published.
+ */
 export const DEFAULT_MAX_ARTICLE_AGE_DAYS = 30;
 
 const DEFAULT_GENERIC_SHARE = 0.5;
@@ -27,7 +31,7 @@ export interface DashboardArticlesOptions {
      * Only meaningful alongside `limit`.
      */
     genericShare?: number;
-    /** Hard age cutoff in days. */
+    /** Hard age cutoff in days. Applies to game-specific articles only. */
     maxAgeDays?: number;
 }
 
@@ -36,10 +40,11 @@ const byScore = (a: RankedArticle, b: RankedArticle) => b.score - a.score;
 /**
  * Picks the articles one dashboard slot should show.
  *
- * - anything older than `maxAgeDays` is dropped outright
- * - game-scoped article -> kept only while its game is in `games`
- * - generic article     -> never dropped by game filters, but capped by
- *   `genericShare` so a heavily filtered dashboard doesn't turn all-generic
+ * - game-scoped article -> kept only while its game is in `games`, and only while
+ *   it is younger than `maxAgeDays`
+ * - generic article     -> dropped by neither game filters nor age, but capped by
+ *   `genericShare` so a heavily filtered dashboard doesn't turn all-generic. Its
+ *   score still decays, so an old one sinks to the bottom rather than leading
  *
  * `now` is a parameter so callers stay pure and tests stay deterministic.
  */
@@ -59,9 +64,11 @@ export const selectDashboardArticles = (
     const cutoff = now - maxAgeDays * DAY_MS;
     const visibleSlugs = new Set(games.map((g) => g.slug));
 
-    const ranked = rankArticles(pool, games, now).filter(
-        (r) => r.score >= minScore && new Date(r.article.publishedAt).getTime() >= cutoff,
-    );
+    // Age only retires game-specific articles; generic ones never go stale.
+    const isFresh = (r: RankedArticle) =>
+        !r.article.game || new Date(r.article.publishedAt).getTime() >= cutoff;
+
+    const ranked = rankArticles(pool, games, now).filter((r) => r.score >= minScore && isFresh(r));
 
     const scoped: RankedArticle[] = [];
     const generic: RankedArticle[] = [];
