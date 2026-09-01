@@ -1,5 +1,13 @@
 import { PortableText, PortableTextBlock, PortableTextReactComponents } from "@portabletext/react";
 
+import { addUTMParameters } from "@/lib/utm";
+
+const addUTM = addUTMParameters({
+    utm_source: "arpg-timeline",
+    utm_medium: "link",
+    utm_campaign: "content_link",
+});
+
 export const portableTextComponents: Partial<PortableTextReactComponents> = {
     block: {
         h1: ({ children }) => <h1 className="mb-6 text-4xl leading-tight font-bold">{children}</h1>,
@@ -44,10 +52,11 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
         strikethrough: ({ children }) => <del className="line-through">{children}</del>,
 
         link: ({ value, children }) => {
-            const target = (value?.href || "").startsWith("http") ? "_blank" : undefined;
+            const href: string = value?.href || "";
+            const target = href.startsWith("http") ? "_blank" : undefined;
             return (
                 <a
-                    href={value?.href}
+                    href={target ? addUTM(href) : href}
                     target={target}
                     rel={target === "_blank" ? "nofollow noopener noreferrer" : undefined}
                     className="underline transition-all hover:brightness-150"

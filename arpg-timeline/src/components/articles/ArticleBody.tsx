@@ -9,7 +9,14 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import { blockToPlainText, slugifyHeading } from "@/lib/articles/tableOfContents";
 import { getYouTubeEmbedUrl, parseYouTubeId } from "@/lib/articles/youtube";
 import type { ArticleImage as ArticleImageData } from "@/lib/cms/queries/articleQuery";
+import { addUTMParameters } from "@/lib/utm";
 import { cn } from "@/lib/utils";
+
+const addUTM = addUTMParameters({
+    utm_source: "arpg-timeline",
+    utm_medium: "link",
+    utm_campaign: "article_body",
+});
 
 // Must produce the same ids as `extractToc` so TOC anchors resolve.
 function buildHeadingIdMap(body: PortableTextBlock[]): Map<string, string> {
@@ -40,7 +47,7 @@ const linkComponent: NonNullable<PortableTextComponents["marks"]>["link"] = ({
     const isExternal = /^https?:\/\//.test(href);
     return (
         <a
-            href={href}
+            href={isExternal ? addUTM(href) : href}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "nofollow noopener noreferrer" : undefined}
             className="text-primary underline underline-offset-2 transition-all hover:brightness-125"
