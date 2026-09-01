@@ -56,7 +56,7 @@ export const RelatedArticles = ({ articles, className }: RelatedArticlesProps) =
                                             ? `${article.game.name} · ${CATEGORY_LABEL[article.category]}`
                                             : CATEGORY_LABEL[article.category]}
                                     </span>
-                                    <span className="text-foreground group-hover:text-primary mt-0.5 line-clamp-2 min-h-[2.75em] font-medium transition-colors">
+                                    <span className="text-foreground group-hover:text-primary mt-0.5 line-clamp-3 min-h-[2.75em] font-medium transition-colors">
                                         {article.title}
                                     </span>
                                 </span>
