@@ -9,6 +9,9 @@ export const HALF_LIFE_DAYS: Record<ArticleCategory, number> = {
     resources: 45,
 };
 
+/** A generic article must be ~2.5 days fresher (news) to outrank a game one. */
+export const SCOPE_WEIGHT = { game: 1, generic: 0.7 };
+
 /** Applied after decay, so fresh news outranks a fresh guide. */
 export const CATEGORY_WEIGHT: Record<ArticleCategory, number> = {
     news: 1,
@@ -59,7 +62,8 @@ export const scoreArticle = (
 ): number =>
     recencyDecay(article.publishedAt, article.category, now) *
     seasonProximityBoost(game, now) *
-    CATEGORY_WEIGHT[article.category];
+    CATEGORY_WEIGHT[article.category] *
+    (article.game ? SCOPE_WEIGHT.game : SCOPE_WEIGHT.generic);
 
 /** Highest score first. An article whose game is absent from `games` gets no boost. */
 export const rankArticles = (

@@ -8,6 +8,7 @@ import {
     HALF_LIFE_DAYS,
     MAX_SEASON_BOOST,
     rankArticles,
+    SCOPE_WEIGHT,
     scoreArticle,
     SEASON_PROXIMITY_WINDOW_DAYS,
 } from "./rankArticles";
@@ -132,9 +133,56 @@ describe("season proximity boost", () => {
         } as Partial<Game>);
 
         // No game ref means no game is passed in, so the boost never applies.
-        expect(scoreArticle(generic, undefined, NOW)).toBeCloseTo(CATEGORY_WEIGHT.news, 6);
+        expect(scoreArticle(generic, undefined, NOW)).toBeCloseTo(
+            CATEGORY_WEIGHT.news * SCOPE_WEIGHT.generic,
+            6,
+        );
         expect(scoreArticle(generic, undefined, NOW)).toBeLessThan(
             scoreArticle(article({ game: gameRef("poe") }), launching, NOW),
+        );
+    });
+});
+
+describe("scope weight", () => {
+    it("ranks a game article above a generic one published the same day", () => {
+        const gameNews = article({ _id: "game", game: gameRef("poe") });
+        const generic = article({ _id: "generic" });
+
+        expect(scoreArticle(gameNews, game("poe"), NOW)).toBeGreaterThan(
+            scoreArticle(generic, undefined, NOW),
+        );
+    });
+
+    it("lets a clearly fresher generic article still win", () => {
+        const staleGame = article({ game: gameRef("poe"), publishedAt: daysAgo(5) });
+        const freshGeneric = article({ publishedAt: daysAgo(0) });
+
+        expect(scoreArticle(freshGeneric, undefined, NOW)).toBeGreaterThan(
+            scoreArticle(staleGame, game("poe"), NOW),
+        );
+    });
+
+    // Crossover sits at 5 * log2(1/0.7) = ~2.57 days of news decay.
+    it("costs a generic news article about 2.5 days of freshness", () => {
+        const gameNews = article({ game: gameRef("poe"), publishedAt: daysAgo(5) });
+        const score = (a: ArticleListItem) => scoreArticle(a, undefined, NOW);
+
+        // Two days fresher is not enough to overcome the scope weight.
+        expect(score(article({ publishedAt: daysAgo(3) }))).toBeLessThan(
+            scoreArticle(gameNews, game("poe"), NOW),
+        );
+        // Three days is.
+        expect(score(article({ publishedAt: daysAgo(2) }))).toBeGreaterThan(
+            scoreArticle(gameNews, game("poe"), NOW),
+        );
+    });
+
+    it("leaves ordering within the same scope untouched", () => {
+        const older = article({ _id: "older", game: gameRef("poe"), publishedAt: daysAgo(3) });
+        const newer = article({ _id: "newer", game: gameRef("poe"), publishedAt: daysAgo(1) });
+
+        expect(scoreArticle(newer, game("poe"), NOW)).toBeGreaterThan(
+            scoreArticle(older, game("poe"), NOW),
         );
     });
 });
