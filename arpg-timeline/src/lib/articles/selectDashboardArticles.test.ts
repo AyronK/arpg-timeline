@@ -178,6 +178,21 @@ describe("capped slot", () => {
         expect(result).toEqual(["g1", "g2"]);
     });
 
+    it("keeps score order when generic articles backfill a short slot", () => {
+        const backfillPool = [
+            article("g0", { publishedAt: daysAgo(1) }),
+            article("g1", { publishedAt: daysAgo(2) }),
+            article("g2", { publishedAt: daysAgo(3) }),
+            article("weak-scoped", { game: gameRef("poe"), publishedAt: daysAgo(20) }),
+        ];
+
+        const result = selectDashboardArticles(backfillPool, [game("poe")], { limit: 4 }, NOW);
+        const scores = result.map((r) => r.score);
+
+        expect(ids(result)).toEqual(["g0", "g1", "g2", "weak-scoped"]);
+        expect(scores).toEqual([...scores].sort((a, b) => b - a));
+    });
+
     it("returns nothing for a zero or negative limit", () => {
         expect(selectDashboardArticles(pool, [game("poe")], { limit: 0 }, NOW)).toEqual([]);
         expect(selectDashboardArticles(pool, [game("poe")], { limit: -1 }, NOW)).toEqual([]);

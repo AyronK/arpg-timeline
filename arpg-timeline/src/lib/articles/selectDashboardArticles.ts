@@ -64,6 +64,7 @@ export const selectDashboardArticles = (
             if (selected.length === limit) break;
             if (!taken.has(entry.article._id)) selected.push(entry);
         }
+        selected.sort(byScore);
     }
 
     return selected;
