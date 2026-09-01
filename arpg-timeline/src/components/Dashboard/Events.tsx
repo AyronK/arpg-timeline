@@ -7,22 +7,41 @@ import { Timeline } from "@/components/Timeline/Timeline";
 import { TimelineEvent } from "@/components/Timeline/Timeline.types";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { usePartnerPromos } from "@/contexts/PartnerPromosContext";
+import { useDashboardArticles } from "@/hooks/useDashboardArticles";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
+import { ARTICLE_RAIL_SIZE, ArticleRail } from "./ArticleRail";
 import { ProtonDashboardCard } from "./ProtonDashboardCard";
+
+/**
+ * Timeline width, by which of its two neighbours are present. The band's parent grid
+ * is 1 / md:2 / xl:3 / 2xl:4 / 4xl:5 columns; Proton always takes one column, while
+ * the rail only takes one from xl up (below that it drops to a full-width row).
+ */
+const timelineSpan = (showProton: boolean, showRail: boolean): string => {
+    if (showProton && showRail) return "md:col-span-1 xl:col-span-1 2xl:col-span-2 4xl:col-span-3";
+    if (showProton) return "md:col-span-1 xl:col-span-2 2xl:col-span-3 4xl:col-span-4";
+    if (showRail) return "md:col-span-2 xl:col-span-2 2xl:col-span-3 4xl:col-span-4";
+    return "col-span-full";
+};
 
 export const Events = ({ events }: { events: TimelineEvent[] }) => {
     const [expanded, setExpanded] = useState(false);
     const { isPartnerHidden } = usePartnerPromos();
+    const railArticles = useDashboardArticles({ limit: ARTICLE_RAIL_SIZE });
+
+    // Expanding the Timeline reclaims the whole band, as it always has for Proton.
     const showProtonCard = !expanded && !isPartnerHidden("proton");
+    const showRail = !expanded && railArticles.length > 0;
+
     return (
         <div className="4xl:col-span-5 lg-col-span-2 4xl:grid-cols-5 transition- relative z-0 order-3 col-span-1 grid min-h-auto! grid-cols-1 gap-4 transition-all ease-in-out ease-out md:col-span-2 md:grid-cols-2 md:gap-4 md:gap-5 lg:grid-cols-2 xl:col-span-3 xl:grid-cols-3 2xl:col-span-4 2xl:grid-cols-4">
             {showProtonCard && <ProtonDashboardCard />}
             <div
                 className={cn(
                     "bg-card text-card-foreground relative flex max-h-full min-h-auto! min-w-0 flex-col gap-4 rounded-md border p-4 transition-all ease-out",
-                    showProtonCard ? "md:col-start-2 md:col-end-[-1]" : "col-span-full",
+                    timelineSpan(showProtonCard, showRail),
                     {
                         "max-h-[272px]": !expanded,
                     },
@@ -43,6 +62,13 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => {
                     <Timeline events={events} />
                 </ErrorBoundary>
             </div>
+            {showRail && (
+                <div className="col-span-1 md:col-span-2 xl:col-span-1">
+                    <ErrorBoundary fallback={<WidgetDiedFallback />}>
+                        <ArticleRail articles={railArticles} />
+                    </ErrorBoundary>
+                </div>
+            )}
         </div>
     );
 };
