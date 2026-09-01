@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
 import { PatreonFunding } from "@/components/PatreonFunding";
+import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import {
     gameDetailsQuery,
@@ -21,6 +22,7 @@ import { Button } from "@/ui/Button";
 
 import {
     ArchivalSeasonsSection,
+    GameArticlesSection,
     GameHeaderSection,
     PlatformIntegrationSection,
     StatisticsSection,
@@ -80,6 +82,7 @@ const GamePage = async ({ params }: GamePageProps) => {
 
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
     const gameNews = await getSteamNewsFromDb(gameSlug);
+    const gameArticles = await getGameArticlesPreview(gameSlug);
     const statistics = calculateGameStatistics(data, gameSlug);
     const recentStatistics =
         countTrackedSeasons(data, gameSlug) > RECENT_SEASON_COUNT
@@ -148,6 +151,16 @@ const GamePage = async ({ params }: GamePageProps) => {
                             seasons={archivalSeasons}
                             gameLogo={game.logo}
                             seasonKeyword={game.seasonKeyword}
+                        />
+                    </div>
+                )}
+
+                {(gameArticles.news.length > 0 || gameArticles.resources.length > 0) && (
+                    <div className="mb-4 md:mb-6">
+                        <GameArticlesSection
+                            gameSlug={gameSlug}
+                            news={gameArticles.news}
+                            resources={gameArticles.resources}
                         />
                     </div>
                 )}

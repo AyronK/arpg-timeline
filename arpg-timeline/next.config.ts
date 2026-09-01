@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
         formats: ["image/webp"],
         deviceSizes: [640, 1080, 1920],
         imageSizes: [32, 64, 128, 256],
+        qualities: [75, 90],
     },
     compress: true,
     poweredByHeader: false,
@@ -222,6 +223,35 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
+            // Article + index routes: the `article`/`game` webhook tags purge the Vercel
+            // CDN (404s included), so a hard TTL is safe.
+            ...[
+                "/news",
+                "/news/:slug",
+                "/news/page/:page",
+                "/resources",
+                "/resources/:slug",
+                "/resources/page/:page",
+                "/game/:gameSlug/news",
+                "/game/:gameSlug/news/:articleSlug",
+                "/game/:gameSlug/news/page/:page",
+                "/game/:gameSlug/resources",
+                "/game/:gameSlug/resources/:articleSlug",
+                "/game/:gameSlug/resources/page/:page",
+            ].map((source) => ({
+                source,
+                headers: [
+                    { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+                    {
+                        key: "Vercel-CDN-Cache-Control",
+                        value: "public, max-age=31536000, stale-while-revalidate=86400",
+                    },
+                    {
+                        key: "CDN-Cache-Control",
+                        value: "public, max-age=31536000, stale-while-revalidate=86400",
+                    },
+                ],
+            })),
             {
                 source: "/support",
                 headers: [

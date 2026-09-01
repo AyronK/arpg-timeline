@@ -95,6 +95,18 @@ const TransparencyPage = () => {
                             categories, reach out.
                         </p>
                     </div>
+
+                    <div className="space-y-3">
+                        <h3 className="text-xl font-semibold">AI usage</h3>
+                        <p>
+                            For where AI is - and isn&apos;t - used on this site, across articles,
+                            development, and research, see the{" "}
+                            <Link className="underline hover:opacity-80" href="/ai-usage">
+                                AI Usage
+                            </Link>{" "}
+                            page.
+                        </p>
+                    </div>
                 </div>
             </section>
         </div>

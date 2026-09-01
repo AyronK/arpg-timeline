@@ -68,6 +68,20 @@ export const Footer = () => (
                         </div>
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/news"
+                            data-sa-click="news"
+                        >
+                            News
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/resources"
+                            data-sa-click="resources"
+                        >
+                            Resources
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href="/faq"
                             data-sa-click="faq"
                         >
@@ -164,6 +178,13 @@ export const Footer = () => (
                             data-sa-click="transparency"
                         >
                             Transparency
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/ai-usage"
+                            data-sa-click="ai-usage"
+                        >
+                            AI Usage
                         </Link>
                         <span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}

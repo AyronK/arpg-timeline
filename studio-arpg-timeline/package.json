@@ -18,6 +18,7 @@
         "sanity"
     ],
     "dependencies": {
+        "@sanity/table": "^3.1.16",
         "@sanity/vision": "^6.11.0",
         "luxon": "^3.7.2",
         "react": "^19.2.8",

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { FaPatreon } from "react-icons/fa6";
 
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 
@@ -12,23 +12,19 @@ export const PatreonFunding = () => (
         rel="noopener noreferrer nofollow"
         target="_blank"
         data-sa-click="patreon-banner"
-        className={getCtaBannerClassName("orange")}
+        className={getCtaBannerClassName("white")}
     >
         <CtaBannerContent
             icon={
-                <Image
-                    loading="lazy"
-                    src="/assets/third-party/patreon-logo.png"
-                    className="m-auto h-6 w-6 opacity-70 md:h-7 md:w-7"
-                    alt="Patreon logo"
-                    width={32}
-                    height={32}
+                <FaPatreon
+                    className="m-auto h-5 w-5 text-white md:h-6 md:w-6"
+                    aria-label="Patreon logo"
                 />
             }
-            title="Keep aRPG Timeline Running"
+            title="Support aRPG Timeline on Patreon"
             description={`Hosting costs us $${SITE_MONTHLY_COST}/month. Join to keep it free for ${MONTHLY_VISITORS}+ gamers and help us grow.`}
             actionLabel="Support"
-            color="orange"
+            color="white"
         />
     </Link>
 );

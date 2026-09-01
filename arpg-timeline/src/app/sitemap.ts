@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
+import { getArticlePath } from "@/lib/articles/articleUrl";
+import { getArticleStaticParams } from "@/lib/articles/getArticleData";
 import { indexQuery } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 
@@ -44,6 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.4,
         },
         {
+            url: `${baseUrl}/ai-usage`,
+            lastModified: new Date(),
+            changeFrequency: "monthly",
+            priority: 0.4,
+        },
+        {
             url: `${baseUrl}/support`,
             lastModified: new Date(),
             changeFrequency: "monthly",
@@ -59,6 +67,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             url: `${baseUrl}/calendar`,
             lastModified: new Date(),
             changeFrequency: "monthly",
+            priority: 0.6,
+        },
+        {
+            url: `${baseUrl}/news`,
+            lastModified: new Date(),
+            changeFrequency: "daily",
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/resources`,
+            lastModified: new Date(),
+            changeFrequency: "weekly",
             priority: 0.6,
         },
     ];
@@ -109,6 +129,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             });
     } catch (error) {
         console.error("Error fetching data for sitemap:", error);
+    }
+
+    try {
+        const articles = await getArticleStaticParams();
+        const gameIndexes = new Set<string>();
+
+        articles.forEach((article) => {
+            if (!article.slug) return;
+            sitemap.push({
+                url: `${baseUrl}${getArticlePath({
+                    category: article.category,
+                    slug: article.slug,
+                    gameSlug: article.gameSlug,
+                })}`,
+                lastModified: new Date(article.updatedAt || article._updatedAt || Date.now()),
+                changeFrequency: "weekly",
+                priority: 0.7,
+            });
+
+            if (article.gameSlug) {
+                gameIndexes.add(`/game/${article.gameSlug}/${article.category}`);
+            }
+        });
+
+        gameIndexes.forEach((path) => {
+            sitemap.push({
+                url: `${baseUrl}${path}`,
+                lastModified: new Date(),
+                changeFrequency: "weekly",
+                priority: 0.6,
+            });
+        });
+    } catch (error) {
+        console.error("Error fetching articles for sitemap:", error);
     }
 
     return sitemap;
