@@ -90,7 +90,7 @@ export async function resolveArticleIndexMetadata(args: IndexArgs): Promise<Meta
     const { page, basePath, title, intro, pageCount } = await resolveIndex(args);
 
     const canonical = buildPageHref(basePath, page);
-    const suffix = page > 1 ? ` – Page ${page}` : "";
+    const suffix = page > 1 ? ` - Page ${page}` : "";
 
     return {
         title: `${title}${suffix} | aRPG Timeline`,

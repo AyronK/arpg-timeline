@@ -1,6 +1,6 @@
 import type { Rule } from "sanity";
 
-// Ordered least → most AI involvement; the site shows this as a 0–4 scale.
+// Ordered least to most AI involvement; the site shows this as a 0-4 scale.
 const AI_DISCLOSURE_OPTIONS = [
     { title: "None - written entirely by a human", value: "none" },
     { title: "Styling - AI used for formatting / layout only", value: "styling" },
@@ -275,7 +275,7 @@ export default {
             name: "aiDisclosure",
             title: "AI-usage disclosure",
             description:
-                "How much AI was involved in writing this article. Shown on the page as a 0–4 scale with a tooltip.",
+                "How much AI was involved in writing this article. Shown on the page as a 0-4 scale with a tooltip.",
             type: "string",
             group: "main",
             initialValue: "none",
