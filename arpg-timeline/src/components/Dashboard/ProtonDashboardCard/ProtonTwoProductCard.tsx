@@ -17,7 +17,7 @@ export const ProtonTwoProductCard = ({ a, b, onHide }: Props) => {
     if (!urlA || !urlB) return null;
 
     return (
-        <section className="bg-card text-card-foreground relative flex flex-1 flex-col justify-between gap-3 rounded-md border border-violet-500/20 p-4 shadow-[0_0_10px_1px_rgba(139,92,246,0.08)]">
+        <section className="bg-card text-card-foreground relative flex flex-1 flex-col justify-between gap-3 rounded-md p-4">
             {onHide && <HideButton onClick={onHide} />}
             <h3 className="font-heading text-xs">Proton + aRPG Timeline</h3>
             <div className="flex flex-row items-center justify-center gap-2">
