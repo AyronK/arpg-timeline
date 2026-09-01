@@ -11,7 +11,7 @@ import { useDashboardArticles } from "@/hooks/useDashboardArticles";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
-import { ARTICLE_RAIL_SIZE, ArticleRail } from "./ArticleRail";
+import { ArticleRail } from "./ArticleRail";
 import { ProtonDashboardCard } from "./ProtonDashboardCard";
 
 /**
@@ -29,7 +29,8 @@ const timelineSpan = (showProton: boolean, showRail: boolean): string => {
 export const Events = ({ events }: { events: TimelineEvent[] }) => {
     const [expanded, setExpanded] = useState(false);
     const { isPartnerHidden } = usePartnerPromos();
-    const railArticles = useDashboardArticles({ limit: ARTICLE_RAIL_SIZE });
+    // Uncapped: the rail scrolls, so it shows everything recent that survives filters.
+    const railArticles = useDashboardArticles();
 
     // Expanding the Timeline reclaims the whole band, as it always has for Proton.
     const showProtonCard = !expanded && !isPartnerHidden("proton");

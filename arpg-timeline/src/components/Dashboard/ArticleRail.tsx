@@ -6,9 +6,6 @@ import { ArticleFeedItem } from "@/components/articles/ArticleFeedItem";
 import { articleToFeedItem } from "@/lib/articles/feedItem";
 import type { RankedArticle } from "@/lib/articles/rankArticles";
 
-/** Rows fetched for the rail. More than fit at once - the list scrolls. */
-export const ARTICLE_RAIL_SIZE = 3;
-
 /**
  * Compact article list for the extras band. Height-matched to the collapsed
  * Timeline (max-h-[272px]) so the band keeps one silhouette. Stretches to the row
