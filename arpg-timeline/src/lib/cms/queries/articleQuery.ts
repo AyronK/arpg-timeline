@@ -154,7 +154,20 @@ export interface ArticlesPageResult {
     total: number;
 }
 
-// Count-only — feeds `generateStaticParams` for the `/page/[page]` routes.
+// Game-details page - the latest few of each category for this game.
+export const gameArticlesPreviewQuery = `{
+  "news": *[_type == "article" && game->slug.current == $gameSlug && category == "news"]
+    | order(publishedAt desc)[0...3]{ ${LIST_PROJECTION} },
+  "resources": *[_type == "article" && game->slug.current == $gameSlug && category == "resources"]
+    | order(publishedAt desc)[0...3]{ ${LIST_PROJECTION} }
+}`;
+
+export interface GameArticlesPreview {
+    news: ArticleListItem[];
+    resources: ArticleListItem[];
+}
+
+// Count-only - feeds `generateStaticParams` for the `/page/[page]` routes.
 export const articlesCountQuery = `count(*[_type == "article" && category == $category])`;
 
 export const gameArticlesCountQuery = `count(*[

@@ -10,6 +10,8 @@ import {
     ArticlesPageResult,
     gameArticlesByCategoryPageQuery,
     gameArticlesCountQuery,
+    GameArticlesPreview,
+    gameArticlesPreviewQuery,
     relatedArticlesQuery,
     RelatedArticlesResult,
 } from "@/lib/cms/queries/articleQuery";
@@ -62,6 +64,17 @@ export const getArticlesPageCount = cache(
         const params = gameSlug ? { category, gameSlug } : { category };
         const total = await sanityClient.fetch<number>(query, params, FETCH_OPTS);
         return Math.max(1, Math.ceil((total ?? 0) / ARTICLES_PER_PAGE));
+    },
+);
+
+export const getGameArticlesPreview = cache(
+    async (gameSlug: string): Promise<GameArticlesPreview> => {
+        const res = await sanityClient.fetch<GameArticlesPreview | null>(
+            gameArticlesPreviewQuery,
+            { gameSlug },
+            FETCH_OPTS,
+        );
+        return { news: res?.news ?? [], resources: res?.resources ?? [] };
     },
 );
 

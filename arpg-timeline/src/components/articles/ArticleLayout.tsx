@@ -15,7 +15,6 @@ import { extractToc } from "@/lib/articles/tableOfContents";
 import type { Article, ArticleListItem } from "@/lib/cms/queries/articleQuery";
 import { Chip } from "@/ui/Chip";
 
-import { BuyMeACoffee } from "../BuyMeACoffee";
 import { PatreonFunding } from "../PatreonFunding";
 
 const sameDay = (a: string, b: string) => a.slice(0, 10) === b.slice(0, 10);
