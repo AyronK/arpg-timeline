@@ -8,12 +8,19 @@ interface ArticleImageProps {
     priority?: boolean;
     className?: string;
     sizes?: string;
+    quality?: number;
 }
 
 const DEFAULT_SIZES = "(min-width: 880px) 830px, 100vw";
 
 // Explicit dimensions from the asset prevent layout shift.
-export const ArticleImage = ({ image, priority, className, sizes }: ArticleImageProps) => {
+export const ArticleImage = ({
+    image,
+    priority,
+    className,
+    sizes,
+    quality = 90,
+}: ArticleImageProps) => {
     const asset = image?.asset;
     if (!asset?.url) return null;
 
@@ -27,6 +34,7 @@ export const ArticleImage = ({ image, priority, className, sizes }: ArticleImage
             width={width}
             height={height}
             sizes={sizes ?? DEFAULT_SIZES}
+            quality={quality}
             placeholder={asset.lqip ? "blur" : "empty"}
             blurDataURL={asset.lqip}
             priority={priority}

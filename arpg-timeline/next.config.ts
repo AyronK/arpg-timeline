@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
         formats: ["image/webp"],
         deviceSizes: [640, 1080, 1920],
         imageSizes: [32, 64, 128, 256],
+        qualities: [75, 90],
     },
     compress: true,
     poweredByHeader: false,
