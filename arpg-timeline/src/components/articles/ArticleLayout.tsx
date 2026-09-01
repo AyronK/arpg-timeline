@@ -5,7 +5,7 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import { ArticleToc } from "@/components/articles/ArticleToc";
 import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
 import { BuyMeACoffeeCompact } from "@/components/articles/BuyMeACoffeeCompact";
-import { FollowUs } from "@/components/articles/FollowUs";
+import { FollowShare } from "@/components/articles/FollowShare";
 import { PatreonFundingCompact } from "@/components/articles/PatreonFundingCompact";
 import { RelatedArticles } from "@/components/articles/RelatedArticles";
 import { getArticleModified } from "@/lib/articles/articleDates";
@@ -54,7 +54,7 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
                             <PatreonFundingCompact />
                             <BuyMeACoffeeCompact />
                         </div>
-                        <FollowUs />
+                        <FollowShare title={article.title} />
                     </div>
                 </aside>
 
@@ -116,7 +116,7 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
                             <PatreonFundingCompact />
                             <BuyMeACoffeeCompact />
                         </div>
-                        <FollowUs />
+                        <FollowShare title={article.title} />
                     </div>
                 </article>
             </div>
