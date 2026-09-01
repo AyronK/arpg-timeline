@@ -8,10 +8,7 @@ export const CATEGORY_LABEL: Record<ArticleCategory, string> = {
     resources: "Resources",
 };
 
-/**
- * Normalized shape behind every article/news surface on the dashboard, so first-party
- * articles and third-party game news can share one card design instead of drifting apart.
- */
+/** Shared shape so first-party articles and game news can use one card design. */
 export interface FeedItem {
     id: string;
     href: string;
@@ -24,7 +21,6 @@ export interface FeedItem {
     gameName?: string | null;
     categoryLabel?: string | null;
     source: FeedItemSource;
-    /** Off-site links open in a new tab and carry nofollow. */
     external: boolean;
 }
 

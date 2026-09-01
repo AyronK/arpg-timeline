@@ -4,12 +4,7 @@ import { createContext, ReactNode, useContext } from "react";
 
 import type { ArticleListItem } from "@/lib/cms/queries/articleQuery";
 
-/**
- * Raw article pool for the dashboard, fetched server-side. Deliberately dumb: game
- * filtering and ranking live in useDashboardArticles so each slot can tune them.
- *
- * Must be mounted inside GameFilterProvider - the hook reads filteredGames from it.
- */
+// Must be mounted inside GameFilterProvider - the hook reads filteredGames from it.
 const DashboardArticlesContext = createContext<ArticleListItem[] | undefined>(undefined);
 
 export const DashboardArticlesProvider = ({

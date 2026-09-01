@@ -6,13 +6,7 @@ import { ArticleFeedItem } from "@/components/articles/ArticleFeedItem";
 import { articleToFeedItem } from "@/lib/articles/feedItem";
 import type { RankedArticle } from "@/lib/articles/rankArticles";
 
-/**
- * Compact article list for the extras band. Height-matched to the collapsed
- * Timeline (max-h-[272px]) so the band keeps one silhouette. Stretches to the row
- * height even with a single article - same flex wrapper + flex-1 card pattern the
- * game cards use - and the list scrolls rather than pushing the card past its
- * neighbours.
- */
+/** Height-matched to the collapsed Timeline so the band keeps one silhouette. */
 export const ArticleRail = ({ articles }: { articles: RankedArticle[] }) => (
     <div className="bg-card text-card-foreground relative flex max-h-[272px] min-w-0 flex-1 flex-col gap-2 rounded-md border p-4">
         <h3 className="shrink-0 text-xs">Latest articles</h3>

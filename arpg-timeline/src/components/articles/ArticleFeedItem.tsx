@@ -13,9 +13,8 @@ export type ArticleFeedItemVariant = "grid" | "rail" | "feed";
 interface ArticleFeedItemProps {
     item: FeedItem;
     variant: ArticleFeedItemVariant;
-    /** Hide the game chip where the surrounding surface already names the game. */
+    /** Hide the game chip where the surface already names the game. */
     showGame?: boolean;
-    /** First card in a viewport-visible slot - opt it out of lazy loading. */
     priority?: boolean;
     className?: string;
     "data-sa-click"?: string;
@@ -83,10 +82,7 @@ const Badges = ({ item, showGame }: { item: FeedItem; showGame: boolean }) => {
     );
 };
 
-/**
- * Wraps the card body in the right kind of link. Articles are internal routes;
- * Steam news points off-site.
- */
+/** Articles are internal routes; Steam news points off-site. */
 const FeedLink = ({
     item,
     className,
@@ -188,7 +184,7 @@ export const ArticleFeedItem = ({
         );
     }
 
-    // grid - sized and styled to sit in the dashboard grid beside game cards.
+    // grid - sized to sit beside game cards.
     return (
         <article className={cn(shellClassName, "flex flex-1 rounded-md", className)}>
             <FeedLink item={item} saClick={saClick} className="flex flex-1 flex-col">

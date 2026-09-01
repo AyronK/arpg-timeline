@@ -3,25 +3,21 @@ import type { ArticleCategory, ArticleListItem } from "@/lib/cms/queries/article
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/**
- * Half-life in days. News is only interesting while it is new; a league-start guide
- * stays useful for a whole season, so resources decay roughly nine times slower.
- */
+/** Resources stay useful for a whole season; news does not. */
 export const HALF_LIFE_DAYS: Record<ArticleCategory, number> = {
     news: 5,
     resources: 45,
 };
 
-/** Applied after decay, so a fresh news post still outranks a fresh guide. */
+/** Applied after decay, so fresh news outranks a fresh guide. */
 export const CATEGORY_WEIGHT: Record<ArticleCategory, number> = {
     news: 1,
     resources: 0.85,
 };
 
-/** How close a season boundary has to be before it lifts that game's articles. */
 export const SEASON_PROXIMITY_WINDOW_DAYS = 14;
 
-/** Boost applied to a game's articles at the exact moment of a season boundary. */
+/** Boost at the boundary itself, scaling down to 1 at the edge of the window. */
 export const MAX_SEASON_BOOST = 2;
 
 export interface RankedArticle {
@@ -33,16 +29,12 @@ const recencyDecay = (publishedAt: string, category: ArticleCategory, now: numbe
     const published = new Date(publishedAt).getTime();
     if (Number.isNaN(published)) return 0;
 
-    // Scheduled-ahead articles rank as if they had just gone live, never higher.
+    // Scheduled-ahead articles rank as if just live, never higher.
     const ageDays = Math.max(0, (now - published) / DAY_MS);
     return 2 ** (-ageDays / HALF_LIFE_DAYS[category]);
 };
 
-/**
- * Scales from MAX_SEASON_BOOST at the boundary down to 1 at the edge of the window.
- * Both an imminent season start and an imminent season end count - each is a moment
- * when players go looking for that game's guides.
- */
+/** An imminent season start and an imminent season end both count. */
 const seasonProximityBoost = (game: Game | undefined, now: number): number => {
     if (!game) return 1;
 
@@ -69,10 +61,7 @@ export const scoreArticle = (
     seasonProximityBoost(game, now) *
     CATEGORY_WEIGHT[article.category];
 
-/**
- * Highest score first. `games` supplies season timing; an article whose game is absent
- * from the list (generic articles included) simply gets no season boost.
- */
+/** Highest score first. An article whose game is absent from `games` gets no boost. */
 export const rankArticles = (
     articles: ArticleListItem[],
     games: Game[],

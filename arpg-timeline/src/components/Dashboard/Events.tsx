@@ -14,11 +14,8 @@ import { Button } from "@/ui/Button";
 import { ArticleRail } from "./ArticleRail";
 import { ProtonDashboardCard } from "./ProtonDashboardCard";
 
-/**
- * Timeline width, by which of its two neighbours are present. The band's parent grid
- * is 1 / md:2 / xl:3 / 2xl:4 / 4xl:5 columns; Proton always takes one column, while
- * the rail only takes one from xl up (below that it drops to a full-width row).
- */
+// Band grid is 1 / md:2 / xl:3 / 2xl:4 / 4xl:5. Proton always takes a column; the
+// rail takes one from xl up, and drops to a full-width row below that.
 const timelineSpan = (showProton: boolean, showRail: boolean): string => {
     if (showProton && showRail) return "md:col-span-1 xl:col-span-1 2xl:col-span-2 4xl:col-span-3";
     if (showProton) return "md:col-span-1 xl:col-span-2 2xl:col-span-3 4xl:col-span-4";
@@ -29,10 +26,9 @@ const timelineSpan = (showProton: boolean, showRail: boolean): string => {
 export const Events = ({ events }: { events: TimelineEvent[] }) => {
     const [expanded, setExpanded] = useState(false);
     const { isPartnerHidden } = usePartnerPromos();
-    // Uncapped: the rail scrolls, so it shows everything recent that survives filters.
     const railArticles = useDashboardArticles();
 
-    // Expanding the Timeline reclaims the whole band, as it always has for Proton.
+    // Expanding the Timeline reclaims the whole band.
     const showProtonCard = !expanded && !isPartnerHidden("proton");
     const showRail = !expanded && railArticles.length > 0;
 

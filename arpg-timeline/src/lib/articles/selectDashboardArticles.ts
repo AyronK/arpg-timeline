@@ -4,50 +4,23 @@ import type { ArticleListItem } from "@/lib/cms/queries/articleQuery";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/**
- * No game-specific article older than this reaches a dashboard slot, however well it
- * scores. Generic articles are exempt - they describe the site rather than a patch
- * cycle, so they stay available as a floor when nothing recent has been published.
- */
 export const DEFAULT_MAX_ARTICLE_AGE_DAYS = 30;
 
 const DEFAULT_GENERIC_SHARE = 0.5;
 
 export interface DashboardArticlesOptions {
-    /**
-     * How many articles the slot can show. Omit for no cap - for slots that scroll
-     * and would rather show everything recent.
-     */
+    /** Omit for no cap - for slots that scroll. */
     limit?: number;
-    /**
-     * Minimum score an article needs to be shown at all. Slots that intrude on the
-     * game grid set this so they stay empty unless something is genuinely worth it;
-     * slots with reserved space leave it at 0.
-     */
     minScore?: number;
-    /**
-     * Ceiling on how much of the slot generic (gameless) articles may claim while
-     * game-specific ones are still available. They still backfill leftover space.
-     * Only meaningful alongside `limit`.
-     */
+    /** Share of `limit` generic articles may claim while scoped ones are available. */
     genericShare?: number;
-    /** Hard age cutoff in days. Applies to game-specific articles only. */
+    /** Applies to game-specific articles only. */
     maxAgeDays?: number;
 }
 
 const byScore = (a: RankedArticle, b: RankedArticle) => b.score - a.score;
 
-/**
- * Picks the articles one dashboard slot should show.
- *
- * - game-scoped article -> kept only while its game is in `games`, and only while
- *   it is younger than `maxAgeDays`
- * - generic article     -> dropped by neither game filters nor age, but capped by
- *   `genericShare` so a heavily filtered dashboard doesn't turn all-generic. Its
- *   score still decays, so an old one sinks to the bottom rather than leading
- *
- * `now` is a parameter so callers stay pure and tests stay deterministic.
- */
+/** `now` is a parameter so callers stay pure and tests stay deterministic. */
 export const selectDashboardArticles = (
     pool: ArticleListItem[],
     games: Game[],
@@ -64,7 +37,7 @@ export const selectDashboardArticles = (
     const cutoff = now - maxAgeDays * DAY_MS;
     const visibleSlugs = new Set(games.map((g) => g.slug));
 
-    // Age only retires game-specific articles; generic ones never go stale.
+    // Age retires game articles only; generic ones never go stale.
     const isFresh = (r: RankedArticle) =>
         !r.article.game || new Date(r.article.publishedAt).getTime() >= cutoff;
 
@@ -79,7 +52,6 @@ export const selectDashboardArticles = (
         else if (visibleSlugs.has(gameSlug)) scoped.push(entry);
     }
 
-    // Uncapped slot: everything recent that survives the filters.
     if (limit === undefined) return [...scoped, ...generic].sort(byScore);
 
     const genericCap = Math.max(1, Math.ceil(limit * genericShare));
