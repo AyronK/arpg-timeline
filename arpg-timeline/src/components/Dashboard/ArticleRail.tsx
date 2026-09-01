@@ -27,7 +27,7 @@ export const ArticleRail = ({ articles }: { articles: RankedArticle[] }) => (
                                 slug: article.slug,
                                 gameSlug: article.game?.slug,
                             })}
-                            className="group bg-muted/20 hover:bg-accent hover:border-primary/25 flex items-center gap-3 rounded-md border border-transparent p-2 leading-snug transition-colors"
+                            className="group bg-muted/20 hover:bg-accent/50 hover:border-primary/15 flex items-center gap-3 rounded-md border border-transparent p-2 leading-snug transition-colors"
                             data-sa-click="dashboard-article-rail"
                         >
                             <span className="bg-muted relative block aspect-video w-20 shrink-0 overflow-hidden rounded sm:w-24">
