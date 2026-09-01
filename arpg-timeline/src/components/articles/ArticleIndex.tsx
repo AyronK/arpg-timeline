@@ -12,7 +12,6 @@ interface ArticleIndexProps {
     basePath: string;
     page: number;
     pageCount: number;
-    /** Hide the per-card game chip on game-scoped indexes where it's redundant. */
     showGame?: boolean;
 }
 

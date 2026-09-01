@@ -1,6 +1,6 @@
 import type { Article, ArticleCategory } from "@/lib/cms/queries/articleQuery";
 
-/** Guard against a slug reused across category/game namespaces cross-resolving. */
+/** Rejects a slug that resolved from another category/game namespace. */
 export function articleMatchesRoute(
     article: Pick<Article, "category" | "game">,
     route: { category: ArticleCategory; gameSlug?: string },

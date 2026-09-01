@@ -1,6 +1,6 @@
 import type { ArticleListItem } from "@/lib/cms/queries/articleQuery";
 
-/** Same-game items first, topped up with same-category, deduped by `_id`, capped at `limit`. */
+/** same-game first, then same-category; deduped, capped at `limit`. */
 export const pickRelated = (
     sameGame: ArticleListItem[],
     sameCategory: ArticleListItem[],

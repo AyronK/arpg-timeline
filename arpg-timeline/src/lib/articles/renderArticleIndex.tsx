@@ -133,7 +133,7 @@ const gameSlugsForCategory = async (category: ArticleCategory): Promise<string[]
     ];
 };
 
-/** `/page/[page]` params for a root index: pages 2..N only (page 1 is the bare route). */
+// pages 2..N only; page 1 is the bare route.
 export async function articleIndexPageParams(
     category: ArticleCategory,
 ): Promise<{ page: string }[]> {
@@ -141,14 +141,12 @@ export async function articleIndexPageParams(
     return pagesFrom2(pageCount).map((page) => ({ page }));
 }
 
-/** Game slugs with at least one article in this category (for the base game index). */
 export async function articleIndexGameParams(
     category: ArticleCategory,
 ): Promise<{ gameSlug: string }[]> {
     return (await gameSlugsForCategory(category)).map((gameSlug) => ({ gameSlug }));
 }
 
-/** `{ gameSlug, page }` params for a game-scoped `/page/[page]` index: pages 2..N. */
 export async function gameArticleIndexPageParams(
     category: ArticleCategory,
 ): Promise<{ gameSlug: string; page: string }[]> {

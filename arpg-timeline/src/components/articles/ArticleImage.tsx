@@ -12,7 +12,7 @@ interface ArticleImageProps {
 
 const DEFAULT_SIZES = "(min-width: 880px) 830px, 100vw";
 
-// Real asset dimensions + LQIP so the article body doesn't shift as images load.
+// Explicit dimensions from the asset prevent layout shift.
 export const ArticleImage = ({ image, priority, className, sizes }: ArticleImageProps) => {
     const asset = image?.asset;
     if (!asset?.url) return null;

@@ -11,7 +11,7 @@ export interface AiDisclosureMeta {
     tone: AiDisclosureTone;
 }
 
-// Cumulative 0-4 scale: each level includes everything below it, plus more AI.
+// Cumulative: each level includes the ones below it.
 export const AI_DISCLOSURE_META: Record<AiDisclosure, AiDisclosureMeta> = {
     none: {
         degree: 0,

@@ -25,7 +25,7 @@ export function blockToPlainText(block: PortableTextBlock): string {
         .trim();
 }
 
-/** H2/H3 headings from the body, with collision-suffixed ids matching `ArticleBody`. */
+/** ids here must match `buildHeadingIdMap` in ArticleBody. */
 export function extractToc(body: PortableTextBlock[] | undefined | null): TocHeading[] {
     if (!Array.isArray(body)) return [];
 

@@ -19,9 +19,8 @@ import { sanityClient } from "@/lib/sanity/sanityClient";
 
 import { ARTICLES_PER_PAGE } from "./pagination";
 
-// `game` tag alongside `article`: every list projection dereferences the linked game
-// (name/logo on cards, slug in the index game lookup), so `revalidateTag("game")` heals
-// game renames and lets a slug that only later becomes a real game resolve a 404 route.
+// `game` tag: list projections deref the linked game, so `revalidateTag("game")` heals
+// renames and lets a slug that later becomes a real game resolve its 404 route.
 const FETCH_OPTS = { next: { revalidate: false as const, tags: ["article", "game"] } };
 
 interface ArticlesPageArgs {

@@ -82,7 +82,7 @@ export interface Article extends ArticleListItem {
     body: PortableTextBlock[];
 }
 
-// The `category` clause keeps a slug reused across namespaces from cross-resolving.
+// `category` filter: a slug reused across namespaces must not cross-resolve.
 export const articleBySlugQuery = `*[
   _type == "article" &&
   slug.current == $slug &&
@@ -117,7 +117,6 @@ export const articleStaticParamsQuery = `*[_type == "article"]{
   _updatedAt
 }`;
 
-// Index pages (Phase 2).
 export const articlesByCategoryQuery = `*[
   _type == "article" && category == $category
 ] | order(publishedAt desc){
@@ -136,7 +135,6 @@ export interface ArticlesListResult {
     articles: ArticleListItem[];
 }
 
-// Paginated index queries - `$from`/`$to` is a GROQ slice, `total` drives page math.
 export const articlesByCategoryPageQuery = `{
   "items": *[_type == "article" && category == $category]
     | order(publishedAt desc)[$from...$to]{ ${LIST_PROJECTION} },
@@ -154,7 +152,6 @@ export interface ArticlesPageResult {
     total: number;
 }
 
-// Game-details page - the latest few of each category for this game.
 export const gameArticlesPreviewQuery = `{
   "news": *[_type == "article" && game->slug.current == $gameSlug && category == "news"]
     | order(publishedAt desc)[0...3]{ ${LIST_PROJECTION} },
@@ -167,14 +164,12 @@ export interface GameArticlesPreview {
     resources: ArticleListItem[];
 }
 
-// Count-only - feeds `generateStaticParams` for the `/page/[page]` routes.
 export const articlesCountQuery = `count(*[_type == "article" && category == $category])`;
 
 export const gameArticlesCountQuery = `count(*[
   _type == "article" && category == $category && game->slug.current == $gameSlug
 ])`;
 
-// Lightweight game lookup for the game-scoped index header / 404 guard.
 export const articleIndexGameQuery = `*[_type == "game" && slug.current == $gameSlug][0]{
   name,
   "slug": slug.current
@@ -185,8 +180,6 @@ export interface ArticleIndexGame {
     slug: string;
 }
 
-// Related block: same-game first (empty when the article has no game), then same-category.
-// Self-exclusion is in the query; the JS layer dedupes and trims to the final count.
 export const relatedArticlesQuery = `{
   "sameGame": *[
     _type == "article" && _id != $excludeId && $gameRef != null && game._ref == $gameRef

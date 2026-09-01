@@ -2,14 +2,13 @@ export const ARTICLES_PER_PAGE = 12;
 
 export const parsePageParam = (value?: string | string[]): number => {
     const raw = Array.isArray(value) ? value[0] : value;
-    // Digits only — reject "2.0", "+2", "2e0", " 2 " so the canonical URL stays exact.
+    // Digits only: "2.0", "+2", "2e0" must not resolve to a page.
     if (!raw || !/^[0-9]+$/.test(raw)) return 1;
     const n = Number(raw);
     return n >= 1 ? n : 1;
 };
 
-// Path-based so index pages stay statically generable: page 1 is the bare index,
-// pages 2+ live at `{basePath}/page/{n}`.
+// Path form (not `?page=`) so index routes stay statically generable.
 export const buildPageHref = (basePath: string, page: number): string =>
     page <= 1 ? basePath : `${basePath}/page/${page}`;
 

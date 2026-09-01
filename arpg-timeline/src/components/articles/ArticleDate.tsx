@@ -12,8 +12,8 @@ const format = (iso: string, timeZone?: string) =>
         ...(timeZone ? { timeZone } : {}),
     }).format(new Date(iso));
 
-// Renders in the visitor's locale/timezone; deterministic UTC on the server so
-// hydration matches. `<time dateTime>` keeps the raw ISO for crawlers.
+// Visitor locale on the client, UTC on the server so hydration matches;
+// `<time dateTime>` keeps the ISO for crawlers.
 export const ArticleDate = ({ iso }: { iso: string }) => {
     const isClient = useSyncExternalStore(
         noop,

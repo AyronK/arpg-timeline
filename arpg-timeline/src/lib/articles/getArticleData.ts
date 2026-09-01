@@ -17,12 +17,11 @@ interface GetArticleArgs {
     gameSlug?: string;
 }
 
-// Both queries dereference the linked `game` (slug/name in the body, slug in the params),
-// so they carry the `game` tag too: a game rename or a newly created game heals the page
-// / static params via `revalidateTag("game")`, not just on the next article publish.
+// `game` tag: both queries deref the linked game, so `revalidateTag("game")` (rename,
+// or a slug that becomes a real game) heals the route, not just an article publish.
 const FETCH_OPTS = { next: { revalidate: false as const, tags: ["article", "game"] } };
 
-// `cache()` so generateMetadata, the page and the structured data share one fetch.
+// cache(): metadata, page body and structured data share one fetch.
 export const getArticle = cache(
     async ({ category, slug, gameSlug }: GetArticleArgs): Promise<Article | null> => {
         const query = gameSlug ? articleByGameAndSlugQuery : articleBySlugQuery;

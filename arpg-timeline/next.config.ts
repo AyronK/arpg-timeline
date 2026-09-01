@@ -222,11 +222,8 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
-            // Article `[slug]` pages, the index routes, and the `/page/N` routes: every
-            // dependency is tag-revalidated — `revalidateTag("article")` on any article
-            // change, `revalidateTag("game")` on any game change (the index routes' game
-            // lookup carries the `game` tag) — and that purges the Vercel CDN entry, 404s
-            // included. So a slug that only becomes valid later still heals. Cache hard.
+            // Article + index routes: the `article`/`game` webhook tags purge the Vercel
+            // CDN (404s included), so a hard TTL is safe.
             ...[
                 "/news",
                 "/news/:slug",

@@ -1,6 +1,6 @@
 import type { Rule } from "sanity";
 
-// Ordered least to most AI involvement; the site shows this as a 0-4 scale.
+// Order matters: least to most AI. Rendered as a 0-4 scale.
 const AI_DISCLOSURE_OPTIONS = [
     { title: "None - written entirely by a human", value: "none" },
     { title: "Styling - AI used for formatting / layout only", value: "styling" },
@@ -33,7 +33,7 @@ export default {
             options: {
                 source: "title",
                 maxLength: 96,
-                // Unique per (category, game): a slug may repeat across namespaces.
+                // Scoped unique: a slug may repeat across (category, game) namespaces.
                 isUnique: async (slug: string, context: any) => {
                     const { document, getClient } = context;
                     if (!document) return true;
@@ -301,7 +301,7 @@ export default {
                         },
                     },
                 },
-                // `@sanity/table` plugin; first row renders as the header on the site.
+                // First row renders as the table header on the site.
                 { type: "table" },
             ],
             validation: (Rule: Rule) => Rule.required(),

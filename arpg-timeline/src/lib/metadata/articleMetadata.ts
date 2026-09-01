@@ -5,7 +5,7 @@ import { getArticleAbsoluteUrl, getArticlePath } from "@/lib/articles/articleUrl
 import type { Article } from "@/lib/cms/queries/articleQuery";
 import { DEFAULT_OG_IMAGE } from "@/lib/siteUrl";
 
-/** Crop a Sanity CDN asset URL to the 1200×630 OG frame. */
+/** Sanity CDN URL cropped to the 1200x630 OG frame. */
 function toOgImageUrl(assetUrl: string | undefined): string {
     if (!assetUrl) return DEFAULT_OG_IMAGE;
     const sep = assetUrl.includes("?") ? "&" : "?";
