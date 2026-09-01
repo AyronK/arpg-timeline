@@ -63,7 +63,7 @@ export const ArticleRail = ({ articles }: { articles: RankedArticle[] }) => (
             className="text-muted-foreground hover:text-foreground shrink-0 self-end text-xs transition-colors"
             data-sa-click="dashboard-article-rail-all"
         >
-            All news →
+            See all →
         </Link>
     </div>
 );
