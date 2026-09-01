@@ -4,7 +4,7 @@ import type { ArticleListItem } from "@/lib/cms/queries/articleQuery";
 export const pickRelated = (
     sameGame: ArticleListItem[],
     sameCategory: ArticleListItem[],
-    limit = 3,
+    limit = 5,
 ): ArticleListItem[] => {
     const seen = new Set<string>();
     const out: ArticleListItem[] = [];

@@ -2,12 +2,14 @@ import { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
+export type CtaBannerColor = "orange" | "emerald" | "violet" | "indigo" | "amber" | "white";
+
 export interface CtaBannerProps {
     icon: ReactNode;
     title: string;
     description: string;
     actionLabel: string;
-    color: "orange" | "emerald" | "violet" | "indigo" | "amber";
+    color: CtaBannerColor;
     layout?: "inline" | "stacked" | "mobile-stacked";
     className?: string;
 }
@@ -18,6 +20,7 @@ const colorClasses = {
     violet: "bg-violet-500/30 group-hover:bg-violet-500/50",
     indigo: "bg-indigo-500/30 group-hover:bg-indigo-500/50",
     amber: "bg-amber-500/30 group-hover:bg-amber-500/50",
+    white: "bg-foreground/10 group-hover:bg-foreground/20",
 };
 
 export const CtaBannerContent = ({
@@ -88,11 +91,10 @@ const borderClasses = {
     violet: "border-violet-500/30 hover:border-violet-500/50",
     indigo: "border-indigo-500/30 hover:border-indigo-500/50",
     amber: "border-amber-500/30 hover:border-amber-500/50",
+    white: "border-foreground/20 hover:border-foreground/40",
 };
 
-export const getCtaBannerClassName = (
-    color: "orange" | "emerald" | "violet" | "indigo" | "amber",
-) =>
+export const getCtaBannerClassName = (color: CtaBannerColor) =>
     cn(
         "text-card-foreground bg-card group relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-lg border-2 p-4 transition-all hover:shadow-md md:p-6",
         borderClasses[color],

@@ -15,15 +15,20 @@ describe("pickRelated", () => {
 
     it("tops up from same-category when same-game is short", () => {
         const result = pickRelated([make("g1")], [make("c1"), make("c2"), make("c3")]);
-        expect(result.map((a) => a._id)).toEqual(["g1", "c1", "c2"]);
+        expect(result.map((a) => a._id)).toEqual(["g1", "c1", "c2", "c3"]);
     });
 
     it("dedupes items present in both lists", () => {
         const result = pickRelated([make("a"), make("b")], [make("b"), make("c"), make("d")]);
-        expect(result.map((a) => a._id)).toEqual(["a", "b", "c"]);
+        expect(result.map((a) => a._id)).toEqual(["a", "b", "c", "d"]);
     });
 
-    it("caps at the limit", () => {
+    it("caps at the default limit of 5", () => {
+        const many = Array.from({ length: 8 }, (_, i) => make(`c${i}`));
+        expect(pickRelated([], many)).toHaveLength(5);
+    });
+
+    it("honours an explicit limit", () => {
         const result = pickRelated([], [make("c1"), make("c2"), make("c3"), make("c4")], 3);
         expect(result).toHaveLength(3);
     });

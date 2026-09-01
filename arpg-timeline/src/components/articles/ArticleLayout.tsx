@@ -4,13 +4,15 @@ import { ArticleDate } from "@/components/articles/ArticleDate";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { ArticleToc } from "@/components/articles/ArticleToc";
 import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
+import { BuyMeACoffeeCompact } from "@/components/articles/BuyMeACoffeeCompact";
+import { FollowUs } from "@/components/articles/FollowUs";
+import { PatreonFundingCompact } from "@/components/articles/PatreonFundingCompact";
 import { RelatedArticles } from "@/components/articles/RelatedArticles";
 import { getArticleModified } from "@/lib/articles/articleDates";
 import { ARTICLE_AUTHOR_NAME } from "@/lib/articles/author";
 import { buildArticleCrumbs } from "@/lib/articles/breadcrumbs";
 import { extractToc } from "@/lib/articles/tableOfContents";
 import type { Article, ArticleListItem } from "@/lib/cms/queries/articleQuery";
-import { cn } from "@/lib/utils";
 import { Chip } from "@/ui/Chip";
 
 import { BuyMeACoffee } from "../BuyMeACoffee";
@@ -34,16 +36,10 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
     const modified = getArticleModified(article);
     const showPublished = !sameDay(article.publishedAt, modified);
     const hasToc = toc.length >= 2;
-    const hasRelated = related.length > 0;
-    const hasSidebar = hasToc || hasRelated;
 
     return (
         <div className="relative container mx-auto pt-6 pb-24 md:pt-10 lg:pb-10">
-            <div
-                className={cn(
-                    hasSidebar && "xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:gap-x-8",
-                )}
-            >
+            <div className="xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:gap-x-8">
                 {hasToc && (
                     <aside className="hidden xl:col-start-1 xl:row-start-1 xl:block xl:justify-self-end">
                         <div className="sticky top-12 ml-24 w-48">
@@ -52,13 +48,16 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
                     </aside>
                 )}
 
-                {hasRelated && (
-                    <aside className="hidden xl:col-start-3 xl:row-start-1 xl:block xl:justify-self-start">
-                        <div className="sticky top-12 w-72">
-                            <RelatedArticles articles={related} />
+                <aside className="hidden xl:col-start-3 xl:row-start-1 xl:block xl:justify-self-start">
+                    <div className="sticky top-12 w-72 space-y-8">
+                        <RelatedArticles articles={related} />
+                        <div className="space-y-2">
+                            <PatreonFundingCompact />
+                            <BuyMeACoffeeCompact />
                         </div>
-                    </aside>
-                )}
+                        <FollowUs />
+                    </div>
+                </aside>
 
                 <article className="mx-auto max-w-[55rem] min-w-0 xl:col-start-2 xl:row-start-1">
                     <div className="mb-6">
@@ -112,9 +111,14 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
                         <ArticleBody body={article.body} />
                     </div>
 
-                    <BuyMeACoffee />
-
-                    <RelatedArticles articles={related} className="mt-6 xl:hidden" />
+                    <div className="mt-10 space-y-8 xl:hidden">
+                        <RelatedArticles articles={related} />
+                        <div className="space-y-2">
+                            <PatreonFundingCompact />
+                            <BuyMeACoffeeCompact />
+                        </div>
+                        <FollowUs />
+                    </div>
                 </article>
             </div>
 

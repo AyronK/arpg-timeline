@@ -177,10 +177,10 @@ export interface ArticleIndexGame {
 export const relatedArticlesQuery = `{
   "sameGame": *[
     _type == "article" && _id != $excludeId && $gameRef != null && game._ref == $gameRef
-  ] | order(publishedAt desc)[0...3]{ ${LIST_PROJECTION} },
+  ] | order(publishedAt desc)[0...5]{ ${LIST_PROJECTION} },
   "sameCategory": *[
     _type == "article" && _id != $excludeId && category == $category
-  ] | order(publishedAt desc)[0...6]{ ${LIST_PROJECTION} }
+  ] | order(publishedAt desc)[0...10]{ ${LIST_PROJECTION} }
 }`;
 
 export interface RelatedArticlesResult {
