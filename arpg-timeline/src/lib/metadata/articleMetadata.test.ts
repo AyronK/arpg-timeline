@@ -15,6 +15,7 @@ const baseArticle: Article = {
     updatedAt: null,
     _updatedAt: "2026-08-10T00:00:00Z",
     game: null,
+    gameId: null,
     coverImage: {
         alt: "cover",
         asset: { _id: "img-1", url: "https://cdn.sanity.io/images/p/d/abc-1600x900.jpg" },

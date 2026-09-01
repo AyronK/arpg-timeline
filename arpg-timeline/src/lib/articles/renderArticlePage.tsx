@@ -5,6 +5,7 @@ import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { buildArticleCrumbs } from "@/lib/articles/breadcrumbs";
 import { getArticle, getArticleStaticParams } from "@/lib/articles/getArticleData";
+import { getRelatedArticles } from "@/lib/articles/getArticleListData";
 import { getStructuredDataForArticle } from "@/lib/articles/getStructuredDataForArticle";
 import type { ArticleCategory, ArticleStaticParam } from "@/lib/cms/queries/articleQuery";
 import { generateArticleMetadata } from "@/lib/metadata/articleMetadata";
@@ -22,6 +23,11 @@ export async function renderArticlePage({ category, slug, gameSlug }: RouteArgs)
 
     const structuredData = getStructuredDataForArticle(article);
     const crumbs = buildArticleCrumbs(article);
+    const related = await getRelatedArticles({
+        excludeId: article._id,
+        gameRef: article.gameId,
+        category: article.category,
+    });
 
     return (
         <>
@@ -30,7 +36,7 @@ export async function renderArticlePage({ category, slug, gameSlug }: RouteArgs)
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
-            <ArticleLayout article={article} />
+            <ArticleLayout article={article} related={related} />
         </>
     );
 }

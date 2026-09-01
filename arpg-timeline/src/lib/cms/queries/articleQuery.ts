@@ -34,6 +34,7 @@ const LIST_PROJECTION = `
   updatedAt,
   _updatedAt,
   "game": game->{ "slug": slug.current, name, "logo": logo.asset->{ url } },
+  "gameId": game._ref,
   "coverImage": coverImage{
     alt,
     caption,
@@ -70,6 +71,7 @@ export interface ArticleListItem {
     updatedAt: string | null;
     _updatedAt: string;
     game: ArticleGameRef | null;
+    gameId: string | null;
     coverImage: ArticleImage;
 }
 
@@ -132,4 +134,49 @@ export const gameArticlesByCategoryQuery = `*[
 
 export interface ArticlesListResult {
     articles: ArticleListItem[];
+}
+
+// Paginated index queries - `$from`/`$to` is a GROQ slice, `total` drives page math.
+export const articlesByCategoryPageQuery = `{
+  "items": *[_type == "article" && category == $category]
+    | order(publishedAt desc)[$from...$to]{ ${LIST_PROJECTION} },
+  "total": count(*[_type == "article" && category == $category])
+}`;
+
+export const gameArticlesByCategoryPageQuery = `{
+  "items": *[_type == "article" && category == $category && game->slug.current == $gameSlug]
+    | order(publishedAt desc)[$from...$to]{ ${LIST_PROJECTION} },
+  "total": count(*[_type == "article" && category == $category && game->slug.current == $gameSlug])
+}`;
+
+export interface ArticlesPageResult {
+    items: ArticleListItem[];
+    total: number;
+}
+
+// Lightweight game lookup for the game-scoped index header / 404 guard.
+export const articleIndexGameQuery = `*[_type == "game" && slug.current == $gameSlug][0]{
+  name,
+  "slug": slug.current
+}`;
+
+export interface ArticleIndexGame {
+    name: string;
+    slug: string;
+}
+
+// Related block: same-game first (empty when the article has no game), then same-category.
+// Self-exclusion is in the query; the JS layer dedupes and trims to the final count.
+export const relatedArticlesQuery = `{
+  "sameGame": *[
+    _type == "article" && _id != $excludeId && $gameRef != null && game._ref == $gameRef
+  ] | order(publishedAt desc)[0...3]{ ${LIST_PROJECTION} },
+  "sameCategory": *[
+    _type == "article" && _id != $excludeId && category == $category
+  ] | order(publishedAt desc)[0...6]{ ${LIST_PROJECTION} }
+}`;
+
+export interface RelatedArticlesResult {
+    sameGame: ArticleListItem[];
+    sameCategory: ArticleListItem[];
 }

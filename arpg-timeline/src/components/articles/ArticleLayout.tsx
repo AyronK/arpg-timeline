@@ -4,15 +4,17 @@ import { ArticleDate } from "@/components/articles/ArticleDate";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { ArticleToc } from "@/components/articles/ArticleToc";
 import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
+import { RelatedArticles } from "@/components/articles/RelatedArticles";
 import { getArticleModified } from "@/lib/articles/articleDates";
 import { ARTICLE_AUTHOR_NAME } from "@/lib/articles/author";
 import { buildArticleCrumbs } from "@/lib/articles/breadcrumbs";
 import { extractToc } from "@/lib/articles/tableOfContents";
-import type { Article } from "@/lib/cms/queries/articleQuery";
+import type { Article, ArticleListItem } from "@/lib/cms/queries/articleQuery";
 import { cn } from "@/lib/utils";
 import { Chip } from "@/ui/Chip";
-import { PatreonFunding } from "../PatreonFunding";
+
 import { BuyMeACoffee } from "../BuyMeACoffee";
+import { PatreonFunding } from "../PatreonFunding";
 
 const sameDay = (a: string, b: string) => a.slice(0, 10) === b.slice(0, 10);
 
@@ -21,29 +23,44 @@ const CATEGORY_LABEL: Record<Article["category"], string> = {
     resources: "Resources",
 };
 
-export const ArticleLayout = ({ article }: { article: Article }) => {
+interface ArticleLayoutProps {
+    article: Article;
+    related: ArticleListItem[];
+}
+
+export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
     const crumbs = buildArticleCrumbs(article);
     const toc = extractToc(article.body);
     const modified = getArticleModified(article);
     const showPublished = !sameDay(article.publishedAt, modified);
     const hasToc = toc.length >= 2;
+    const hasRelated = related.length > 0;
+    const hasSidebar = hasToc || hasRelated;
 
     return (
         <div className="relative container mx-auto pt-6 pb-24 md:pt-10 lg:pb-10">
             <div
                 className={cn(
-                    hasToc && "xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:gap-x-8",
+                    hasSidebar && "xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:gap-x-8",
                 )}
             >
                 {hasToc && (
-                    <aside className="hidden xl:block xl:justify-self-end">
-                        <div className="sticky top-12 w-56">
+                    <aside className="hidden xl:col-start-1 xl:row-start-1 xl:block xl:justify-self-end">
+                        <div className="sticky top-12 w-48 ml-24">
                             <ArticleToc headings={toc} variant="sidebar" />
                         </div>
                     </aside>
                 )}
 
-                <article className="mx-auto max-w-[55rem] min-w-0">
+                {hasRelated && (
+                    <aside className="hidden xl:col-start-3 xl:row-start-1 xl:block xl:justify-self-start">
+                        <div className="sticky top-12 w-72">
+                            <RelatedArticles articles={related} />
+                        </div>
+                    </aside>
+                )}
+
+                <article className="mx-auto max-w-[55rem] min-w-0 xl:col-start-2 xl:row-start-1">
                     <div className="mb-6">
                         <PatreonFunding />
                     </div>
@@ -96,6 +113,9 @@ export const ArticleLayout = ({ article }: { article: Article }) => {
                     </div>
 
                     <BuyMeACoffee />
+
+                    <RelatedArticles articles={related} className="mt-6 xl:hidden" />
+
                 </article>
             </div>
 

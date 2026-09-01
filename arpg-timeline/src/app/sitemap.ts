@@ -133,6 +133,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     try {
         const articles = await getArticleStaticParams();
+        const gameIndexes = new Set<string>();
+
         articles.forEach((article) => {
             if (!article.slug) return;
             sitemap.push({
@@ -144,6 +146,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 lastModified: new Date(article.updatedAt || article._updatedAt || Date.now()),
                 changeFrequency: "weekly",
                 priority: 0.7,
+            });
+
+            if (article.gameSlug) {
+                gameIndexes.add(`/game/${article.gameSlug}/${article.category}`);
+            }
+        });
+
+        gameIndexes.forEach((path) => {
+            sitemap.push({
+                url: `${baseUrl}${path}`,
+                lastModified: new Date(),
+                changeFrequency: "weekly",
+                priority: 0.6,
             });
         });
     } catch (error) {
