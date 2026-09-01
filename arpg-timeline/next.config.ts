@@ -222,9 +222,11 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
-            // Article `[slug]` pages *and* the statically generated index / `/page/N`
-            // routes: webhook tag-purge (`revalidateTag("article")`) is the only
-            // invalidation, so cache hard at the CDN.
+            // Article `[slug]` pages, the index routes, and the `/page/N` routes: every
+            // dependency is tag-revalidated — `revalidateTag("article")` on any article
+            // change, `revalidateTag("game")` on any game change (the index routes' game
+            // lookup carries the `game` tag) — and that purges the Vercel CDN entry, 404s
+            // included. So a slug that only becomes valid later still heals. Cache hard.
             ...[
                 "/news",
                 "/news/:slug",
@@ -241,10 +243,7 @@ const nextConfig: NextConfig = {
             ].map((source) => ({
                 source,
                 headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=0, must-revalidate",
-                    },
+                    { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
                     {
                         key: "Vercel-CDN-Cache-Control",
                         value: "public, max-age=31536000, stale-while-revalidate=86400",

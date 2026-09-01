@@ -12,6 +12,14 @@ describe("parsePageParam", () => {
         expect(parsePageParam("2.5")).toBe(1);
     });
 
+    it("rejects numeric-looking strings that aren't plain digits", () => {
+        expect(parsePageParam("2.0")).toBe(1);
+        expect(parsePageParam("+2")).toBe(1);
+        expect(parsePageParam("2e0")).toBe(1);
+        expect(parsePageParam(" 2 ")).toBe(1);
+        expect(parsePageParam("0x2")).toBe(1);
+    });
+
     it("parses a valid positive integer", () => {
         expect(parsePageParam("2")).toBe(2);
         expect(parsePageParam("47")).toBe(47);

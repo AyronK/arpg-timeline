@@ -2,9 +2,10 @@ export const ARTICLES_PER_PAGE = 12;
 
 export const parsePageParam = (value?: string | string[]): number => {
     const raw = Array.isArray(value) ? value[0] : value;
+    // Digits only — reject "2.0", "+2", "2e0", " 2 " so the canonical URL stays exact.
+    if (!raw || !/^[0-9]+$/.test(raw)) return 1;
     const n = Number(raw);
-    if (!Number.isInteger(n) || n < 1) return 1;
-    return n;
+    return n >= 1 ? n : 1;
 };
 
 // Path-based so index pages stay statically generable: page 1 is the bare index,
