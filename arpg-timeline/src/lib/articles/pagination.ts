@@ -7,8 +7,10 @@ export const parsePageParam = (value?: string | string[]): number => {
     return n;
 };
 
+// Path-based so index pages stay statically generable: page 1 is the bare index,
+// pages 2+ live at `{basePath}/page/{n}`.
 export const buildPageHref = (basePath: string, page: number): string =>
-    page <= 1 ? basePath : `${basePath}?page=${page}`;
+    page <= 1 ? basePath : `${basePath}/page/${page}`;
 
 export type PageToken = number | "ellipsis";
 

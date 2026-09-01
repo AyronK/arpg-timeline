@@ -23,14 +23,14 @@ describe("parsePageParam", () => {
 });
 
 describe("buildPageHref", () => {
-    it("omits the query for page 1", () => {
+    it("returns the bare index for page 1", () => {
         expect(buildPageHref("/news", 1)).toBe("/news");
         expect(buildPageHref("/news", 0)).toBe("/news");
     });
 
-    it("appends ?page for later pages", () => {
-        expect(buildPageHref("/news", 2)).toBe("/news?page=2");
-        expect(buildPageHref("/game/poe/resources", 5)).toBe("/game/poe/resources?page=5");
+    it("uses a /page/N segment for later pages", () => {
+        expect(buildPageHref("/news", 2)).toBe("/news/page/2");
+        expect(buildPageHref("/game/poe/resources", 5)).toBe("/game/poe/resources/page/5");
     });
 });
 

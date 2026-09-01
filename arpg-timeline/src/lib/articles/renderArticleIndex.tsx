@@ -5,14 +5,19 @@ import { ArticleIndex } from "@/components/articles/ArticleIndex";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getArticleIndexPath } from "@/lib/articles/articleUrl";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
-import { getArticleIndexGame, getArticlesPage } from "@/lib/articles/getArticleListData";
+import { getArticleStaticParams } from "@/lib/articles/getArticleData";
+import {
+    getArticleIndexGame,
+    getArticlesPage,
+    getArticlesPageCount,
+} from "@/lib/articles/getArticleListData";
 import { buildPageHref, parsePageParam } from "@/lib/articles/pagination";
 import type { ArticleCategory } from "@/lib/cms/queries/articleQuery";
 
 interface IndexArgs {
     category: ArticleCategory;
     gameSlug?: string;
-    page?: string | string[];
+    page?: string;
 }
 
 const CATEGORY_LABEL: Record<ArticleCategory, string> = {
@@ -103,4 +108,46 @@ export async function resolveArticleIndexMetadata(args: IndexArgs): Promise<Meta
             googleBot: { index: page <= pageCount, follow: true, "max-image-preview": "large" },
         },
     };
+}
+
+const pagesFrom2 = (pageCount: number): string[] =>
+    Array.from({ length: Math.max(0, pageCount - 1) }, (_, i) => String(i + 2));
+
+const gameSlugsForCategory = async (category: ArticleCategory): Promise<string[]> => {
+    const all = await getArticleStaticParams();
+    return [
+        ...new Set(
+            all
+                .filter((a) => a.category === category && a.gameSlug)
+                .map((a) => a.gameSlug as string),
+        ),
+    ];
+};
+
+/** `/page/[page]` params for a root index — pages 2…N only (page 1 is the bare route). */
+export async function articleIndexPageParams(
+    category: ArticleCategory,
+): Promise<{ page: string }[]> {
+    const pageCount = await getArticlesPageCount({ category });
+    return pagesFrom2(pageCount).map((page) => ({ page }));
+}
+
+/** Game slugs with at least one article in this category (for the base game index). */
+export async function articleIndexGameParams(
+    category: ArticleCategory,
+): Promise<{ gameSlug: string }[]> {
+    return (await gameSlugsForCategory(category)).map((gameSlug) => ({ gameSlug }));
+}
+
+/** `{ gameSlug, page }` params for a game-scoped `/page/[page]` index — pages 2…N. */
+export async function gameArticleIndexPageParams(
+    category: ArticleCategory,
+): Promise<{ gameSlug: string; page: string }[]> {
+    const gameSlugs = await gameSlugsForCategory(category);
+    const out: { gameSlug: string; page: string }[] = [];
+    for (const gameSlug of gameSlugs) {
+        const pageCount = await getArticlesPageCount({ category, gameSlug });
+        for (const page of pagesFrom2(pageCount)) out.push({ gameSlug, page });
+    }
+    return out;
 }

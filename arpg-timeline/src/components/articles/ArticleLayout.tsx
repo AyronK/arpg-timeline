@@ -46,7 +46,7 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
             >
                 {hasToc && (
                     <aside className="hidden xl:col-start-1 xl:row-start-1 xl:block xl:justify-self-end">
-                        <div className="sticky top-12 w-48 ml-24">
+                        <div className="sticky top-12 ml-24 w-48">
                             <ArticleToc headings={toc} variant="sidebar" />
                         </div>
                     </aside>
@@ -115,7 +115,6 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
                     <BuyMeACoffee />
 
                     <RelatedArticles articles={related} className="mt-6 xl:hidden" />
-
                 </article>
             </div>
 

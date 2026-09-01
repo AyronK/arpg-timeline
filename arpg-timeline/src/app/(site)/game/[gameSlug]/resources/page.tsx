@@ -1,22 +1,28 @@
 import type { Metadata } from "next";
 
-import { renderArticleIndex, resolveArticleIndexMetadata } from "@/lib/articles/renderArticleIndex";
+import {
+    articleIndexGameParams,
+    renderArticleIndex,
+    resolveArticleIndexMetadata,
+} from "@/lib/articles/renderArticleIndex";
 
 interface Props {
     params: Promise<{ gameSlug: string }>;
-    searchParams: Promise<{ page?: string }>;
 }
 
-export default async function GameResourcesIndexPage({ params, searchParams }: Props) {
+export default async function GameResourcesIndexPage({ params }: Props) {
     const { gameSlug } = await params;
-    const { page } = await searchParams;
-    return renderArticleIndex({ category: "resources", gameSlug, page });
+    return renderArticleIndex({ category: "resources", gameSlug });
 }
 
-export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { gameSlug } = await params;
-    const { page } = await searchParams;
-    return resolveArticleIndexMetadata({ category: "resources", gameSlug, page });
+    return resolveArticleIndexMetadata({ category: "resources", gameSlug });
+}
+
+export function generateStaticParams() {
+    return articleIndexGameParams("resources");
 }
 
 export const revalidate = false;
+export const dynamicParams = true;

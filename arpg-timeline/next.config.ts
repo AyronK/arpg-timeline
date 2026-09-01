@@ -222,13 +222,22 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
-            // Article `[slug]` pages: webhook tag-purge is the only invalidation, so
-            // cache hard. Single-segment on purpose — the index pages revalidate faster.
+            // Article `[slug]` pages *and* the statically generated index / `/page/N`
+            // routes: webhook tag-purge (`revalidateTag("article")`) is the only
+            // invalidation, so cache hard at the CDN.
             ...[
+                "/news",
                 "/news/:slug",
+                "/news/page/:page",
+                "/resources",
                 "/resources/:slug",
+                "/resources/page/:page",
+                "/game/:gameSlug/news",
                 "/game/:gameSlug/news/:articleSlug",
+                "/game/:gameSlug/news/page/:page",
+                "/game/:gameSlug/resources",
                 "/game/:gameSlug/resources/:articleSlug",
+                "/game/:gameSlug/resources/page/:page",
             ].map((source) => ({
                 source,
                 headers: [

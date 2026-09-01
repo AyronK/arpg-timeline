@@ -6,8 +6,10 @@ import {
     ArticleIndexGame,
     articleIndexGameQuery,
     articlesByCategoryPageQuery,
+    articlesCountQuery,
     ArticlesPageResult,
     gameArticlesByCategoryPageQuery,
+    gameArticlesCountQuery,
     relatedArticlesQuery,
     RelatedArticlesResult,
 } from "@/lib/cms/queries/articleQuery";
@@ -45,6 +47,21 @@ export const getArticlesPage = cache(
             total,
             pageCount: Math.max(1, Math.ceil(total / ARTICLES_PER_PAGE)),
         };
+    },
+);
+
+export const getArticlesPageCount = cache(
+    async ({
+        category,
+        gameSlug,
+    }: {
+        category: ArticleCategory;
+        gameSlug?: string;
+    }): Promise<number> => {
+        const query = gameSlug ? gameArticlesCountQuery : articlesCountQuery;
+        const params = gameSlug ? { category, gameSlug } : { category };
+        const total = await sanityClient.fetch<number>(query, params, FETCH_OPTS);
+        return Math.max(1, Math.ceil((total ?? 0) / ARTICLES_PER_PAGE));
     },
 );
 

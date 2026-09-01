@@ -154,6 +154,13 @@ export interface ArticlesPageResult {
     total: number;
 }
 
+// Count-only — feeds `generateStaticParams` for the `/page/[page]` routes.
+export const articlesCountQuery = `count(*[_type == "article" && category == $category])`;
+
+export const gameArticlesCountQuery = `count(*[
+  _type == "article" && category == $category && game->slug.current == $gameSlug
+])`;
+
 // Lightweight game lookup for the game-scoped index header / 404 guard.
 export const articleIndexGameQuery = `*[_type == "game" && slug.current == $gameSlug][0]{
   name,
