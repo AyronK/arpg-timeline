@@ -8,6 +8,7 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { SteamNewsItem } from "@/lib/steam/getSteamNews";
+import { sanitizeNewsDescription } from "@/lib/steam/sanitizeNewsDescription";
 
 export const metadata: Metadata = {
     title: "Latest Game News | ARPG Timeline",
@@ -48,7 +49,7 @@ const NewsPage = async () => {
                         news: {
                             title: news.title,
                             link: news.link,
-                            description: news.description,
+                            description: sanitizeNewsDescription(news.description),
                             pubDate: news.pub_date,
                         } as SteamNewsItem,
                     }));
