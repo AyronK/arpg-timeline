@@ -3,7 +3,9 @@ import Image from "next/image";
 
 import { LayoutCarousel } from "@/components/LayoutCarousel";
 import { DashboardPage } from "@/components/Pages/DashboardPage";
+import { DashboardArticlesProvider } from "@/contexts/DashboardArticlesContext";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
+import { getDashboardArticles } from "@/lib/articles/getDashboardArticles";
 import { getAverageSeasonDuration } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { generateDashboardMetadata } from "@/lib/metadata/dashboardMetadata";
@@ -17,6 +19,7 @@ const Home = async () => {
     });
 
     const sanityGames = data.games;
+    const articles = await getDashboardArticles();
 
     sanityGames.forEach((game) => {
         game.averageSeasonDuration = getAverageSeasonDuration(
@@ -38,7 +41,9 @@ const Home = async () => {
                 />
             </div>
             <LayoutCarousel />
-            <DashboardPage />
+            <DashboardArticlesProvider articles={articles}>
+                <DashboardPage />
+            </DashboardArticlesProvider>
         </GameFilterProvider>
     );
 };

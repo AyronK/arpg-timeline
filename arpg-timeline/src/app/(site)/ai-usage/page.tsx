@@ -25,7 +25,7 @@ const ARTICLE_LEVELS: {
     },
     {
         value: "assisted",
-        detail: "Everything from level 1, plus AI for digging up background, summarising sources, or sketching an outline. The writing itself is still done by a person.",
+        detail: "Everything from level 1, plus AI in the writing itself - suggesting phrasings, rewording, and going back and forth on drafts. A person leads the writing and does the research.",
     },
     {
         value: "redacted",

@@ -151,6 +151,11 @@ export interface GameArticlesPreview {
     resources: ArticleListItem[];
 }
 
+// Dashboard pool: both categories, game-scoped and generic alike. Ranking and
+// game-filtering happen client-side, so fetch a little more than any slot needs.
+export const dashboardArticlesQuery = `*[_type == "article" && ${VISIBLE}]
+  | order(publishedAt desc)[0...$limit]{ ${LIST_PROJECTION} }`;
+
 export const articlesCountQuery = `count(*[_type == "article" && category == $category && ${VISIBLE}])`;
 
 export const gameArticlesCountQuery = `count(*[

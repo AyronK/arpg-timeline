@@ -11,7 +11,6 @@ export interface AiDisclosureMeta {
     tone: AiDisclosureTone;
 }
 
-// Cumulative: each level includes the ones below it.
 export const AI_DISCLOSURE_META: Record<AiDisclosure, AiDisclosureMeta> = {
     none: {
         degree: 0,
@@ -28,13 +27,13 @@ export const AI_DISCLOSURE_META: Record<AiDisclosure, AiDisclosureMeta> = {
     assisted: {
         degree: 2,
         label: "AI-assisted",
-        description: "+ AI research and outlining; a human writes.",
+        description: "A human leads the writing, with AI help along the way.",
         tone: "info",
     },
     redacted: {
         degree: 3,
         label: "AI draft, human-finished",
-        description: "+ AI writes the draft; a human edits and does the final pass.",
+        description: "AI writes the draft; a human edits and does the final pass.",
         tone: "info",
     },
     "fully-generated": {
