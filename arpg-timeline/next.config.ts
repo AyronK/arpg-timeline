@@ -87,10 +87,6 @@ const nextConfig: NextConfig = {
                         key: "Cache-Control",
                         value: "public, max-age=300",
                     },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=3600, stale-while-revalidate=300",
-                    },
                 ],
             },
             {
@@ -99,10 +95,6 @@ const nextConfig: NextConfig = {
                     {
                         key: "Cache-Control",
                         value: "public, max-age=300",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=3600, stale-while-revalidate=300",
                     },
                 ],
             },
@@ -113,10 +105,6 @@ const nextConfig: NextConfig = {
                         key: "Cache-Control",
                         value: "public, max-age=86400",
                     },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=86400",
-                    },
                 ],
             },
             {
@@ -125,10 +113,6 @@ const nextConfig: NextConfig = {
                     {
                         key: "Cache-Control",
                         value: "public, max-age=86400",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=86400",
                     },
                 ],
             },
@@ -184,48 +168,11 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
-            {
-                source: "/",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=300",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=3600, stale-while-revalidate=300",
-                    },
-                ],
-            },
-            {
-                source: "/dashboard/:path",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=300",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=3600, stale-while-revalidate=300",
-                    },
-                ],
-            },
-            {
-                source: "/game/:path",
-                headers: [
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=300",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=300",
-                    },
-                ],
-            },
-            // Article + index routes: the `article`/`game` webhook tags purge the Vercel
-            // CDN (404s included), so a hard TTL is safe.
+            // Tag-revalidated CMS routes: no custom CDN header, so revalidateTag() can purge them.
             ...[
+                "/",
+                "/dashboard/:path",
+                "/game/:path",
                 "/news",
                 "/news/:slug",
                 "/news/page/:page",
@@ -240,17 +187,7 @@ const nextConfig: NextConfig = {
                 "/game/:gameSlug/resources/page/:page",
             ].map((source) => ({
                 source,
-                headers: [
-                    { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=31536000, stale-while-revalidate=86400",
-                    },
-                    {
-                        key: "CDN-Cache-Control",
-                        value: "public, max-age=31536000, stale-while-revalidate=86400",
-                    },
-                ],
+                headers: [{ key: "Cache-Control", value: "public, max-age=300" }],
             })),
             {
                 source: "/support",
@@ -258,10 +195,6 @@ const nextConfig: NextConfig = {
                     {
                         key: "Cache-Control",
                         value: "public, max-age=86400",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=86400",
                     },
                 ],
             },
@@ -284,10 +217,6 @@ const nextConfig: NextConfig = {
                     {
                         key: "Cache-Control",
                         value: "public, max-age=86400",
-                    },
-                    {
-                        key: "Vercel-CDN-Cache-Control",
-                        value: "public, max-age=86400, stale-while-revalidate=86400",
                     },
                 ],
             },

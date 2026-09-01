@@ -5,7 +5,7 @@ export const sanityClient = createClient({
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
     token: process.env.SANITY_STUDIO_READ_TOKEN,
     apiVersion: "2025-06-08",
-    useCdn: true,
+    useCdn: false,
 });
 
 export async function sanityFetch<const QueryString extends string>({
