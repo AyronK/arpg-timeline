@@ -1,4 +1,4 @@
-import createImageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import { ImageProps } from "next/image";
 import Image from "next/image";
 import { SanityImageAssetDocument } from "next-sanity";
