@@ -63,7 +63,7 @@ export const Events = ({ events }: { events: TimelineEvent[] }) => {
                 </ErrorBoundary>
             </div>
             {showRail && (
-                <div className="col-span-1 md:col-span-2 xl:col-span-1">
+                <div className="col-span-1 flex md:col-span-2 xl:col-span-1">
                     <ErrorBoundary fallback={<WidgetDiedFallback />}>
                         <ArticleRail articles={railArticles} />
                     </ErrorBoundary>
