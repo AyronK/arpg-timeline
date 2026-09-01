@@ -33,7 +33,7 @@ export default {
             options: {
                 source: "title",
                 maxLength: 96,
-                // Unique per (category, game) — a slug may repeat across namespaces.
+                // Unique per (category, game): a slug may repeat across namespaces.
                 isUnique: async (slug: string, context: any) => {
                     const { document, getClient } = context;
                     if (!document) return true;
