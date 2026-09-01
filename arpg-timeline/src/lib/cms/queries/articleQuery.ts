@@ -82,12 +82,16 @@ export interface Article extends ArticleListItem {
     body: PortableTextBlock[];
 }
 
+// Every article fetch must pass `$showUnreleased`.
+const VISIBLE = `(productionReady == true || $showUnreleased)`;
+
 // `category` filter: a slug reused across namespaces must not cross-resolve.
 export const articleBySlugQuery = `*[
   _type == "article" &&
   slug.current == $slug &&
   !defined(game) &&
-  category == $category
+  category == $category &&
+  ${VISIBLE}
 ][0]{
   ${FULL_PROJECTION}
 }`;
@@ -96,7 +100,8 @@ export const articleByGameAndSlugQuery = `*[
   _type == "article" &&
   slug.current == $slug &&
   category == $category &&
-  game->slug.current == $gameSlug
+  game->slug.current == $gameSlug &&
+  ${VISIBLE}
 ][0]{
   ${FULL_PROJECTION}
 }`;
@@ -109,7 +114,7 @@ export interface ArticleStaticParam {
     _updatedAt: string;
 }
 
-export const articleStaticParamsQuery = `*[_type == "article"]{
+export const articleStaticParamsQuery = `*[_type == "article" && ${VISIBLE}]{
   "slug": slug.current,
   category,
   "gameSlug": game->slug.current,
@@ -117,34 +122,16 @@ export const articleStaticParamsQuery = `*[_type == "article"]{
   _updatedAt
 }`;
 
-export const articlesByCategoryQuery = `*[
-  _type == "article" && category == $category
-] | order(publishedAt desc){
-  ${LIST_PROJECTION}
-}`;
-
-export const gameArticlesByCategoryQuery = `*[
-  _type == "article" &&
-  category == $category &&
-  game->slug.current == $gameSlug
-] | order(publishedAt desc){
-  ${LIST_PROJECTION}
-}`;
-
-export interface ArticlesListResult {
-    articles: ArticleListItem[];
-}
-
 export const articlesByCategoryPageQuery = `{
-  "items": *[_type == "article" && category == $category]
+  "items": *[_type == "article" && category == $category && ${VISIBLE}]
     | order(publishedAt desc)[$from...$to]{ ${LIST_PROJECTION} },
-  "total": count(*[_type == "article" && category == $category])
+  "total": count(*[_type == "article" && category == $category && ${VISIBLE}])
 }`;
 
 export const gameArticlesByCategoryPageQuery = `{
-  "items": *[_type == "article" && category == $category && game->slug.current == $gameSlug]
+  "items": *[_type == "article" && category == $category && game->slug.current == $gameSlug && ${VISIBLE}]
     | order(publishedAt desc)[$from...$to]{ ${LIST_PROJECTION} },
-  "total": count(*[_type == "article" && category == $category && game->slug.current == $gameSlug])
+  "total": count(*[_type == "article" && category == $category && game->slug.current == $gameSlug && ${VISIBLE}])
 }`;
 
 export interface ArticlesPageResult {
@@ -153,9 +140,9 @@ export interface ArticlesPageResult {
 }
 
 export const gameArticlesPreviewQuery = `{
-  "news": *[_type == "article" && game->slug.current == $gameSlug && category == "news"]
+  "news": *[_type == "article" && game->slug.current == $gameSlug && category == "news" && ${VISIBLE}]
     | order(publishedAt desc)[0...3]{ ${LIST_PROJECTION} },
-  "resources": *[_type == "article" && game->slug.current == $gameSlug && category == "resources"]
+  "resources": *[_type == "article" && game->slug.current == $gameSlug && category == "resources" && ${VISIBLE}]
     | order(publishedAt desc)[0...3]{ ${LIST_PROJECTION} }
 }`;
 
@@ -164,10 +151,10 @@ export interface GameArticlesPreview {
     resources: ArticleListItem[];
 }
 
-export const articlesCountQuery = `count(*[_type == "article" && category == $category])`;
+export const articlesCountQuery = `count(*[_type == "article" && category == $category && ${VISIBLE}])`;
 
 export const gameArticlesCountQuery = `count(*[
-  _type == "article" && category == $category && game->slug.current == $gameSlug
+  _type == "article" && category == $category && game->slug.current == $gameSlug && ${VISIBLE}
 ])`;
 
 export const articleIndexGameQuery = `*[_type == "game" && slug.current == $gameSlug][0]{
@@ -182,10 +169,10 @@ export interface ArticleIndexGame {
 
 export const relatedArticlesQuery = `{
   "sameGame": *[
-    _type == "article" && _id != $excludeId && $gameRef != null && game._ref == $gameRef
+    _type == "article" && _id != $excludeId && $gameRef != null && game._ref == $gameRef && ${VISIBLE}
   ] | order(publishedAt desc)[0...5]{ ${LIST_PROJECTION} },
   "sameCategory": *[
-    _type == "article" && _id != $excludeId && category == $category
+    _type == "article" && _id != $excludeId && category == $category && ${VISIBLE}
   ] | order(publishedAt desc)[0...10]{ ${LIST_PROJECTION} }
 }`;
 

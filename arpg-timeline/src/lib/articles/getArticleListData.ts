@@ -1,6 +1,7 @@
 import { cache } from "react";
 
 import { pickRelated } from "@/lib/articles/related";
+import { showUnreleasedArticles } from "@/lib/articles/visibility";
 import {
     ArticleCategory,
     ArticleIndexGame,
@@ -22,6 +23,7 @@ import { ARTICLES_PER_PAGE } from "./pagination";
 // `game` tag: list projections deref the linked game, so `revalidateTag("game")` heals
 // renames and lets a slug that later becomes a real game resolve its 404 route.
 const FETCH_OPTS = { next: { revalidate: false as const, tags: ["article", "game"] } };
+const showUnreleased = showUnreleasedArticles;
 
 interface ArticlesPageArgs {
     category: ArticleCategory;
@@ -41,7 +43,9 @@ export const getArticlesPage = cache(
         const to = from + ARTICLES_PER_PAGE;
 
         const query = gameSlug ? gameArticlesByCategoryPageQuery : articlesByCategoryPageQuery;
-        const params = gameSlug ? { category, gameSlug, from, to } : { category, from, to };
+        const params = gameSlug
+            ? { category, gameSlug, from, to, showUnreleased }
+            : { category, from, to, showUnreleased };
 
         const res = await sanityClient.fetch<ArticlesPageResult | null>(query, params, FETCH_OPTS);
         const total = res?.total ?? 0;
@@ -63,7 +67,9 @@ export const getArticlesPageCount = cache(
         gameSlug?: string;
     }): Promise<number> => {
         const query = gameSlug ? gameArticlesCountQuery : articlesCountQuery;
-        const params = gameSlug ? { category, gameSlug } : { category };
+        const params = gameSlug
+            ? { category, gameSlug, showUnreleased }
+            : { category, showUnreleased };
         const total = await sanityClient.fetch<number>(query, params, FETCH_OPTS);
         return Math.max(1, Math.ceil((total ?? 0) / ARTICLES_PER_PAGE));
     },
@@ -73,7 +79,7 @@ export const getGameArticlesPreview = cache(
     async (gameSlug: string): Promise<GameArticlesPreview> => {
         const res = await sanityClient.fetch<GameArticlesPreview | null>(
             gameArticlesPreviewQuery,
-            { gameSlug },
+            { gameSlug, showUnreleased },
             FETCH_OPTS,
         );
         return { news: res?.news ?? [], resources: res?.resources ?? [] };
@@ -98,7 +104,7 @@ interface RelatedArgs {
 export const getRelatedArticles = cache(async ({ excludeId, gameRef, category }: RelatedArgs) => {
     const res = await sanityClient.fetch<RelatedArticlesResult | null>(
         relatedArticlesQuery,
-        { excludeId, gameRef, category },
+        { excludeId, gameRef, category, showUnreleased },
         FETCH_OPTS,
     );
 

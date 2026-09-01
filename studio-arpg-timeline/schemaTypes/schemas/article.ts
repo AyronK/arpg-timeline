@@ -78,6 +78,15 @@ export default {
             group: "main",
         },
         {
+            name: "productionReady",
+            title: "Visible on production",
+            description:
+                "Off by default. While off, the article is live only on preview deploys; turn it on to publish to the production site.",
+            type: "boolean",
+            group: "main",
+            initialValue: false,
+        },
+        {
             name: "category",
             title: "Category",
             type: "string",
@@ -347,11 +356,20 @@ export default {
             category: "category",
             game: "game.name",
             media: "coverImage",
+            productionReady: "productionReady",
         },
-        prepare(selection: { title?: string; category?: string; game?: string }) {
-            const { title, category, game } = selection;
+        prepare(selection: {
+            title?: string;
+            category?: string;
+            game?: string;
+            productionReady?: boolean;
+        }) {
+            const { title, category, game, productionReady } = selection;
             const scope = game ? `${game} · ${category}` : category;
-            return { title, subtitle: scope };
+            return {
+                title: productionReady ? title : `[preview] ${title ?? "Untitled"}`,
+                subtitle: scope,
+            };
         },
     },
     orderings: [
