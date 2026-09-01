@@ -9,8 +9,8 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import { blockToPlainText, slugifyHeading } from "@/lib/articles/tableOfContents";
 import { getYouTubeEmbedUrl, parseYouTubeId } from "@/lib/articles/youtube";
 import type { ArticleImage as ArticleImageData } from "@/lib/cms/queries/articleQuery";
-import { addUTMParameters } from "@/lib/utm";
 import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
 
 const addUTM = addUTMParameters({
     utm_source: "arpg-timeline",

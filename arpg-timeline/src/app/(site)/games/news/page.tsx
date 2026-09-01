@@ -3,7 +3,9 @@ import { Suspense } from "react";
 
 import { NewsContent } from "@/components/Dashboard/NewsContent";
 import { LayoutCarousel } from "@/components/LayoutCarousel";
+import { DashboardArticlesProvider } from "@/contexts/DashboardArticlesContext";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
+import { getDashboardArticles } from "@/lib/articles/getDashboardArticles";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { GameNewsService } from "@/lib/gameNewsService";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
@@ -23,6 +25,7 @@ const NewsPage = async () => {
     });
 
     const sanityGames = data.games;
+    const articles = await getDashboardArticles();
     const gamesForNews = data.games;
     const gameSlugs = data.games.map((game) => game.slug);
 
@@ -67,9 +70,11 @@ const NewsPage = async () => {
         <Suspense>
             <GameFilterProvider games={sanityGames} category={"featured"}>
                 <LayoutCarousel />
-                <div className="relative container mx-auto mt-2 mb-8">
-                    <NewsContent gamesNews={gamesNews} />
-                </div>
+                <DashboardArticlesProvider articles={articles}>
+                    <div className="relative container mx-auto mt-2 mb-8">
+                        <NewsContent gamesNews={gamesNews} />
+                    </div>
+                </DashboardArticlesProvider>
             </GameFilterProvider>
         </Suspense>
     );

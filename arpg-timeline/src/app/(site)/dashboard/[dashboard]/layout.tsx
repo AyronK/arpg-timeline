@@ -2,7 +2,9 @@ import { notFound, redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 import { LayoutCarousel } from "@/components/LayoutCarousel";
+import { DashboardArticlesProvider } from "@/contexts/DashboardArticlesContext";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
+import { getDashboardArticles } from "@/lib/articles/getDashboardArticles";
 import { isGameFilterCategory } from "@/lib/cms/gameTags";
 import { getAverageSeasonDuration } from "@/lib/cms/parseGamesFromSanity";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
@@ -29,6 +31,7 @@ const DashboardLayout = async ({ children, params }: PropsWithChildren<Dashboard
     });
 
     const sanityGames = data.games;
+    const articles = await getDashboardArticles();
 
     sanityGames.forEach((game) => {
         game.averageSeasonDuration = getAverageSeasonDuration(
@@ -39,7 +42,7 @@ const DashboardLayout = async ({ children, params }: PropsWithChildren<Dashboard
     return (
         <GameFilterProvider games={sanityGames} category={dashboard}>
             <LayoutCarousel />
-            {children}
+            <DashboardArticlesProvider articles={articles}>{children}</DashboardArticlesProvider>
         </GameFilterProvider>
     );
 };
