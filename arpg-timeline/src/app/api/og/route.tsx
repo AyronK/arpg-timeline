@@ -62,7 +62,14 @@ export async function GET(request: NextRequest) {
                     padding: "60px 40px",
                 }}
             >
-                <img src={logoSrc} width={280} height={280} style={{ objectFit: "contain" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element -- satori renders raw <img>, not next/image */}
+                <img
+                    alt=""
+                    src={logoSrc}
+                    width={280}
+                    height={280}
+                    style={{ objectFit: "contain" }}
+                />
             </div>
 
             <div
