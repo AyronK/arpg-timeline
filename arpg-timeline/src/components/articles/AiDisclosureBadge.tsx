@@ -56,7 +56,7 @@ export const AiDisclosureBadge = ({ value }: { value: AiDisclosure }) => {
                 <p className="text-muted-foreground mt-1 text-sm">{meta.description}</p>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                    <Link href="/ai-usage#articles" className="text-sm -mx-2">
+                    <Link href="/ai-usage#articles" className="-mx-2 text-sm">
                         Learn more
                     </Link>
                 </DropdownMenuItem>

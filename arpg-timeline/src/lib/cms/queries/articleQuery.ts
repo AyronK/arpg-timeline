@@ -14,6 +14,8 @@ export interface ArticleImageAsset {
 export interface ArticleImage {
     alt: string;
     caption?: string;
+    credit?: string;
+    creditUrl?: string;
     asset: ArticleImageAsset | null;
 }
 
@@ -38,6 +40,8 @@ const LIST_PROJECTION = `
   "coverImage": coverImage{
     alt,
     caption,
+    credit,
+    creditUrl,
     "asset": asset->{ _id, url, "lqip": metadata.lqip, "dimensions": metadata.dimensions }
   }
 `;

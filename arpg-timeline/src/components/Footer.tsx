@@ -202,6 +202,13 @@ export const Footer = () => (
                     </div>
                 </div>
             </div>
+            <div className="container mx-auto border-t pt-4">
+                <p className="text-muted-foreground text-center text-xs text-balance">
+                    Game names, logos, trademarks, screenshots, and promotional material are the
+                    property of their respective owners. Used here for identification and editorial
+                    purposes only.
+                </p>
+            </div>
         </div>
     </footer>
 );

@@ -43,7 +43,33 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">3. Calendar Subscriptions</h3>
+                        <h3 className="text-xl font-semibold">
+                            3. Game Imagery &amp; Editorial Use
+                        </h3>
+                        <p>
+                            Screenshots, artwork, promotional material, and press-kit assets shown
+                            on the Site remain the copyright of their respective owners. They are
+                            reproduced here for editorial and illustrative purposes accompanying
+                            news and reference content, under the fan-content and press-asset
+                            policies of the respective publishers where such policies exist. Where a
+                            source is known it is credited beneath the image. No claim of ownership
+                            is made, and their presence does not imply endorsement.
+                        </p>
+                        <p>
+                            If you are a rights holder and want an image removed or credited
+                            differently, contact us at{" "}
+                            <Link
+                                className="text-primary underline underline-offset-2 transition-all hover:brightness-125"
+                                href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
+                            >
+                                {process.env.NEXT_PUBLIC_CONTACT_EMAIL}
+                            </Link>{" "}
+                            and we will act on it promptly.
+                        </p>
+                    </div>
+
+                    <div className="space-y-3">
+                        <h3 className="text-xl font-semibold">4. Calendar Subscriptions</h3>
                         <p>
                             Calendar feeds are provided for personal, non-commercial use only.
                             Redistribution of calendar feeds or their contents is not permitted.
@@ -52,7 +78,7 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">4. Embeddable Widgets</h3>
+                        <h3 className="text-xl font-semibold">5. Embeddable Widgets</h3>
                         <p>
                             You may embed the provided widgets on personal or community websites.
                             You may not modify the widget source, obscure or remove the
@@ -62,16 +88,16 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">5. Scraping &amp; Crawling</h3>
+                        <h3 className="text-xl font-semibold">6. Scraping &amp; Crawling</h3>
                         <p>
                             Automated scraping or crawling of the Site is not permitted. If you need
-                            programmatic access to data, use the API (subject to Section 7).
+                            programmatic access to data, use the API (subject to Section 8).
                             Excessive automated requests may be blocked without notice.
                         </p>
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">6. Source Code &amp; License</h3>
+                        <h3 className="text-xl font-semibold">7. Source Code &amp; License</h3>
                         <p>
                             The source code is publicly available on GitHub under the{" "}
                             <Link
@@ -92,7 +118,7 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">7. API</h3>
+                        <h3 className="text-xl font-semibold">8. API</h3>
                         <p>
                             Access to the API is invite-only or available through an active Patreon
                             membership. By using the API you agree to:
@@ -118,7 +144,7 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">8. Privacy</h3>
+                        <h3 className="text-xl font-semibold">9. Privacy</h3>
                         <p>
                             This Site respects your privacy. No tracking cookies are used. See the{" "}
                             <Link className="underline hover:opacity-80" href="/privacy">
@@ -129,7 +155,7 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">9. Limitation of Liability</h3>
+                        <h3 className="text-xl font-semibold">10. Limitation of Liability</h3>
                         <p>
                             This is a hobby project run by a single developer. It is provided as-is
                             and we cannot be held responsible if something goes wrong - for example,
@@ -144,7 +170,7 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">10. Changes</h3>
+                        <h3 className="text-xl font-semibold">11. Changes</h3>
                         <p>
                             These terms may be updated at any time. The effective date at the top of
                             this page will reflect the date of the latest revision. Continued use of

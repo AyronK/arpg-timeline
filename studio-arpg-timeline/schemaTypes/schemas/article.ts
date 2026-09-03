@@ -137,6 +137,19 @@ export default {
                     title: "Caption (shown below the image)",
                     type: "string",
                 },
+                {
+                    name: "credit",
+                    title: "Image credit",
+                    description:
+                        "Where the image came from, e.g. Grinding Gear Games - press kit. Shown under the image.",
+                    type: "string",
+                },
+                {
+                    name: "creditUrl",
+                    title: "Credit link",
+                    description: "Optional link for the credit, e.g. the press kit page.",
+                    type: "url",
+                },
             ],
             validation: (Rule: Rule) => Rule.required(),
         },
@@ -203,6 +216,19 @@ export default {
                             name: "caption",
                             title: "Caption (shown below the image)",
                             type: "string",
+                        },
+                        {
+                            name: "credit",
+                            title: "Image credit",
+                            description:
+                                "Where the image came from, e.g. Grinding Gear Games - press kit. Shown under the image.",
+                            type: "string",
+                        },
+                        {
+                            name: "creditUrl",
+                            title: "Credit link",
+                            description: "Optional link for the credit, e.g. the press kit page.",
+                            type: "url",
                         },
                     ],
                 },

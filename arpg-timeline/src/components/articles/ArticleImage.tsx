@@ -42,15 +42,34 @@ export const ArticleImage = ({
         />
     );
 
-    if (!image.caption) {
+    if (!image.caption && !image.credit) {
         return <div className={cn("my-6", className)}>{img}</div>;
     }
 
     return (
         <figure className={cn("my-6", className)}>
             {img}
-            <figcaption className="text-muted-foreground mt-2 text-center text-sm">
+            <figcaption className="text-muted-foreground mt-2 text-center text-sm text-balance">
                 {image.caption}
+                {image.credit && (
+                    <span className="text-xs opacity-80">
+                        {image.caption ? " (" : null}
+                        Image credit:{" "}
+                        {image.creditUrl ? (
+                            <a
+                                href={image.creditUrl}
+                                target="_blank"
+                                rel="nofollow noopener noreferrer"
+                                className="underline underline-offset-2 transition-all hover:brightness-125"
+                            >
+                                {image.credit}
+                            </a>
+                        ) : (
+                            image.credit
+                        )}
+                        {image.caption ? ")" : null}
+                    </span>
+                )}
             </figcaption>
         </figure>
     );
