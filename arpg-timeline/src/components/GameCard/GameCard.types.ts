@@ -28,4 +28,5 @@ export type GameCardProps = PropsWithChildren &
         stats?: GameStatistics;
         noMenu?: boolean;
         noTitle?: boolean;
+        noLogoLink?: boolean;
     };

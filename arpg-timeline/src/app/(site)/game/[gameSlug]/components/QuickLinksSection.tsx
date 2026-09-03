@@ -72,11 +72,11 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                         >
                             <LinkContent
                                 icon={<Globe className="h-5 w-5 opacity-70" />}
-                                title={game.isOfficial ? "Official Website" : "Community Website"}
+                                title={game.isOfficial ? "Official Website" : "Project Website"}
                                 description={
                                     game.isOfficial
                                         ? `Visit the official ${game.name} website`
-                                        : `Visit the community-run ${game.name} website`
+                                        : `Visit the ${game.name} project website`
                                 }
                             />
                         </GuardedExternalLink>

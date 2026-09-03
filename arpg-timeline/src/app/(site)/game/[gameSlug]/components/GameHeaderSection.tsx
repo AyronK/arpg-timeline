@@ -30,6 +30,7 @@ export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSect
                 )
             }
             noTitle
+            noLogoLink
             slug={game.slug}
             shortName={game.shortName || game.name}
             url={game.url || "#"}

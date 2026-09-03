@@ -1,23 +1,17 @@
 "use client";
 
+import Link from "next/link";
+
 import { CommunityLabel } from "@/components/CommunityLabel";
 import { FooterActions } from "@/components/GameCard/FooterActions";
 import { GameCardProps } from "@/components/GameCard/GameCard.types";
-import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { sa_event } from "@/lib/sa_event";
-import { addUTMParameters } from "@/lib/utm";
 
 import { SteamPlayersChip } from "../SteamPlayersChip";
-
-const addUTM = addUTMParameters({
-    utm_source: "arpg-timeline",
-    utm_content: "logo_link",
-});
 
 export const GameCard = ({
     name,
     gameLogo,
-    url,
     buildsUrl,
     guidesUrl,
     nextSeasonStartDate,
@@ -30,8 +24,8 @@ export const GameCard = ({
     stats,
     noMenu,
     noTitle,
+    noLogoLink,
 }: GameCardProps) => {
-    const hasExternalUrl = url && url !== "#";
     const logoContent = (
         <div className="flex h-[96px] w-[180px] items-center justify-center p-2 md:h-[140px] md:w-[220px] md:p-4">
             {gameLogo}
@@ -54,20 +48,17 @@ export const GameCard = ({
                 </div>
                 <div className="relative flex flex-col items-center gap-1">
                     <div className="relative flex min-h-[80px] w-[180px] flex-row justify-center place-self-center md:h-[140px] md:w-[220px]">
-                        {hasExternalUrl ? (
-                            <GuardedExternalLink
-                                href={addUTM(url)}
-                                isOfficial={official}
-                                rel="noopener noreferrer"
+                        {noLogoLink ? (
+                            logoContent
+                        ) : (
+                            <Link
+                                href={`/game/${slug}`}
                                 className="select-none hover:scale-105"
-                                target="_blank"
-                                noIcon
+                                aria-label={`View ${name} overview`}
                                 onClick={() => sa_event(`${slug}-logo-click`)}
                             >
                                 {logoContent}
-                            </GuardedExternalLink>
-                        ) : (
-                            logoContent
+                            </Link>
                         )}
                     </div>
                 </div>
