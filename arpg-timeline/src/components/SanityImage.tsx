@@ -10,8 +10,18 @@ const imageBuilder = createImageUrlBuilder({
     dataset: dataset || "",
 });
 
+// images.imageSizes + images.deviceSizes from next.config.ts.
+const NEXT_IMAGE_SIZES = [32, 64, 128, 256, 640, 1080];
+const MAX_WIDTH = NEXT_IMAGE_SIZES[NEXT_IMAGE_SIZES.length - 1];
+
+// Largest variant Next's optimizer can request for a fixed-size image (2x DPR).
+const upstreamWidth = (renderWidth: number | undefined) =>
+    renderWidth
+        ? (NEXT_IMAGE_SIZES.find((size) => size >= renderWidth * 2) ?? MAX_WIDTH)
+        : MAX_WIDTH;
+
 export const urlForImage = (source: SanityImageAssetDocument) => {
-    if (!source?.asset?._ref) {
+    if (!source?.asset?._ref && !source?._id && !source?.url) {
         return undefined;
     }
 
@@ -30,7 +40,12 @@ export const SanityImage = ({
         return null;
     }
 
-    const imageUrl = src.url ?? urlForImage(src)?.url();
+    const imageUrl = urlForImage(src)
+        ?.width(upstreamWidth(typeof remaining.width === "number" ? remaining.width : undefined))
+        .fit("max")
+        .format("webp")
+        .quality(Number(quality))
+        .url();
     const imageLqip = src.metadata?.lqip;
 
     if (!imageUrl) {
