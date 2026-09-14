@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
         dangerouslyAllowSVG: true,
         minimumCacheTTL: 31536000,
         formats: ["image/webp"],
-        deviceSizes: [640, 1080, 1920],
+        deviceSizes: [640, 1080],
         imageSizes: [32, 64, 128, 256],
         qualities: [75, 90],
     },
