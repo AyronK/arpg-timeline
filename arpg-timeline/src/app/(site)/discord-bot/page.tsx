@@ -315,6 +315,20 @@ const Hero = ({ gameCount }: { gameCount: number }) => (
                     <span aria-hidden>→</span>
                 </Link>
             )}
+            <p className="text-muted-foreground mt-4 text-xs">
+                By adding the bot you agree to our{" "}
+                <Link href="/terms" className="underline underline-offset-2 hover:opacity-80">
+                    Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link
+                    href="/privacy#discord-bot"
+                    className="underline underline-offset-2 hover:opacity-80"
+                >
+                    Privacy Policy
+                </Link>
+                .
+            </p>
         </div>
         <div className="order-first flex justify-center lg:order-none">
             <DiscordBotHeroCard
