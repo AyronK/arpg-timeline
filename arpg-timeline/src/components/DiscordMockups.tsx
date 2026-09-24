@@ -1,4 +1,4 @@
-import { Bell, CalendarDays, Ellipsis, Link2, MapPin, UsersRound } from "lucide-react";
+import { Bell, CalendarDays, Ellipsis, Link2, MapPin, Swords, UsersRound } from "lucide-react";
 import Image from "next/image";
 import { ReactNode } from "react";
 
@@ -52,13 +52,15 @@ export const DiscordEventMockup = () => (
     >
         <div className="grid grid-cols-[2fr_3fr] bg-[#18191c]">
             <div className="grid place-content-center border-r border-white/10 p-4">
-                <Image
-                    src="/img/lastepoch.png"
-                    alt=""
-                    width={160}
-                    height={79}
-                    className="h-auto w-full max-w-36 object-contain"
-                />
+                <div className="font-heading flex flex-col items-center text-center leading-none">
+                    <Swords className="mb-1.5 h-5 w-5 text-amber-500/80 md:h-6 md:w-6" />
+                    <span className="text-base font-bold tracking-wider text-amber-100 md:text-2xl">
+                        Ashen
+                    </span>
+                    <span className="text-[10px] tracking-[0.3em] text-amber-500/80 uppercase md:text-xs">
+                        Kingdoms
+                    </span>
+                </div>
             </div>
             <div className="flex min-w-0 flex-col justify-center gap-1 p-4">
                 <div className="font-heading flex items-center gap-2 border-b border-white/10 pb-1.5 text-xs text-[#dbdee1] md:text-sm">
@@ -66,10 +68,10 @@ export const DiscordEventMockup = () => (
                     aRPG Timeline
                 </div>
                 <div className="font-heading truncate text-sm font-bold text-white md:text-lg">
-                    Last Epoch
+                    Ashen Kingdoms
                 </div>
                 <div className="font-heading truncate text-[10px] text-[#b5bac1] md:text-xs">
-                    Season 5 - Rage of the Frostborn
+                    Season 5 - Rise of the Frost
                 </div>
             </div>
         </div>
@@ -77,7 +79,7 @@ export const DiscordEventMockup = () => (
             <div className="mb-2 flex items-center justify-between">
                 <span className="flex items-center gap-2 text-xs font-semibold text-[#dbdee1] md:text-sm">
                     <CalendarDays className="h-5 w-5 text-[#5865f2]" />
-                    thu oct 1. 18:00
+                    Thu Oct 1. 18:00
                 </span>
                 <span className="flex items-center gap-2">
                     <BotAvatar className="h-5 w-5 opacity-70" />
@@ -87,7 +89,7 @@ export const DiscordEventMockup = () => (
                 </span>
             </div>
             <div className="mb-1 text-base font-semibold text-[#f2f3f5] md:text-lg">
-                Last Epoch: Season 5 - Rage of the Frostborn
+                Ashen Kingdoms: Season 5 - Rise of the Frost
             </div>
             <div className="flex items-center gap-1 text-xs md:text-sm">
                 <Link2 className="h-4 w-4 -rotate-45 text-[#b5bac1]" />
@@ -159,8 +161,8 @@ export const DiscordGameConfigMockup = () => (
 );
 
 const seasons = [
-    { title: "Last Epoch: Season 5 - Rage of the Frostborn", starts: "in 7 days" },
-    { title: "Diablo III: Season 40: Light’s Calling", starts: "in 8 days" },
+    { title: "Ashen Kingdoms: Season 5 - Rise of the Frost", starts: "in 7 days" },
+    { title: "Hollow Depths: Season 12 - The Sunken Crown", starts: "in 8 days" },
 ];
 
 export const DiscordSeasonsMockup = () => (

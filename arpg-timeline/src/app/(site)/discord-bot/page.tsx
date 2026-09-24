@@ -84,16 +84,19 @@ const showcase = [
         title: "Seasons show up as server events",
         text: "Every new season becomes an event in your server's Events tab, with the start time and useful links. If a date changes, the event updates too.",
         preview: <DiscordEventMockup />,
+        caption: "Mockup of a Discord scheduled event created by the bot",
     },
     {
         title: "Only the games you play",
         text: "Pick games from a simple menu. Everything is off until you turn it on, so your server only gets what it cares about.",
         preview: <DiscordGameConfigMockup />,
+        caption: "Mockup of the /arpg-toggle-game menu in Discord",
     },
     {
         title: "See what's coming",
         text: "Type /arpg-seasons to see current and upcoming seasons at a glance.",
         preview: <DiscordSeasonsMockup />,
+        caption: "Mockup of the /arpg-seasons reply in Discord",
     },
 ];
 
@@ -294,7 +297,15 @@ const Showcase = () => (
                     <h2 className="font-heading mb-3 text-xl md:text-2xl">{item.title}</h2>
                     <p className="text-muted-foreground leading-relaxed">{item.text}</p>
                 </div>
-                <div className="flex justify-center">{item.preview}</div>
+                <figure className="flex flex-col items-center">
+                    {item.preview}
+                    <figcaption className="text-muted-foreground mt-2 text-center text-sm text-balance">
+                        {item.caption}
+                        <span className="block text-xs opacity-80">
+                            Illustration only. Games and details are made up.
+                        </span>
+                    </figcaption>
+                </figure>
             </div>
         ))}
     </section>
