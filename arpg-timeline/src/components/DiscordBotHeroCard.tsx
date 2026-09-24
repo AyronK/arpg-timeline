@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
 
 import { DiscordMemberCard } from "./DiscordMemberCard";
@@ -39,7 +40,7 @@ const FlareCard = ({
                                 key={status}
                                 aria-hidden={i !== index}
                                 className={cn(
-                                    "col-start-1 row-start-1 transition-all duration-500",
+                                    "col-start-1 row-start-1 transition-all duration-500 motion-reduce:translate-y-0 motion-reduce:transition-none",
                                     i === index
                                         ? "translate-y-0 opacity-100"
                                         : "translate-y-1 opacity-0",
@@ -68,14 +69,16 @@ export const DiscordBotHeroCard = ({
     const [docked, setDocked] = useState(false);
     const anchorRef = useRef<HTMLDivElement>(null);
 
+    const reducedMotion = usePrefersReducedMotion();
+
     useEffect(() => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (reducedMotion) return;
         const id = setInterval(
             () => setIndex((i) => (i + 1) % statuses.length),
             STATUS_INTERVAL_MS,
         );
         return () => clearInterval(id);
-    }, [statuses.length]);
+    }, [statuses.length, reducedMotion]);
 
     useEffect(() => {
         const anchor = anchorRef.current;
@@ -103,7 +106,7 @@ export const DiscordBotHeroCard = ({
                 onClick={(e) => {
                     if (inviteUrl) return;
                     e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
                 }}
                 className={cn(
                     "fixed right-6 bottom-6 z-40 hidden transition-all duration-500 motion-reduce:transition-none lg:block",

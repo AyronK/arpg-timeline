@@ -95,18 +95,21 @@ const showcase = [
         title: "Seasons show up as server events",
         text: "Every new season becomes an event in your server's Events tab, with the start time and useful links. If a date changes, the event updates too.",
         preview: <DiscordEventMockup />,
+        alt: "Discord scheduled event created by the bot for an upcoming season, with the start date, season links and an Interested button",
         caption: "Mockup of a Discord scheduled event created by the bot",
     },
     {
         title: "Only the games you play",
         text: "Pick games from a simple menu. Everything is off until you turn it on, so your server only gets what it cares about.",
         preview: <DiscordGameConfigMockup />,
+        alt: "The bot's game configuration message in Discord, showing enabled games, page navigation and how to toggle games",
         caption: "Mockup of the /arpg-toggle-game menu in Discord",
     },
     {
         title: "See what's coming",
         text: "Type /arpg-seasons to see current and upcoming seasons at a glance.",
         preview: <DiscordSeasonsMockup />,
+        alt: "The bot's reply to /arpg-seasons in Discord, listing upcoming seasons with start dates, status and timeline links",
         caption: "Mockup of the /arpg-seasons reply in Discord",
     },
 ];
@@ -340,7 +343,9 @@ const Showcase = () => (
                     <p className="text-muted-foreground leading-relaxed">{withCode(item.text)}</p>
                 </div>
                 <figure className="flex flex-col items-center">
-                    {item.preview}
+                    <div role="img" aria-label={item.alt} className="flex w-full justify-center">
+                        {item.preview}
+                    </div>
                     <figcaption className="text-muted-foreground mt-2 text-center text-sm text-balance">
                         {item.caption}
                         <span className="block text-xs opacity-80">
@@ -424,9 +429,12 @@ const SupportedGames = ({ games }: { games: GameLink[] }) => (
             title="Supported games and community servers"
             intro="The bot follows every game tracked on aRPG Timeline, from Path of Exile and Diablo to smaller indie aRPGs."
         />
-        <ul className="ml-6 list-disc space-y-2 gap-x-8 sm:columns-2 lg:columns-3">
+        <ul className="flex flex-wrap gap-y-1 leading-relaxed sm:ml-6 sm:block sm:list-disc sm:columns-2 sm:space-y-2 sm:gap-x-8 lg:columns-3">
             {games.map((g) => (
-                <li key={g.slug} className="break-inside-avoid leading-relaxed">
+                <li
+                    key={g.slug}
+                    className="after:text-muted-foreground break-inside-avoid after:mx-2 after:content-['·'] last:after:content-none sm:after:content-none"
+                >
                     <Link
                         href={`/game/${g.slug}`}
                         className="hover:text-primary underline-offset-2 hover:underline"

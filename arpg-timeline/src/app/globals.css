@@ -291,7 +291,7 @@
 }
 
 @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
+    @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
         .reveal-on-scroll {
             animation: reveal-on-scroll linear both;
             animation-timeline: view();
