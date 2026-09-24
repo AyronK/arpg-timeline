@@ -1,4 +1,4 @@
-import { BadgeCheck, CalendarPlus, CalendarSearch, Check, Gamepad2 } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -76,7 +76,6 @@ export const metadata: Metadata = {
 
 const showcase = [
     {
-        icon: CalendarPlus,
         title: "Seasons show up as server events",
         text: "Every new season becomes an event in your server's Events tab, with the start time and useful links. If a date changes, the event updates too.",
         src: "/assets/discord-bot/event-card.png",
@@ -85,7 +84,6 @@ const showcase = [
         height: 420,
     },
     {
-        icon: Gamepad2,
         title: "Only the games you play",
         text: "Pick games from a simple menu. Everything is off until you turn it on, so your server only gets what it cares about.",
         src: "/assets/discord-bot/toggle-game.png",
@@ -94,7 +92,6 @@ const showcase = [
         height: 550,
     },
     {
-        icon: CalendarSearch,
         title: "See what's coming",
         text: "Type /arpg-seasons to see current and upcoming seasons at a glance.",
         src: "/assets/discord-bot/seasons.png",
@@ -208,9 +205,9 @@ const TopggLogo = ({ className }: { className?: string }) => (
 );
 
 const SectionHeading = ({ title, intro }: { title: string; intro?: ReactNode }) => (
-    <div className="mb-6 md:mb-8">
-        <h2 className="font-heading mb-2 text-xl md:text-2xl">{title}</h2>
-        {intro && <p className="text-muted-foreground max-w-prose text-sm md:text-base">{intro}</p>}
+    <div className="mb-4">
+        <h2 className="font-heading mb-4 border-b pb-2 text-2xl md:text-3xl">{title}</h2>
+        {intro && <p className="text-muted-foreground max-w-prose leading-relaxed">{intro}</p>}
     </div>
 );
 
@@ -307,15 +304,12 @@ const Hero = () => (
 );
 
 const Showcase = () => (
-    <section className="mx-auto mb-16 flex max-w-6xl flex-col gap-16 md:mb-24 md:gap-24">
-        {showcase.map(({ icon: Icon, ...item }, i) => (
+    <section className="mx-auto mb-16 flex max-w-6xl flex-col gap-12 md:mb-24 md:gap-20">
+        {showcase.map((item, i) => (
             <div key={item.src} className="grid items-center gap-6 md:gap-12 lg:grid-cols-2">
                 <div className={cn("max-w-prose", i % 2 === 1 && "lg:order-last")}>
-                    <Icon className="mb-3 h-6 w-6 text-indigo-500" aria-hidden />
                     <h2 className="font-heading mb-3 text-xl md:text-2xl">{item.title}</h2>
-                    <p className="text-muted-foreground text-sm leading-relaxed md:text-base">
-                        {item.text}
-                    </p>
+                    <p className="text-muted-foreground leading-relaxed">{item.text}</p>
                 </div>
                 <Image
                     src={item.src}
@@ -323,7 +317,7 @@ const Showcase = () => (
                     width={item.width}
                     height={item.height}
                     sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="mx-auto h-auto w-full max-w-xl rounded-lg shadow-2xl ring-1 ring-white/10"
+                    className="mx-auto h-auto w-full max-w-xl rounded-lg"
                 />
             </div>
         ))}
@@ -331,24 +325,15 @@ const Showcase = () => (
 );
 
 const Setup = () => (
-    <Section title="Set it up in 4 steps" intro="Takes about a minute.">
-        <ol className="relative max-w-prose">
+    <Section title="Set it up">
+        <ol className="mb-4 ml-6 max-w-prose list-decimal space-y-2">
             {steps.map((step, i) => (
-                <li key={i} className="relative flex gap-4 pb-8 last:pb-0">
-                    {i < steps.length - 1 && (
-                        <span
-                            aria-hidden
-                            className="bg-border absolute top-9 bottom-1 left-[1.125rem] w-px"
-                        />
-                    )}
-                    <span className="font-heading grid h-9 w-9 shrink-0 place-content-center rounded-full border-2 border-indigo-500/50 text-sm">
-                        {i + 1}
-                    </span>
-                    <span className="pt-1.5 text-sm md:text-base">{step}</span>
+                <li key={i} className="leading-relaxed">
+                    {step}
                 </li>
             ))}
         </ol>
-        <p className="text-muted-foreground mt-8 text-xs md:text-sm">
+        <p className="text-muted-foreground max-w-prose leading-relaxed">
             Steps 2 and 3 must be done by the server owner. Something not working? See{" "}
             <Link href="#troubleshooting" className="text-foreground underline underline-offset-2">
                 troubleshooting
@@ -361,38 +346,31 @@ const Setup = () => (
 const CommandsAndPermissions = () => (
     <section className="mx-auto mb-16 grid max-w-6xl gap-12 md:mb-24 lg:grid-cols-2 lg:gap-16">
         <div>
-            <SectionHeading title="Commands" />
-            <dl className="divide-y">
+            <SectionHeading
+                title="Commands"
+                intro={
+                    <>
+                        Type these in any channel. <code>/help</code> shows the full list.
+                    </>
+                }
+            />
+            <ul className="mb-4 ml-6 list-disc space-y-2">
                 {commands.map((c) => (
-                    <div
-                        key={c.name}
-                        className="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-3"
-                    >
-                        <dt>
-                            <code className="text-foreground text-sm font-medium">{c.name}</code>
-                        </dt>
-                        <dd className="text-muted-foreground text-sm">{c.text}</dd>
-                    </div>
+                    <li key={c.name} className="leading-relaxed">
+                        <code>{c.name}</code> – {c.text}
+                    </li>
                 ))}
-            </dl>
-            <p className="text-muted-foreground mt-4 text-xs md:text-sm">
-                Type <code>/help</code> in Discord for the full list.
-            </p>
+            </ul>
         </div>
         <div>
             <SectionHeading
                 title="Permissions"
                 intro="Only what's needed to post events. No admin or moderation rights."
             />
-            <ul className="divide-y">
+            <ul className="mb-4 ml-6 list-disc space-y-2">
                 {permissions.map((p) => (
-                    <li key={p.name} className="flex items-baseline gap-3 py-3">
-                        <Check
-                            className="h-4 w-4 shrink-0 translate-y-0.5 text-emerald-500"
-                            aria-hidden
-                        />
-                        <span className="text-foreground text-sm font-medium">{p.name}</span>
-                        <span className="text-muted-foreground text-sm">{p.text}</span>
+                    <li key={p.name} className="leading-relaxed">
+                        <strong className="font-semibold">{p.name}</strong> – {p.text}
                     </li>
                 ))}
             </ul>
@@ -401,18 +379,13 @@ const CommandsAndPermissions = () => (
 );
 
 const Troubleshooting = () => (
-    <section
-        id="troubleshooting"
-        className="mx-auto mb-16 grid max-w-6xl scroll-mt-8 gap-4 md:mb-24 lg:grid-cols-[1fr_2fr] lg:gap-16"
-    >
-        <SectionHeading title="Troubleshooting" intro="Something not working? Start here." />
-        <div className="flex max-w-prose flex-col gap-4 md:gap-6">
+    <section id="troubleshooting" className="mx-auto mb-16 max-w-6xl scroll-mt-8 md:mb-24">
+        <SectionHeading title="Troubleshooting" />
+        <div className="max-w-prose">
             {troubleshooting.map((t) => (
-                <div key={t.problem}>
-                    <h3 className="mb-2 text-base leading-tight md:text-lg">{t.problem}</h3>
-                    <p className="text-muted-foreground ml-2 text-sm leading-relaxed md:text-base">
-                        {t.fix}
-                    </p>
+                <div key={t.problem} className="mb-6 last:mb-0">
+                    <h3 className="font-heading mb-2 text-lg font-semibold">{t.problem}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{t.fix}</p>
                 </div>
             ))}
         </div>
@@ -506,7 +479,7 @@ const Support = () => (
 );
 
 const DiscordBotPage = () => (
-    <div className="relative container mx-auto mb-12 py-8 md:py-12">
+    <div className="[&_code]:bg-muted relative container mx-auto mb-12 py-8 md:py-12 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em]">
         <Hero />
         <Showcase />
         <Setup />
