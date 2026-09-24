@@ -135,10 +135,15 @@ const commands = [
 ];
 
 const permissions = [
-    { name: "Manage Events", text: "Manage scheduled events" },
-    { name: "Create Events", text: "Create scheduled events" },
-    { name: "Send Messages", text: "Send notifications" },
-    { name: "Embed Links", text: "Rich message formatting" },
+    { name: "View Channels", text: "See the channels where you use commands" },
+    { name: "Send Messages", text: "Reply to commands" },
+    { name: "Embed Links", text: "Show replies as rich embeds" },
+    { name: "Use Application Commands", text: "Slash commands" },
+    {
+        name: "Manage Events",
+        text: "Update or remove events when a season changes or is cancelled",
+    },
+    { name: "Create Events", text: "Create an event for each upcoming season" },
 ];
 
 type QA = { question: string; answer: string };
