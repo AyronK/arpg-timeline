@@ -1,4 +1,4 @@
-import { BadgeCheck, CalendarPlus, Check, Gamepad2, RefreshCw, Sparkles } from "lucide-react";
+import { BadgeCheck, CalendarPlus, CalendarSearch, Check, Gamepad2 } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -74,47 +74,30 @@ export const metadata: Metadata = {
     },
 };
 
-const features = [
+const showcase = [
     {
         icon: CalendarPlus,
-        title: "Season events",
-        text: "Each new season shows up as an event in your server.",
-    },
-    {
-        icon: RefreshCw,
-        title: "Always up to date",
-        text: "If a date changes, the event changes too.",
-    },
-    {
-        icon: Gamepad2,
-        title: "Pick your games",
-        text: "Only get the games your community plays.",
-    },
-    {
-        icon: Sparkles,
-        title: "Official and free",
-        text: "Run by aRPG Timeline. Just invite it and choose your games.",
-    },
-];
-
-const screenshots = [
-    {
+        title: "Seasons show up as server events",
+        text: "Every new season becomes an event in your server's Events tab, with the start time and useful links. If a date changes, the event updates too.",
         src: "/assets/discord-bot/event-card.png",
-        caption: "A season event in your server",
         alt: "Discord scheduled event for an upcoming aRPG season created by the bot",
         width: 802,
         height: 420,
     },
     {
+        icon: Gamepad2,
+        title: "Only the games you play",
+        text: "Pick games from a simple menu. Everything is off until you turn it on, so your server only gets what it cares about.",
         src: "/assets/discord-bot/toggle-game.png",
-        caption: "Choosing games",
         alt: "The /arpg-toggle-game menu for choosing which games to follow",
         width: 789,
         height: 550,
     },
     {
+        icon: CalendarSearch,
+        title: "See what's coming",
+        text: "Type /arpg-seasons to see current and upcoming seasons at a glance.",
         src: "/assets/discord-bot/seasons.png",
-        caption: "Checking current seasons",
         alt: "The /arpg-seasons command listing current and upcoming seasons",
         width: 833,
         height: 723,
@@ -194,7 +177,7 @@ const structuredData = [
         operatingSystem: "Discord",
         ...(INVITE_URL && { installUrl: INVITE_URL }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        featureList: features.map((f) => f.text),
+        featureList: showcase.map((f) => f.title),
         author: { "@type": "Person", name: "Josh", url: JOSH_GITHUB_URL },
         maintainer: { "@type": "Organization", name: "aRPG Timeline", url: SITE_URL },
     },
@@ -224,6 +207,13 @@ const TopggLogo = ({ className }: { className?: string }) => (
     </svg>
 );
 
+const SectionHeading = ({ title, intro }: { title: string; intro?: ReactNode }) => (
+    <div className="mb-6 md:mb-8">
+        <h2 className="font-heading mb-2 text-xl md:text-2xl">{title}</h2>
+        {intro && <p className="text-muted-foreground max-w-prose text-sm md:text-base">{intro}</p>}
+    </div>
+);
+
 const Section = ({
     title,
     intro,
@@ -233,17 +223,14 @@ const Section = ({
     intro?: ReactNode;
     children: ReactNode;
 }) => (
-    <section className="mx-auto mb-12 max-w-6xl">
-        <h2 className={cn("font-heading text-lg", intro ? "mb-2" : "mb-4")}>{title}</h2>
-        {intro && (
-            <p className="text-muted-foreground mb-4 max-w-prose text-sm md:text-base">{intro}</p>
-        )}
+    <section className="mx-auto mb-16 max-w-6xl md:mb-24">
+        <SectionHeading title={title} intro={intro} />
         {children}
     </section>
 );
 
 const Hero = () => (
-    <section className="mx-auto mb-12 flex max-w-6xl flex-col items-center text-center">
+    <section className="mx-auto mb-16 flex max-w-6xl flex-col items-center text-center md:mb-24">
         <span className="bg-muted text-foreground mb-2 inline-flex items-center gap-1.5 rounded-lg border border-white/5 px-3 py-1 text-xs">
             <BadgeCheck className="h-3.5 w-3.5 text-indigo-500" />
             Verified Discord app
@@ -319,71 +306,49 @@ const Hero = () => (
     </section>
 );
 
-const Features = () => (
-    <Section title="What it does">
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {features.map(({ icon: Icon, title, text }) => (
-                <div
-                    key={title}
-                    className="text-card-foreground bg-card flex items-center gap-3 rounded-lg border-2 p-4 md:p-6"
-                >
-                    <div className="bg-muted/50 grid h-10 w-10 shrink-0 place-content-center rounded-full md:h-12 md:w-12">
-                        <Icon className="h-5 w-5 opacity-70 md:h-6 md:w-6" />
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                        <h3 className="font-heading text-foreground text-sm font-medium md:text-base">
-                            {title}
-                        </h3>
-                        <p className="text-muted-foreground text-xs leading-tight md:text-sm">
-                            {text}
-                        </p>
-                    </div>
+const Showcase = () => (
+    <section className="mx-auto mb-16 flex max-w-6xl flex-col gap-16 md:mb-24 md:gap-24">
+        {showcase.map(({ icon: Icon, ...item }, i) => (
+            <div key={item.src} className="grid items-center gap-6 md:gap-12 lg:grid-cols-2">
+                <div className={cn("max-w-prose", i % 2 === 1 && "lg:order-last")}>
+                    <Icon className="mb-3 h-6 w-6 text-indigo-500" aria-hidden />
+                    <h2 className="font-heading mb-3 text-xl md:text-2xl">{item.title}</h2>
+                    <p className="text-muted-foreground text-sm leading-relaxed md:text-base">
+                        {item.text}
+                    </p>
                 </div>
-            ))}
-        </div>
-    </Section>
-);
-
-const Screenshots = () => (
-    <Section title="See it in action">
-        <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0">
-            {screenshots.map((s) => (
-                <figure key={s.src} className="w-[85%] shrink-0 snap-center md:w-auto">
-                    <div className="bg-muted/50 aspect-[4/3] rounded-lg border p-3 md:p-4">
-                        <Image
-                            src={s.src}
-                            alt={s.alt}
-                            width={s.width}
-                            height={s.height}
-                            sizes="(min-width: 768px) 33vw, 85vw"
-                            className="h-full w-full object-contain"
-                        />
-                    </div>
-                    <figcaption className="text-muted-foreground mt-3 text-center text-xs md:text-sm">
-                        {s.caption}
-                    </figcaption>
-                </figure>
-            ))}
-        </div>
-    </Section>
+                <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.width}
+                    height={item.height}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="mx-auto h-auto w-full max-w-xl rounded-lg shadow-2xl ring-1 ring-white/10"
+                />
+            </div>
+        ))}
+    </section>
 );
 
 const Setup = () => (
-    <Section title="Set it up in 4 steps">
-        <ol className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <Section title="Set it up in 4 steps" intro="Takes about a minute.">
+        <ol className="relative max-w-prose">
             {steps.map((step, i) => (
-                <li
-                    key={i}
-                    className="bg-muted/50 flex items-center gap-3 rounded-md border px-4 py-3 text-sm [&_code]:break-words"
-                >
-                    <span className="bg-card font-heading grid h-7 w-7 shrink-0 place-content-center rounded-full border text-xs">
+                <li key={i} className="relative flex gap-4 pb-8 last:pb-0">
+                    {i < steps.length - 1 && (
+                        <span
+                            aria-hidden
+                            className="bg-border absolute top-9 bottom-1 left-[1.125rem] w-px"
+                        />
+                    )}
+                    <span className="font-heading grid h-9 w-9 shrink-0 place-content-center rounded-full border-2 border-indigo-500/50 text-sm">
                         {i + 1}
                     </span>
-                    <span>{step}</span>
+                    <span className="pt-1.5 text-sm md:text-base">{step}</span>
                 </li>
             ))}
         </ol>
-        <p className="text-muted-foreground mt-3 text-xs md:text-sm">
+        <p className="text-muted-foreground mt-8 text-xs md:text-sm">
             Steps 2 and 3 must be done by the server owner. Something not working? See{" "}
             <Link href="#troubleshooting" className="text-foreground underline underline-offset-2">
                 troubleshooting
@@ -393,60 +358,54 @@ const Setup = () => (
     </Section>
 );
 
-const Commands = () => (
-    <Section title="Commands">
-        <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {commands.map((c) => (
-                <li
-                    key={c.name}
-                    className="bg-muted/50 flex flex-col gap-0.5 rounded-md border px-4 py-3"
-                >
-                    <code className="text-foreground text-sm font-medium break-words">
-                        {c.name}
-                    </code>
-                    <span className="text-muted-foreground text-xs">{c.text}</span>
-                </li>
-            ))}
-        </ul>
-        <p className="text-muted-foreground mt-3 text-xs md:text-sm">
-            Type <code>/help</code> in Discord for the full list.
-        </p>
-    </Section>
-);
-
-const Permissions = () => (
-    <Section
-        title="Permissions"
-        intro="Only what's needed to post events. No admin or moderation rights."
-    >
-        <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {permissions.map((p) => (
-                <li
-                    key={p.name}
-                    className="bg-muted/50 flex items-start gap-2 rounded-md border px-4 py-3"
-                >
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" aria-hidden />
-                    <span className="flex flex-col gap-0.5">
+const CommandsAndPermissions = () => (
+    <section className="mx-auto mb-16 grid max-w-6xl gap-12 md:mb-24 lg:grid-cols-2 lg:gap-16">
+        <div>
+            <SectionHeading title="Commands" />
+            <dl className="divide-y">
+                {commands.map((c) => (
+                    <div
+                        key={c.name}
+                        className="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-3"
+                    >
+                        <dt>
+                            <code className="text-foreground text-sm font-medium">{c.name}</code>
+                        </dt>
+                        <dd className="text-muted-foreground text-sm">{c.text}</dd>
+                    </div>
+                ))}
+            </dl>
+            <p className="text-muted-foreground mt-4 text-xs md:text-sm">
+                Type <code>/help</code> in Discord for the full list.
+            </p>
+        </div>
+        <div>
+            <SectionHeading
+                title="Permissions"
+                intro="Only what's needed to post events. No admin or moderation rights."
+            />
+            <ul className="divide-y">
+                {permissions.map((p) => (
+                    <li key={p.name} className="flex items-baseline gap-3 py-3">
+                        <Check
+                            className="h-4 w-4 shrink-0 translate-y-0.5 text-emerald-500"
+                            aria-hidden
+                        />
                         <span className="text-foreground text-sm font-medium">{p.name}</span>
-                        <span className="text-muted-foreground text-xs">{p.text}</span>
-                    </span>
-                </li>
-            ))}
-        </ul>
-    </Section>
+                        <span className="text-muted-foreground text-sm">{p.text}</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </section>
 );
 
 const Troubleshooting = () => (
     <section
         id="troubleshooting"
-        className="mx-auto mb-12 grid max-w-6xl scroll-mt-8 gap-4 lg:grid-cols-[1fr_2fr] lg:gap-12"
+        className="mx-auto mb-16 grid max-w-6xl scroll-mt-8 gap-4 md:mb-24 lg:grid-cols-[1fr_2fr] lg:gap-16"
     >
-        <div>
-            <h2 className="font-heading mb-2 text-lg">Troubleshooting</h2>
-            <p className="text-muted-foreground text-sm md:text-base">
-                Something not working? Start here.
-            </p>
-        </div>
+        <SectionHeading title="Troubleshooting" intro="Something not working? Start here." />
         <div className="flex max-w-prose flex-col gap-4 md:gap-6">
             {troubleshooting.map((t) => (
                 <div key={t.problem}>
@@ -482,7 +441,7 @@ const CreditRow = ({
     text: string;
     links: ReactNode;
 }) => (
-    <div className="text-card-foreground bg-card flex items-center gap-3 rounded-lg border-2 p-4 md:gap-4 md:p-6">
+    <div className="flex items-center gap-4">
         <Image
             src={avatar}
             alt=""
@@ -502,7 +461,7 @@ const CreditRow = ({
 
 const Credits = () => (
     <Section title="Credits">
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2">
             <CreditRow
                 avatar="/assets/discord-bot/josh.png"
                 title="Created by Josh"
@@ -549,11 +508,9 @@ const Support = () => (
 const DiscordBotPage = () => (
     <div className="relative container mx-auto mb-12 py-8 md:py-12">
         <Hero />
-        <Features />
-        <Screenshots />
+        <Showcase />
         <Setup />
-        <Commands />
-        <Permissions />
+        <CommandsAndPermissions />
         <Troubleshooting />
         <Credits />
         <Support />
