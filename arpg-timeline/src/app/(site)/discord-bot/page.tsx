@@ -14,6 +14,7 @@ import {
 } from "@/components/DiscordMockups";
 import { DiscordContactBanner } from "@/components/DiscordServerBoost";
 import { PatreonFunding } from "@/components/PatreonFunding";
+import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { cn } from "@/lib/utils";
 
 const SITE_URL = "https://www.arpg-timeline.com";
@@ -26,25 +27,31 @@ const JOSH_GITHUB_URL = "https://github.com/svn-josh";
 const JOSH_WEBSITE_URL = "https://developer-josh.de";
 
 const DESCRIPTION =
-    "Free Discord bot that adds Path of Exile 2, Diablo 4, Last Epoch and other aRPG season launches to your server's Events tab. Pick your games, stay on time.";
+    "Free Discord bot for Path of Exile, PoE 2, Diablo IV, Last Epoch and other aRPGs. New league and season starts show up as events in your server.";
 
 export const metadata: Metadata = {
-    title: "aRPG Discord Bot | Season Launch Events for Your Server",
+    title: "Path of Exile & Diablo Season Discord Bot | aRPG Timeline",
     description: DESCRIPTION,
     keywords: [
         "arpg discord bot",
-        "poe 2 discord bot",
         "path of exile discord bot",
+        "poe discord bot",
+        "poe 2 discord bot",
+        "path of exile 2 league start discord bot",
+        "poe league start notification discord",
+        "diablo 4 discord bot",
         "diablo 4 season discord bot",
+        "diablo 2 resurrected ladder discord bot",
         "last epoch discord bot",
-        "season tracker bot",
-        "discord season events",
-        "league start discord bot",
+        "torchlight infinite discord bot",
+        "season tracker discord bot",
+        "league start reminder discord",
+        "discord season events bot",
     ],
     openGraph: {
-        title: "aRPG Timeline Discord Bot",
+        title: "aRPG Season Tracker Discord Bot",
         description:
-            "Never miss a season launch. New aRPG seasons show up as events in your Discord server.",
+            "Path of Exile, PoE 2, Diablo IV, Last Epoch and more. New seasons show up as events in your Discord server.",
         siteName: "aRPG Timeline",
         type: "website",
         url: `${SITE_URL}/discord-bot`,
@@ -61,9 +68,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "aRPG Timeline Discord Bot",
+        title: "aRPG Season Tracker Discord Bot",
         description:
-            "New aRPG seasons show up as events in your Discord server. Free and easy to set up.",
+            "Path of Exile, PoE 2, Diablo IV, Last Epoch and more. New seasons show up as events in your Discord server.",
         images: ["/assets/seoimage.png"],
     },
     alternates: { canonical: "/discord-bot" },
@@ -78,6 +85,10 @@ export const metadata: Metadata = {
         },
     },
 };
+
+const gamesQuery = `*[_type == "game" && defined(slug.current)] | order(name asc){name, "slug": slug.current}`;
+
+type GameLink = { name: string; slug: string };
 
 const showcase = [
     {
@@ -127,39 +138,51 @@ const permissions = [
     { name: "Embed Links", text: "Rich message formatting" },
 ];
 
-const troubleshooting: { problem: string; fix: ReactNode }[] = [
+type QA = { question: string; answer: string };
+
+const faq: QA[] = [
     {
-        problem: "Why aren't any events showing up?",
-        fix: (
-            <>
-                Type <code>/arpg-check-permissions</code>. If something is missing, go to Server
-                Settings → Roles → aRPG Timeline and turn on Manage Events and Create Events.
-            </>
-        ),
+        question: "Is there a Discord bot for Path of Exile league starts?",
+        answer: "Yes. The aRPG Timeline bot adds every new Path of Exile and Path of Exile 2 league to your server's Events tab, shown in each member's local time.",
     },
     {
-        problem: "Permissions look fine, but still no events?",
-        fix: (
-            <>
-                Type <code>/arpg-status</code>. Make sure the bot is enabled and at least one game
-                is turned on. Games are off by default.
-            </>
-        ),
+        question: "Can I follow only some games?",
+        answer: "Yes. Turn on just the games your server plays, say Path of Exile 2 and Diablo IV, and everything else stays off.",
     },
     {
-        problem: "It says “Only the server owner can use this command”",
-        fix: (
-            <>
-                Ask your server owner to run <code>/arpg-toggle-game</code> and{" "}
-                <code>/arpg-enable</code>.
-            </>
-        ),
+        question: "Will my members get a reminder?",
+        answer: "Yes. Anyone who clicks Interested on an event gets a Discord notification when the season starts.",
     },
     {
-        problem: "Why is a season missing?",
-        fix: "The bot only adds seasons that haven't started yet and have a confirmed start date.",
+        question: "Is the bot free?",
+        answer: "Yes, completely free. It's hosted and maintained by aRPG Timeline.",
     },
 ];
+
+const troubleshooting: QA[] = [
+    {
+        question: "Why aren't any events showing up?",
+        answer: "Type /arpg-check-permissions. If something is missing, go to Server Settings → Roles → aRPG Timeline and turn on Manage Events and Create Events.",
+    },
+    {
+        question: "Permissions look fine, but still no events?",
+        answer: "Type /arpg-status. Make sure the bot is enabled and at least one game is turned on. Games are off by default.",
+    },
+    {
+        question: "It says “Only the server owner can use this command”",
+        answer: "Ask your server owner to run /arpg-toggle-game and /arpg-enable.",
+    },
+    {
+        question: "Why is a season missing?",
+        answer: "The bot only adds seasons that haven't started yet and have a confirmed start date.",
+    },
+];
+
+// Wraps slash commands in <code>
+const withCode = (text: string) =>
+    text
+        .split(/(\/[a-z][a-z-]*(?: true)?)/g)
+        .map((part, i) => (part.startsWith("/") ? <code key={i}>{part}</code> : part));
 
 const structuredData = [
     {
@@ -174,6 +197,8 @@ const structuredData = [
         ...(INVITE_URL && { installUrl: INVITE_URL }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         featureList: showcase.map((f) => f.title),
+        keywords:
+            "Path of Exile, Path of Exile 2, Diablo IV, Diablo II: Resurrected, Last Epoch, aRPG, Discord bot, season tracker",
         author: { "@type": "Person", name: "Josh", url: JOSH_GITHUB_URL },
         maintainer: { "@type": "Organization", name: "aRPG Timeline", url: SITE_URL },
     },
@@ -187,6 +212,15 @@ const structuredData = [
             "Type /arpg-enable true to turn it on.",
             "New seasons appear in your server's Events tab within 15 minutes.",
         ].map((text, i) => ({ "@type": "HowToStep", position: i + 1, text })),
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [...faq, ...troubleshooting].map((q) => ({
+            "@type": "Question",
+            name: q.question,
+            acceptedAnswer: { "@type": "Answer", text: q.answer },
+        })),
     },
 ];
 
@@ -233,11 +267,11 @@ const Hero = () => (
                 Verified Discord app
             </span>
             <h1 className="font-heading mb-3 text-3xl leading-tight md:text-4xl">
-                aRPG Timeline Discord Bot
+                aRPG Season Tracker Discord Bot
             </h1>
             <p className="text-muted-foreground mb-6 max-w-prose leading-relaxed md:text-lg">
-                Never miss a season launch. The bot adds new aRPG seasons to your server&apos;s
-                Events tab.
+                Never miss a league or season launch. The bot adds new Path of Exile 2, Diablo IV,
+                Last Epoch and other aRPG seasons to your server&apos;s Events tab.
             </p>
             {INVITE_URL && (
                 <Link
@@ -295,7 +329,7 @@ const Showcase = () => (
             <div key={item.title} className="grid items-center gap-6 md:gap-12 lg:grid-cols-2">
                 <div className={cn("max-w-prose", i % 2 === 1 && "lg:order-last")}>
                     <h2 className="font-heading mb-3 text-xl md:text-2xl">{item.title}</h2>
-                    <p className="text-muted-foreground leading-relaxed">{item.text}</p>
+                    <p className="text-muted-foreground leading-relaxed">{withCode(item.text)}</p>
                 </div>
                 <figure className="flex flex-col items-center">
                     {item.preview}
@@ -365,17 +399,49 @@ const CommandsAndPermissions = () => (
     </section>
 );
 
+const QuestionList = ({ items }: { items: QA[] }) => (
+    <div className="max-w-prose">
+        {items.map((q) => (
+            <div key={q.question} className="mb-6 last:mb-0">
+                <h3 className="font-heading mb-2 text-lg font-semibold">{q.question}</h3>
+                <p className="text-muted-foreground leading-relaxed">{withCode(q.answer)}</p>
+            </div>
+        ))}
+    </div>
+);
+
+const SupportedGames = ({ games }: { games: GameLink[] }) => (
+    <section id="supported-games" className="mx-auto mb-16 max-w-6xl scroll-mt-8 md:mb-24">
+        <SectionHeading
+            title="Supported games and community servers"
+            intro="The bot follows every game tracked on aRPG Timeline, from Path of Exile and Diablo to smaller indie aRPGs."
+        />
+        <ul className="ml-6 list-disc space-y-2 gap-x-8 sm:columns-2 lg:columns-3">
+            {games.map((g) => (
+                <li key={g.slug} className="break-inside-avoid leading-relaxed">
+                    <Link
+                        href={`/game/${g.slug}`}
+                        className="hover:text-primary underline-offset-2 hover:underline"
+                    >
+                        {g.name}
+                    </Link>
+                </li>
+            ))}
+        </ul>
+    </section>
+);
+
+const Faq = () => (
+    <section className="mx-auto mb-16 max-w-6xl md:mb-24">
+        <SectionHeading title="Questions" />
+        <QuestionList items={faq} />
+    </section>
+);
+
 const Troubleshooting = () => (
     <section id="troubleshooting" className="mx-auto mb-16 max-w-6xl scroll-mt-8 md:mb-24">
         <SectionHeading title="Troubleshooting" />
-        <div className="max-w-prose">
-            {troubleshooting.map((t) => (
-                <div key={t.problem} className="mb-6 last:mb-0">
-                    <h3 className="font-heading mb-2 text-lg font-semibold">{t.problem}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{t.fix}</p>
-                </div>
-            ))}
-        </div>
+        <QuestionList items={troubleshooting} />
     </section>
 );
 
@@ -465,21 +531,27 @@ const Support = () => (
     </Section>
 );
 
-const DiscordBotPage = () => (
-    <div className="[&_code]:bg-muted relative container mx-auto mb-12 py-8 md:py-12 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em]">
-        <Hero />
-        <Showcase />
-        <Setup />
-        <CommandsAndPermissions />
-        <Troubleshooting />
-        <Credits />
-        <Support />
-        <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
-    </div>
-);
+const DiscordBotPage = async () => {
+    const games: GameLink[] = await sanityFetch({ query: gamesQuery, revalidate: false });
+
+    return (
+        <div className="[&_code]:bg-muted relative container mx-auto mb-12 py-8 md:py-12 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em]">
+            <Hero />
+            <Showcase />
+            <Setup />
+            <CommandsAndPermissions />
+            <SupportedGames games={games} />
+            <Faq />
+            <Troubleshooting />
+            <Credits />
+            <Support />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            />
+        </div>
+    );
+};
 
 export default DiscordBotPage;
 
