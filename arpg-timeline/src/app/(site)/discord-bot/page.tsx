@@ -316,6 +316,7 @@ const Hero = ({ gameCount }: { gameCount: number }) => (
         <div className="order-first flex justify-center lg:order-none">
             <DiscordBotHeroCard
                 className="lg:scale-125"
+                inviteUrl={INVITE_URL}
                 statuses={[
                     "preparing the next event!",
                     `watching ${gameCount} games`,
