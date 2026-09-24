@@ -42,6 +42,8 @@ export const GameCard = ({
                             <SteamPlayersChip
                                 playersCount={stats.steam.currentPlayers}
                                 isComingSoon={stats.steam.isComingSoon}
+                                appId={stats.steam.appId}
+                                game={slug}
                             />
                         )}
                     </div>
@@ -74,7 +76,6 @@ export const GameCard = ({
                     nextSeasonConfirmed={nextSeasonConfirmed}
                     currentSeasonStartDate={currentSeasonStartDate}
                     currentSeasonEndDate={currentSeasonEndDate}
-                    stats={stats}
                     noMenu={noMenu}
                 />
             </div>

@@ -3,12 +3,10 @@
 import { CodeXml, MoreHorizontal, Rss } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { RiSteamLine } from "react-icons/ri";
 import { SiObsstudio } from "react-icons/si";
 
 import { CalendarSubscribeDialog } from "@/components/CalendarSubscribeDialog";
 import { DropdownMenuSeparator } from "@/components/DropdownMenu";
-import { SteamDialog } from "@/components/SteamPlayersChip";
 import { sa_event } from "@/lib/sa_event";
 import { Button } from "@/ui/Button";
 import {
@@ -19,19 +17,8 @@ import {
 } from "@/ui/DropdownMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
-export function GameMenu({
-    game,
-    gameName,
-    playersCount,
-    steamAppId,
-}: {
-    game: string;
-    gameName?: string;
-    playersCount?: number;
-    steamAppId?: number;
-}) {
+export function GameMenu({ game, gameName }: { game: string; gameName?: string }) {
     const [subscribeDialogOpen, setSubscribeDialogOpen] = useState(false);
-    const [steamDialogOpen, setSteamDialogOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
@@ -65,15 +52,6 @@ export function GameMenu({
                         Calendar Subscription
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    {typeof steamAppId === "number" && steamAppId > 0 && (
-                        <DropdownMenuItem
-                            aria-label="View steam details"
-                            data-sa-click={`${game}-steam-dialog`}
-                            onClick={() => setSteamDialogOpen(true)}
-                        >
-                            <RiSteamLine className="mr-2 h-4 w-4" /> Steam Data
-                        </DropdownMenuItem>
-                    )}
                     <Link href={`/docs/html/${game}`} target="_blank" rel="noopener noreferrer">
                         <DropdownMenuItem
                             aria-label="Share on Discord"
@@ -101,15 +79,6 @@ export function GameMenu({
                 gameSlug={game}
                 gameName={gameName}
             />
-
-            {typeof steamAppId === "number" && steamAppId > 0 && (
-                <SteamDialog
-                    open={steamDialogOpen}
-                    onOpenChange={setSteamDialogOpen}
-                    appId={steamAppId}
-                    playersCount={playersCount ?? 0}
-                />
-            )}
         </>
     );
 }

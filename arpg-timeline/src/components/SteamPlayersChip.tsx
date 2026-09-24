@@ -1,5 +1,8 @@
+"use client";
+
 import { DialogPortal } from "@radix-ui/react-dialog";
 import { Description } from "@radix-ui/react-toast";
+import { useState } from "react";
 import { PiUsersThree } from "react-icons/pi";
 import { RiSteamLine } from "react-icons/ri";
 
@@ -12,10 +15,16 @@ import { SteamEmbed } from "./SteamEmbed";
 export const SteamPlayersChip = ({
     playersCount,
     isComingSoon,
+    appId,
+    game,
 }: {
     playersCount: number;
     isComingSoon?: boolean;
+    appId?: number;
+    game?: string;
 }) => {
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const hasDialog = typeof appId === "number" && appId > 0;
     const description = playersCount > 0 ? `${playersCount} players online on Steam` : undefined;
 
     const formatPlayerCount = (count: number): string => {
@@ -30,20 +39,54 @@ export const SteamPlayersChip = ({
           ? "Steam"
           : formatPlayerCount(playersCount);
 
+    const chipClassName =
+        "text-foreground flex flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 shadow-sky-400/25 select-none";
+
+    const chipContent = (
+        <>
+            {playersCount > 0 && <PiUsersThree className="h-4 w-4" />}
+            <span className="mx-1" aria-hidden>
+                {text}
+            </span>
+            <span className="sr-only">{description}</span>
+            <RiSteamLine className="h-4 w-4" />
+        </>
+    );
+
+    if (!hasDialog) {
+        return (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className={`${chipClassName} cursor-help`}>{chipContent}</span>
+                </TooltipTrigger>
+                {description && <TooltipContent side="bottom">{description}</TooltipContent>}
+            </Tooltip>
+        );
+    }
+
     return (
-        <Tooltip>
-            <TooltipTrigger asChild>
-                <span className="text-foreground flex cursor-help flex-row items-center justify-center gap-0.5 rounded-md border border-sky-700/75 bg-sky-600/15 px-1 py-[1px] text-xs font-semibold opacity-80 shadow-sky-400/25 select-none">
-                    {playersCount > 0 && <PiUsersThree className="h-4 w-4" />}
-                    <span className="mx-1" aria-hidden>
-                        {text}
-                    </span>
-                    <span className="sr-only">{description}</span>
-                    <RiSteamLine className="h-4 w-4" />
-                </span>
-            </TooltipTrigger>
-            {description && <TooltipContent side="bottom">{description}</TooltipContent>}
-        </Tooltip>
+        <>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <button
+                        type="button"
+                        aria-label="View Steam details"
+                        data-sa-click={game ? `${game}-steam-dialog` : undefined}
+                        onClick={() => setDialogOpen(true)}
+                        className={`${chipClassName} focus-visible:ring-ring cursor-pointer transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none`}
+                    >
+                        {chipContent}
+                    </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{description ?? "View Steam details"}</TooltipContent>
+            </Tooltip>
+            <SteamDialog
+                open={dialogOpen}
+                onOpenChange={setDialogOpen}
+                appId={appId}
+                playersCount={playersCount}
+            />
+        </>
     );
 };
 
