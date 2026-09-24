@@ -112,7 +112,7 @@ export const CalendarEventMockup = ({
 }) => (
     <div
         aria-hidden
-        className="bg-card w-full max-w-md overflow-hidden rounded-lg border text-left shadow-lg select-none"
+        className="bg-card w-full max-w-md min-w-0 overflow-hidden rounded-lg border text-left shadow-lg select-none"
     >
         <div className="text-muted-foreground flex justify-end px-3 pt-3">
             <X className="h-4 w-4" />
@@ -144,7 +144,6 @@ export const CalendarEventMockup = ({
             <DetailRow icon={<CalendarDays />}>
                 <span className="flex items-center gap-2">
                     {calendarName}
-                    <span className="text-muted-foreground text-xs">· Free</span>
                 </span>
             </DetailRow>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarPlus, Layers } from "lucide-react";
+import { CalendarPlus, ChevronDown, Layers } from "lucide-react";
 import { SanityImageAssetDocument } from "next-sanity";
 import { useMemo, useState, useSyncExternalStore } from "react";
 
@@ -11,6 +11,7 @@ import { getGameFilterGroup } from "@/hooks/useGameFiltersData";
 import { GameCategory } from "@/lib/cms/gameTags";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/ui/Collapsible";
 
 const ALL = "all";
 
@@ -82,7 +83,7 @@ export const CalendarSubscribePicker = ({ games }: { games: CalendarGameOption[]
     };
 
     return (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4 md:gap-8">
             <div
                 role="button"
                 tabIndex={0}
@@ -104,15 +105,25 @@ export const CalendarSubscribePicker = ({ games }: { games: CalendarGameOption[]
                 />
             </div>
 
-            {groups.map(([group, { games: groupGames }]) => (
-                <div key={group} className="flex flex-col gap-4">
-                    <h3 className="text-lg font-semibold">{group}</h3>
-                    <div className="grid auto-rows-fr grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-8">
-                        {groupGames.map((g) => (
-                            <GameTile key={g.slug} game={g} onClick={() => open(g.slug)} />
-                        ))}
-                    </div>
-                </div>
+            {groups.map(([group, { games: groupGames }], i) => (
+                // Collapsible on mobile only; always expanded from md up
+                <Collapsible key={group} defaultOpen={i === 0} className="group/section">
+                    <CollapsibleTrigger className="flex w-full cursor-pointer items-center gap-2 py-1 text-left md:pointer-events-none">
+                        <h3 className="text-lg font-semibold">{group}</h3>
+                        <span className="text-muted-foreground text-sm">{groupGames.length}</span>
+                        <ChevronDown className="text-muted-foreground ml-auto h-5 w-5 transition-transform group-data-[state=open]/section:rotate-180 md:hidden" />
+                    </CollapsibleTrigger>
+                    <CollapsibleContent
+                        forceMount
+                        className="data-[state=closed]:hidden md:data-[state=closed]:block"
+                    >
+                        <div className="grid auto-rows-fr grid-cols-2 gap-3 pt-4 sm:grid-cols-4 xl:grid-cols-8">
+                            {groupGames.map((g) => (
+                                <GameTile key={g.slug} game={g} onClick={() => open(g.slug)} />
+                            ))}
+                        </div>
+                    </CollapsibleContent>
+                </Collapsible>
             ))}
 
             <CalendarSubscribeDialog

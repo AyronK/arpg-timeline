@@ -228,7 +228,7 @@ const Showcase = () => (
                         <h2 className="font-heading mb-3 text-xl md:text-2xl">{item.title}</h2>
                         <p className="text-muted-foreground leading-relaxed">{item.text}</p>
                     </div>
-                    <figure className="flex flex-col items-center">
+                    <figure className="flex min-w-0 flex-col items-center">
                         <div
                             role="img"
                             aria-label={item.alt}
