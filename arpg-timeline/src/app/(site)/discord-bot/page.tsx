@@ -526,7 +526,7 @@ const Credits = () => (
             <CreditRow
                 avatar="/assets/discord-bot/josh.png"
                 title="Created by Josh"
-                text="Thanks, Josh, for building this for the aRPG community!"
+                text="Designed and built the original bot."
                 links={
                     <>
                         <CreditLink href={JOSH_GITHUB_URL}>GitHub</CreditLink>
