@@ -48,7 +48,7 @@ export const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="max-xl:bg-card relative h-[56px] max-sm:shadow-sm xl:container xl:mx-auto xl:h-[80px] xl:pt-6 xl:pb-0">
+        <header className="max-xl:bg-card relative h-[56px] max-sm:shadow-sm 3xl:container 3xl:mx-auto xl:h-[80px] xl:pt-6 xl:pb-0">
             <div className="relative h-full w-full">
                 <Link
                     href="/"
@@ -87,7 +87,7 @@ export const Header = () => {
                             }
                             label="Discord"
                             dataSaClick="click"
-                            className="hidden xl:flex"
+                            className="hidden 2xl:flex"
                         />
                         <SocialButton
                             href="/support"
@@ -98,13 +98,13 @@ export const Header = () => {
                             dataSaClick="support"
                             target="_self"
                             rel=""
-                            className="hidden xl:flex"
+                            className="hidden 2xl:flex"
                         />
                         <Link
                             href="/discord-bot"
                             data-sa-click="discord-bot-nav"
                             aria-label="aRPG Timeline Discord bot"
-                            className="hidden rounded-lg xl:flex"
+                            className="hidden rounded-lg 2xl:flex"
                         >
                             <DiscordMemberCard
                                 name="aRPG Timeline"
@@ -115,7 +115,7 @@ export const Header = () => {
                     </div>
 
                     <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                        <DropdownMenuTrigger asChild className="xl:hidden">
+                        <DropdownMenuTrigger asChild className="2xl:hidden">
                             <Button
                                 variant="ghost"
                                 size="icon"
