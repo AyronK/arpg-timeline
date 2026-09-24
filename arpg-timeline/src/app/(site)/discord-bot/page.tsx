@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 
 import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
-import { DiscordMemberCard } from "@/components/DiscordMemberCard";
+import { DiscordBotHeroCard } from "@/components/DiscordBotHeroCard";
 import {
     DiscordEventMockup,
     DiscordGameConfigMockup,
@@ -259,7 +259,7 @@ const Section = ({
     </section>
 );
 
-const Hero = () => (
+const Hero = ({ gameCount }: { gameCount: number }) => (
     <section className="mx-auto mb-16 grid max-w-6xl items-center gap-10 md:mb-24 lg:grid-cols-[3fr_2fr] lg:gap-16">
         <div className="flex flex-col items-start">
             <span className="bg-muted text-foreground mb-4 inline-flex items-center gap-1.5 rounded-lg border border-white/5 px-3 py-1 text-xs">
@@ -313,11 +313,15 @@ const Hero = () => (
                 </Link>
             )}
         </div>
-        <div className="pointer-events-none order-first flex justify-center lg:order-none">
-            <DiscordMemberCard
-                name="aRPG Timeline"
-                status="preparing the next event!"
+        <div className="order-first flex justify-center lg:order-none">
+            <DiscordBotHeroCard
                 className="lg:scale-125"
+                statuses={[
+                    "preparing the next event!",
+                    `watching ${gameCount} games`,
+                    "syncing season dates",
+                    "counting down to the next league",
+                ]}
             />
         </div>
     </section>
@@ -326,7 +330,10 @@ const Hero = () => (
 const Showcase = () => (
     <section className="mx-auto mb-16 flex max-w-6xl flex-col gap-12 md:mb-24 md:gap-20">
         {showcase.map((item, i) => (
-            <div key={item.title} className="grid items-center gap-6 md:gap-12 lg:grid-cols-2">
+            <div
+                key={item.title}
+                className="reveal-on-scroll grid items-center gap-6 md:gap-12 lg:grid-cols-2"
+            >
                 <div className={cn("max-w-prose", i % 2 === 1 && "lg:order-last")}>
                     <h2 className="font-heading mb-3 text-xl md:text-2xl">{item.title}</h2>
                     <p className="text-muted-foreground leading-relaxed">{withCode(item.text)}</p>
@@ -536,7 +543,7 @@ const DiscordBotPage = async () => {
 
     return (
         <div className="[&_code]:bg-muted relative container mx-auto mb-12 py-8 md:py-12 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em]">
-            <Hero />
+            <Hero gameCount={games.length} />
             <Showcase />
             <Setup />
             <CommandsAndPermissions />

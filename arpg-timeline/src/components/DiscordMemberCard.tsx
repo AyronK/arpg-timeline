@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -6,7 +7,7 @@ import { Logo } from "./Logo";
 
 interface DiscordMemberCardProps {
     name: string;
-    status: string;
+    status: ReactNode;
     size?: "sm" | "md";
     className?: string;
 }
@@ -19,7 +20,7 @@ export const DiscordMemberCard = ({
 }: DiscordMemberCardProps) => (
     <div
         className={cn(
-            "inline-flex items-center rounded-lg  text-left transition-colors hover:bg-[#35373c]",
+            "inline-flex items-center rounded-lg text-left transition-colors hover:bg-[#35373c]",
             size === "md" && "gap-3 py-2 pr-5 pl-2.5",
             size === "sm" && "gap-2.5 py-1.5 pr-4 pl-2",
             className,

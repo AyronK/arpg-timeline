@@ -11,7 +11,7 @@ import { Logo } from "./Logo";
 const BotAvatar = ({ className }: { className?: string }) => (
     <span
         className={cn(
-            "inline-block shrink-0 rounded-full bg-[#111214] p-[10%] text-[#dbdee1]",
+            "inline-block shrink-0 rounded-full bg-[#111214] p-0.5 text-[#dbdee1]",
             className,
         )}
     >
