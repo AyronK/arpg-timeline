@@ -540,7 +540,7 @@ const Support = () => (
 );
 
 const DiscordBotPage = async () => {
-    const games: GameLink[] = await sanityFetch({ query: gamesQuery, revalidate: false });
+    const games: GameLink[] = await sanityFetch({ query: gamesQuery, tags: ["game"] });
 
     return (
         <div className="[&_code]:bg-muted relative container mx-auto mb-12 py-8 md:py-12 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em]">

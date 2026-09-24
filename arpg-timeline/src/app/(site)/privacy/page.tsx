@@ -13,7 +13,7 @@ const PrivacyPage = () => {
     return (
         <div className="relative container mx-auto mb-8">
             <section className="container flex flex-col gap-4 md:my-16">
-                <h2 className="mb-4 text-center text-3xl font-semibold">Privacy</h2>
+                <h1 className="mb-4 text-center text-3xl font-semibold">Privacy</h1>
                 <div className="mx-auto mt-8 max-w-prose space-y-6 text-base leading-relaxed">
                     <p>
                         At <i>arpg-timeline.com</i>, your privacy is important. This page outlines

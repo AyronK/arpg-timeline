@@ -11,7 +11,7 @@ const TransparencyPage = () => {
     return (
         <div className="relative container mx-auto mb-8">
             <section className="container flex flex-col gap-4 md:my-16">
-                <h2 className="mb-4 text-center text-3xl font-semibold">Transparency</h2>
+                <h1 className="mb-4 text-center text-3xl font-semibold">Transparency</h1>
                 <div className="mx-auto mt-8 max-w-prose space-y-10 text-base leading-relaxed">
                     <div className="space-y-3">
                         <h3 className="text-xl font-semibold">Why is this code public?</h3>

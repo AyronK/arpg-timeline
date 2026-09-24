@@ -55,7 +55,6 @@ const FlareCard = ({
     </div>
 );
 
-// Hero member card that docks bottom-right on large screens once scrolled past
 export const DiscordBotHeroCard = ({
     statuses,
     inviteUrl,
