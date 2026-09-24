@@ -536,7 +536,7 @@ const Credits = () => (
             />
             <CreditRow
                 avatar="/assets/discord-bot/ayronk.png"
-                title="Maintained by aRPG Timeline (AyronK)"
+                title="Maintained by aRPG Timeline (Ayron)"
                 text="Officially hosted, maintained and improved by aRPG Timeline."
                 links={
                     <>
