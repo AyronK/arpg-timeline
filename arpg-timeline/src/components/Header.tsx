@@ -61,7 +61,9 @@ export const Header = () => {
                         </span>
                         <div className="flex flex-row items-center px-2 lg:gap-4 xl:px-0">
                             <Logo className="scale-75 lg:mx-auto lg:scale-100" />
-                            <span className="font-heading text-nowrap">aRPG Timeline</span>
+                            <span className="font-heading font-normal text-nowrap">
+                                aRPG Timeline
+                            </span>
                         </div>
                         <span className="text-muted-foreground font-heading hidden w-0 flex-1 overflow-visible text-left text-xs text-nowrap lg:block">
                             Just On Time
