@@ -43,3 +43,23 @@ export const ProtonCalendarAffiliation = () => {
         </div>
     );
 };
+
+export const ProtonCalendarInlineLink = () => {
+    const { isPartnerHidden } = usePartnerPromos();
+
+    if (!process.env.NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL || isPartnerHidden("proton")) {
+        return null;
+    }
+
+    return (
+        <Link
+            href={process.env.NEXT_PUBLIC_PROTON_CALENDAR_AFFILIATE_URL}
+            rel="noopener noreferrer nofollow"
+            target="_blank"
+            data-sa-click="proton-calendar-affiliation-manual"
+            className="mt-2 inline-block text-sm text-violet-400 underline-offset-2 hover:underline"
+        >
+            Don&apos;t have it? Get Proton Calendar →
+        </Link>
+    );
+};

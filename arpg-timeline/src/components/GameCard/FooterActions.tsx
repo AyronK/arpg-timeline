@@ -37,7 +37,6 @@ type FooterActionsProps = Pick<
     | "nextSeasonConfirmed"
     | "currentSeasonStartDate"
     | "currentSeasonEndDate"
-    | "stats"
     | "noMenu"
 >;
 
@@ -50,7 +49,6 @@ export const FooterActions = ({
     nextSeasonConfirmed,
     currentSeasonStartDate,
     currentSeasonEndDate,
-    stats,
     noMenu,
 }: FooterActionsProps) => {
     const showOverviewAndMenu = !noMenu;
@@ -131,14 +129,7 @@ export const FooterActions = ({
                     </Tooltip>
                 )}
             </div>
-            {showOverviewAndMenu && (
-                <GameMenu
-                    game={slug}
-                    gameName={name}
-                    steamAppId={stats?.steam?.appId}
-                    playersCount={stats?.steam?.currentPlayers}
-                />
-            )}
+            {showOverviewAndMenu && <GameMenu game={slug} gameName={name} />}
         </div>
     );
 };

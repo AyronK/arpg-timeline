@@ -1,8 +1,17 @@
 import { useMemo } from "react";
 
 import { Game } from "@/lib/cms/games.types";
-import { GameFilterCategory } from "@/lib/cms/gameTags";
+import { GameCategory, GameFilterCategory } from "@/lib/cms/gameTags";
 import { processGamesWithGracePeriodAndSort } from "@/lib/cms/processGamesWithGracePeriodAndSort";
+
+export const getGameFilterGroup = (categories?: GameCategory[] | null) =>
+    categories?.includes("early-access")
+        ? { group: "Early Access", groupPriority: 2 }
+        : categories?.includes("community")
+          ? { group: "Community", groupPriority: 3 }
+          : categories?.includes("seasonal")
+            ? { group: "Seasonal", groupPriority: 1 }
+            : { group: "Non-Seasonal", groupPriority: 4 };
 
 export const useGameFiltersData = (games: Game[]) => {
     const gameFilters = useMemo(() => {
@@ -10,20 +19,7 @@ export const useGameFiltersData = (games: Game[]) => {
             .map((g) => ({
                 label: g!.name!,
                 value: g!.slug!,
-                group: g.categories?.includes("early-access")
-                    ? "Early Access"
-                    : g.categories?.includes("community")
-                      ? "Community"
-                      : g.categories?.includes("seasonal")
-                        ? "Seasonal"
-                        : "Non-Seasonal",
-                groupPriority: g.categories?.includes("early-access")
-                    ? 2
-                    : g.categories?.includes("community")
-                      ? 3
-                      : g.categories?.includes("seasonal")
-                        ? 1
-                        : 4,
+                ...getGameFilterGroup(g.categories),
                 logo: g!.logo,
             }))
             .sort((a, b) => (a.label > b.label ? 1 : -1));
