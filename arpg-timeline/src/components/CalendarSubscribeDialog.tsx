@@ -161,8 +161,10 @@ const SubscribeContent = ({
                         Want updates for a specific game?
                     </p>
                     <p className="text-muted-foreground mt-1 text-xs">
-                        Subscribe from the game menu or details page. You can pick as many as you
-                        want!
+                        <Link href="/calendar#subscribe" className="underline underline-offset-2">
+                            Pick any game on the calendar page
+                        </Link>
+                        . You can subscribe to as many as you want!
                     </p>
                 </div>
             )}
