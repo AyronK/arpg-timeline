@@ -62,7 +62,12 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                 <div className="flex max-h-64 min-h-0 flex-1 flex-col overflow-y-auto">
                     {game.url && (
                         <GuardedExternalLink
-                            href={game.url}
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "official-website",
+                                utm_content: gameSlug,
+                            })(game.url)}
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
@@ -147,7 +152,12 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
 
                     {game.currentSeason?.url && (
                         <GuardedExternalLink
-                            href={game.currentSeason.url}
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "season-details",
+                                utm_content: gameSlug,
+                            })(game.currentSeason.url)}
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
@@ -165,7 +175,12 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
 
                     {game.nextSeason?.url && (
                         <GuardedExternalLink
-                            href={game.nextSeason.url}
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "season-details",
+                                utm_content: gameSlug,
+                            })(game.nextSeason.url)}
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"

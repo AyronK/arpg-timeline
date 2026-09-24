@@ -4,11 +4,13 @@ import {
     type PortableTextComponents,
 } from "@portabletext/react";
 import { AlertTriangle, Info, Lightbulb } from "lucide-react";
+import Link from "next/link";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { blockToPlainText, slugifyHeading } from "@/lib/articles/tableOfContents";
 import { getYouTubeEmbedUrl, parseYouTubeId } from "@/lib/articles/youtube";
 import type { ArticleImage as ArticleImageData } from "@/lib/cms/queries/articleQuery";
+import { toInternalHref } from "@/lib/siteUrl";
 import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 
@@ -44,13 +46,23 @@ const linkComponent: NonNullable<PortableTextComponents["marks"]>["link"] = ({
     children,
 }) => {
     const href: string = value?.href ?? "";
+    const className =
+        "text-primary underline underline-offset-2 transition-all hover:brightness-125";
+    const internalHref = toInternalHref(href);
+    if (internalHref) {
+        return (
+            <Link href={internalHref} className={className}>
+                {children}
+            </Link>
+        );
+    }
     const isExternal = /^https?:\/\//.test(href);
     return (
         <a
             href={isExternal ? addUTM(href) : href}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "nofollow noopener noreferrer" : undefined}
-            className="text-primary underline underline-offset-2 transition-all hover:brightness-125"
+            className={className}
         >
             {children}
         </a>
@@ -158,7 +170,7 @@ function createComponents(headingIds: Map<string, string>): PortableTextComponen
                     return (
                         <p className="my-6">
                             <a
-                                href={value?.url}
+                                href={value?.url && addUTM(value.url)}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
                                 className="text-primary underline"

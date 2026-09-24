@@ -14,6 +14,7 @@ import { Game } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { getProgress, getProgressEndContent, getProgressStartContent } from "@/lib/getProgress";
 import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
 
 import { Selector } from "./types";
 export const Content = ({
@@ -66,7 +67,12 @@ export const Content = ({
                             )}
                             {season.patchNotesUrl && (
                                 <GuardedExternalLink
-                                    href={season.patchNotesUrl}
+                                    href={addUTMParameters({
+                                        utm_source: "arpg-timeline",
+                                        utm_medium: "link",
+                                        utm_campaign: "patch-notes",
+                                        utm_content: game.slug,
+                                    })(season.patchNotesUrl)}
                                     isOfficial={game.isOfficial}
                                     target="_blank"
                                     rel="noopener noreferrer nofollow"

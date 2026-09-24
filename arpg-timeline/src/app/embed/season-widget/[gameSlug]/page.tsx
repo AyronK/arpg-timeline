@@ -11,6 +11,7 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { getSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
+import { addUTMParameters } from "@/lib/utm";
 
 const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
     const { gameSlug } = await params;
@@ -56,7 +57,12 @@ const Home = async ({ params }: { params: Promise<{ gameSlug: string }> }) => {
                     game.currentSeason?.patchNotesUrl && (
                         <div className="mt-auto flex flex-col gap-2">
                             <GuardedExternalLink
-                                href={game.currentSeason.patchNotesUrl}
+                                href={addUTMParameters({
+                                    utm_source: "arpg-timeline",
+                                    utm_medium: "embed",
+                                    utm_campaign: "patch-notes",
+                                    utm_content: game.slug,
+                                })(game.currentSeason.patchNotesUrl)}
                                 isOfficial={game.isOfficial}
                                 target="_blank"
                                 rel="noopener noreferrer nofollow"
