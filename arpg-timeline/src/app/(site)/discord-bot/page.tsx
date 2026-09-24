@@ -7,6 +7,11 @@ import { ReactNode } from "react";
 import { BuyMeACoffee } from "@/components/BuyMeACoffee";
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 import { DiscordMemberCard } from "@/components/DiscordMemberCard";
+import {
+    DiscordEventMockup,
+    DiscordGameConfigMockup,
+    DiscordSeasonsMockup,
+} from "@/components/DiscordMockups";
 import { DiscordContactBanner } from "@/components/DiscordServerBoost";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { cn } from "@/lib/utils";
@@ -78,26 +83,17 @@ const showcase = [
     {
         title: "Seasons show up as server events",
         text: "Every new season becomes an event in your server's Events tab, with the start time and useful links. If a date changes, the event updates too.",
-        src: "/assets/discord-bot/event-card.png",
-        alt: "Discord scheduled event for an upcoming aRPG season created by the bot",
-        width: 802,
-        height: 420,
+        preview: <DiscordEventMockup />,
     },
     {
         title: "Only the games you play",
         text: "Pick games from a simple menu. Everything is off until you turn it on, so your server only gets what it cares about.",
-        src: "/assets/discord-bot/toggle-game.png",
-        alt: "The /arpg-toggle-game menu for choosing which games to follow",
-        width: 789,
-        height: 550,
+        preview: <DiscordGameConfigMockup />,
     },
     {
         title: "See what's coming",
         text: "Type /arpg-seasons to see current and upcoming seasons at a glance.",
-        src: "/assets/discord-bot/seasons.png",
-        alt: "The /arpg-seasons command listing current and upcoming seasons",
-        width: 833,
-        height: 723,
+        preview: <DiscordSeasonsMockup />,
     },
 ];
 
@@ -293,19 +289,12 @@ const Hero = () => (
 const Showcase = () => (
     <section className="mx-auto mb-16 flex max-w-6xl flex-col gap-12 md:mb-24 md:gap-20">
         {showcase.map((item, i) => (
-            <div key={item.src} className="grid items-center gap-6 md:gap-12 lg:grid-cols-2">
+            <div key={item.title} className="grid items-center gap-6 md:gap-12 lg:grid-cols-2">
                 <div className={cn("max-w-prose", i % 2 === 1 && "lg:order-last")}>
                     <h2 className="font-heading mb-3 text-xl md:text-2xl">{item.title}</h2>
                     <p className="text-muted-foreground leading-relaxed">{item.text}</p>
                 </div>
-                <Image
-                    src={item.src}
-                    alt={item.alt}
-                    width={item.width}
-                    height={item.height}
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="mx-auto h-auto w-full max-w-xl rounded-lg"
-                />
+                <div className="flex justify-center">{item.preview}</div>
             </div>
         ))}
     </section>
