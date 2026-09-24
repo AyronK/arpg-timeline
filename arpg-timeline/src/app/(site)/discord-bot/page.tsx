@@ -227,79 +227,66 @@ const Section = ({
 );
 
 const Hero = () => (
-    <section className="mx-auto mb-16 flex max-w-6xl flex-col items-center text-center md:mb-24">
-        <span className="bg-muted text-foreground mb-2 inline-flex items-center gap-1.5 rounded-lg border border-white/5 px-3 py-1 text-xs">
-            <BadgeCheck className="h-3.5 w-3.5 text-indigo-500" />
-            Verified Discord app
-        </span>
-        <div className="pointer-events-none">
-            <DiscordMemberCard
-                name="aRPG Timeline"
-                status="preparing the next event!"
-                className="mb-6"
-            />
-        </div>
-        <div className="flex max-w-prose flex-col items-center">
-            <h1 className="font-heading mb-2 text-2xl md:text-3xl">aRPG Timeline Discord Bot</h1>
-            <p className="text-muted-foreground mb-4 text-sm text-balance md:text-base">
+    <section className="mx-auto mb-16 grid max-w-6xl items-center gap-10 md:mb-24 lg:grid-cols-[3fr_2fr] lg:gap-16">
+        <div className="flex flex-col items-start">
+            <span className="bg-muted text-foreground mb-4 inline-flex items-center gap-1.5 rounded-lg border border-white/5 px-3 py-1 text-xs">
+                <BadgeCheck className="h-3.5 w-3.5 text-indigo-500" />
+                Verified Discord app
+            </span>
+            <h1 className="font-heading mb-3 text-3xl leading-tight md:text-4xl">
+                aRPG Timeline Discord Bot
+            </h1>
+            <p className="text-muted-foreground mb-6 max-w-prose leading-relaxed md:text-lg">
                 Never miss a season launch. The bot adds new aRPG seasons to your server&apos;s
                 Events tab.
             </p>
+            {INVITE_URL && (
+                <Link
+                    href={INVITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-sa-click="discord-bot-invite"
+                    className={cn(getCtaBannerClassName("indigo"), "max-w-xl")}
+                >
+                    <CtaBannerContent
+                        icon={
+                            <Image
+                                unoptimized
+                                src="/assets/third-party/discord-logo.svg"
+                                className="m-auto h-6 w-6 md:h-7 md:w-7"
+                                alt="Discord logo"
+                                width={32}
+                                height={32}
+                            />
+                        }
+                        title="Add to your server"
+                        description="Free and ready in a minute."
+                        actionLabel="Add to Discord"
+                        color="indigo"
+                    />
+                </Link>
+            )}
+            {TOPGG_URL && (
+                <Link
+                    href={TOPGG_URL}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    data-sa-click="discord-bot-topgg"
+                    className="text-muted-foreground hover:text-foreground mt-4 inline-flex items-center gap-2 text-sm transition-colors"
+                >
+                    <TopggLogo className="h-4 w-4 text-[#f36]" />
+                    Like it? Vote for the bot on top.gg
+                    <span aria-hidden>→</span>
+                </Link>
+            )}
         </div>
-        {(INVITE_URL || TOPGG_URL) && (
-            <div
-                className={cn(
-                    "grid w-full gap-4 text-left",
-                    INVITE_URL && TOPGG_URL ? "md:grid-cols-2" : "max-w-xl",
-                )}
-            >
-                {INVITE_URL && (
-                    <Link
-                        href={INVITE_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-sa-click="discord-bot-invite"
-                        className={getCtaBannerClassName("indigo")}
-                    >
-                        <CtaBannerContent
-                            icon={
-                                <Image
-                                    unoptimized
-                                    src="/assets/third-party/discord-logo.svg"
-                                    className="m-auto h-6 w-6 md:h-7 md:w-7"
-                                    alt="Discord logo"
-                                    width={32}
-                                    height={32}
-                                />
-                            }
-                            title="Add to your server"
-                            description="Free and ready in a minute."
-                            actionLabel="Add to Discord"
-                            color="indigo"
-                        />
-                    </Link>
-                )}
-                {TOPGG_URL && (
-                    <Link
-                        href={TOPGG_URL}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow"
-                        data-sa-click="discord-bot-topgg"
-                        className={getCtaBannerClassName("rose")}
-                    >
-                        <CtaBannerContent
-                            icon={
-                                <TopggLogo className="m-auto h-6 w-6 text-[#f36] md:h-7 md:w-7" />
-                            }
-                            title="Vote on top.gg"
-                            description="Help other communities find the bot."
-                            actionLabel="Open top.gg"
-                            color="rose"
-                        />
-                    </Link>
-                )}
-            </div>
-        )}
+        <div className="pointer-events-none order-first flex justify-center lg:order-none">
+            <DiscordMemberCard
+                name="aRPG Timeline"
+                status="preparing the next event!"
+                className="lg:scale-125"
+            />
+        </div>
     </section>
 );
 
@@ -333,7 +320,7 @@ const Setup = () => (
                 </li>
             ))}
         </ol>
-        <p className="text-muted-foreground max-w-prose leading-relaxed">
+        <p className="text-muted-foreground leading-relaxed">
             Steps 2 and 3 must be done by the server owner. Something not working? See{" "}
             <Link href="#troubleshooting" className="text-foreground underline underline-offset-2">
                 troubleshooting
