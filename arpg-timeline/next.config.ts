@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_PROTON_DRIVE_AFFILIATE_URL: process.env.PROTON_DRIVE_AFFILIATE_URL,
         NEXT_PUBLIC_PROTON_PASS_AFFILIATE_URL: process.env.PROTON_PASS_AFFILIATE_URL,
         NEXT_PUBLIC_BUY_ME_A_COFFEE_URL: process.env.BUY_ME_A_COFFEE_URL,
+        NEXT_PUBLIC_DISCORD_BOT_INVITE_URL: process.env.DISCORD_BOT_INVITE_URL,
+        NEXT_PUBLIC_TOPGG_BOT_ID: process.env.TOPGG_BOT_ID,
     },
     images: {
         remotePatterns: [{ hostname: "cdn.sanity.io" }],
@@ -191,6 +193,15 @@ const nextConfig: NextConfig = {
             })),
             {
                 source: "/support",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/discord-bot",
                 headers: [
                     {
                         key: "Cache-Control",

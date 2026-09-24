@@ -4,16 +4,18 @@ import Link from "next/link";
 export const metadata: Metadata = {
     title: "Terms of Service - aRPG Timeline",
     description:
-        "Terms of Service for arpg-timeline.com covering API usage, calendar subscriptions, embeddable widgets, scraping policy, and source code license.",
+        "Terms of Service for arpg-timeline.com covering API usage, calendar subscriptions, embeddable widgets, the Discord bot, scraping policy, and source code license.",
 };
 
 const TermsPage = () => {
     return (
         <div className="relative container mx-auto mb-8">
             <section className="container flex flex-col gap-4 md:my-16">
-                <h2 className="mb-4 text-center text-3xl font-semibold">Terms of Service</h2>
+                <h1 className="mb-4 text-center text-3xl font-semibold">Terms of Service</h1>
                 <div className="mx-auto mt-8 max-w-prose space-y-10 text-base leading-relaxed">
-                    <p className="text-muted-foreground text-sm">Effective date: April 25, 2026</p>
+                    <p className="text-muted-foreground text-sm">
+                        Effective date: September 24, 2026
+                    </p>
                     <p>
                         By using arpg-timeline.com (the &ldquo;Site&rdquo;), you agree to these
                         Terms of Service. If you disagree, please stop using the Site.
@@ -144,7 +146,79 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">9. Privacy</h3>
+                        <h3 className="text-xl font-semibold">9. Discord Bot</h3>
+                        <p>
+                            The aRPG Timeline Discord bot (the &ldquo;Bot&rdquo;) adds upcoming aRPG
+                            seasons to your server as Discord scheduled events. By adding the Bot to
+                            a server or using its commands, you agree to these terms. You also
+                            remain bound by{" "}
+                            <Link
+                                className="underline hover:opacity-80"
+                                href="https://discord.com/terms"
+                                rel="noopener noreferrer nofollow"
+                                target="_blank"
+                            >
+                                Discord&apos;s Terms of Service
+                            </Link>{" "}
+                            and{" "}
+                            <Link
+                                className="underline hover:opacity-80"
+                                href="https://discord.com/guidelines"
+                                rel="noopener noreferrer nofollow"
+                                target="_blank"
+                            >
+                                Community Guidelines
+                            </Link>
+                            .
+                        </p>
+                        <ul className="list-inside list-disc space-y-2">
+                            <li>
+                                <strong>Server owners are in charge.</strong> Whoever adds the Bot
+                                is responsible for its setup and for the events it creates in their
+                                server. Events can be edited or deleted like any other Discord
+                                event.
+                            </li>
+                            <li>
+                                <strong>Fair use.</strong> Don&apos;t spam commands, try to disrupt
+                                or overload the Bot, or use it to break Discord&apos;s rules. We may
+                                block servers or users that abuse it.
+                            </li>
+                            <li>
+                                <strong>Your data.</strong> The Bot stores only what it needs to
+                                work. See the{" "}
+                                <Link
+                                    className="underline hover:opacity-80"
+                                    href="/privacy#discord-bot"
+                                >
+                                    Privacy Policy
+                                </Link>{" "}
+                                for exactly what is kept and how to have it deleted.
+                            </li>
+                            <li>
+                                <strong>Removing the Bot.</strong> You can remove the Bot from your
+                                server at any time.
+                            </li>
+                            <li>
+                                <strong>No guarantees.</strong> The Bot is free and provided as-is.
+                                Season dates come from aRPG Timeline and may be wrong, change or
+                                arrive late. The Bot may be changed, paused or shut down at any
+                                time, and we&apos;re not responsible for missed launches or for the
+                                events it creates in your server.
+                            </li>
+                            <li>
+                                <strong>Source code.</strong> The Bot&apos;s code is open source
+                                under the MIT License. That license covers the code only. The hosted
+                                Bot and the aRPG Timeline name and branding stay under these terms.
+                            </li>
+                            <li>
+                                <strong>Third parties.</strong> The Bot&apos;s listings on Discord
+                                and top.gg are run by those platforms under their own terms.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className="space-y-3">
+                        <h3 className="text-xl font-semibold">10. Privacy</h3>
                         <p>
                             This Site respects your privacy. No tracking cookies are used. See the{" "}
                             <Link className="underline hover:opacity-80" href="/privacy">
@@ -155,7 +229,7 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">10. Limitation of Liability</h3>
+                        <h3 className="text-xl font-semibold">11. Limitation of Liability</h3>
                         <p>
                             This is a hobby project run by a single developer. It is provided as-is
                             and we cannot be held responsible if something goes wrong - for example,
@@ -170,7 +244,7 @@ const TermsPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <h3 className="text-xl font-semibold">11. Changes</h3>
+                        <h3 className="text-xl font-semibold">12. Changes</h3>
                         <p>
                             These terms may be updated at any time. The effective date at the top of
                             this page will reflect the date of the latest revision. Continued use of

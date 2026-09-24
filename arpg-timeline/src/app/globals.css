@@ -282,3 +282,20 @@
         border-radius: 9999px;
     }
 }
+
+@keyframes reveal-on-scroll {
+    from {
+        opacity: 0;
+        transform: translateY(2rem);
+    }
+}
+
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+        .reveal-on-scroll {
+            animation: reveal-on-scroll linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 60%;
+        }
+    }
+}

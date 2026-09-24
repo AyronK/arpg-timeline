@@ -24,9 +24,9 @@ export default async function SupportPage() {
     return (
         <div className="relative container mx-auto mb-12">
             <div className="mx-auto max-w-prose">
-                <h2 className="font-heading mx-auto mt-8 mb-6 text-center text-2xl">
+                <h1 className="font-heading mx-auto mt-8 mb-6 text-center text-2xl">
                     Support aRPG Timeline
-                </h2>
+                </h1>
                 <p className="text-muted-foreground mx-auto mb-8">
                     aRPG Timeline is a solo-developed, community-supported project - not affiliated
                     with any game studio or publisher. There are no intrusive ads; the site stays

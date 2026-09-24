@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
+import { DiscordBotBanner } from "@/components/DiscordBotBanner";
 import { PatreonFunding } from "@/components/PatreonFunding";
 import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
@@ -136,6 +137,10 @@ const GamePage = async ({ params }: GamePageProps) => {
                 <div className="mb-4 flex flex-col justify-between gap-4 md:mb-6 md:gap-6 lg:flex-row">
                     <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
                     <PatreonFunding />
+                </div>
+
+                <div className="mb-4 md:mb-6">
+                    <DiscordBotBanner gameName={game.name} seasonKeyword={game.seasonKeyword} />
                 </div>
 
                 {game.categories?.includes("seasonal") && archivalSeasons.length > 0 && (

@@ -35,13 +35,6 @@ export const Footer = () => (
                         </Link>
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
-                            href="/support#supporters"
-                            data-sa-click="supporters-credits"
-                        >
-                            Credits & supporters
-                        </Link>
-                        <Link
-                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href="/community-launchers"
                             data-sa-click="community-launchers"
                         >
@@ -75,13 +68,6 @@ export const Footer = () => (
                         </Link>
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
-                            href="/resources"
-                            data-sa-click="resources"
-                        >
-                            Resources
-                        </Link>
-                        <Link
-                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href="/faq"
                             data-sa-click="faq"
                         >
@@ -93,6 +79,13 @@ export const Footer = () => (
                             data-sa-click="calendar"
                         >
                             Calendar
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/discord-bot"
+                            data-sa-click="discord-bot-nav"
+                        >
+                            Discord Bot
                         </Link>
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
@@ -129,6 +122,13 @@ export const Footer = () => (
                             data-sa-click="discord"
                         >
                             Discord
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/support#supporters"
+                            data-sa-click="supporters-credits"
+                        >
+                            Credits & supporters
                         </Link>
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
