@@ -574,11 +574,11 @@ const DiscordBotPage = async () => {
             <Hero gameCount={games.length} />
             <Showcase />
             <Setup />
+            <Credits />
             <CommandsAndPermissions />
             <SupportedGames games={games} />
             <Faq />
             <Troubleshooting />
-            <Credits />
             <Support />
             <script
                 type="application/ld+json"
