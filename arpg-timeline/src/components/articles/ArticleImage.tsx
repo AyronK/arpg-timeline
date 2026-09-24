@@ -2,6 +2,14 @@ import Image from "next/image";
 
 import type { ArticleImage as ArticleImageData } from "@/lib/cms/queries/articleQuery";
 import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
+
+const addUTM = addUTMParameters({
+    utm_source: "arpg-timeline",
+    utm_medium: "link",
+    utm_campaign: "article_body",
+    utm_content: "image_credit",
+});
 
 interface ArticleImageProps {
     image: ArticleImageData;
@@ -57,7 +65,7 @@ export const ArticleImage = ({
                         Image credit:{" "}
                         {image.creditUrl ? (
                             <a
-                                href={image.creditUrl}
+                                href={addUTM(image.creditUrl)}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
                                 className="underline underline-offset-2 transition-all hover:brightness-125"

@@ -1,5 +1,7 @@
 import { PortableText, PortableTextBlock, PortableTextReactComponents } from "@portabletext/react";
+import Link from "next/link";
 
+import { toInternalHref } from "@/lib/siteUrl";
 import { addUTMParameters } from "@/lib/utm";
 
 const addUTM = addUTMParameters({
@@ -53,13 +55,22 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
 
         link: ({ value, children }) => {
             const href: string = value?.href || "";
+            const className = "underline transition-all hover:brightness-150";
+            const internalHref = toInternalHref(href);
+            if (internalHref) {
+                return (
+                    <Link href={internalHref} className={className}>
+                        {children}
+                    </Link>
+                );
+            }
             const target = href.startsWith("http") ? "_blank" : undefined;
             return (
                 <a
                     href={target ? addUTM(href) : href}
                     target={target}
                     rel={target === "_blank" ? "nofollow noopener noreferrer" : undefined}
-                    className="underline transition-all hover:brightness-150"
+                    className={className}
                 >
                     {children}
                 </a>
