@@ -3,10 +3,13 @@
 import { CalendarSync, Check, Copy } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { usePathname } from "next/navigation";
+import { ReactNode, useCallback, useState, useSyncExternalStore } from "react";
 
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { sa_event } from "@/lib/sa_event";
+import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/Dialog";
 import {
@@ -133,6 +136,96 @@ export interface CalendarSubscribeDialogProps {
     gameName?: string;
 }
 
+const toWebcal = (url: string) => url.replace(/^https?:/, "webcal:");
+
+const AppLink = ({
+    href,
+    icon,
+    label,
+    onClick,
+}: {
+    href: string;
+    icon: ReactNode;
+    label: string;
+    onClick: () => void;
+}) => (
+    <Button asChild variant="ghost" className="gap-2">
+        <a
+            href={href}
+            target={href.startsWith("webcal:") ? undefined : "_blank"}
+            rel="noopener noreferrer nofollow"
+            onClick={onClick}
+        >
+            {icon}
+            {label}
+        </a>
+    </Button>
+);
+
+// webcal:// only has a reliable handler on Apple devices
+const noopSubscribe = () => () => { };
+const getIsApple = () => /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
+
+export const CalendarAppButtons = ({
+    url,
+    calendarName,
+    game,
+}: {
+    url: string;
+    calendarName: string;
+    game: string;
+}) => {
+    const isApple = useSyncExternalStore(noopSubscribe, getIsApple, () => false);
+    const track = (app: string) => sa_event("calendar_subscribe_action", { game, app });
+
+    return (
+        <div className={cn("grid gap-2", isApple ? "sm:grid-cols-3" : "sm:grid-cols-2")}>
+            <AppLink
+                href={`https://calendar.google.com/calendar/render?cid=${encodeURIComponent(toWebcal(url))}`}
+                onClick={() => track("google")}
+                label="Google"
+                icon={
+                    <Image
+                        src="/assets/third-party/google-calendar-logo.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                    />
+                }
+            />
+            {isApple && (
+                <AppLink
+                    href={toWebcal(url)}
+                    onClick={() => track("webcal")}
+                    label="Apple"
+                    icon={
+                        <Image
+                            unoptimized
+                            src="/assets/third-party/apple-logo.svg"
+                            alt=""
+                            width={12}
+                            height={16}
+                        />
+                    }
+                />
+            )}
+            <AppLink
+                href={`https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(url)}&name=${encodeURIComponent(calendarName)}`}
+                onClick={() => track("outlook")}
+                label="Outlook"
+                icon={
+                    <Image
+                        src="/assets/third-party/outlook-logo.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                    />
+                }
+            />
+        </div>
+    );
+};
+
 const SubscribeContent = ({
     gameSlug,
     gameName,
@@ -142,36 +235,45 @@ const SubscribeContent = ({
     gameName?: string;
     compact?: boolean;
 }) => {
-    const gameSubscribeUrl = gameSlug ? `${SITE_URL}/calendar/subscribe/${gameSlug}` : null;
-    const allGamesSubscribeUrl = `${SITE_URL}/calendar/subscribe`;
+    const pathname = usePathname();
     const isGeneric = !gameSlug || !gameName;
+    const allGamesSubscribeUrl = `${SITE_URL}/calendar/subscribe`;
+    const url = isGeneric ? allGamesSubscribeUrl : `${SITE_URL}/calendar/subscribe/${gameSlug}`;
+    const calendarName = isGeneric ? "arpg-timeline.com" : `arpg-timeline.com | ${gameName}`;
+    const onCalendarPage = pathname === "/calendar";
 
     return (
         <div className="flex flex-col gap-4">
+            <CalendarAppButtons url={url} calendarName={calendarName} game={gameSlug ?? "all"} />
+
             <div className="flex min-w-0 flex-col gap-3 overflow-hidden">
-                {gameSubscribeUrl && gameName && (
-                    <CopyableRow url={gameSubscribeUrl} label={gameName} compact={compact} />
+                <p className="text-muted-foreground text-xs text-center text-pretty">
+                    Other apps: copy the link and add it as a subscription (&quot;From URL&quot;).
+                </p>
+                <CopyableRow url={url} label={gameName ?? "All games"} compact={compact} />
+                {!isGeneric && !onCalendarPage && (
+                    <CopyableRow url={allGamesSubscribeUrl} label="All games" compact={compact} />
                 )}
-                <CopyableRow url={allGamesSubscribeUrl} label="All games" compact={compact} />
             </div>
 
-            {isGeneric && (
-                <div className="bg-muted/50 mt-2 rounded-md border px-4 py-3 text-center">
-                    <p className="text-foreground text-sm font-medium">
-                        Want updates for a specific game?
-                    </p>
-                    <p className="text-muted-foreground mt-1 text-xs">
-                        <Link href="/calendar#subscribe" className="underline underline-offset-2">
-                            Pick any game on the calendar page
-                        </Link>
-                        . You can subscribe to as many as you want!
-                    </p>
-                </div>
-            )}
-
-            <p className="text-muted-foreground text-center text-xs text-balance">
-                Paste in your calendar app under &quot;Subscribe&quot; or &quot;Add from URL&quot;
-            </p>
+            <div className="bg-muted/50 rounded-md border px-4 py-3 text-center">
+                <p className="text-foreground text-sm font-medium">Want more games?</p>
+                <p className="text-muted-foreground mt-1 text-xs">
+                    {onCalendarPage ? (
+                        "Close this and pick another. Each game is its own calendar, so you can color and toggle them separately."
+                    ) : (
+                        <>
+                            <Link
+                                href="/calendar#subscribe"
+                                className="underline underline-offset-2"
+                            >
+                                Pick any game on the calendar page
+                            </Link>
+                            . You can subscribe to as many as you want!
+                        </>
+                    )}
+                </p>
+            </div>
 
             <p className="text-muted-foreground text-center text-xs opacity-70">
                 Free for personal use.{" "}
@@ -206,7 +308,11 @@ export const CalendarSubscribeDialog = ({
                     <DrawerContent className="top-auto! px-6 pb-28">
                         <DrawerHeader className="items-center text-center">
                             <HeaderIcon />
-                            <DrawerTitle>Subscribe to Calendar for Free</DrawerTitle>
+                            <DrawerTitle>
+                                {gameName
+                                    ? `Subscribe to ${gameName}`
+                                    : "Subscribe to Calendar for Free"}
+                            </DrawerTitle>
                             <DrawerDescription className="text-center text-balance">
                                 Launches and streams in your calendar for free. No ads, no tracking.
                                 Kept free thanks to Patreon and partnership offers.
@@ -230,7 +336,9 @@ export const CalendarSubscribeDialog = ({
             >
                 <DialogHeader className="items-center text-center">
                     <HeaderIcon />
-                    <DialogTitle>Subscribe to Calendar for Free</DialogTitle>
+                    <DialogTitle>
+                        {gameName ? `Subscribe to ${gameName}` : "Subscribe to Calendar for Free"}
+                    </DialogTitle>
                     <DialogDescription className="text-center text-balance">
                         Launches and streams in your calendar for free. No ads, no tracking. Kept
                         free thanks to Patreon and partnership offers.

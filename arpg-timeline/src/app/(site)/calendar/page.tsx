@@ -204,7 +204,7 @@ const Hero = ({ gameCount }: { gameCount: number }) => (
                 <CtaBannerContent
                     icon={<CalendarSync className="m-auto h-5 w-5 opacity-70 md:h-6 md:w-6" />}
                     title="Subscribe in two clicks"
-                    description="Choose a game, then your calendar app."
+                    description="Click a game, then your calendar app."
                     actionLabel="Pick your games"
                     color="emerald"
                 />
@@ -257,7 +257,7 @@ const Showcase = () => (
 const Manual = () => (
     <Section
         title="Adding it by hand"
-        intro="Any app that can subscribe to an iCal (.ics) link will work. Copy the link above, then add it as a subscription. Here's where to find that in popular apps."
+        intro="Any app that can subscribe to an iCal (.ics) link will work. Copy the link from a game above, then add it as a subscription. Here's where to find that in popular apps."
     >
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {apps.map((app) => (
@@ -316,7 +316,7 @@ const CalendarPage = async () => {
             <Section
                 id="subscribe"
                 title="Subscribe"
-                intro="Pick a game, then your calendar app. Want a few games? Subscribe to each one, so you can toggle or color them separately."
+                intro="Click a game to subscribe. Want several? Add each one. They show up as separate calendars you can color and toggle."
             >
                 <CalendarSubscribePicker games={games} />
             </Section>
