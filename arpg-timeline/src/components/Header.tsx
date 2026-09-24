@@ -1,5 +1,5 @@
 "use client";
-import { Heart, Menu, X } from "lucide-react";
+import { Bot, Heart, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/DropdownMenu";
 
+import { DiscordMemberCard } from "./DiscordMemberCard";
 import { Logo } from "./Logo";
 
 interface SocialButtonProps {
@@ -97,6 +98,18 @@ export const Header = () => {
                             rel=""
                             className="hidden xl:flex"
                         />
+                        <Link
+                            href="/discord-bot"
+                            data-sa-click="discord-bot-nav"
+                            aria-label="aRPG Timeline Discord bot"
+                            className="hidden rounded-lg xl:flex"
+                        >
+                            <DiscordMemberCard
+                                name="aRPG Timeline"
+                                status="official Discord bot"
+                                size="sm"
+                            />
+                        </Link>
                     </div>
 
                     <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -148,6 +161,15 @@ export const Header = () => {
                                         height={20}
                                     />
                                     <span className="text-nowrap">Join Discord</span>
+                                </Link>
+                                <Link
+                                    href="/discord-bot"
+                                    className="hover:bg-accent flex items-center gap-3 rounded-lg p-2 transition-colors"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    data-sa-click="discord-bot-nav"
+                                >
+                                    <Bot className="h-4 w-4" />
+                                    <span className="text-nowrap">Discord Bot</span>
                                 </Link>
                             </div>
                         </DropdownMenuContent>

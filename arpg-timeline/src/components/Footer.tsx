@@ -96,6 +96,13 @@ export const Footer = () => (
                         </Link>
                         <Link
                             className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                            href="/discord-bot"
+                            data-sa-click="discord-bot-nav"
+                        >
+                            Discord Bot
+                        </Link>
+                        <Link
+                            className="hover:text-primary font-semibold transition-all duration-200 hover:translate-x-1"
                             href="/docs/api"
                             rel="noopener noreferrer nofollow"
                             data-sa-click="api-docs"

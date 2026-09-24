@@ -2,7 +2,8 @@ import { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-export type CtaBannerColor = "orange" | "emerald" | "violet" | "indigo" | "amber" | "white";
+export type CtaBannerColor =
+    "orange" | "emerald" | "violet" | "indigo" | "amber" | "white" | "rose";
 
 export interface CtaBannerProps {
     icon: ReactNode;
@@ -21,6 +22,7 @@ const colorClasses = {
     indigo: "bg-indigo-500/30 group-hover:bg-indigo-500/50",
     amber: "bg-amber-500/30 group-hover:bg-amber-500/50",
     white: "bg-foreground/10 group-hover:bg-foreground/20",
+    rose: "bg-[#f36]/30 group-hover:bg-[#f36]/50",
 };
 
 export const CtaBannerContent = ({
@@ -92,6 +94,7 @@ const borderClasses = {
     indigo: "border-indigo-500/30 hover:border-indigo-500/50",
     amber: "border-amber-500/30 hover:border-amber-500/50",
     white: "border-foreground/20 hover:border-foreground/40",
+    rose: "border-[#f36]/30 hover:border-[#f36]/50",
 };
 
 export const getCtaBannerClassName = (color: CtaBannerColor) =>
