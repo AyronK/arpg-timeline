@@ -3,6 +3,10 @@
         {
             "path": "/api/cron/steam-news",
             "schedule": "0 * * * *"
+        },
+        {
+            "path": "/api/cron/blizzard-news",
+            "schedule": "30 * * * *"
         }
     ]
 }

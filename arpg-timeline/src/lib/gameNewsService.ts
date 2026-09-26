@@ -72,7 +72,11 @@ export class GameNewsService {
         }
     }
 
-    convertToDbEntry(gameSlug: string, steamAppId: number, newsItem: GameNewsItem): GameNewsInsert {
+    convertToDbEntry(
+        gameSlug: string,
+        steamAppId: number | null,
+        newsItem: GameNewsItem,
+    ): GameNewsInsert {
         return {
             game_slug: gameSlug,
             steam_app_id: steamAppId,

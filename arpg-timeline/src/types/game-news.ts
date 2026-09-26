@@ -8,7 +8,7 @@ export interface GameNewsItem {
 export interface GameNewsDbEntry {
     id: string;
     game_slug: string;
-    steam_app_id: number;
+    steam_app_id: number | null;
     title: string;
     link: string;
     description: string;
@@ -19,7 +19,7 @@ export interface GameNewsDbEntry {
 
 export interface GameNewsInsert {
     game_slug: string;
-    steam_app_id: number;
+    steam_app_id: number | null;
     title: string;
     link: string;
     description: string;
