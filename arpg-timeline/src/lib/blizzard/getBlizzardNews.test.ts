@@ -54,4 +54,18 @@ describe("parseBlizzardRss", () => {
         );
         expect(news).toHaveLength(1);
     });
+
+    it("prefers the news.blizzard.com article over the forum post", () => {
+        const [news] = parseBlizzardRss(
+            rss(
+                item(
+                    "Diablo IV Patch Notes",
+                    "https://us.forums.blizzard.com/en/d4/t/diablo-iv-patch-notes/269749/1",
+                    '<p><img src="https://x/a.png" alt="Diablo IV Patch Notes"></p><p>We will update this article.</p><p><a href="https://news.blizzard.com/en-us/article/24295395">View Full Article</a></p>',
+                ),
+            ),
+        );
+        expect(news.link).toBe("https://news.blizzard.com/en-us/article/24295395");
+        expect(news.description).toBe("We will update this article.");
+    });
 });

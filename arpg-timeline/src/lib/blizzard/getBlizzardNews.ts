@@ -1,6 +1,9 @@
 import { BlizzardNewsFeed } from "@/lib/cms/queries/indexQuery";
 import { GameNewsItem } from "@/types/game-news";
 
+const FULL_ARTICLE_LINK =
+    /<a[^>]*href="(https:\/\/news\.blizzard\.com\/[^"]+)"[^>]*>\s*View Full Article\s*<\/a>/i;
+
 function cleanPlainText(html: string): string {
     return html
         .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
@@ -41,6 +44,7 @@ export function parseBlizzardRss(xmlText: string): GameNewsItem[] {
     try {
         const items: GameNewsItem[] = [];
         const seenTitles = new Set<string>();
+        const seenLinks = new Set<string>();
 
         const itemMatches = xmlText.match(/<item>[\s\S]*?<\/item>/g);
 
@@ -54,17 +58,22 @@ export function parseBlizzardRss(xmlText: string): GameNewsItem[] {
                 if (!titleMatch || !linkMatch || !descriptionMatch || !pubDateMatch) continue;
 
                 const title = cleanPlainText(titleMatch[1]);
-                const link = cleanPlainText(linkMatch[1]);
-                const description = cleanPlainText(descriptionMatch[1]);
+                const forumLink = cleanPlainText(linkMatch[1]);
+                const fullArticleMatch = descriptionMatch[1].match(FULL_ARTICLE_LINK);
+                const link = fullArticleMatch ? fullArticleMatch[1] : forumLink;
+                const description = cleanPlainText(
+                    descriptionMatch[1].replace(FULL_ARTICLE_LINK, ""),
+                );
                 const pubDate = pubDateMatch[1].trim();
 
                 // Staff replies in player threads end in /<n>; keep only topic-opening posts
-                if (!/\/1$/.test(link)) continue;
+                if (!/\/1$/.test(forumLink)) continue;
                 // Announcements are often cross-posted to several categories
-                if (seenTitles.has(title)) continue;
+                if (seenTitles.has(title) || seenLinks.has(link)) continue;
 
-                if (title && link && description && pubDate) {
+                if (title && link && pubDate) {
                     seenTitles.add(title);
+                    seenLinks.add(link);
                     items.push({ title, link, description, pubDate });
                 }
             }
