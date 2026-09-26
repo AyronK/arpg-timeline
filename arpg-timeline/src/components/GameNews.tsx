@@ -7,17 +7,17 @@ import { addUTMParameters } from "@/lib/utm";
 import { MaybeLinkWrapper } from "./MaybeLinkWrapper";
 
 interface GameNewsProps {
-    steamAppId?: number | null;
+    viewAllUrl?: string | null;
     news: SteamNewsItem[];
     className?: string;
 }
 
 const addUTM = addUTMParameters({
     utm_source: "arpg-timeline",
-    utm_content: "steam_news",
+    utm_content: "game_details_news",
 });
 
-export const GameNews = ({ steamAppId, news, className }: GameNewsProps) => {
+export const GameNews = ({ viewAllUrl, news, className }: GameNewsProps) => {
     if (news.length === 0) {
         return (
             <div className={cn("bg-card text-card-foreground rounded-lg border p-4", className)}>
@@ -81,10 +81,10 @@ export const GameNews = ({ steamAppId, news, className }: GameNewsProps) => {
                 ))}
             </div>
 
-            {steamAppId && (
+            {viewAllUrl && (
                 <div className="border-border mt-auto flex w-full justify-end border-t pt-3">
                     <MaybeLinkWrapper
-                        href={addUTM(`https://store.steampowered.com/news/app/${steamAppId}`)}
+                        href={addUTM(viewAllUrl)}
                         target="_blank"
                         rel="noopener noreferrer nofollow"
                         className="text-primary hover:text-primary/80 text-sm"

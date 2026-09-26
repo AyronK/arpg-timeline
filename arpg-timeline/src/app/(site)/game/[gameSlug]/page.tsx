@@ -170,10 +170,11 @@ const GamePage = async ({ params }: GamePageProps) => {
                     </div>
                 )}
 
-                {steamAppId && (
+                {(steamAppId || gameNews.length > 0) && (
                     <div className="mb-4 md:mb-6">
                         <PlatformIntegrationSection
                             steamAppId={steamAppId}
+                            gameUrl={game.url}
                             gameNews={gameNews.slice(0, 5)}
                         />
                     </div>

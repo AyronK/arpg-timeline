@@ -310,6 +310,21 @@ export default defineType({
                 }),
             ],
         }),
+        defineField({
+            name: "blizzard",
+            title: "Blizzard",
+            group: "platforms",
+            type: "object",
+            fields: [
+                defineField({
+                    name: "newsFeed",
+                    title: "News feed",
+                    description:
+                        "Blizzard forum staff tracker used for the news feed. Don't combine with Steam App ID.",
+                    type: "string",
+                }),
+            ],
+        }),
     ],
     preview: {
         select: {

@@ -24,6 +24,7 @@ export const indexQuery = `{
       url
     },
     steam,
+    blizzard,
     "latestLiveStream": *[_type == "liveStreamTwitch" && ^._id == game._ref]
       | order(date desc)[0]{
       _updatedAt,
@@ -121,6 +122,7 @@ export const gameDetailsQuery = `{
       url
     },
     steam,
+    blizzard,
     "recentSeasons": *[_type == "season" && ^._id == game._ref]
       | order(start.startDate desc)[0..1]{
       _id,
@@ -202,6 +204,7 @@ export interface SanityGame extends SanityDocumentBase {
     tags?: GameTag[];
     logo: SanityImageAssetDocument;
     steam?: SteamData;
+    blizzard?: BlizzardData;
     recentSeasons: SanitySeason[];
     latestLiveStream?: SanityLiveStreamOnTwitch | null;
     twitchChannel?: SanityTwitchChannel | null;
@@ -257,6 +260,12 @@ export interface IndexQueryResult {
 }
 export interface SteamData {
     appId?: number | null;
+}
+
+export type BlizzardNewsFeed = "d2r" | "d3" | "d4";
+
+export interface BlizzardData {
+    newsFeed?: BlizzardNewsFeed | null;
 }
 
 export interface GameDetailsQueryResult {
