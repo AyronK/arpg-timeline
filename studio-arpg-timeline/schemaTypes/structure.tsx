@@ -1,7 +1,6 @@
 import { StructureBuilder } from "sanity/structure";
 import {
     FiCalendar,
-    FiLink,
     FiServer,
     FiTwitch,
     FiMessageCircle,
@@ -11,7 +10,6 @@ import {
     FiBookOpen,
 } from "react-icons/fi";
 import { IoLogoGameControllerB } from "react-icons/io";
-import { SiSteam, SiReddit } from "react-icons/si";
 
 export const structure = {
     structure: (S: StructureBuilder) =>
@@ -40,41 +38,6 @@ export const structure = {
                                     ])
                                     .params({ gameId }),
                             ),
-                    ),
-
-                // Crawler Sources
-                S.listItem()
-                    .title("Crawler Sources")
-                    .icon(FiLink)
-                    .child(
-                        S.list()
-                            .title("Crawler Sources")
-                            .items([
-                                S.listItem()
-                                    .title("HTTP Sources")
-                                    .icon(FiServer)
-                                    .child(
-                                        S.documentTypeList("crawlerSourceHttp").title(
-                                            "HTTP Sources",
-                                        ),
-                                    ),
-                                S.listItem()
-                                    .title("Steam Sources")
-                                    .icon(SiSteam)
-                                    .child(
-                                        S.documentTypeList("crawlerSourceSteam").title(
-                                            "Steam Sources",
-                                        ),
-                                    ),
-                                S.listItem()
-                                    .title("Reddit Sources")
-                                    .icon(SiReddit)
-                                    .child(
-                                        S.documentTypeList("crawlerSourceReddit").title(
-                                            "Reddit Sources",
-                                        ),
-                                    ),
-                            ]),
                     ),
 
                 // Live Streams

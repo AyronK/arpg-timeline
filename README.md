@@ -63,7 +63,6 @@ This project exists to serve the aRPG community, and it gets better every time s
 - Visual progress indicators showing how far along the current season is
 - Ability to add events directly to your preferred calendar apps
 - Content management powered by Sanity CMS for easy updates of games and seasons
-- Automated crawler for game notifications
 
 ## Stack
 

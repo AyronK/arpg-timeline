@@ -1,6 +1,3 @@
-import crawlerSourceHttp from "./schemas/crawlerSourceHttp";
-import crawlerSourceSteam from "./schemas/crawlerSourceSteam";
-import crawlerSourceReddit from "./schemas/crawlerSourceReddit";
 import game from "./schemas/game";
 import season from "./schemas/season";
 import article from "./schemas/article";
@@ -11,9 +8,6 @@ import liveStreamPlatformTwitch from "./schemas/liveStreamPlatformTwitch";
 import supporter from "./schemas/supporter";
 
 export const schemaTypes = [
-    crawlerSourceHttp,
-    crawlerSourceSteam,
-    crawlerSourceReddit,
     game,
     season,
     article,

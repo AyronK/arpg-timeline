@@ -21,7 +21,7 @@ export const TimezoneSelect: React.FC<{
     );
 
     return (
-        <Stack space={3}>
+        <Stack gap={3}>
             <Select value={selectedIana} onChange={onChange}>
                 <optgroup label="Non-GMT Timezones">{nonGmtZones.map(renderOption)}</optgroup>
                 <optgroup label="GMT Timezones">{gmtZones.map(renderOption)}</optgroup>
