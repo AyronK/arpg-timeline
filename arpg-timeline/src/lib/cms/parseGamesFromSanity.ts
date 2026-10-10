@@ -161,9 +161,14 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
             };
         }
 
+        // Current season ends when the confirmed next one starts, so no avg. estimate needed
+        const hasConfirmedNextStart =
+            !hasLatestSeasonStarted && !!game.nextSeason?.start?.confirmed;
+
         if (
             game.currentSeason?.end &&
             game.averageSeasonDuration &&
+            !hasConfirmedNextStart &&
             !game.currentSeason.end.confirmed &&
             !game.currentSeason.end.overrideText
         ) {
