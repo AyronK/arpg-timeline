@@ -88,6 +88,7 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
             currentSeason: undefined,
             nextSeason: undefined,
             twitchCategory: undefined,
+            twitchChannel: undefined,
             averageSeasonDuration: undefined,
             categories: g.categories ?? [],
             tags: g.tags ?? [],
@@ -99,6 +100,7 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
         const gameTwitch = g.twitchChannel;
 
         game.twitchCategory = gameTwitch?.category ?? null;
+        game.twitchChannel = gameTwitch?.channel ?? null;
 
         const gameSeasons = g.recentSeasons.sort(
             (a, b) => b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0,

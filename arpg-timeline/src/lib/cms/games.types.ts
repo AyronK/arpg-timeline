@@ -33,6 +33,7 @@ export type Game = {
     currentSeason?: Season | null | undefined;
     nextSeason?: Season | null | undefined;
     twitchCategory?: string | null | undefined;
+    twitchChannel?: string | null | undefined;
     averageSeasonDuration?: number | null;
     categories?: GameCategory[];
     tags?: GameTag[];
