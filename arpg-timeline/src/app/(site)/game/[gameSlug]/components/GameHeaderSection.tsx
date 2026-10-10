@@ -4,8 +4,21 @@ import { SanityImage } from "@/components/SanityImage";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
 
+import { buildNextSeasonHeading } from "../nextSeasonHeading";
 import { GameHeaderSectionProps } from "../types";
 import { QuickLinksSection } from "./QuickLinksSection";
+
+const NextSeason = ({ game }: Pick<GameHeaderSectionProps, "game">) => {
+    const heading = buildNextSeasonHeading(game);
+    if (!heading) return <GameToSeasonWidget game={game} selector="next" />;
+
+    return (
+        <section id="next-season" className="flex flex-1 scroll-mt-24 flex-col">
+            <h2 className="sr-only">{heading}</h2>
+            <GameToSeasonWidget game={game} selector="next" />
+        </section>
+    );
+};
 
 export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSectionProps) => (
     <div className="mb-4 grid grid-cols-1 gap-4 md:mb-6 md:gap-6 xl:grid-cols-3 xl:grid-rows-[minmax(0,1fr)]">
@@ -57,7 +70,7 @@ export const GameHeaderSection = ({ game, gameSlug, steamAppId }: GameHeaderSect
                     </div>
                 )
             ) : (
-                <GameToSeasonWidget game={game} selector="next" />
+                <NextSeason game={game} />
             )}
         </GameCard>
 
