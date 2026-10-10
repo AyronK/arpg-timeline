@@ -71,7 +71,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
-                            rel="noopener noreferrer nofollow"
+                            rel="noopener noreferrer"
                             data-sa-click={`${gameSlug}-official-website`}
                             className={rowCls}
                         >
@@ -161,7 +161,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
-                            rel="noopener noreferrer nofollow"
+                            rel="noopener noreferrer"
                             data-sa-click={`${gameSlug}-current-season-details`}
                             className={rowCls}
                         >
@@ -184,7 +184,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
-                            rel="noopener noreferrer nofollow"
+                            rel="noopener noreferrer"
                             data-sa-click={`${gameSlug}-next-season-details`}
                             className={rowCls}
                         >

@@ -31,7 +31,7 @@ export const GracePeriodSeasonWidgetHoC = ({ game }: { game: Game }) => {
                     })(game.currentSeason.patchNotesUrl)}
                     isOfficial={game.isOfficial}
                     target="_blank"
-                    rel="noopener noreferrer nofollow"
+                    rel="noopener noreferrer"
                     className="ml-auto text-sm text-nowrap hover:underline"
                     data-sa-click={`${game.currentSeason.name}-patch-notes`}
                 >
