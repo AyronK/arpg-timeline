@@ -74,7 +74,11 @@ export const ActiveWithCountdown: Story = {
                             <i>Avg. 4 months</i>
                         </IconLabel>
                     </div>
-                    <ProgressBar progress={15} clamp />
+                    <ProgressBar
+                        progress={15}
+                        clamp
+                        label="Early in the season – end date not announced"
+                    />
                 </SeasonWidget>
                 <SeasonWidget chip="next" name="Season 4 - Shattered Omens">
                     <div className="flex flex-row flex-nowrap justify-between">
