@@ -148,7 +148,11 @@ export const gameDetailsQuery = `{
         overrideText,
         additionalText
       }
-    }
+    },
+    "twitchChannel": *[_type == "liveStreamPlatformTwitch" && ^._id == game._ref]{
+      category,
+      channel
+    }[0]
   },
   "seasons": *[_type == "season"]{
     _id,

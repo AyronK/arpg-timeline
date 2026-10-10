@@ -11,6 +11,7 @@ import {
     Globe,
     Monitor,
     Play,
+    Twitch,
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
@@ -59,7 +60,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
         <>
             <div className="bg-card text-card-foreground flex min-h-0 flex-1 flex-col rounded-lg border p-4 md:p-6">
                 <h2 className="font-heading mb-3 text-lg md:mb-4 md:text-xl">Quick Links</h2>
-                <div className="flex max-h-64 min-h-0 flex-1 flex-col overflow-y-auto">
+                <div className="-mx-3 flex max-h-64 min-h-0 flex-1 flex-col overflow-y-auto px-3">
                     {game.url && (
                         <GuardedExternalLink
                             href={addUTMParameters({
@@ -71,7 +72,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
-                            rel="noopener noreferrer nofollow"
+                            rel="noopener noreferrer"
                             data-sa-click={`${gameSlug}-official-website`}
                             className={rowCls}
                         >
@@ -104,6 +105,43 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                                 icon={<Gamepad2 className="h-5 w-5 opacity-70" />}
                                 title="Steam Page"
                                 description={`View ${game.name} on the Steam store`}
+                            />
+                        </a>
+                    )}
+
+                    {game.twitchChannel && (
+                        <a
+                            href={`https://www.twitch.tv/${game.twitchChannel}`}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-twitch-channel`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<Twitch className="h-5 w-5 opacity-70" />}
+                                title="Official Twitch Channel"
+                                description={`Watch official ${game.name} streams`}
+                            />
+                        </a>
+                    )}
+
+                    {game.twitchCategory && (
+                        <a
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "twitch-category",
+                                utm_content: gameSlug,
+                            })(`https://www.twitch.tv/directory/category/${game.twitchCategory}`)}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            data-sa-click={`${gameSlug}-twitch-category`}
+                            className={rowCls}
+                        >
+                            <LinkContent
+                                icon={<Twitch className="h-5 w-5 opacity-70" />}
+                                title="Twitch Category"
+                                description={`Watch live ${game.name} streams on Twitch`}
                             />
                         </a>
                     )}
@@ -161,7 +199,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
-                            rel="noopener noreferrer nofollow"
+                            rel="noopener noreferrer"
                             data-sa-click={`${gameSlug}-current-season-details`}
                             className={rowCls}
                         >
@@ -184,7 +222,7 @@ export const QuickLinksSection = ({ game, gameSlug, steamAppId }: QuickLinksSect
                             isOfficial={game.isOfficial}
                             noIcon
                             target="_blank"
-                            rel="noopener noreferrer nofollow"
+                            rel="noopener noreferrer"
                             data-sa-click={`${gameSlug}-next-season-details`}
                             className={rowCls}
                         >

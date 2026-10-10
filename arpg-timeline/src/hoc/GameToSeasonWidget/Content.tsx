@@ -12,7 +12,12 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { ShareMenu } from "@/components/ShareMenu";
 import { Game } from "@/lib/cms/games.types";
 import { inGracePeriod } from "@/lib/games/sortBySeasons";
-import { getProgress, getProgressEndContent, getProgressStartContent } from "@/lib/getProgress";
+import {
+    getProgress,
+    getProgressEndContent,
+    getProgressStartContent,
+    getProgressTooltipText,
+} from "@/lib/getProgress";
 import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 
@@ -75,7 +80,7 @@ export const Content = ({
                                     })(season.patchNotesUrl)}
                                     isOfficial={game.isOfficial}
                                     target="_blank"
-                                    rel="noopener noreferrer nofollow"
+                                    rel="noopener noreferrer"
                                     className="text-card-foreground hover:text-card-foreground/80 ml-auto text-sm text-nowrap hover:underline"
                                     data-sa-click={`${season.name}-patch-notes`}
                                 >
@@ -177,7 +182,18 @@ export const Content = ({
                     </ClientOnlyVisibleWrapper>
                 </div>
                 {!game.isDormant && (
-                    <ProgressBar progress={progress} clamp pulse={isInGracePeriod} />
+                    <ProgressBar
+                        progress={progress}
+                        clamp
+                        pulse={isInGracePeriod}
+                        label={getProgressTooltipText(
+                            season.start?.startDate,
+                            season.end?.endDate,
+                            // Parser sets the end to a confirmed next start
+                            season.end?.confirmed || game.nextSeason?.start?.confirmed,
+                            game.seasonKeyword,
+                        )}
+                    />
                 )}
             </>
         );

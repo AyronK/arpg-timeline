@@ -250,20 +250,6 @@ export default defineType({
             type: "url",
             group: "main",
         },
-        {
-            name: "crawlerSettings",
-            title: "Crawler settings",
-            type: "object",
-            fields: [
-                {
-                    name: "keywords",
-                    title: "Keywords",
-                    type: "array",
-                    of: [{ type: "string" }],
-                },
-            ],
-            group: "platforms",
-        },
         defineField({
             name: "youtube",
             title: "YouTube",

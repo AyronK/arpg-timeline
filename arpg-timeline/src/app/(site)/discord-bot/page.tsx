@@ -90,6 +90,23 @@ const gamesQuery = `*[_type == "game" && defined(slug.current)] | order(name asc
 
 type GameLink = { name: string; slug: string };
 
+const getServerCount = async (): Promise<number | undefined> => {
+    const botId = process.env.NEXT_PUBLIC_TOPGG_BOT_ID;
+    const token = process.env.TOPGG_API_TOKEN;
+    if (!botId || !token) return undefined;
+    try {
+        const res = await fetch(`https://top.gg/api/bots/${botId}/stats`, {
+            headers: { Authorization: token },
+            next: { revalidate: 3600 },
+        });
+        if (!res.ok) return undefined;
+        const { server_count } = (await res.json()) as { server_count?: number };
+        return server_count || undefined;
+    } catch {
+        return undefined;
+    }
+};
+
 const showcase = [
     {
         title: "Seasons show up as server events",
@@ -267,13 +284,24 @@ const Section = ({
     </section>
 );
 
-const Hero = ({ gameCount }: { gameCount: number }) => (
+const heroBadgeClassName =
+    "bg-muted text-foreground inline-flex items-center gap-1.5 rounded-lg border border-white/5 px-3 py-1 text-xs";
+
+const Hero = ({ gameCount, serverCount }: { gameCount: number; serverCount?: number }) => (
     <section className="mx-auto mb-16 grid max-w-6xl items-center gap-10 md:mb-24 lg:grid-cols-[3fr_2fr] lg:gap-16">
         <div className="flex flex-col items-start">
-            <span className="bg-muted text-foreground mb-4 inline-flex items-center gap-1.5 rounded-lg border border-white/5 px-3 py-1 text-xs">
-                <BadgeCheck className="h-3.5 w-3.5 text-indigo-500" />
-                Verified Discord app
-            </span>
+            <div className="mb-4 flex flex-wrap gap-2">
+                <span className={heroBadgeClassName}>
+                    <BadgeCheck className="h-3.5 w-3.5 text-indigo-500" />
+                    Verified Discord app
+                </span>
+                {serverCount && (
+                    <span className={heroBadgeClassName}>
+                        <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-500" />
+                        Live in {serverCount.toLocaleString("en-US")} servers
+                    </span>
+                )}
+            </div>
             <h1 className="font-heading mb-3 text-3xl leading-tight md:text-4xl">
                 aRPG Season Tracker Discord Bot
             </h1>
@@ -344,6 +372,9 @@ const Hero = ({ gameCount }: { gameCount: number }) => (
                     `watching ${gameCount} games`,
                     "syncing season dates",
                     "counting down to the next league",
+                    ...(serverCount
+                        ? [`live on ${serverCount.toLocaleString("en-US")} servers`]
+                        : []),
                 ]}
             />
         </div>
@@ -567,11 +598,14 @@ const Support = () => (
 );
 
 const DiscordBotPage = async () => {
-    const games: GameLink[] = await sanityFetch({ query: gamesQuery, tags: ["game"] });
+    const [games, serverCount] = await Promise.all([
+        sanityFetch({ query: gamesQuery, tags: ["game"] }) as Promise<GameLink[]>,
+        getServerCount(),
+    ]);
 
     return (
         <div className="[&_code]:bg-muted relative container mx-auto mb-12 py-8 md:py-12 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em]">
-            <Hero gameCount={games.length} />
+            <Hero gameCount={games.length} serverCount={serverCount} />
             <Showcase />
             <Setup />
             <Credits />

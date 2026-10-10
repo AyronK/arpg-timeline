@@ -25,12 +25,12 @@ function isNextSeasonConfirmedWithTime(game: Game): boolean {
     );
 }
 
-function isNextSeasonConfirmed(game: Game): boolean {
+export function isNextSeasonConfirmed(game: Game, now: Date = new Date()): boolean {
     return !!(
         game.nextSeason?.name &&
         game.nextSeason?.start?.startDate &&
         game.nextSeason?.start?.confirmed &&
-        new Date(game.nextSeason.start.startDate) > new Date()
+        new Date(game.nextSeason.start.startDate) > now
     );
 }
 

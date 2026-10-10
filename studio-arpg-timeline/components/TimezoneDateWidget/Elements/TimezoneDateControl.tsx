@@ -65,8 +65,8 @@ export const TimezoneDateControl: React.FC<DateTimeInputProps> = ({
         : "";
 
     return (
-        <Stack space={2}>
-            <Grid columns={3} gap={2}>
+        <Stack gap={2}>
+            <Grid gridTemplateColumns={3} gap={2}>
                 <TimezoneInfo label="UTC time" value={formattedUtcValue} />
                 <TimezoneInfo label="Local time" value={previewLocalTime} />
                 <TimezoneInfo

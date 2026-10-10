@@ -61,7 +61,7 @@ const linkComponent: NonNullable<PortableTextComponents["marks"]>["link"] = ({
         <a
             href={isExternal ? addUTM(href) : href}
             target={isExternal ? "_blank" : undefined}
-            rel={isExternal ? "nofollow noopener noreferrer" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
             className={className}
         >
             {children}

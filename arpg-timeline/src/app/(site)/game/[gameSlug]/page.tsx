@@ -1,4 +1,4 @@
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Twitch } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -19,6 +19,8 @@ import { GameNewsService } from "@/lib/gameNewsService";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { sanitizeNewsDescription } from "@/lib/steam/sanitizeNewsDescription";
+import { cn } from "@/lib/utils";
+import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
 
 import {
@@ -124,12 +126,42 @@ const GamePage = async ({ params }: GamePageProps) => {
             <div className="relative container mx-auto py-6 md:py-8">
                 <div className="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-6">
                     <h1 className="font-heading text-3xl md:text-4xl">{game.name}</h1>
-                    <Button variant="default" size="lg" asChild className="w-full md:w-auto">
-                        <Link href="/" data-sa-click="back-to-homepage">
-                            <LayoutDashboard className="mr-2 h-4 w-4" />
-                            See other games
-                        </Link>
-                    </Button>
+                    <div
+                        className={cn("grid w-full gap-3 md:w-auto", {
+                            "grid-cols-2": game.twitchCategory,
+                        })}
+                    >
+                        {game.twitchCategory && (
+                            <Button
+                                asChild
+                                size="default"
+                                className="!bg-[#6441a5] px-4 text-white hover:!bg-[#6441a5]/90"
+                            >
+                                <Link
+                                    target="_blank"
+                                    rel="noopener noreferrer nofollow"
+                                    data-sa-click={`${gameSlug}-twitch-heading`}
+                                    href={addUTMParameters({
+                                        utm_source: "arpg-timeline",
+                                        utm_medium: "link",
+                                        utm_campaign: "twitch-category",
+                                        utm_content: gameSlug,
+                                    })(
+                                        `https://www.twitch.tv/directory/category/${game.twitchCategory}`,
+                                    )}
+                                >
+                                    <Twitch className="mr-2 h-4 w-4" />
+                                    Twitch
+                                </Link>
+                            </Button>
+                        )}
+                        <Button variant="default" size="default" asChild className="px-4">
+                            <Link href="/" data-sa-click="back-to-homepage">
+                                <LayoutDashboard className="mr-2 h-4 w-4" />
+                                Other games
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
 
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />

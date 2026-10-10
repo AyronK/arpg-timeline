@@ -8,11 +8,14 @@ import {
     COMMUNITY_LAUNCHER_MODAL_STORAGE_KEY,
     CommunityWebsiteModal,
 } from "@/components/CommunityWebsiteModal";
+import { applyFollowPolicy } from "@/lib/externalRel";
 import { cn } from "@/lib/utils";
 
 type GuardedExternalLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
     href: string;
     isOfficial: boolean;
+    // Keeps nofollow even for official links (e.g. embeds on third-party sites).
+    nofollow?: boolean;
     noIcon?: boolean;
     className?: string;
 };
@@ -20,9 +23,11 @@ type GuardedExternalLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 export const GuardedExternalLink = ({
     href,
     isOfficial,
+    nofollow,
     noIcon,
     className,
     children,
+    rel,
     ...rest
 }: GuardedExternalLinkProps) => {
     const [open, setOpen] = useState(false);
@@ -73,6 +78,7 @@ export const GuardedExternalLink = ({
             <Link
                 href={href}
                 {...rest}
+                rel={applyFollowPolicy(rel, isOfficial && !nofollow)}
                 onClick={!isOfficial ? handleClick : undefined}
                 className={cn(
                     className,
