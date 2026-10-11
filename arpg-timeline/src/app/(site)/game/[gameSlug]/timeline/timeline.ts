@@ -172,7 +172,7 @@ export interface TimelineSummary {
 export const buildTimelineSummary = (entries: TimelineEntry[]): TimelineSummary => {
     const main = entries.filter((e) => !e.isSideEvent && e.status !== "upcoming" && e.startDate);
     const durations = main.map((e) => e.durationDays).filter((d): d is number => d !== null);
-    const next = entries.find((e) => e.status === "upcoming" && e.startDate);
+    const next = entries.find((e) => e.status === "upcoming" && !e.isSideEvent && e.startDate);
 
     return {
         count: main.length,
@@ -184,12 +184,12 @@ export const buildTimelineSummary = (entries: TimelineEntry[]): TimelineSummary 
     };
 };
 
-// Adds a "next season" slot when nothing upcoming is tracked yet
+// Adds a "next season" slot when no upcoming main season is tracked yet
 export const addNextPlaceholder = (
     entries: TimelineEntry[],
     seasonLabel: string,
 ): TimelineEntry[] =>
-    entries.some((e) => e.status === "upcoming")
+    entries.some((e) => e.status === "upcoming" && !e.isSideEvent)
         ? entries
         : [
               {

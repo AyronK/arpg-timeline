@@ -98,38 +98,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         const games = data.games || [];
 
-        games.forEach((game: { slug: string; categories?: string[] }) => {
-            if (game.slug) {
-                if (game.categories?.includes("seasonal")) {
-                    sitemap.push({
-                        url: `${baseUrl}/game/${game.slug}/timeline`,
-                        lastModified: new Date(),
-                        changeFrequency: "weekly",
-                        priority: 0.6,
-                    });
+        games.forEach(
+            (game: {
+                slug: string;
+                categories?: string[];
+                isDormant?: boolean;
+                isComingSoon?: boolean;
+            }) => {
+                if (game.slug) {
+                    if (
+                        game.categories?.includes("seasonal") &&
+                        !game.isDormant &&
+                        !game.isComingSoon
+                    ) {
+                        sitemap.push({
+                            url: `${baseUrl}/game/${game.slug}/timeline`,
+                            lastModified: new Date(),
+                            changeFrequency: "weekly",
+                            priority: 0.6,
+                        });
+                    }
+                    sitemap.push(
+                        {
+                            url: `${baseUrl}/game/${game.slug}`,
+                            lastModified: new Date(),
+                            changeFrequency: "daily",
+                            priority: 0.8,
+                        },
+                        {
+                            url: `${baseUrl}/docs/html/${game.slug}`,
+                            lastModified: new Date(),
+                            changeFrequency: "yearly",
+                            priority: 0.6,
+                        },
+                        {
+                            url: `${baseUrl}/docs/obs/${game.slug}`,
+                            lastModified: new Date(),
+                            changeFrequency: "yearly",
+                            priority: 0.6,
+                        },
+                    );
                 }
-                sitemap.push(
-                    {
-                        url: `${baseUrl}/game/${game.slug}`,
-                        lastModified: new Date(),
-                        changeFrequency: "daily",
-                        priority: 0.8,
-                    },
-                    {
-                        url: `${baseUrl}/docs/html/${game.slug}`,
-                        lastModified: new Date(),
-                        changeFrequency: "yearly",
-                        priority: 0.6,
-                    },
-                    {
-                        url: `${baseUrl}/docs/obs/${game.slug}`,
-                        lastModified: new Date(),
-                        changeFrequency: "yearly",
-                        priority: 0.6,
-                    },
-                );
-            }
-        });
+            },
+        );
 
         Object.keys(DashboardConfig)
             .filter((dashboard) => dashboard !== "featured" && dashboard !== "everything")

@@ -78,7 +78,6 @@ const TimelinePage = async ({ params }: GamePageProps) => {
         "@context": "https://schema.org",
         "@type": "ItemList",
         name: `${game.name} ${terms.many} timeline`,
-        itemListOrder: "https://schema.org/ItemListOrderDescending",
         numberOfItems: entries.length,
         itemListElement: entries.map((entry, i) => ({
             "@type": "ListItem",

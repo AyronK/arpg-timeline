@@ -235,6 +235,21 @@ describe("buildTimelineSummary", () => {
     });
 });
 
+describe("side events and next season", () => {
+    const upcomingSide = season("side", "2026-04-01T00:00:00Z", { isSideEvent: true });
+    const live = season("a", "2026-02-01T00:00:00Z");
+
+    it("ignores upcoming side events for the summary's next season", () => {
+        const entries = buildTimelineEntries([live, upcomingSide], GAME, NOW);
+        expect(buildTimelineSummary(entries).next).toBeNull();
+    });
+
+    it("still adds the placeholder when only a side event is upcoming", () => {
+        const entries = buildTimelineEntries([live, upcomingSide], GAME, NOW);
+        expect(addNextPlaceholder(entries, "Season")[0]!.id).toBe("next-placeholder");
+    });
+});
+
 describe("addNextPlaceholder", () => {
     it("adds a placeholder first when nothing is upcoming", () => {
         const entries = buildTimelineEntries([season("a", "2026-02-01T00:00:00Z")], GAME, NOW);

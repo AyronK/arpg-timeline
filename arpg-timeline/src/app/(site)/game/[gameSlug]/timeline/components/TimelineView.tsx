@@ -37,10 +37,9 @@ export const TimelineView = ({
         [entries, showSideEvents],
     );
 
-    // CTAs go on the first upcoming entry, only while no upcoming start date is confirmed
-    const ctaEntryId = entries.some((e) => e.status === "upcoming" && e.startDate)
-        ? undefined
-        : entries.find((e) => e.status === "upcoming")?.id;
+    // CTAs go on the first upcoming main season, only while no upcoming start date is confirmed
+    const upcomingMain = entries.filter((e) => e.status === "upcoming" && !e.isSideEvent);
+    const ctaEntryId = upcomingMain.some((e) => e.startDate) ? undefined : upcomingMain[0]?.id;
 
     const tocHeadings = useMemo(
         () => groups.map((g) => ({ id: `year-${g.key}`, text: g.label, level: 2 as const })),
