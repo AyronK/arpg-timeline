@@ -37,6 +37,11 @@ export const TimelineView = ({
         [entries, showSideEvents],
     );
 
+    // CTAs go on the first upcoming entry, only while no upcoming start date is confirmed
+    const ctaEntryId = entries.some((e) => e.status === "upcoming" && e.startDate)
+        ? undefined
+        : entries.find((e) => e.status === "upcoming")?.id;
+
     const tocHeadings = useMemo(
         () => groups.map((g) => ({ id: `year-${g.key}`, text: g.label, level: 2 as const })),
         [groups],
@@ -72,7 +77,12 @@ export const TimelineView = ({
                                     />
                                 </div>
                             )}
-                            <SeasonTimeline groups={groups} gameLogo={gameLogo} game={game} />
+                            <SeasonTimeline
+                                groups={groups}
+                                gameLogo={gameLogo}
+                                game={game}
+                                ctaEntryId={ctaEntryId}
+                            />
                         </>
                     )}
                 </div>

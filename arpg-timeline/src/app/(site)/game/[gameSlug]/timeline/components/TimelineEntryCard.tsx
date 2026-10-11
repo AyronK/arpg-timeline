@@ -11,12 +11,14 @@ import { Chip } from "@/ui/Chip";
 
 import { formatApproxMonths, TimelineEntry } from "../timeline";
 import { LocalStartDate } from "./LocalStartDate";
+import { NextSeasonCtas } from "./NextSeasonCtas";
 
 interface TimelineEntryCardProps {
     entry: TimelineEntry;
     gameLogo: SanityImageAssetDocument;
     align: "left" | "right";
     game?: Game;
+    showCtas?: boolean;
 }
 
 const STATUS_CHIP: Partial<Record<TimelineEntry["status"], { label: string; className: string }>> =
@@ -27,7 +29,13 @@ const STATUS_CHIP: Partial<Record<TimelineEntry["status"], { label: string; clas
 
 const linkClassName = "text-card-foreground hover:text-card-foreground/80 text-sm hover:underline";
 
-export const TimelineEntryCard = ({ entry, gameLogo, align, game }: TimelineEntryCardProps) => {
+export const TimelineEntryCard = ({
+    entry,
+    gameLogo,
+    align,
+    game,
+    showCtas,
+}: TimelineEntryCardProps) => {
     const chip = STATUS_CHIP[entry.status];
     const duration =
         entry.durationDays !== null
@@ -116,6 +124,11 @@ export const TimelineEntryCard = ({ entry, gameLogo, align, game }: TimelineEntr
                         </span>
                         {duration && <span>{` · ${duration}`}</span>}
                     </div>
+                    {showCtas && (
+                        <p className="text-muted-foreground text-xs">
+                            Get updates via the buttons below.
+                        </p>
+                    )}
                 </div>
             </div>
             {game && selector && (
@@ -151,6 +164,7 @@ export const TimelineEntryCard = ({ entry, gameLogo, align, game }: TimelineEntr
                     )}
                 </div>
             )}
+            {game && showCtas && <NextSeasonCtas gameSlug={game.slug} gameName={game.name} />}
         </div>
     );
 };

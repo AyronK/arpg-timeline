@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { SanitySeason } from "@/lib/cms/queries/indexQuery";
 
 import {
+    addNextPlaceholder,
     buildTimelineEntries,
     buildTimelineSummary,
     formatApproxMonths,
@@ -231,5 +232,24 @@ describe("buildTimelineSummary", () => {
             averageDays: null,
             next: null,
         });
+    });
+});
+
+describe("addNextPlaceholder", () => {
+    it("adds a placeholder first when nothing is upcoming", () => {
+        const entries = buildTimelineEntries([season("a", "2026-02-01T00:00:00Z")], GAME, NOW);
+        const result = addNextPlaceholder(entries, "Season");
+        expect(result.map((e) => e.id)).toEqual(["next-placeholder", "a"]);
+        expect(result[0]).toMatchObject({ name: "Next Season", status: "upcoming" });
+        expect(groupByYear(result)[0]!.label).toBe("Next");
+    });
+
+    it("does nothing when an upcoming entry exists, even without a date", () => {
+        const entries = buildTimelineEntries(
+            [season("a", "2026-02-01T00:00:00Z"), season("b", null)],
+            GAME,
+            NOW,
+        );
+        expect(addNextPlaceholder(entries, "Season")).toBe(entries);
     });
 });

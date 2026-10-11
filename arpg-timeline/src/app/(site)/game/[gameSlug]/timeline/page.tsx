@@ -20,7 +20,12 @@ import { GamePageProps } from "../types";
 import { TimelineAside } from "./components/TimelineAside";
 import { TimelineView } from "./components/TimelineView";
 import { buildTimelineDescription, buildTimelineKeywords, buildTimelineTitle } from "./metadata";
-import { buildTimelineEntries, buildTimelineSummary, TimelineSummary } from "./timeline";
+import {
+    addNextPlaceholder,
+    buildTimelineEntries,
+    buildTimelineSummary,
+    TimelineSummary,
+} from "./timeline";
 
 const fetchOptions = { revalidate: 24 * 60 * 60, tags: ["season", "game"] };
 
@@ -67,6 +72,8 @@ const TimelinePage = async ({ params }: GamePageProps) => {
     ];
 
     const summary = buildTimelineSummary(entries);
+    const displayEntries =
+        game.isDormant || game.isComingSoon ? entries : addNextPlaceholder(entries, terms.One);
     const itemList = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -91,7 +98,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
             />
             <div className="relative container mx-auto pt-6 pb-24 md:pt-10 lg:pb-10">
                 <TimelineView
-                    entries={entries}
+                    entries={displayEntries}
                     gameLogo={game.logo}
                     game={game}
                     emptyText={`No ${terms.many} tracked yet.`}

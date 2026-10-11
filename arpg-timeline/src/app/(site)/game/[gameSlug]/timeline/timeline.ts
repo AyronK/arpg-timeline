@@ -17,6 +17,7 @@ export interface TimelineEntry {
     startLabel: string;
     localizeStart: boolean;
     durationDays: number | null;
+    placeholder?: boolean;
 }
 
 export interface TimelineGroup {
@@ -182,3 +183,25 @@ export const buildTimelineSummary = (entries: TimelineEntry[]): TimelineSummary 
         next: next ? { name: next.name, label: next.startLabel } : null,
     };
 };
+
+// Adds a "next season" slot when nothing upcoming is tracked yet
+export const addNextPlaceholder = (
+    entries: TimelineEntry[],
+    seasonLabel: string,
+): TimelineEntry[] =>
+    entries.some((e) => e.status === "upcoming")
+        ? entries
+        : [
+              {
+                  id: "next-placeholder",
+                  name: `Next ${seasonLabel}`,
+                  isSideEvent: false,
+                  status: "upcoming",
+                  startDate: null,
+                  startLabel: "To be announced",
+                  localizeStart: false,
+                  durationDays: null,
+                  placeholder: true,
+              },
+              ...entries,
+          ];

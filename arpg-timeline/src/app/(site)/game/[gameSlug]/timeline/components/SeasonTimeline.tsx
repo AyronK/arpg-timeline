@@ -16,9 +16,10 @@ interface SeasonTimelineProps {
     groups: TimelineGroup[];
     gameLogo: SanityImageAssetDocument;
     game?: Game;
+    ctaEntryId?: string;
 }
 
-export const SeasonTimeline = ({ groups, gameLogo, game }: SeasonTimelineProps) => {
+export const SeasonTimeline = ({ groups, gameLogo, game, ctaEntryId }: SeasonTimelineProps) => {
     let index = 0;
 
     return (
@@ -54,6 +55,7 @@ export const SeasonTimeline = ({ groups, gameLogo, game }: SeasonTimelineProps) 
                                             entry={entry}
                                             gameLogo={gameLogo}
                                             game={game}
+                                            showCtas={entry.id === ctaEntryId}
                                             align={left ? "left" : "right"}
                                         />
                                     </div>
