@@ -36,14 +36,21 @@ const FULL: SanitySeason[] = [
     season("s5", "Season 5", "2025-01-15T00:00:00Z"),
     season("s4", "Season 4", "2024-08-20T00:00:00Z"),
     season("s3", "Season 3", "2024-03-02T00:00:00Z"),
-    season("s2", "A Very Long Season Name That Should Wrap Nicely On Small Screens", "2023-09-09T00:00:00Z"),
+    season(
+        "s2",
+        "A Very Long Season Name That Should Wrap Nicely On Small Screens",
+        "2023-09-09T00:00:00Z",
+    ),
     season("s1", "Season 1", "2023-04-01T00:00:00Z"),
 ];
 
 const Logo = {} as never;
 
 const render = (seasons: SanitySeason[]) => (
-    <SeasonTimeline groups={groupByYear(buildTimelineEntries(seasons, GAME, NOW))} gameLogo={Logo} />
+    <SeasonTimeline
+        groups={groupByYear(buildTimelineEntries(seasons, GAME, NOW))}
+        gameLogo={Logo}
+    />
 );
 
 const meta: Meta<typeof SeasonTimeline> = {

@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import { SanitySeason } from "@/lib/cms/queries/indexQuery";
 
-import { buildTimelineEntries, formatApproxMonths, groupByYear } from "./timeline";
+import {
+    buildTimelineEntries,
+    buildTimelineSummary,
+    formatApproxMonths,
+    groupByYear,
+} from "./timeline";
 
 const NOW = new Date("2026-03-01T00:00:00.000Z");
 const GAME = "test-game";
@@ -90,7 +95,7 @@ describe("buildTimelineEntries", () => {
         expect(entries.filter((e) => e.status === "upcoming").map((e) => e.startLabel)).toEqual([
             "TBA",
             "Summer 2026",
-            "Jun 2026",
+            "Jun 1, 2026",
         ]);
         expect(entries.at(-1)!.status).toBe("live");
     });
@@ -163,9 +168,9 @@ describe("buildTimelineEntries", () => {
         expect(entries[0]!.durationDays).toBeNull();
     });
 
-    it("formats start as short month + year in UTC", () => {
+    it("formats a confirmed start as short month, day and year in UTC", () => {
         const entries = buildTimelineEntries([season("a", "2025-12-31T23:00:00Z")], GAME, NOW);
-        expect(entries[0]!.startLabel).toBe("Dec 2025");
+        expect(entries[0]!.startLabel).toBe("Dec 31, 2025");
     });
 });
 
@@ -190,5 +195,36 @@ describe("groupByYear", () => {
 
     it("returns no groups for no entries", () => {
         expect(groupByYear([])).toEqual([]);
+    });
+});
+
+describe("buildTimelineSummary", () => {
+    it("counts main seasons only, with first year, average duration and next season", () => {
+        const entries = buildTimelineEntries(
+            [
+                season("a", "2024-01-01T00:00:00Z"),
+                season("b", "2024-04-01T00:00:00Z"),
+                season("c", "2025-01-01T00:00:00Z"),
+                season("side", "2025-02-01T00:00:00Z", { isSideEvent: true }),
+                season("n1", "2026-06-01T00:00:00Z"),
+                season("n2", "2026-04-01T00:00:00Z"),
+            ],
+            GAME,
+            NOW,
+        );
+        const summary = buildTimelineSummary(entries);
+        expect(summary.count).toBe(3);
+        expect(summary.firstYear).toBe(2024);
+        expect(summary.averageDays).toBe(Math.round((91 + 275) / 2));
+        expect(summary.next).toEqual({ name: "Season n2", label: "Apr 1, 2026" });
+    });
+
+    it("handles an empty timeline", () => {
+        expect(buildTimelineSummary([])).toEqual({
+            count: 0,
+            firstYear: null,
+            averageDays: null,
+            next: null,
+        });
     });
 });

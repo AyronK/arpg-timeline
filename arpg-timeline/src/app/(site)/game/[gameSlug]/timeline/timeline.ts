@@ -15,6 +15,7 @@ export interface TimelineEntry {
     status: TimelineStatus;
     startDate: Date | null;
     startLabel: string;
+    localizeStart: boolean;
     durationDays: number | null;
 }
 
@@ -26,6 +27,13 @@ export interface TimelineGroup {
 
 const START_FORMAT = new Intl.DateTimeFormat("en-US", {
     month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+});
+
+const START_FORMAT_DAY = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
     year: "numeric",
     timeZone: "UTC",
 });
@@ -47,8 +55,9 @@ const parseDate = (value?: string): Date | null => {
 const buildStartLabel = (season: SanitySeason, startDate: Date | null): string => {
     if (season.start?.overrideText) return season.start.overrideText;
     if (!startDate) return "TBA";
-    const label = START_FORMAT.format(startDate);
-    return season.start?.confirmed ? label : `${label} (est.)`;
+    return season.start?.confirmed
+        ? START_FORMAT_DAY.format(startDate)
+        : `${START_FORMAT.format(startDate)} (est.)`;
 };
 
 export const buildTimelineEntries = (
@@ -112,6 +121,7 @@ export const buildTimelineEntries = (
             status,
             startDate,
             startLabel: buildStartLabel(season, startDate),
+            localizeStart: !season.start?.overrideText && !!season.start?.confirmed && !!startDate,
             durationDays,
         };
     });
@@ -143,4 +153,26 @@ export const groupByYear = (entries: TimelineEntry[]): TimelineGroup[] => {
     }
 
     return groups;
+};
+
+export interface TimelineSummary {
+    count: number;
+    firstYear: number | null;
+    averageDays: number | null;
+    next: { name: string; label: string } | null;
+}
+
+export const buildTimelineSummary = (entries: TimelineEntry[]): TimelineSummary => {
+    const main = entries.filter((e) => !e.isSideEvent && e.status !== "upcoming" && e.startDate);
+    const durations = main.map((e) => e.durationDays).filter((d): d is number => d !== null);
+    const next = entries.findLast((e) => e.status === "upcoming" && e.startDate);
+
+    return {
+        count: main.length,
+        firstYear: main.length ? Math.min(...main.map((e) => e.startDate!.getUTCFullYear())) : null,
+        averageDays: durations.length
+            ? Math.round(durations.reduce((sum, d) => sum + d, 0) / durations.length)
+            : null,
+        next: next ? { name: next.name, label: next.startLabel } : null,
+    };
 };

@@ -10,6 +10,7 @@ import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
 import { formatApproxMonths, TimelineEntry } from "../timeline";
+import { LocalStartDate } from "./LocalStartDate";
 
 interface TimelineEntryCardProps {
     entry: TimelineEntry;
@@ -42,7 +43,9 @@ export const TimelineEntryCard = ({ entry, gameLogo, align, game }: TimelineEntr
               ? "next"
               : null;
     const nextHasPatchNotes =
-        selector === "next" && !!game?.nextSeason?.start?.confirmed && !!game.nextSeason.start.startDate;
+        selector === "next" &&
+        !!game?.nextSeason?.start?.confirmed &&
+        !!game.nextSeason.start.startDate;
     const showPatchNotes = !!entry.patchNotesUrl && selector !== null && !nextHasPatchNotes;
     const showUrl = !!entry.url && selector !== null;
 
@@ -88,7 +91,11 @@ export const TimelineEntryCard = ({ entry, gameLogo, align, game }: TimelineEntr
                         <h3 className="font-heading text-base leading-tight break-words md:text-lg">
                             {entry.name}
                         </h3>
-                        {chip && <Chip className={cn(chip.className, "min-w-12 text-center")}>{chip.label}</Chip>}
+                        {chip && (
+                            <Chip className={cn(chip.className, "min-w-12 text-center")}>
+                                {chip.label}
+                            </Chip>
+                        )}
                         {entry.isSideEvent && (
                             <span className="text-foreground font-heading rounded-md border border-rose-400/75 bg-rose-400/15 px-1 py-[1px] text-xs leading-4 font-semibold select-none">
                                 side event
@@ -96,7 +103,16 @@ export const TimelineEntryCard = ({ entry, gameLogo, align, game }: TimelineEntr
                         )}
                     </div>
                     <div className="text-muted-foreground text-sm">
-                        <span className="text-foreground font-medium">{entry.startLabel}</span>
+                        <span className="text-foreground font-medium">
+                            {entry.localizeStart && entry.startDate ? (
+                                <LocalStartDate
+                                    utcDate={entry.startDate.toISOString()}
+                                    fallback={entry.startLabel}
+                                />
+                            ) : (
+                                entry.startLabel
+                            )}
+                        </span>
                         {duration && <span>{` · ${duration}`}</span>}
                     </div>
                 </div>
