@@ -22,7 +22,7 @@ export const SeasonTimeline = ({ groups, gameLogo, game }: SeasonTimelineProps) 
     let index = 0;
 
     return (
-        <div className="relative mx-auto w-full md:max-w-6xl">
+        <div className="relative w-full">
             <div
                 aria-hidden
                 className="bg-border absolute top-0 bottom-0 left-3 w-px -translate-x-1/2 md:left-1/2"

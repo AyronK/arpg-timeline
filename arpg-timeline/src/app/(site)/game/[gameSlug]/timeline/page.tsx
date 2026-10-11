@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
+import { getRelatedArticles } from "@/lib/articles/getArticleListData";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import {
     gameDetailsQuery,
@@ -17,6 +18,7 @@ import { SITE_URL } from "@/lib/siteUrl";
 
 import { GamePageProps } from "../types";
 import { SeasonTimeline } from "./components/SeasonTimeline";
+import { TimelineAside } from "./components/TimelineAside";
 import {
     buildTimelineEntries,
     buildTimelineSummary,
@@ -59,6 +61,12 @@ const TimelinePage = async ({ params }: GamePageProps) => {
     const terms = buildSeasonTerms(game.seasonKeyword);
     const entries = buildTimelineEntries(data.seasons, gameSlug, new Date());
     const groups = groupByYear(entries);
+    const related = await getRelatedArticles({
+        excludeId: "",
+        gameRef: game._id,
+        category: "news",
+    });
+    const shareTitle = `${game.name} ${terms.One} Timeline`;
     const pagePath = `/game/${gameSlug}/timeline`;
 
     const crumbs: Crumb[] = [
@@ -102,21 +110,33 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                         ))}
                     </p>
                 </header>
-                {groups.length === 0 ? (
-                    <p className="text-muted-foreground">No {terms.many} tracked yet.</p>
-                ) : (
-                    <>
-                        {groups.length > 1 && (
-                            <a
-                                href={`#year-${groups[groups.length - 1]!.key}`}
-                                className="text-muted-foreground hover:text-foreground mb-2 inline-block text-sm hover:underline"
-                            >
-                                Jump to oldest
-                            </a>
+                <div className="@container">
+                    <div className="relative mx-auto w-full md:max-w-6xl">
+                        {groups.length === 0 ? (
+                            <p className="text-muted-foreground">No {terms.many} tracked yet.</p>
+                        ) : (
+                            <>
+                                {groups.length > 1 && (
+                                    <a
+                                        href={`#year-${groups[groups.length - 1]!.key}`}
+                                        className="text-muted-foreground hover:text-foreground mb-2 inline-block text-sm hover:underline"
+                                    >
+                                        Jump to oldest
+                                    </a>
+                                )}
+                                <SeasonTimeline groups={groups} gameLogo={game.logo} game={game} />
+                            </>
                         )}
-                        <SeasonTimeline groups={groups} gameLogo={game.logo} game={game} />
-                    </>
-                )}
+                        <aside className="absolute top-0 bottom-0 left-full ml-8 hidden w-72 @[1792px]:block">
+                            <div className="sticky top-12">
+                                <TimelineAside related={related} shareTitle={shareTitle} />
+                            </div>
+                        </aside>
+                    </div>
+                    <div className="mt-10 @[1792px]:hidden">
+                        <TimelineAside related={related} shareTitle={shareTitle} />
+                    </div>
+                </div>
             </div>
         </>
     );
