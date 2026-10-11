@@ -27,11 +27,15 @@ export const Content = ({
     selector,
     embed,
     compactEmbed,
+    hidePatchNotes,
+    progressTextBelow,
 }: {
     game: Game;
     selector: Selector;
     embed?: boolean | undefined;
     compactEmbed?: boolean | undefined;
+    hidePatchNotes?: boolean;
+    progressTextBelow?: boolean;
 }) => {
     const season = selector === "current" ? game.currentSeason : game.nextSeason;
 
@@ -70,7 +74,7 @@ export const Content = ({
                                     </IconLabel>
                                 </ClientOnlyVisibleWrapper>
                             )}
-                            {season.patchNotesUrl && (
+                            {season.patchNotesUrl && !hidePatchNotes && (
                                 <GuardedExternalLink
                                     href={addUTMParameters({
                                         utm_source: "arpg-timeline",
@@ -161,6 +165,13 @@ export const Content = ({
         }
     } else if (season.start?.startDate) {
         const progress = getProgress(season.start?.startDate, season.end?.endDate ?? null);
+        const progressText = getProgressTooltipText(
+            season.start?.startDate,
+            season.end?.endDate,
+            // Parser sets the end to a confirmed next start
+            season.end?.confirmed || game.nextSeason?.start?.confirmed,
+            game.seasonKeyword,
+        );
         return (
             <>
                 <div className="flex flex-row flex-wrap justify-between">
@@ -186,14 +197,16 @@ export const Content = ({
                         progress={progress}
                         clamp
                         pulse={isInGracePeriod}
-                        label={getProgressTooltipText(
-                            season.start?.startDate,
-                            season.end?.endDate,
-                            // Parser sets the end to a confirmed next start
-                            season.end?.confirmed || game.nextSeason?.start?.confirmed,
-                            game.seasonKeyword,
-                        )}
+                        label={progressText}
+                        tooltip={!progressTextBelow}
                     />
+                )}
+                {!game.isDormant && progressTextBelow && progressText && (
+                    <ClientOnlyVisibleWrapper>
+                        <p className="text-muted-foreground text-sm" suppressHydrationWarning>
+                            {progressText}
+                        </p>
+                    </ClientOnlyVisibleWrapper>
                 )}
             </>
         );

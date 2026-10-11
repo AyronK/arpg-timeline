@@ -3,8 +3,8 @@ import { FaPatreon } from "react-icons/fa6";
 
 import { CtaBannerContent, getCtaBannerClassName } from "@/components/CtaBanner";
 
-const SITE_MONTHLY_COST = 25;
-const MONTHLY_VISITORS = "30K";
+export const SITE_MONTHLY_COST = 25;
+export const MONTHLY_VISITORS = "30K";
 
 export const PatreonFunding = () => (
     <Link

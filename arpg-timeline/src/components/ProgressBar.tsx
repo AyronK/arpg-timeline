@@ -6,12 +6,16 @@ export const ProgressBar = ({
     clamp,
     pulse,
     label,
+    tooltip = true,
 }: {
     progress: number;
     clamp?: boolean | undefined;
     pulse?: boolean | undefined;
     label?: string | null | undefined;
+    // false when the label is already shown as visible text
+    tooltip?: boolean;
 }) => {
+    const hasTooltip = !!label && tooltip;
     const bar = (
         <div
             role="progressbar"
@@ -19,13 +23,13 @@ export const ProgressBar = ({
             aria-valuemax={100}
             aria-valuenow={Math.round(Math.min(Math.max(progress, 0), 100))}
             aria-label={label ?? undefined}
-            tabIndex={label ? 0 : undefined}
+            tabIndex={hasTooltip ? 0 : undefined}
             suppressHydrationWarning
             className={cn(
                 "relative h-2 w-full overflow-hidden rounded-tl-full rounded-br-full bg-sky-200/15",
                 {
                     "focus-visible:ring-ring cursor-help focus-visible:ring-2 focus-visible:outline-none":
-                        label,
+                        hasTooltip,
                 },
             )}
         >
@@ -46,7 +50,7 @@ export const ProgressBar = ({
         </div>
     );
 
-    if (!label) return bar;
+    if (!hasTooltip) return bar;
 
     return (
         <Tooltip>

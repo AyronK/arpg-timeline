@@ -26,12 +26,12 @@ export const GameHubHeader = ({
                 <div className="flex min-w-0 items-center gap-4">
                     {game.logo && (
                         // SanityImage fills its parent, so the wrapper sets the size
-                        <div className="h-14 w-20 shrink-0 md:h-16 md:w-24">
+                        <div className="h-16 w-24 shrink-0 md:h-20 md:w-32">
                             <SanityImage
                                 src={game.logo}
                                 alt={`${game.name} logo`}
-                                width={96}
-                                height={64}
+                                width={128}
+                                height={80}
                                 objectFit="contain"
                             />
                         </div>

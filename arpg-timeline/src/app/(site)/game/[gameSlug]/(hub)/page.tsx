@@ -2,9 +2,6 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { CalendarSubscriptionAlert } from "@/components/CalendarSubscriptionAlert";
-import { DiscordBotBanner } from "@/components/DiscordBotBanner";
-import { PatreonFunding } from "@/components/PatreonFunding";
 import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import {
@@ -16,42 +13,31 @@ import {
 import { GameNewsService } from "@/lib/gameNewsService";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { sanitizeNewsDescription } from "@/lib/steam/sanitizeNewsDescription";
+import { buildSeasonTerms } from "@/lib/seasonTerms";
 
-import {
-    ArchivalSeasonsSection,
-    GameArticlesSection,
-    GameHeaderSection,
-    PlatformIntegrationSection,
-    StatisticsSection,
-} from "../components";
+import { LatestList } from "../components/overview/LatestList";
+import { LeagueRhythm, RhythmData } from "../components/overview/LeagueRhythm";
+import { CardLink, OverviewCard } from "../components/overview/OverviewCard";
+import { OverviewSidebar, PatreonCard } from "../components/overview/OverviewSidebar";
+import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
+import { NextCard, NowCard } from "../components/overview/StatusCards";
 import {
     buildGamePageDescription,
     buildGamePageOgDescription,
     buildGamePageOgTitle,
     buildGamePageTitle,
 } from "../metadata";
-import { GamePageProps } from "../types";
-import {
-    calculateGameStatistics,
-    countTrackedSeasons,
-    getArchivalSeasons,
-    getOldestSeasonInfo,
-} from "../utils";
+import { buildCadenceHint, buildLengthTile, buildPerYearTile, mergeLatest } from "../overview";
+import { GamePageProps, GameStatistics } from "../types";
+import { calculateGameStatistics, countTrackedSeasons, getArchivalSeasons } from "../utils";
+import { getTimelinePath, isSeasonalGame } from "./timeline/timeline";
 
 const RECENT_SEASON_COUNT = 3;
+const LATEST_COUNT = 3;
 
-async function getSteamNewsFromDb(gameSlug: string, limit = 4) {
+async function getFeedFromDb(gameSlug: string, limit: number) {
     try {
-        const steamNewsService = new GameNewsService();
-        const dbNews = await steamNewsService.getGameNewsByGame(gameSlug, limit);
-
-        return dbNews.map((news) => ({
-            title: news.title,
-            link: news.link,
-            description: sanitizeNewsDescription(news.description),
-            pubDate: news.pub_date,
-        }));
+        return await new GameNewsService().getGameNewsByGame(gameSlug, limit);
     } catch (error) {
         console.error("Error fetching Game news from database:", error);
         return [];
@@ -78,16 +64,53 @@ const GamePage = async ({ params }: GamePageProps) => {
         data.seasons.filter((s) => s.game === game.slug),
     );
 
+    const terms = buildSeasonTerms(game.seasonKeyword);
+    const hasSeasons = isSeasonalGame(game) && !game.isComingSoon;
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
-    const gameNews = await getSteamNewsFromDb(gameSlug);
-    const gameArticles = await getGameArticlesPreview(gameSlug);
-    const statistics = calculateGameStatistics(data, gameSlug);
-    const recentStatistics =
-        countTrackedSeasons(data, gameSlug) > RECENT_SEASON_COUNT
-            ? calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT })
+
+    const [feed, gameArticles] = await Promise.all([
+        getFeedFromDb(gameSlug, LATEST_COUNT),
+        getGameArticlesPreview(gameSlug),
+    ]);
+    const latest = mergeLatest(feed, gameArticles.news, gameSlug, LATEST_COUNT);
+
+    const toRhythm = (stats: GameStatistics): RhythmData => ({
+        length: buildLengthTile(stats, terms),
+        perYear: buildPerYearTile(stats, terms),
+        confirmedStartDates: stats.confirmedStartDates,
+        usualStartTime: stats.usualStartTime,
+    });
+    const trackedCount = countTrackedSeasons(data, gameSlug);
+    const allStatistics = calculateGameStatistics(data, gameSlug);
+    const rhythm = toRhythm(allStatistics);
+    const recentRhythm =
+        trackedCount > RECENT_SEASON_COUNT
+            ? toRhythm(
+                  calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT }),
+              )
             : undefined;
-    const oldestSeasonInfo = getOldestSeasonInfo(data, game);
-    const archivalSeasons = getArchivalSeasons(data, game);
+    const hasRhythm = hasSeasons && !!(rhythm.length || rhythm.perYear);
+    const recentSeasons = hasSeasons ? getArchivalSeasons(data, game).slice(0, 3) : [];
+
+    const cadenceHint = hasSeasons
+        ? buildCadenceHint({
+              currentStart: game.currentSeason?.start?.startDate,
+              medianDays: allStatistics.medianDuration,
+              trackedCount,
+              terms,
+              now: new Date(),
+          })
+        : null;
+
+    const status = game.isComingSoon ? (
+        <NextCard game={game} />
+    ) : hasSeasons ? (
+        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+            <NowCard game={game} />
+            <NextCard game={game} cadenceHint={cadenceHint} />
+        </div>
+    ) : null;
+
     const structuredData = getStructuredDataForGame(game);
     const faqSchema =
         structuredData?.faqQuestions && structuredData.faqQuestions.length > 0
@@ -118,55 +141,63 @@ const GamePage = async ({ params }: GamePageProps) => {
                     }}
                 />
             )}
-            <div className="relative container mx-auto py-6">
-                <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
-
-                <div className="mb-4 flex flex-col justify-between gap-4 md:mb-6 md:gap-6 lg:flex-row">
-                    <CalendarSubscriptionAlert gameSlug={gameSlug} gameName={game.name} />
-                    <PatreonFunding />
-                </div>
-
-                <div className="mb-4 md:mb-6">
-                    <DiscordBotBanner gameName={game.name} seasonKeyword={game.seasonKeyword} />
-                </div>
-
-                {game.categories?.includes("seasonal") && archivalSeasons.length > 0 && (
-                    <div className="mb-4 grid grid-cols-1 gap-4 md:mb-6 md:gap-6 2xl:grid-cols-2">
-                        <StatisticsSection
-                            game={game}
-                            statistics={statistics}
-                            recentStatistics={recentStatistics}
-                            recentSeasonCount={RECENT_SEASON_COUNT}
-                            oldestSeasonInfo={oldestSeasonInfo}
-                        />
-                        <ArchivalSeasonsSection
-                            seasons={archivalSeasons}
-                            gameLogo={game.logo}
-                            seasonKeyword={game.seasonKeyword}
+            {/* Status and Patreon share the first grid row so their heights match */}
+            <div className="relative container mx-auto grid gap-4 py-6 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+                {status && (
+                    <>
+                        <div className="flex min-w-0 flex-col *:flex-1">{status}</div>
+                        <PatreonCard className="order-last lg:order-none" />
+                    </>
+                )}
+                <div className="flex min-w-0 flex-col gap-4 md:gap-6">
+                    {hasRhythm && (
+                        <LeagueRhythm
+                            all={rhythm}
+                            recent={recentRhythm}
+                            allCount={trackedCount}
+                            recentCount={RECENT_SEASON_COUNT}
+                            terms={terms}
                             gameSlug={gameSlug}
                         />
-                    </div>
-                )}
+                    )}
 
-                {(gameArticles.news.length > 0 || gameArticles.resources.length > 0) && (
-                    <div className="mb-4 md:mb-6">
-                        <GameArticlesSection
-                            gameSlug={gameSlug}
-                            news={gameArticles.news}
-                            resources={gameArticles.resources}
-                        />
-                    </div>
-                )}
+                    <OverviewCard
+                        title="Latest"
+                        action={
+                            <CardLink
+                                href={`/game/${gameSlug}/news`}
+                                saClick={`${gameSlug}-latest-all-news`}
+                            >
+                                All news
+                            </CardLink>
+                        }
+                    >
+                        <LatestList items={latest} gameSlug={gameSlug} />
+                    </OverviewCard>
 
-                {(steamAppId || gameNews.length > 0) && (
-                    <div className="mb-4 md:mb-6">
-                        <PlatformIntegrationSection
-                            steamAppId={steamAppId}
-                            gameUrl={game.url}
-                            gameNews={gameNews.slice(0, 5)}
-                        />
-                    </div>
-                )}
+                    {recentSeasons.length > 0 && (
+                        <OverviewCard
+                            title={`Recent ${terms.many}`}
+                            action={
+                                <CardLink
+                                    href={getTimelinePath(gameSlug)}
+                                    saClick={`${gameSlug}-recent-full-timeline`}
+                                >
+                                    Full timeline
+                                </CardLink>
+                            }
+                        >
+                            <RecentSeasonsList seasons={recentSeasons} />
+                        </OverviewCard>
+                    )}
+                </div>
+
+                <OverviewSidebar
+                    game={game}
+                    steamAppId={steamAppId}
+                    withPatreon={!status}
+                    className="order-last lg:order-none"
+                />
             </div>
         </>
     );
