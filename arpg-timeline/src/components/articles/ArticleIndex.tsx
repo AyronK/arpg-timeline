@@ -37,12 +37,27 @@ export const ArticleIndex = ({
     compact,
     emptyText = "No articles here yet - check back soon.",
 }: ArticleIndexProps) => (
-    <div className="relative container mx-auto py-8 md:py-10">
+    <div className={cn("relative container mx-auto", compact ? "py-6" : "py-8 md:py-10")}>
         {showBreadcrumbs && <Breadcrumbs crumbs={crumbs} />}
 
-        <header className="mb-8 max-w-2xl">
-            <h1 className="font-heading text-3xl md:text-4xl">{title}</h1>
-            <p className="text-muted-foreground mt-3 text-lg leading-relaxed">{intro}</p>
+        {/* Compact matches the other game hub tabs */}
+        <header className={cn("max-w-2xl", compact ? "mb-6" : "mb-8")}>
+            <h1
+                className={cn(
+                    "font-heading",
+                    compact ? "text-2xl md:text-3xl" : "text-3xl md:text-4xl",
+                )}
+            >
+                {title}
+            </h1>
+            <p
+                className={cn(
+                    "text-muted-foreground leading-relaxed",
+                    compact ? "mt-2" : "mt-3 text-lg",
+                )}
+            >
+                {intro}
+            </p>
         </header>
 
         {articles.length === 0 ? (

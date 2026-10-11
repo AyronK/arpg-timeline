@@ -17,7 +17,7 @@ import { buildSeasonTerms } from "@/lib/seasonTerms";
 import { LatestList } from "../components/overview/LatestList";
 import { LeagueRhythm, RhythmData } from "../components/overview/LeagueRhythm";
 import { CardLink, OverviewCard } from "../components/overview/OverviewCard";
-import { OverviewSidebar, PatreonCard } from "../components/overview/OverviewSidebar";
+import { OverviewSidebar } from "../components/overview/OverviewSidebar";
 import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
 import { NextCard, NowCard } from "../components/overview/StatusCards";
 import { getGameFeed } from "../feed";
@@ -132,15 +132,9 @@ const GamePage = async ({ params }: GamePageProps) => {
                     }}
                 />
             )}
-            {/* Status and Patreon share the first grid row so their heights match */}
-            <div className="relative container mx-auto grid gap-4 py-6 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-                {status && (
-                    <>
-                        <div className="flex min-w-0 flex-col *:flex-1">{status}</div>
-                        <PatreonCard className="order-last lg:order-none" />
-                    </>
-                )}
+            <div className="relative container mx-auto grid items-start gap-4 py-6 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
                 <div className="flex min-w-0 flex-col gap-4 md:gap-6">
+                    {status}
                     {hasRhythm && (
                         <LeagueRhythm
                             all={rhythm}
@@ -183,12 +177,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                     )}
                 </div>
 
-                <OverviewSidebar
-                    game={game}
-                    steamAppId={steamAppId}
-                    withPatreon={!status}
-                    className="order-last lg:order-none"
-                />
+                <OverviewSidebar game={game} steamAppId={steamAppId} />
             </div>
         </>
     );

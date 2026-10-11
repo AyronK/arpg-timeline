@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
-import { getRelatedArticles } from "@/lib/articles/getArticleListData";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import {
     gameDetailsQuery,
@@ -15,8 +14,8 @@ import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms, SeasonTerms } from "@/lib/seasonTerms";
 import { SITE_URL } from "@/lib/siteUrl";
 
+import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { GamePageProps } from "../../types";
-import { TimelineAside } from "./components/TimelineAside";
 import { TimelineView } from "./components/TimelineView";
 import { buildTimelineDescription, buildTimelineKeywords, buildTimelineTitle } from "./metadata";
 import { buildTimelineItemList } from "./structuredData";
@@ -59,12 +58,6 @@ const TimelinePage = async ({ params }: GamePageProps) => {
 
     const terms = buildSeasonTerms(game.seasonKeyword);
     const entries = buildTimelineEntries(data.seasons, gameSlug, new Date());
-    const related = await getRelatedArticles({
-        excludeId: "",
-        gameRef: game._id,
-        category: "news",
-    });
-    const shareTitle = `${game.name} ${terms.One} Timeline`;
     const pagePath = getTimelinePath(gameSlug);
 
     const crumbs: Crumb[] = [
@@ -91,7 +84,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                     __html: JSON.stringify(itemList).replace(/</g, "\\u003c"),
                 }}
             />
-            <div className="relative container mx-auto pt-6 pb-24 lg:pb-10">
+            <div className="relative container mx-auto pt-6 pb-24 xl:pb-10">
                 <TimelineView
                     entries={displayEntries}
                     gameLogo={game.logo}
@@ -99,10 +92,10 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                     emptyText={`No ${terms.many} tracked yet.`}
                     header={
                         <header className="mb-6">
-                            <h1 className="font-heading text-3xl md:text-4xl">
+                            <h1 className="font-heading text-2xl md:text-3xl">
                                 {game.name} {terms.One} Timeline
                             </h1>
-                            <p className="text-muted-foreground mt-3 text-lg leading-relaxed">
+                            <p className="text-muted-foreground mt-2 leading-relaxed">
                                 {buildSummarySentences(game.name, terms, summary).map(
                                     (sentence) => (
                                         <span key={sentence} className="block">
@@ -111,14 +104,14 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                                     ),
                                 )}
                             </p>
-                            <p className="text-muted-foreground mt-3 text-sm italic">
+                            <p className="text-muted-foreground mt-2 text-xs italic">
                                 Data is provided on a best-effort basis and may not be 100%
                                 accurate. Dates and durations can be estimated or assumed and may
                                 contain errors - especially for older data.
                             </p>
                         </header>
                     }
-                    aside={<TimelineAside related={related} shareTitle={shareTitle} />}
+                    aside={<SupportCard />}
                 />
             </div>
         </>

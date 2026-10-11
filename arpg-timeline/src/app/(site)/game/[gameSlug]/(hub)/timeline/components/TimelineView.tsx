@@ -19,7 +19,6 @@ interface TimelineViewProps {
     aside: ReactNode;
 }
 
-// Same grid as ArticleLayout: year navigation | main column | aside.
 export const TimelineView = ({
     entries,
     gameLogo,
@@ -48,14 +47,9 @@ export const TimelineView = ({
 
     return (
         <>
-            <div className="xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:gap-x-8">
-                <aside className="hidden xl:col-start-1 xl:row-start-1 xl:block xl:justify-self-end">
-                    <div className="sticky top-12 ml-24 w-48">
-                        <ArticleToc headings={tocHeadings} variant="sidebar" />
-                    </div>
-                </aside>
-
-                <div className="mx-auto w-full max-w-[55rem] min-w-0 xl:col-start-2 xl:row-start-1">
+            {/* Same grid as the hub Overview: main column | sidebar */}
+            <div className="grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
+                <div className="min-w-0">
                     {header}
                     {entries.length === 0 ? (
                         <p className="text-muted-foreground">{emptyText}</p>
@@ -86,8 +80,13 @@ export const TimelineView = ({
                     )}
                 </div>
 
-                <aside className="mt-10 xl:col-start-3 xl:row-start-1 xl:mt-0 xl:justify-self-start">
-                    <div className="xl:sticky xl:top-12 xl:w-72">{aside}</div>
+                <aside>
+                    <div className="flex flex-col gap-4 md:gap-6 lg:sticky lg:top-12">
+                        <div className="hidden xl:block">
+                            <ArticleToc headings={tocHeadings} variant="sidebar" />
+                        </div>
+                        {aside}
+                    </div>
                 </aside>
             </div>
             <ArticleToc headings={tocHeadings} variant="bottom" />

@@ -1,15 +1,24 @@
-import { BookOpen, ExternalLink, GitBranch, Globe, Twitch } from "lucide-react";
+import {
+    BookOpen,
+    ChevronRight,
+    Code2,
+    ExternalLink,
+    GitBranch,
+    Globe,
+    Monitor,
+    Twitch,
+} from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { FaPatreon } from "react-icons/fa6";
 import { RiSteamLine } from "react-icons/ri";
 
+import { BuyMeACoffeeCompact } from "@/components/articles/BuyMeACoffeeCompact";
+import { PatreonFundingCompact } from "@/components/articles/PatreonFundingCompact";
 import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { MONTHLY_VISITORS, SITE_MONTHLY_COST } from "@/components/PatreonFunding";
 import { Game } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
-import { Button } from "@/ui/Button";
 
 import { cardClassName } from "./OverviewCard";
 
@@ -32,29 +41,25 @@ const LinkRow = ({ icon, children }: { icon: ReactNode; children: ReactNode }) =
     </>
 );
 
-export const PatreonCard = ({ className }: { className?: string }) => {
-    if (!process.env.NEXT_PUBLIC_PATREON_URL) return null;
+// Same compact Patreon / Buy Me a Coffee rows as the article sidebar
+export const SupportCard = ({ className }: { className?: string }) => {
+    if (!process.env.NEXT_PUBLIC_PATREON_URL && !process.env.NEXT_PUBLIC_BUY_ME_A_COFFEE_URL) {
+        return null;
+    }
 
     return (
         <section className={cn(cardClassName, "flex flex-col gap-4", className)}>
             <div>
                 <h2 className="font-heading text-lg">Keep aRPG Timeline free</h2>
                 <p className="text-muted-foreground mt-2 text-sm">
-                    Hosting costs ${SITE_MONTHLY_COST}/month. Patreon keeps it running for{" "}
+                    Hosting costs ${SITE_MONTHLY_COST}/month. Your support keeps it running for{" "}
                     {MONTHLY_VISITORS}+ players.
                 </p>
             </div>
-            <Button asChild className="mt-auto w-full">
-                <Link
-                    href={process.env.NEXT_PUBLIC_PATREON_URL}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    data-sa-click="patreon-game-sidebar"
-                >
-                    <FaPatreon className="mr-2 h-4 w-4" aria-hidden />
-                    Support on Patreon
-                </Link>
-            </Button>
+            <div className="mt-auto flex flex-col gap-2">
+                <PatreonFundingCompact />
+                <BuyMeACoffeeCompact />
+            </div>
         </section>
     );
 };
@@ -67,133 +72,194 @@ const hostname = (url: string) => {
     }
 };
 
+const ExternalRow = ({
+    href,
+    saClick,
+    icon,
+    children,
+}: {
+    href: string;
+    saClick: string;
+    icon: ReactNode;
+    children: ReactNode;
+}) => (
+    <li>
+        <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            data-sa-click={saClick}
+            className={linkClassName}
+        >
+            <LinkRow icon={icon}>{children}</LinkRow>
+        </a>
+    </li>
+);
+
+const LinkGroup = ({ title, children }: { title: string; children: ReactNode[] }) => {
+    const rows = children.filter(Boolean);
+    if (rows.length === 0) return null;
+
+    return (
+        <div>
+            <h3 className="text-muted-foreground mb-1 text-xs font-medium tracking-wide uppercase">
+                {title}
+            </h3>
+            <ul>{rows}</ul>
+        </div>
+    );
+};
+
+// Grouped by intent: things to do vs. official reference links
 const GameLinks = ({ game, steamAppId }: { game: Game; steamAppId?: number | null }) => {
     const slug = game.slug;
     const buildsHost = game.buildsUrl && hostname(game.buildsUrl);
     const guidesHost = game.guidesUrl && hostname(game.guidesUrl);
-    const hasAny =
-        game.buildsUrl || game.guidesUrl || game.url || steamAppId || game.twitchCategory;
-    if (!hasAny) return null;
+
+    const actions = [
+        game.buildsUrl && (
+            <ExternalRow
+                key="builds"
+                href={utm("builds", slug)(game.buildsUrl)}
+                saClick={`${slug}-builds-quicklink`}
+                icon={<GitBranch className="h-4 w-4" />}
+            >
+                Find builds{buildsHost && ` (${buildsHost})`}
+            </ExternalRow>
+        ),
+        game.guidesUrl && (
+            <ExternalRow
+                key="guides"
+                href={utm("guides", slug)(game.guidesUrl)}
+                saClick={`${slug}-guides-quicklink`}
+                icon={<BookOpen className="h-4 w-4" />}
+            >
+                Read guides{guidesHost && ` (${guidesHost})`}
+            </ExternalRow>
+        ),
+        game.twitchCategory && (
+            <ExternalRow
+                key="twitch-category"
+                href={utm(
+                    "twitch-category",
+                    slug,
+                )(`https://www.twitch.tv/directory/category/${game.twitchCategory}`)}
+                saClick={`${slug}-twitch-category`}
+                icon={<Twitch className="h-4 w-4" />}
+            >
+                Watch live on Twitch
+            </ExternalRow>
+        ),
+    ];
+
+    const official = [
+        game.url && (
+            <li key="website">
+                <GuardedExternalLink
+                    href={utm("official-website", slug)(game.url)}
+                    isOfficial={game.isOfficial}
+                    noIcon
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-sa-click={`${slug}-official-website`}
+                    className={linkClassName}
+                >
+                    <LinkRow icon={<Globe className="h-4 w-4" />}>
+                        {game.isOfficial ? "Official website" : "Project website"}
+                    </LinkRow>
+                </GuardedExternalLink>
+            </li>
+        ),
+        steamAppId && (
+            <ExternalRow
+                key="steam"
+                href={utm("steam-store", slug)(`https://store.steampowered.com/app/${steamAppId}`)}
+                saClick={`${slug}-steam-page`}
+                icon={<RiSteamLine className="h-4 w-4" />}
+            >
+                Steam store page
+            </ExternalRow>
+        ),
+        game.twitchChannel && (
+            <ExternalRow
+                key="twitch-channel"
+                href={`https://www.twitch.tv/${game.twitchChannel}`}
+                saClick={`${slug}-twitch-channel`}
+                icon={<Twitch className="h-4 w-4" />}
+            >
+                Official Twitch channel
+            </ExternalRow>
+        ),
+    ];
+
+    if (!actions.some(Boolean) && !official.some(Boolean)) return null;
 
     return (
-        <section className={cardClassName}>
-            <h2 className="font-heading mb-2 text-lg">Links</h2>
-            <ul>
-                {game.buildsUrl && (
-                    <li>
-                        <a
-                            href={utm("builds", slug)(game.buildsUrl)}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            data-sa-click={`${slug}-builds-quicklink`}
-                            className={linkClassName}
-                        >
-                            <LinkRow icon={<GitBranch className="h-4 w-4" />}>
-                                Builds{buildsHost && ` (${buildsHost})`}
-                            </LinkRow>
-                        </a>
-                    </li>
-                )}
-                {game.guidesUrl && (
-                    <li>
-                        <a
-                            href={utm("guides", slug)(game.guidesUrl)}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            data-sa-click={`${slug}-guides-quicklink`}
-                            className={linkClassName}
-                        >
-                            <LinkRow icon={<BookOpen className="h-4 w-4" />}>
-                                Guides{guidesHost && ` (${guidesHost})`}
-                            </LinkRow>
-                        </a>
-                    </li>
-                )}
-                {game.url && (
-                    <li>
-                        <GuardedExternalLink
-                            href={utm("official-website", slug)(game.url)}
-                            isOfficial={game.isOfficial}
-                            noIcon
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            data-sa-click={`${slug}-official-website`}
-                            className={linkClassName}
-                        >
-                            <LinkRow icon={<Globe className="h-4 w-4" />}>
-                                {game.isOfficial ? "Official website" : "Project website"}
-                            </LinkRow>
-                        </GuardedExternalLink>
-                    </li>
-                )}
-                {steamAppId && (
-                    <li>
-                        <a
-                            href={utm(
-                                "steam-store",
-                                slug,
-                            )(`https://store.steampowered.com/app/${steamAppId}`)}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            data-sa-click={`${slug}-steam-page`}
-                            className={linkClassName}
-                        >
-                            <LinkRow icon={<RiSteamLine className="h-4 w-4" />}>Steam</LinkRow>
-                        </a>
-                    </li>
-                )}
-                {game.twitchCategory && (
-                    <li>
-                        <a
-                            href={utm(
-                                "twitch-category",
-                                slug,
-                            )(`https://www.twitch.tv/directory/category/${game.twitchCategory}`)}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            data-sa-click={`${slug}-twitch-category`}
-                            className={linkClassName}
-                        >
-                            <LinkRow icon={<Twitch className="h-4 w-4" />}>Twitch</LinkRow>
-                        </a>
-                    </li>
-                )}
-            </ul>
+        <section className={cn(cardClassName, "flex flex-col gap-4")}>
+            <h2 className="sr-only">Links</h2>
+            <LinkGroup title="Useful links">{actions}</LinkGroup>
+            <LinkGroup title="Official">{official}</LinkGroup>
         </section>
     );
 };
 
+const CreatorRow = ({
+    href,
+    saClick,
+    icon,
+    title,
+    description,
+}: {
+    href: string;
+    saClick: string;
+    icon: ReactNode;
+    title: string;
+    description: string;
+}) => (
+    <li>
+        <Link href={href} data-sa-click={saClick} className={cn(linkClassName, "items-start")}>
+            <span className="text-muted-foreground mt-0.5 shrink-0">{icon}</span>
+            <span className="flex-1">
+                <span className="block font-medium">{title}</span>
+                <span className="text-muted-foreground block text-xs">{description}</span>
+            </span>
+            <ChevronRight className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+        </Link>
+    </li>
+);
+
+const CreatorTools = ({ gameSlug }: { gameSlug: string }) => (
+    <section className={cardClassName}>
+        <h2 className="font-heading mb-2 text-lg">For creators</h2>
+        <ul>
+            <CreatorRow
+                href={`/docs/obs/${gameSlug}`}
+                saClick={`${gameSlug}-obs-docs`}
+                icon={<Monitor className="h-4 w-4" />}
+                title="OBS overlay"
+                description="Live countdown for your stream"
+            />
+            <CreatorRow
+                href={`/docs/html/${gameSlug}`}
+                saClick={`${gameSlug}-html-docs`}
+                icon={<Code2 className="h-4 w-4" />}
+                title="HTML widget"
+                description="Embed the countdown on your site"
+            />
+        </ul>
+    </section>
+);
+
 export const OverviewSidebar = ({
     game,
     steamAppId,
-    withPatreon,
-    className,
 }: {
     game: Game;
     steamAppId?: number | null;
-    withPatreon?: boolean;
-    className?: string;
 }) => (
-    <aside className={cn("flex flex-col gap-4 md:gap-6", className)}>
-        {withPatreon && <PatreonCard />}
+    <aside className="flex flex-col gap-4 md:gap-6">
+        <SupportCard />
         <GameLinks game={game} steamAppId={steamAppId} />
-        <p className="text-muted-foreground px-1 text-sm">
-            For creators:{" "}
-            <Link
-                href={`/docs/obs/${game.slug}`}
-                data-sa-click={`${game.slug}-obs-docs`}
-                className="hover:text-foreground underline underline-offset-2"
-            >
-                OBS overlay
-            </Link>
-            ,{" "}
-            <Link
-                href={`/docs/html/${game.slug}`}
-                data-sa-click={`${game.slug}-html-docs`}
-                className="hover:text-foreground underline underline-offset-2"
-            >
-                HTML widget
-            </Link>
-        </p>
+        <CreatorTools gameSlug={game.slug} />
     </aside>
 );
