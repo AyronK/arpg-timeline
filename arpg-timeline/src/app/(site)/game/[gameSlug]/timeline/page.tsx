@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
@@ -109,6 +110,10 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                             </span>
                         ))}
                     </p>
+                    <p className="text-muted-foreground mt-3 text-sm italic">
+                        Data is provided on a best-effort basis and may not be 100% accurate. Dates
+                        and durations can be estimated or assumed and may contain errors - especially for older data.
+                    </p>
                 </header>
                 <div className="@container">
                     <div className="relative mx-auto w-full md:max-w-6xl">
@@ -158,13 +163,11 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
     const title = `${game.name} ${terms.One} Timeline | aRPG Timeline`;
     const summary = buildTimelineSummary(buildTimelineEntries(data.seasons, gameSlug, new Date()));
     const description = summary.count
-        ? `${game.name} ${terms.many} timeline: ${summary.count} ${terms.many} since ${summary.firstYear}${
-              summary.averageDays
-                  ? `, averaging ${formatApproxMonths(summary.averageDays)} each`
-                  : ""
-          }. Start dates, durations and events${
-              summary.next ? `, plus the next ${terms.one} (${summary.next.label})` : ""
-          }.`
+        ? `${game.name} ${terms.many} timeline: ${summary.count} ${terms.many} since ${summary.firstYear}${summary.averageDays
+            ? `, averaging ${formatApproxMonths(summary.averageDays)} each`
+            : ""
+        }. Start dates, durations and events${summary.next ? `, plus the next ${terms.one} (${summary.next.label})` : ""
+        }.`
         : `Full history of ${game.name} ${terms.many}: start dates, durations and events.`;
     const path = `/game/${gameSlug}/timeline`;
 
