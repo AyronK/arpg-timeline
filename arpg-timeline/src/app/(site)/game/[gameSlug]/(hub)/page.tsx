@@ -10,7 +10,6 @@ import {
     indexQuery,
     IndexQueryResult,
 } from "@/lib/cms/queries/indexQuery";
-import { GameNewsService } from "@/lib/gameNewsService";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms } from "@/lib/seasonTerms";
@@ -21,6 +20,7 @@ import { CardLink, OverviewCard } from "../components/overview/OverviewCard";
 import { OverviewSidebar, PatreonCard } from "../components/overview/OverviewSidebar";
 import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
 import { NextCard, NowCard } from "../components/overview/StatusCards";
+import { getGameFeed } from "../feed";
 import {
     buildGamePageDescription,
     buildGamePageOgDescription,
@@ -34,15 +34,6 @@ import { getTimelinePath, isSeasonalGame } from "./timeline/timeline";
 
 const RECENT_SEASON_COUNT = 3;
 const LATEST_COUNT = 3;
-
-async function getFeedFromDb(gameSlug: string, limit: number) {
-    try {
-        return await new GameNewsService().getGameNewsByGame(gameSlug, limit);
-    } catch (error) {
-        console.error("Error fetching Game news from database:", error);
-        return [];
-    }
-}
 
 const GamePage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
@@ -69,10 +60,10 @@ const GamePage = async ({ params }: GamePageProps) => {
     const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
 
     const [feed, gameArticles] = await Promise.all([
-        getFeedFromDb(gameSlug, LATEST_COUNT),
+        getGameFeed(gameSlug, LATEST_COUNT),
         getGameArticlesPreview(gameSlug),
     ]);
-    const latest = mergeLatest(feed, gameArticles.news, gameSlug, LATEST_COUNT);
+    const latest = mergeLatest(feed, gameArticles.news, gameSlug, LATEST_COUNT, new Date());
 
     const toRhythm = (stats: GameStatistics): RhythmData => ({
         length: buildLengthTile(stats, terms),

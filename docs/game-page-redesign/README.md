@@ -111,13 +111,13 @@ Notify actions:
   season is unannounced.
 
 News:
-- News tab: two blocks, "Official announcements" above "Our articles". Official block on
+- News tab: our article cards first, then a compact "Official announcements" list (5 newest
+  feed items, label + date + title + one-line clamped excerpt, link to all Steam announcements). Feed on
   page 1 only; `/news/page/[n]` stays articles-only. Hide empty blocks; one "No news yet"
-  message if both are empty.
+  message if both are empty. (Revised after review: feed-first read as a wall of text.)
 - Source label derived, no schema change: `steam_app_id` set -> "Steam", null -> "Official";
   Sanity articles -> "aRPG Timeline". No store-sale filtering.
-- Overview "Latest": 3 newest across both sources, mixed by date, titles only. News tab shows
-  a one-line clamped excerpt.
+- Overview "Latest": 3 newest across both sources, mixed by date, titles only.
 
 Stats:
 - Players: live count + `SteamDBEmbed` 7-day chart only (no 24h/all-time peak numbers, no new

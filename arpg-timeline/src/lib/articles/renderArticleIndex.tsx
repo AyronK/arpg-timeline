@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 
 import { ArticleIndex } from "@/components/articles/ArticleIndex";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -19,6 +20,11 @@ interface IndexArgs {
     category: ArticleCategory;
     gameSlug?: string;
     page?: string;
+}
+
+interface RenderArgs extends IndexArgs {
+    extra?: ReactNode;
+    emptyText?: string;
 }
 
 const CATEGORY_LABEL: Record<ArticleCategory, string> = {
@@ -64,7 +70,7 @@ async function resolveIndex({ category, gameSlug, page: pageParam }: IndexArgs) 
     return { page, items, pageCount, basePath, title, intro, crumbs, showGame: !game };
 }
 
-export async function renderArticleIndex(args: IndexArgs) {
+export async function renderArticleIndex({ extra, emptyText, ...args }: RenderArgs) {
     const { page, items, pageCount, basePath, title, intro, crumbs, showGame } =
         await resolveIndex(args);
 
@@ -84,6 +90,10 @@ export async function renderArticleIndex(args: IndexArgs) {
                 showGame={showGame}
                 // Game indexes sit under the game hub header, which has its own breadcrumbs
                 showBreadcrumbs={showGame}
+                extra={extra}
+                // Narrower cards under the game hub
+                compact={!showGame}
+                emptyText={emptyText}
             />
         </>
     );

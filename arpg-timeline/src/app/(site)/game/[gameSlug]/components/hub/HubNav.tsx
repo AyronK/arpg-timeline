@@ -49,7 +49,7 @@ export const HubTabs = ({ tabs, gameSlug }: { tabs: HubTab[]; gameSlug: string }
                                 aria-current={isActive ? "page" : undefined}
                                 data-sa-click={`${gameSlug}-hub-tab-${tab.id}`}
                                 className={cn(
-                                    "font-ui flex min-h-11 items-center border-b-2 px-4 text-sm transition-colors",
+                                    "font-ui focus-visible:ring-ring flex min-h-11 items-center rounded-t-md border-b-2 px-4 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset",
                                     isActive
                                         ? "border-foreground text-foreground font-semibold"
                                         : "text-muted-foreground hover:text-foreground border-transparent font-medium",

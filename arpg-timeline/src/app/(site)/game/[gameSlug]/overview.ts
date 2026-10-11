@@ -55,32 +55,48 @@ export interface LatestItem {
 export const feedSource = (steamAppId: number | null): LatestSource =>
     steamAppId ? "Steam" : "Official";
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+const PIN_ARTICLE_DAYS = 60;
+
+const byDateDesc = (a: { date: string }, b: { date: string }) =>
+    new Date(b.date).getTime() - new Date(a.date).getTime();
+
+// Newest by date, but our latest article is pinned first while it's under 60 days old.
 export const mergeLatest = (
     feed: Pick<GameNewsDbEntry, "id" | "title" | "link" | "pub_date" | "steam_app_id">[],
     articles: Pick<ArticleListItem, "_id" | "title" | "slug" | "category" | "publishedAt">[],
     gameSlug: string,
     limit: number,
-): LatestItem[] =>
-    [
-        ...feed.map((n) => ({
-            key: n.id,
-            title: n.title,
-            href: n.link,
-            date: n.pub_date,
-            source: feedSource(n.steam_app_id),
-            external: true,
-        })),
-        ...articles.map((a) => ({
+    now: Date,
+): LatestItem[] => {
+    const feedItems: LatestItem[] = feed.map((n) => ({
+        key: n.id,
+        title: n.title,
+        href: n.link,
+        date: n.pub_date,
+        source: feedSource(n.steam_app_id),
+        external: true,
+    }));
+    const articleItems: LatestItem[] = articles
+        .map((a) => ({
             key: a._id,
             title: a.title,
             href: getArticlePath({ category: a.category, slug: a.slug, gameSlug }),
             date: a.publishedAt,
             source: "aRPG Timeline" as const,
             external: false,
-        })),
-    ]
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, limit);
+        }))
+        .sort(byDateDesc);
+
+    const newest = articleItems[0];
+    const pinned =
+        newest && now.getTime() - new Date(newest.date).getTime() <= PIN_ARTICLE_DAYS * DAY_MS
+            ? newest
+            : null;
+    const rest = [...feedItems, ...articleItems].filter((item) => item !== pinned).sort(byDateDesc);
+
+    return (pinned ? [pinned, ...rest] : rest).slice(0, limit);
+};
 
 const dayFormat = (withYear: boolean): Intl.DateTimeFormatOptions => ({
     month: "short",
@@ -109,7 +125,6 @@ export const formatSeasonRow = (
         .filter(Boolean)
         .join(" · ");
 
-const DAY_MS = 24 * 60 * 60 * 1000;
 // Launches are usually announced at least this far ahead
 const ANNOUNCE_LEAD_DAYS = 21;
 

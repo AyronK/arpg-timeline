@@ -6,6 +6,7 @@ import {
     buildCadenceHint,
     buildLengthTile,
     buildPerYearTile,
+    feedSource,
     formatApproxLength,
     formatDateRange,
     formatSeasonRow,
@@ -79,11 +80,50 @@ describe("mergeLatest", () => {
             ],
             "poe",
             2,
+            new Date("2026-12-01T00:00:00Z"),
         );
         expect(items.map((i) => [i.title, i.source, i.href, i.external])).toEqual([
             ["Steam post", "Steam", "https://s/1", true],
             ["Our guide", "aRPG Timeline", "/game/poe/news/guide", false],
         ]);
+    });
+});
+
+describe("mergeLatest pinning", () => {
+    const feed = [
+        {
+            id: "f1",
+            title: "Steam post",
+            link: "https://s/1",
+            pub_date: "2026-10-10T00:00:00Z",
+            steam_app_id: 1,
+        },
+        {
+            id: "f2",
+            title: "Older post",
+            link: "https://s/2",
+            pub_date: "2026-10-05T00:00:00Z",
+            steam_app_id: 1,
+        },
+    ];
+    const articles = [
+        {
+            _id: "a1",
+            title: "Our guide",
+            slug: "guide",
+            category: "news" as const,
+            publishedAt: "2026-09-25T00:00:00Z",
+        },
+    ];
+
+    it("pins our newest article while it is under 60 days old", () => {
+        const items = mergeLatest(feed, articles, "poe", 2, new Date("2026-10-12T00:00:00Z"));
+        expect(items.map((i) => i.title)).toEqual(["Our guide", "Steam post"]);
+    });
+
+    it("falls back to date order once the article is older", () => {
+        const items = mergeLatest(feed, articles, "poe", 2, new Date("2026-12-01T00:00:00Z"));
+        expect(items.map((i) => i.title)).toEqual(["Steam post", "Older post"]);
     });
 });
 
@@ -156,5 +196,12 @@ describe("buildCadenceHint", () => {
         expect(
             buildCadenceHint({ ...base, medianDays: null, now: new Date("2026-10-12T00:00:00Z") }),
         ).toBeNull();
+    });
+});
+
+describe("feedSource", () => {
+    it("labels Steam items and falls back to Official", () => {
+        expect(feedSource(238960)).toBe("Steam");
+        expect(feedSource(null)).toBe("Official");
     });
 });
