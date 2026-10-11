@@ -100,23 +100,28 @@ describe("buildTimelineEntries", () => {
         expect(entries.at(-1)!.status).toBe("live");
     });
 
-    it("places unconfirmed seasons by their estimated date, labelled as estimates", () => {
+    it("shows no estimate for upcoming seasons without a confirmed start", () => {
         const entries = buildTimelineEntries(
             [
                 season("a", "2026-06-01T00:00:00Z", {
                     start: { startDate: "2026-06-01T00:00:00Z", confirmed: false },
                 }),
                 season("b", "2026-09-01T00:00:00Z", {
-                    start: { startDate: "2026-09-01T00:00:00Z", confirmed: false },
+                    start: {
+                        startDate: "2026-09-01T00:00:00Z",
+                        confirmed: false,
+                        overrideText: "Fall 2026",
+                    },
                 }),
                 season("c", "2026-02-01T00:00:00Z"),
             ],
             GAME,
             NOW,
         );
-        expect(entries.map((e) => e.id)).toEqual(["b", "a", "c"]);
         expect(entries.map((e) => e.status)).toEqual(["upcoming", "upcoming", "live"]);
-        expect(entries[0]!.startLabel).toBe("Sep 2026 (est.)");
+        expect(entries.map((e) => e.startLabel)).toEqual(["TBA", "Fall 2026", "Feb 1, 2026"]);
+        expect(entries[0]!.startDate).toBeNull();
+        expect(buildTimelineSummary(entries).next).toBeNull();
     });
 
     it("treats an unconfirmed old season as past, placed by its date", () => {

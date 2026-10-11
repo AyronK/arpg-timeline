@@ -106,6 +106,9 @@ export const buildTimelineEntries = (
             status = isLive ? "live" : "past";
         }
 
+        // Upcoming seasons without a confirmed start show no estimated date
+        const hideEstimate = status === "upcoming" && !confirmedStart;
+
         const durationDays =
             status === "past" && end && startDate
                 ? Math.max(1, Math.ceil((end.getTime() - startDate.getTime()) / DAY))
@@ -119,8 +122,8 @@ export const buildTimelineEntries = (
             patchNotesUrl: season.patchNotesUrl,
             isSideEvent,
             status,
-            startDate,
-            startLabel: buildStartLabel(season, startDate),
+            startDate: hideEstimate ? null : startDate,
+            startLabel: buildStartLabel(season, hideEstimate ? null : startDate),
             localizeStart: !season.start?.overrideText && !!season.start?.confirmed && !!startDate,
             durationDays,
         };

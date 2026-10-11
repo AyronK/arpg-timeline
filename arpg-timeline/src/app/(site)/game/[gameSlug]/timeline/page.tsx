@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
@@ -18,13 +17,12 @@ import { buildSeasonTerms } from "@/lib/seasonTerms";
 import { SITE_URL } from "@/lib/siteUrl";
 
 import { GamePageProps } from "../types";
-import { SeasonTimeline } from "./components/SeasonTimeline";
 import { TimelineAside } from "./components/TimelineAside";
+import { TimelineView } from "./components/TimelineView";
 import {
     buildTimelineEntries,
     buildTimelineSummary,
     formatApproxMonths,
-    groupByYear,
     TimelineSummary,
 } from "./timeline";
 
@@ -61,7 +59,6 @@ const TimelinePage = async ({ params }: GamePageProps) => {
 
     const terms = buildSeasonTerms(game.seasonKeyword);
     const entries = buildTimelineEntries(data.seasons, gameSlug, new Date());
-    const groups = groupByYear(entries);
     const related = await getRelatedArticles({
         excludeId: "",
         gameRef: game._id,
@@ -112,26 +109,18 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                     </p>
                     <p className="text-muted-foreground mt-3 text-sm italic">
                         Data is provided on a best-effort basis and may not be 100% accurate. Dates
-                        and durations can be estimated or assumed and may contain errors - especially for older data.
+                        and durations can be estimated or assumed and may contain errors -
+                        especially for older data.
                     </p>
                 </header>
                 <div className="@container">
                     <div className="relative mx-auto w-full md:max-w-6xl">
-                        {groups.length === 0 ? (
-                            <p className="text-muted-foreground">No {terms.many} tracked yet.</p>
-                        ) : (
-                            <>
-                                {groups.length > 1 && (
-                                    <a
-                                        href={`#year-${groups[groups.length - 1]!.key}`}
-                                        className="text-muted-foreground hover:text-foreground mb-2 inline-block text-sm hover:underline"
-                                    >
-                                        Jump to oldest
-                                    </a>
-                                )}
-                                <SeasonTimeline groups={groups} gameLogo={game.logo} game={game} />
-                            </>
-                        )}
+                        <TimelineView
+                            entries={entries}
+                            gameLogo={game.logo}
+                            game={game}
+                            emptyText={`No ${terms.many} tracked yet.`}
+                        />
                         <aside className="absolute top-0 bottom-0 left-full ml-8 hidden w-72 @[1792px]:block">
                             <div className="sticky top-12">
                                 <TimelineAside related={related} shareTitle={shareTitle} />
@@ -163,11 +152,13 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
     const title = `${game.name} ${terms.One} Timeline | aRPG Timeline`;
     const summary = buildTimelineSummary(buildTimelineEntries(data.seasons, gameSlug, new Date()));
     const description = summary.count
-        ? `${game.name} ${terms.many} timeline: ${summary.count} ${terms.many} since ${summary.firstYear}${summary.averageDays
-            ? `, averaging ${formatApproxMonths(summary.averageDays)} each`
-            : ""
-        }. Start dates, durations and events${summary.next ? `, plus the next ${terms.one} (${summary.next.label})` : ""
-        }.`
+        ? `${game.name} ${terms.many} timeline: ${summary.count} ${terms.many} since ${summary.firstYear}${
+              summary.averageDays
+                  ? `, averaging ${formatApproxMonths(summary.averageDays)} each`
+                  : ""
+          }. Start dates, durations and events${
+              summary.next ? `, plus the next ${terms.one} (${summary.next.label})` : ""
+          }.`
         : `Full history of ${game.name} ${terms.many}: start dates, durations and events.`;
     const path = `/game/${gameSlug}/timeline`;
 
