@@ -2,7 +2,7 @@
 
 Reference for implementing the redesign of `/game/[gameSlug]` (example: `/game/path-of-exile`).
 The visual reference is `direction-b.dc.html` in this folder. It is a static design mockup,
-not production code: open it in a browser or read the markup for layout, hierarchy and copy.
+not production code. Read its markup for layout, hierarchy and copy (it uses the design tool's template syntax, so it will not render correctly as a plain page; each tab's content sits in its own `<sc-if>` block).
 Do not copy its inline styles. Build with the app's existing Tailwind tokens and `ui/` components.
 
 ## Why
