@@ -4,13 +4,7 @@ import { notFound } from "next/navigation";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
-import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
-import {
-    gameDetailsQuery,
-    GameDetailsQueryResult,
-    indexQuery,
-    IndexQueryResult,
-} from "@/lib/cms/queries/indexQuery";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms } from "@/lib/seasonTerms";
 import { SITE_URL } from "@/lib/siteUrl";
@@ -19,32 +13,33 @@ import { getSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlaye
 import { OverviewCard } from "../../components/overview/OverviewCard";
 import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { StatisticsSection } from "../../components/StatisticsSection";
-import { getStatsPath } from "../../hub";
+import { getGameDetails } from "../../gameData";
+import { getStatsPath, hasStatsTab } from "../../hub";
 import { formatPerYear } from "../../overview";
 import { GamePageProps } from "../../types";
 import { calculateGameStatistics, countTrackedSeasons, getOldestSeasonInfo } from "../../utils";
-import { isSeasonalGame } from "../timeline/timeline";
-import { buildStatsDescription, buildStatsTitle } from "./metadata";
+import { hasSeasonHistory } from "../timeline/timeline";
+import {
+    buildPlayersDescription,
+    buildPlayersTitle,
+    buildStatsDescription,
+    buildStatsTitle,
+} from "./metadata";
 
 const RECENT_SEASON_COUNT = 3;
 const fetchOptions = { revalidate: 24 * 60 * 60, tags: ["season", "game"] };
 
-const hasStats = (game: { categories?: string[]; isComingSoon?: boolean }) =>
-    isSeasonalGame(game) && !game.isComingSoon;
-
 const StatsPage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
 
-    const data: GameDetailsQueryResult = await sanityFetch({
-        query: gameDetailsQuery,
-        ...fetchOptions,
-    });
-    const game = parseGamesFromSanity(data).find((g) => g.slug === gameSlug);
+    const { data, game, steamAppId: appId } = await getGameDetails(gameSlug);
 
-    if (!game || !hasStats(game)) {
+    if (!game || !hasStatsTab(game, !!appId)) {
         notFound();
     }
 
+    // Non-seasonal games only get the Steam players section
+    const seasonal = hasSeasonHistory(game);
     const terms = buildSeasonTerms(game.seasonKeyword);
     const statistics = calculateGameStatistics(data, gameSlug);
     const trackedCount = countTrackedSeasons(data, gameSlug);
@@ -54,7 +49,6 @@ const StatsPage = async ({ params }: GamePageProps) => {
             : undefined;
     const oldestSeasonInfo = getOldestSeasonInfo(data, game);
 
-    const appId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
     const steam = appId ? await getSteamCurrentPlayers(appId) : null;
 
     const crumbs: Crumb[] = [
@@ -70,21 +64,25 @@ const StatsPage = async ({ params }: GamePageProps) => {
                 <div className="flex min-w-0 flex-col gap-4 md:gap-6">
                     <header>
                         <h1 className="font-heading text-2xl md:text-3xl">
-                            {game.name} {terms.One} Statistics
+                            {game.name} {seasonal ? `${terms.One} Statistics` : "Player Statistics"}
                         </h1>
                         <p className="text-muted-foreground mt-2 leading-relaxed">
-                            How long past {terms.many} lasted and when they usually launched.
+                            {seasonal
+                                ? `How long past ${terms.many} lasted and when they usually launched.`
+                                : "Live player count on Steam."}
                         </p>
                     </header>
 
-                    <StatisticsSection
-                        game={game}
-                        statistics={statistics}
-                        recentStatistics={recentStatistics}
-                        recentSeasonCount={RECENT_SEASON_COUNT}
-                        totalCount={trackedCount}
-                        oldestSeasonInfo={oldestSeasonInfo}
-                    />
+                    {seasonal && (
+                        <StatisticsSection
+                            game={game}
+                            statistics={statistics}
+                            recentStatistics={recentStatistics}
+                            recentSeasonCount={RECENT_SEASON_COUNT}
+                            totalCount={trackedCount}
+                            oldestSeasonInfo={oldestSeasonInfo}
+                        />
+                    )}
 
                     {steam && (
                         <OverviewCard title="Players on Steam">
@@ -116,24 +114,23 @@ export default StatsPage;
 export async function generateMetadata({ params }: GamePageProps): Promise<Metadata> {
     const { gameSlug } = await params;
 
-    const data: GameDetailsQueryResult = await sanityFetch({
-        query: gameDetailsQuery,
-        ...fetchOptions,
-    });
-    const game = parseGamesFromSanity(data).find((g) => g.slug === gameSlug);
+    const { data, game, steamAppId } = await getGameDetails(gameSlug);
 
-    if (!game || !hasStats(game)) {
+    if (!game || !hasStatsTab(game, !!steamAppId)) {
         return { title: "Game Not Found" };
     }
 
     const terms = buildSeasonTerms(game.seasonKeyword);
     const statistics = calculateGameStatistics(data, gameSlug);
-    const title = buildStatsTitle(game.name, terms);
-    const description = buildStatsDescription(game.name, terms, {
-        averageDurationDays: statistics.averageDurationDays,
-        perYear: formatPerYear(statistics.averagePerYear),
-        count: countTrackedSeasons(data, gameSlug),
-    });
+    const seasonal = hasSeasonHistory(game);
+    const title = seasonal ? buildStatsTitle(game.name, terms) : buildPlayersTitle(game.name);
+    const description = seasonal
+        ? buildStatsDescription(game.name, terms, {
+              averageDurationDays: statistics.averageDurationDays,
+              perYear: formatPerYear(statistics.averagePerYear),
+              count: countTrackedSeasons(data, gameSlug),
+          })
+        : buildPlayersDescription(game.name);
     const path = getStatsPath(gameSlug);
 
     return {
@@ -162,8 +159,8 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
 export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({ query: indexQuery, ...fetchOptions });
 
-    return parseGamesFromSanity(data)
-        .filter(hasStats)
+    return data.games
+        .filter((g) => g.slug && hasStatsTab(g, !!g.steam?.appId))
         .map((g) => ({ gameSlug: g.slug }));
 }
 

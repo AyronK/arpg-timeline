@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 
 import {
+    countGameEntries,
     getTimelinePath,
-    isSeasonalGame,
+    hasTimeline,
 } from "@/app/(site)/game/[gameSlug]/(hub)/timeline/timeline";
-import { getStatsPath } from "@/app/(site)/game/[gameSlug]/hub";
+import { getStatsPath, hasStatsTab } from "@/app/(site)/game/[gameSlug]/hub";
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { getArticlePath } from "@/lib/articles/articleUrl";
 import { getArticleStaticParams } from "@/lib/articles/getArticleData";
@@ -103,9 +104,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 categories?: string[];
                 isDormant?: boolean;
                 isComingSoon?: boolean;
+                steam?: { appId?: number | null } | null;
             }) => {
                 if (game.slug) {
-                    if (isSeasonalGame(game)) {
+                    if (hasTimeline(game, countGameEntries(data.seasons || [], game.slug))) {
                         sitemap.push({
                             url: `${baseUrl}${getTimelinePath(game.slug)}`,
                             lastModified: new Date(),
@@ -113,7 +115,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                             priority: 0.6,
                         });
                     }
-                    if (isSeasonalGame(game) && !game.isComingSoon) {
+                    if (hasStatsTab(game, !!game.steam?.appId)) {
                         sitemap.push({
                             url: `${baseUrl}${getStatsPath(game.slug)}`,
                             lastModified: new Date(),

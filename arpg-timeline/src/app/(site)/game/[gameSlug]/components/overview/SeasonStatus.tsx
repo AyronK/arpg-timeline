@@ -14,6 +14,8 @@ import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
+import { isPlaceholderNext } from "../../hub";
+
 // Overview-sized variant of GameToSeasonWidget: same Content rules, larger title.
 export const SeasonStatus = ({
     game,
@@ -29,8 +31,7 @@ export const SeasonStatus = ({
 
     if (!season) return null;
 
-    // Parser fills an unannounced next season with a placeholder sharing the current id
-    const isPlaceholder = selector === "next" && season._id === game.currentSeason?._id;
+    const isPlaceholder = selector === "next" && isPlaceholderNext(game.currentSeason, season);
     const title = isPlaceholder
         ? "Not announced yet"
         : (season.name ?? `${SelectorLabels[selector]} ${game.seasonKeyword}`);

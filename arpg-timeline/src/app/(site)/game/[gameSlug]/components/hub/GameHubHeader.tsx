@@ -2,7 +2,7 @@ import { SanityImage } from "@/components/SanityImage";
 import { SteamPlayersChip } from "@/components/SteamPlayersChip";
 import { Game, Season } from "@/lib/cms/games.types";
 
-import { getHubTabs } from "../../hub";
+import { getHubTabs, HubTabFlags } from "../../hub";
 import { HubActions } from "./HubActions";
 import { HubBreadcrumbs, HubTabs, HubTitle } from "./HubNav";
 import { HubStatus } from "./HubStatus";
@@ -13,13 +13,13 @@ const pickSeason = (season: Season | null | undefined) =>
 export const GameHubHeader = ({
     game,
     steam,
-    hasGuides,
+    tabFlags,
 }: {
     game: Game;
     steam: { appId: number; currentPlayers: number } | null;
-    hasGuides: boolean;
+    tabFlags: HubTabFlags;
 }) => {
-    const tabs = getHubTabs(game, { hasGuides });
+    const tabs = getHubTabs(game.slug, tabFlags);
 
     return (
         <div className="container mx-auto pt-6 md:pt-8">
@@ -61,7 +61,11 @@ export const GameHubHeader = ({
                         </div>
                     </div>
                 </div>
-                <HubActions gameSlug={game.slug} gameName={game.name} />
+                <HubActions
+                    gameSlug={game.slug}
+                    gameName={game.name}
+                    showCalendar={!game.isDormant}
+                />
             </div>
             <HubTabs tabs={tabs} gameSlug={game.slug} />
         </div>

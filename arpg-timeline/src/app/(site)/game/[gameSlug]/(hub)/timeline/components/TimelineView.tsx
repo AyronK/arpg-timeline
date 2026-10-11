@@ -38,7 +38,9 @@ export const TimelineView = ({
 
     // CTAs go on the first upcoming main season, only while no upcoming start date is confirmed
     const upcomingMain = entries.filter((e) => e.status === "upcoming" && !e.isSideEvent);
-    const ctaEntryId = upcomingMain.some((e) => e.startDate) ? undefined : upcomingMain[0]?.id;
+    // No calendar/bot prompts for dormant games
+    const ctaEntryId =
+        game.isDormant || upcomingMain.some((e) => e.startDate) ? undefined : upcomingMain[0]?.id;
 
     const tocHeadings = useMemo(
         () => groups.map((g) => ({ id: `year-${g.key}`, text: g.label, level: 2 as const })),

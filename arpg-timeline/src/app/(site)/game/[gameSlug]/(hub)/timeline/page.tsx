@@ -4,17 +4,13 @@ import { notFound } from "next/navigation";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
-import {
-    gameDetailsQuery,
-    GameDetailsQueryResult,
-    indexQuery,
-    IndexQueryResult,
-} from "@/lib/cms/queries/indexQuery";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms, SeasonTerms } from "@/lib/seasonTerms";
 import { SITE_URL } from "@/lib/siteUrl";
 
 import { SupportCard } from "../../components/overview/OverviewSidebar";
+import { getGameDetails } from "../../gameData";
 import { GamePageProps } from "../../types";
 import { TimelineView } from "./components/TimelineView";
 import { buildTimelineDescription, buildTimelineKeywords, buildTimelineTitle } from "./metadata";
@@ -23,8 +19,9 @@ import {
     addNextPlaceholder,
     buildTimelineEntries,
     buildTimelineSummary,
+    countGameEntries,
     getTimelinePath,
-    isSeasonalGame,
+    hasTimeline,
     TimelineSummary,
 } from "./timeline";
 
@@ -45,14 +42,9 @@ const buildSummarySentences = (
 const TimelinePage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
 
-    const data: GameDetailsQueryResult = await sanityFetch({
-        query: gameDetailsQuery,
-        ...fetchOptions,
-    });
+    const { data, game } = await getGameDetails(gameSlug);
 
-    const game = parseGamesFromSanity(data).find((g) => g.slug === gameSlug);
-
-    if (!game || !isSeasonalGame(game)) {
+    if (!game || !hasTimeline(game, countGameEntries(data.seasons, gameSlug))) {
         notFound();
     }
 
@@ -126,7 +118,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
     const data: IndexQueryResult = await sanityFetch({ query: indexQuery, ...fetchOptions });
     const game = parseGamesFromSanity(data).find((g) => g.slug === gameSlug);
 
-    if (!game || !isSeasonalGame(game)) {
+    if (!game || !hasTimeline(game, countGameEntries(data.seasons, gameSlug))) {
         return { title: "Game Not Found" };
     }
 
@@ -173,7 +165,7 @@ export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({ query: indexQuery, ...fetchOptions });
 
     return parseGamesFromSanity(data)
-        .filter(isSeasonalGame)
+        .filter((g) => hasTimeline(g, countGameEntries(data.seasons, g.slug)))
         .map((g) => ({ gameSlug: g.slug }));
 }
 

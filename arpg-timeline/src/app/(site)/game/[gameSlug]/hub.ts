@@ -1,3 +1,5 @@
+import { hasSeasonHistory } from "./(hub)/timeline/timeline";
+
 export type HubTabId = "overview" | "timeline" | "news" | "guides" | "stats";
 
 export interface HubTab {
@@ -6,11 +8,17 @@ export interface HubTab {
     href: string;
 }
 
-interface HubGame {
-    slug: string;
-    categories?: string[];
-    isComingSoon?: boolean;
+export interface HubTabFlags {
+    hasTimeline?: boolean;
+    hasGuides?: boolean;
+    hasStats?: boolean;
 }
+
+// Seasonal games get league stats; other released games get Steam players only
+export const hasStatsTab = (
+    game: { categories?: string[]; isComingSoon?: boolean | null },
+    hasSteam: boolean,
+): boolean => hasSeasonHistory(game) || (!game.isComingSoon && hasSteam);
 
 // Route segment under (hub) for each tab; Overview is the bare game route.
 const TAB_SEGMENTS: Record<HubTabId, string | null> = {
@@ -29,18 +37,16 @@ const TAB_LABELS: Record<HubTabId, string> = {
     stats: "Stats",
 };
 
-const hasSeasonHistory = (game: HubGame) =>
-    !!game.categories?.includes("seasonal") && !game.isComingSoon;
-
-// Guides only shows when the game has guide articles
-export const getHubTabs = (game: HubGame, { hasGuides = false } = {}): HubTab[] => {
-    const seasonal = hasSeasonHistory(game);
+export const getHubTabs = (
+    gameSlug: string,
+    { hasTimeline = false, hasGuides = false, hasStats = false }: HubTabFlags = {},
+): HubTab[] => {
     const ids: HubTabId[] = [
         "overview",
-        ...(seasonal ? ["timeline" as const] : []),
+        ...(hasTimeline ? ["timeline" as const] : []),
         "news",
         ...(hasGuides ? ["guides" as const] : []),
-        ...(seasonal ? ["stats" as const] : []),
+        ...(hasStats ? ["stats" as const] : []),
     ];
 
     return ids.map((id) => {
@@ -48,7 +54,7 @@ export const getHubTabs = (game: HubGame, { hasGuides = false } = {}): HubTab[] 
         return {
             id,
             label: TAB_LABELS[id],
-            href: segment ? `/game/${game.slug}/${segment}` : `/game/${game.slug}`,
+            href: segment ? `/game/${gameSlug}/${segment}` : `/game/${gameSlug}`,
         };
     });
 };
@@ -82,6 +88,15 @@ const isPast = (date: string | null | undefined, now: Date) =>
 const isFuture = (date: string | null | undefined, now: Date) =>
     !!date && new Date(date).getTime() > now.getTime();
 
+// Parser fills an unannounced next season with a placeholder sharing the current id
+export const isPlaceholderNext = (
+    current: { _id?: string } | null | undefined,
+    next: { _id?: string } | null | undefined,
+): boolean => !next || (!!current && next._id === current._id);
+
+export const formatMonthYear = (iso: string) =>
+    new Date(iso).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+
 const formatDaysLeft = (msLeft: number) => {
     const days = Math.floor(msLeft / DAY_MS);
     if (days < 1) return "ends today";
@@ -100,7 +115,9 @@ export const buildHubStatus = (
     const next = game.nextSeason;
 
     if (game.isDormant) {
-        parts.push(`No active ${kw}`);
+        parts.push("No recent updates");
+        const last = current?.start?.startDate;
+        if (last && isPast(last, now)) parts.push(`last update ${formatMonthYear(last)}`);
     } else if (!game.isComingSoon && current?.name && isPast(current.start?.startDate, now)) {
         parts.push(current.name);
         // Parser sets the end to a confirmed next start
@@ -110,12 +127,11 @@ export const buildHubStatus = (
         }
     }
 
-    // Parser fills an unannounced next season with a placeholder sharing the current id.
-    const isPlaceholder = !next || (!!current && next._id === current._id);
     const nextLabel = game.isComingSoon ? "release" : `next ${kw}`;
 
-    if (isPlaceholder) {
-        parts.push(`${nextLabel} not announced yet`);
+    if (!next || isPlaceholderNext(current, next)) {
+        // Dormant games are unlikely to get one, so don't mention it
+        if (!game.isDormant) parts.push(`${nextLabel} not announced yet`);
     } else if (next.start?.confirmed && isFuture(next.start.startDate, now)) {
         parts.push(`${next.name ?? nextLabel} starts ${formatDate(next.start.startDate!)}`);
     } else if (!next.start?.confirmed) {

@@ -16,7 +16,15 @@ const addUTM = addUTMParameters({
 });
 
 // Discord bot already sits in the site header, so the hub only offers the calendar
-export const HubActions = ({ gameSlug, gameName }: { gameSlug: string; gameName: string }) => {
+export const HubActions = ({
+    gameSlug,
+    gameName,
+    showCalendar,
+}: {
+    gameSlug: string;
+    gameName: string;
+    showCalendar: boolean;
+}) => {
     const [calendarOpen, setCalendarOpen] = useState(false);
 
     const share = async () => {
@@ -38,21 +46,25 @@ export const HubActions = ({ gameSlug, gameName }: { gameSlug: string; gameName:
 
     return (
         <div className="flex items-start gap-1">
-            {/* Caption sits under the calendar button */}
-            <div className="flex flex-col items-center gap-1">
-                <Button
-                    variant="outlineCard"
-                    data-sa-click={`${gameSlug}-hub-calendar-subscribe`}
-                    onClick={() => {
-                        sa_event("calendar_subscribe_opened", { game: gameSlug });
-                        setCalendarOpen(true);
-                    }}
-                >
-                    <CalendarSync className="mr-2 h-4 w-4" aria-hidden />
-                    Add to calendar
-                </Button>
-                <span className="text-muted-foreground text-xs">Free · no sign-up</span>
-            </div>
+            {showCalendar && (
+                <>
+                    {/* Caption sits under the calendar button */}
+                    <div className="flex flex-col items-center gap-1">
+                        <Button
+                            variant="outlineCard"
+                            data-sa-click={`${gameSlug}-hub-calendar-subscribe`}
+                            onClick={() => {
+                                sa_event("calendar_subscribe_opened", { game: gameSlug });
+                                setCalendarOpen(true);
+                            }}
+                        >
+                            <CalendarSync className="mr-2 h-4 w-4" aria-hidden />
+                            Add to calendar
+                        </Button>
+                        <span className="text-muted-foreground text-xs">Free · no sign-up</span>
+                    </div>
+                </>
+            )}
             <Button
                 variant="ghost"
                 size="icon"
@@ -62,12 +74,14 @@ export const HubActions = ({ gameSlug, gameName }: { gameSlug: string; gameName:
             >
                 <Share2 className="h-4 w-4" aria-hidden />
             </Button>
-            <CalendarSubscribeDialog
-                open={calendarOpen}
-                onOpenChange={setCalendarOpen}
-                gameSlug={gameSlug}
-                gameName={gameName}
-            />
+            {showCalendar && (
+                <CalendarSubscribeDialog
+                    open={calendarOpen}
+                    onOpenChange={setCalendarOpen}
+                    gameSlug={gameSlug}
+                    gameName={gameName}
+                />
+            )}
         </div>
     );
 };

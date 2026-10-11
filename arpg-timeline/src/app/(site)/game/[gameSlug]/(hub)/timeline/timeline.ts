@@ -209,4 +209,19 @@ export const addNextPlaceholder = (
 export const isSeasonalGame = (game: { categories?: string[] }): boolean =>
     !!game.categories?.includes("seasonal");
 
+export const countGameEntries = (seasons: { game?: string | null }[], gameSlug: string): number =>
+    seasons.filter((s) => s.game === gameSlug).length;
+
+// Released games get a timeline once there is something to show
+export const hasTimeline = (
+    game: { categories?: string[]; isComingSoon?: boolean | null },
+    entryCount: number,
+): boolean => !game.isComingSoon && (isSeasonalGame(game) || entryCount >= 2);
+
+// Seasonal and already released: has league stats
+export const hasSeasonHistory = (game: {
+    categories?: string[];
+    isComingSoon?: boolean | null;
+}): boolean => isSeasonalGame(game) && !game.isComingSoon;
+
 export const getTimelinePath = (gameSlug: string): string => `/game/${gameSlug}/timeline`;

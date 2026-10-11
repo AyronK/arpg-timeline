@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import { buildSeasonTerms } from "@/lib/seasonTerms";
 
-import { buildStatsDescription, buildStatsTitle } from "./metadata";
+import {
+    buildPlayersDescription,
+    buildPlayersTitle,
+    buildStatsDescription,
+    buildStatsTitle,
+} from "./metadata";
 
 const terms = buildSeasonTerms("league");
 
@@ -26,6 +31,15 @@ describe("stats metadata", () => {
             }),
         ).toBe(
             "How long Path of Exile leagues last and how often they launch: 108 days on average, 3-4 new leagues a year. Based on 47 leagues, plus usual launch day and time.",
+        );
+    });
+
+    it("describes players-only pages", () => {
+        expect(buildPlayersTitle("Titan Quest II")).toBe(
+            "Titan Quest II Player Count on Steam | aRPG Timeline",
+        );
+        expect(buildPlayersDescription("Titan Quest II")).toBe(
+            "Live Steam player count and 7-day player chart for Titan Quest II.",
         );
     });
 

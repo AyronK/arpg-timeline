@@ -4,15 +4,11 @@ import { notFound } from "next/navigation";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import { getAverageSeasonDuration, parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
-import {
-    gameDetailsQuery,
-    GameDetailsQueryResult,
-    indexQuery,
-    IndexQueryResult,
-} from "@/lib/cms/queries/indexQuery";
+import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms } from "@/lib/seasonTerms";
+import { cn } from "@/lib/utils";
 
 import { LatestList } from "../components/overview/LatestList";
 import { LeagueRhythm, RhythmData } from "../components/overview/LeagueRhythm";
@@ -21,7 +17,8 @@ import { OverviewSidebar } from "../components/overview/OverviewSidebar";
 import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
 import { NextCard, NowCard } from "../components/overview/StatusCards";
 import { getGameFeed } from "../feed";
-import { getStatsPath } from "../hub";
+import { getGameDetails } from "../gameData";
+import { getStatsPath, isPlaceholderNext } from "../hub";
 import {
     buildGamePageDescription,
     buildGamePageOgDescription,
@@ -31,7 +28,7 @@ import {
 import { buildCadenceHint, buildLengthTile, buildPerYearTile, mergeLatest } from "../overview";
 import { GamePageProps, GameStatistics } from "../types";
 import { calculateGameStatistics, countTrackedSeasons, getArchivalSeasons } from "../utils";
-import { getTimelinePath, isSeasonalGame } from "./timeline/timeline";
+import { getTimelinePath, hasSeasonHistory } from "./timeline/timeline";
 
 const RECENT_SEASON_COUNT = 3;
 const LATEST_COUNT = 3;
@@ -39,14 +36,7 @@ const LATEST_COUNT = 3;
 const GamePage = async ({ params }: GamePageProps) => {
     const { gameSlug } = await params;
 
-    const data: GameDetailsQueryResult = await sanityFetch({
-        query: gameDetailsQuery,
-        revalidate: 24 * 60 * 60,
-        tags: ["season", "game"],
-    });
-
-    const games = parseGamesFromSanity(data);
-    const game = games.find((g) => g.slug === gameSlug);
+    const { data, game, steamAppId } = await getGameDetails(gameSlug);
 
     if (!game) {
         notFound();
@@ -57,8 +47,7 @@ const GamePage = async ({ params }: GamePageProps) => {
     );
 
     const terms = buildSeasonTerms(game.seasonKeyword);
-    const hasSeasons = isSeasonalGame(game) && !game.isComingSoon;
-    const steamAppId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
+    const hasSeasons = hasSeasonHistory(game);
 
     const [feed, gameArticles] = await Promise.all([
         getGameFeed(gameSlug, LATEST_COUNT),
@@ -94,12 +83,14 @@ const GamePage = async ({ params }: GamePageProps) => {
           })
         : null;
 
+    // Dormant games only show Next when something is actually announced
+    const showNext = !game.isDormant || !isPlaceholderNext(game.currentSeason, game.nextSeason);
     const status = game.isComingSoon ? (
         <NextCard game={game} />
-    ) : hasSeasons ? (
-        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+    ) : hasSeasons || game.isDormant ? (
+        <div className={cn("grid gap-4 md:gap-6", showNext && "md:grid-cols-2")}>
             <NowCard game={game} />
-            <NextCard game={game} cadenceHint={cadenceHint} />
+            {showNext && <NextCard game={game} cadenceHint={game.isDormant ? null : cadenceHint} />}
         </div>
     ) : null;
 

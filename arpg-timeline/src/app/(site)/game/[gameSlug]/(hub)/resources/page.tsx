@@ -5,11 +5,9 @@ import {
     renderArticleIndex,
     resolveArticleIndexMetadata,
 } from "@/lib/articles/renderArticleIndex";
-import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
-import { gameDetailsQuery, GameDetailsQueryResult } from "@/lib/cms/queries/indexQuery";
-import { sanityFetch } from "@/lib/sanity/sanityClient";
 
 import { GuidesEmptyState } from "../../components/guides/GuidesEmptyState";
+import { getGameDetails } from "../../gameData";
 
 interface Props {
     params: Promise<{ gameSlug: string }>;
@@ -17,12 +15,7 @@ interface Props {
 
 export default async function GameResourcesIndexPage({ params }: Props) {
     const { gameSlug } = await params;
-    const data: GameDetailsQueryResult = await sanityFetch({
-        query: gameDetailsQuery,
-        revalidate: 24 * 60 * 60,
-        tags: ["season", "game"],
-    });
-    const game = parseGamesFromSanity(data).find((g) => g.slug === gameSlug);
+    const { game } = await getGameDetails(gameSlug);
 
     return renderArticleIndex({
         category: "resources",

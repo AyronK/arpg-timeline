@@ -45,7 +45,7 @@ export const NextSeasonCtas = ({
                 >
                     <CalendarSync className="h-3.5 w-3.5" aria-hidden />
                     <span className="@md:hidden">Calendar</span>
-                    <span className="hidden @md:inline">Subscribe to calendar</span>
+                    <span className="hidden @md:inline">Add to calendar</span>
                 </button>
                 <Link
                     href="/discord-bot"

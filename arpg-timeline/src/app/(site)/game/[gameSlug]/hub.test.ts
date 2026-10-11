@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { buildHubStatus, getActiveHubTab, getHubTabs } from "./hub";
+import { hasTimeline } from "./(hub)/timeline/timeline";
+import { buildHubStatus, getActiveHubTab, getHubTabs, hasStatsTab } from "./hub";
 
 const now = new Date("2026-10-11T12:00:00Z");
 const fmt = (iso: string) => iso.slice(0, 10);
 
 describe("getHubTabs", () => {
-    it("includes Timeline and Stats for seasonal games", () => {
-        const tabs = getHubTabs({ slug: "poe", categories: ["seasonal"] }, { hasGuides: true });
+    it("shows optional tabs from flags", () => {
+        const tabs = getHubTabs("poe", { hasTimeline: true, hasGuides: true, hasStats: true });
         expect(tabs.map((t) => t.id)).toEqual(["overview", "timeline", "news", "guides", "stats"]);
         expect(tabs.map((t) => t.href)).toEqual([
             "/game/poe",
@@ -16,26 +17,23 @@ describe("getHubTabs", () => {
             "/game/poe/resources",
             "/game/poe/stats",
         ]);
-    });
-
-    it("hides Timeline and Stats for non-seasonal and coming-soon games", () => {
-        expect(getHubTabs({ slug: "x" }).map((t) => t.id)).toEqual(["overview", "news"]);
-        expect(
-            getHubTabs({ slug: "x", categories: ["seasonal"], isComingSoon: true }).map(
-                (t) => t.id,
-            ),
-        ).toEqual(["overview", "news"]);
+        expect(getHubTabs("x").map((t) => t.id)).toEqual(["overview", "news"]);
     });
 });
 
-describe("getHubTabs guides", () => {
-    it("hides Guides without guide articles", () => {
-        expect(getHubTabs({ slug: "poe", categories: ["seasonal"] }).map((t) => t.id)).toEqual([
-            "overview",
-            "timeline",
-            "news",
-            "stats",
-        ]);
+describe("tab rules", () => {
+    it("gives released games a timeline once they have two entries", () => {
+        expect(hasTimeline({ categories: ["seasonal"] }, 0)).toBe(true);
+        expect(hasTimeline({}, 2)).toBe(true);
+        expect(hasTimeline({}, 1)).toBe(false);
+        expect(hasTimeline({ categories: ["seasonal"], isComingSoon: true }, 5)).toBe(false);
+    });
+
+    it("gives Stats to seasonal games and released Steam games", () => {
+        expect(hasStatsTab({ categories: ["seasonal"] }, false)).toBe(true);
+        expect(hasStatsTab({}, true)).toBe(true);
+        expect(hasStatsTab({}, false)).toBe(false);
+        expect(hasStatsTab({ isComingSoon: true }, true)).toBe(false);
     });
 });
 
@@ -135,7 +133,7 @@ describe("buildHubStatus", () => {
                 now,
                 fmt,
             ),
-        ).toEqual(["No active season", "next season not announced yet"]);
+        ).toEqual(["No recent updates", "last update Jul 2026"]);
         expect(
             buildHubStatus(
                 {

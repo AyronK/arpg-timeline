@@ -9,6 +9,12 @@ export const buildStatsTitle = (gameName: string, terms: SeasonTerms): string =>
     return full.length <= MAX_TITLE ? full : `${gameName} ${terms.One} Statistics ${SUFFIX}`;
 };
 
+export const buildPlayersTitle = (gameName: string): string =>
+    `${gameName} Player Count on Steam ${SUFFIX}`;
+
+export const buildPlayersDescription = (gameName: string): string =>
+    `Live Steam player count and 7-day player chart for ${gameName}.`;
+
 export const buildStatsDescription = (
     gameName: string,
     terms: SeasonTerms,
