@@ -89,7 +89,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                     __html: JSON.stringify(itemList).replace(/</g, "\\u003c"),
                 }}
             />
-            <div className="relative container mx-auto pt-6 pb-24 md:pt-8 xl:pb-10">
+            <div className="relative container mx-auto pt-6 pb-24 md:pt-10 lg:pb-10">
                 <TimelineView
                     entries={entries}
                     gameLogo={game.logo}
