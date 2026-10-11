@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { getTimelinePath, isSeasonalGame } from "@/app/(site)/game/[gameSlug]/timeline/timeline";
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { getArticlePath } from "@/lib/articles/articleUrl";
 import { getArticleStaticParams } from "@/lib/articles/getArticleData";
@@ -106,13 +107,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 isComingSoon?: boolean;
             }) => {
                 if (game.slug) {
-                    if (
-                        game.categories?.includes("seasonal") &&
-                        !game.isDormant &&
-                        !game.isComingSoon
-                    ) {
+                    if (isSeasonalGame(game)) {
                         sitemap.push({
-                            url: `${baseUrl}/game/${game.slug}/timeline`,
+                            url: `${baseUrl}${getTimelinePath(game.slug)}`,
                             lastModified: new Date(),
                             changeFrequency: "weekly",
                             priority: 0.6,

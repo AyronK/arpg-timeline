@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { SanityImage } from "@/components/SanityImage";
 
+import { getTimelinePath } from "../timeline/timeline";
 import { ArchivalSeasonsSectionProps } from "../types";
 
 export const ArchivalSeasonsSection = ({
@@ -20,7 +21,7 @@ export const ArchivalSeasonsSection = ({
                 <div className="flex items-baseline justify-between gap-2">
                     <h2 className="font-heading text-lg md:text-xl">Archival {seasonKeyword}s</h2>
                     <Link
-                        href={`/game/${gameSlug}/timeline`}
+                        href={getTimelinePath(gameSlug)}
                         className="text-muted-foreground hover:text-foreground text-sm hover:underline"
                     >
                         View full timeline

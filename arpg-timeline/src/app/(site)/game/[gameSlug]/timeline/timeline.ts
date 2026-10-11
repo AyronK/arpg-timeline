@@ -205,3 +205,8 @@ export const addNextPlaceholder = (
               },
               ...entries,
           ];
+
+export const isSeasonalGame = (game: { categories?: string[] }): boolean =>
+    !!game.categories?.includes("seasonal");
+
+export const getTimelinePath = (gameSlug: string): string => `/game/${gameSlug}/timeline`;

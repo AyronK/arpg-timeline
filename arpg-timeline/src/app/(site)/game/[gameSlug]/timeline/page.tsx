@@ -20,10 +20,13 @@ import { GamePageProps } from "../types";
 import { TimelineAside } from "./components/TimelineAside";
 import { TimelineView } from "./components/TimelineView";
 import { buildTimelineDescription, buildTimelineKeywords, buildTimelineTitle } from "./metadata";
+import { buildTimelineItemList } from "./structuredData";
 import {
     addNextPlaceholder,
     buildTimelineEntries,
     buildTimelineSummary,
+    getTimelinePath,
+    isSeasonalGame,
     TimelineSummary,
 } from "./timeline";
 
@@ -51,7 +54,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
 
     const game = parseGamesFromSanity(data).find((g) => g.slug === gameSlug);
 
-    if (!game || !game.categories?.includes("seasonal")) {
+    if (!game || !isSeasonalGame(game)) {
         notFound();
     }
 
@@ -63,7 +66,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
         category: "news",
     });
     const shareTitle = `${game.name} ${terms.One} Timeline`;
-    const pagePath = `/game/${gameSlug}/timeline`;
+    const pagePath = getTimelinePath(gameSlug);
 
     const crumbs: Crumb[] = [
         { name: "Home", href: "/" },
@@ -74,17 +77,11 @@ const TimelinePage = async ({ params }: GamePageProps) => {
     const summary = buildTimelineSummary(entries);
     const displayEntries =
         game.isDormant || game.isComingSoon ? entries : addNextPlaceholder(entries, terms.One);
-    const itemList = {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        name: `${game.name} ${terms.many} timeline`,
-        numberOfItems: entries.length,
-        itemListElement: entries.map((entry, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            name: entry.name,
-        })),
-    };
+    const itemList = buildTimelineItemList(
+        entries,
+        `${game.name} ${terms.many} timeline`,
+        `${SITE_URL}${pagePath}`,
+    );
 
     return (
         <>
@@ -140,7 +137,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
     const data: IndexQueryResult = await sanityFetch({ query: indexQuery, ...fetchOptions });
     const game = parseGamesFromSanity(data).find((g) => g.slug === gameSlug);
 
-    if (!game || !game.categories?.includes("seasonal")) {
+    if (!game || !isSeasonalGame(game)) {
         return { title: "Game Not Found" };
     }
 
@@ -157,7 +154,7 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
     };
     const title = buildTimelineTitle(metaInput);
     const description = buildTimelineDescription(metaInput);
-    const path = `/game/${gameSlug}/timeline`;
+    const path = getTimelinePath(gameSlug);
 
     return {
         title,
@@ -187,7 +184,7 @@ export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({ query: indexQuery, ...fetchOptions });
 
     return parseGamesFromSanity(data)
-        .filter((g) => g.categories?.includes("seasonal"))
+        .filter(isSeasonalGame)
         .map((g) => ({ gameSlug: g.slug }));
 }
 

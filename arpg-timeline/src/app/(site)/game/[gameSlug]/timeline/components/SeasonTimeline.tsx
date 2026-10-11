@@ -30,7 +30,7 @@ export const SeasonTimeline = ({ groups, gameLogo, game, ctaEntryId }: SeasonTim
             />
             {groups.map((group) => (
                 <section key={group.key} id={`year-${group.key}`} aria-label={group.label}>
-                    <h2 className="sticky top-0 z-10 py-2 pl-10 md:pl-0 md:text-center">
+                    <h2 className="py-2 pl-10 md:pl-0 md:text-center">
                         <span className="bg-background font-heading text-muted-foreground inline-block rounded-md border px-3 py-1 text-sm md:text-base">
                             {group.label}
                         </span>
