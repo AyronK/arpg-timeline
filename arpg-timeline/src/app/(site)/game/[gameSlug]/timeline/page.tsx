@@ -34,11 +34,8 @@ const buildSummarySentences = (
     summary: TimelineSummary,
 ): string[] => {
     if (summary.count === 0) return [`Every ${gameName} ${many.slice(0, -1)} and event in order.`];
-    const average = summary.averageDays
-        ? `, averaging ${formatApproxMonths(summary.averageDays)} each`
-        : "";
     return [
-        `${summary.count} ${gameName} ${many} tracked since ${summary.firstYear}${average}.`,
+        `${summary.count} ${gameName} ${many} tracked since ${summary.firstYear}.`,
         ...(summary.next ? [`Next up: ${summary.next.name} (${summary.next.label}).`] : []),
     ];
 };
