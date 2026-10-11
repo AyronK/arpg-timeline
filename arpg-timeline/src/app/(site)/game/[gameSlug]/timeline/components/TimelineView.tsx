@@ -1,7 +1,7 @@
 "use client";
 
 import { SanityImageAssetDocument } from "next-sanity";
-import { useId, useMemo, useState } from "react";
+import { ReactNode, useId, useMemo, useState } from "react";
 
 import { ArticleToc } from "@/components/articles/ArticleToc";
 import { Game } from "@/lib/cms/games.types";
@@ -15,9 +15,19 @@ interface TimelineViewProps {
     gameLogo: SanityImageAssetDocument;
     game: Game;
     emptyText: string;
+    header: ReactNode;
+    aside: ReactNode;
 }
 
-export const TimelineView = ({ entries, gameLogo, game, emptyText }: TimelineViewProps) => {
+// Same grid as ArticleLayout: year navigation | main column | aside.
+export const TimelineView = ({
+    entries,
+    gameLogo,
+    game,
+    emptyText,
+    header,
+    aside,
+}: TimelineViewProps) => {
     const switchId = useId();
     const [showSideEvents, setShowSideEvents] = useState(true);
     const hasSideEvents = entries.some((e) => e.isSideEvent);
@@ -32,35 +42,47 @@ export const TimelineView = ({ entries, gameLogo, game, emptyText }: TimelineVie
         [groups],
     );
 
-    if (entries.length === 0) {
-        return <p className="text-muted-foreground">{emptyText}</p>;
-    }
-
     return (
         <>
-            {hasSideEvents && (
-                <div className="mb-2 flex items-center justify-end gap-2">
-                    <label htmlFor={switchId} className="text-muted-foreground text-sm">
-                        Show side events
-                    </label>
-                    <Switch
-                        id={switchId}
-                        checked={showSideEvents}
-                        onCheckedChange={setShowSideEvents}
-                    />
+            <div className="xl:grid xl:grid-cols-[1fr_minmax(0,55rem)_1fr] xl:gap-x-8">
+                <aside className="hidden xl:col-start-1 xl:row-start-1 xl:block xl:justify-self-end">
+                    <div className="sticky top-12 ml-24 w-48">
+                        <ArticleToc headings={tocHeadings} variant="sidebar" />
+                    </div>
+                </aside>
+
+                <aside className="hidden xl:col-start-3 xl:row-start-1 xl:block xl:justify-self-start">
+                    <div className="sticky top-12 w-72">{aside}</div>
+                </aside>
+
+                <div className="mx-auto w-full max-w-[55rem] min-w-0 xl:col-start-2 xl:row-start-1">
+                    {header}
+                    {entries.length === 0 ? (
+                        <p className="text-muted-foreground">{emptyText}</p>
+                    ) : (
+                        <>
+                            {hasSideEvents && (
+                                <div className="mb-2 flex items-center justify-end gap-2">
+                                    <label
+                                        htmlFor={switchId}
+                                        className="text-muted-foreground text-sm"
+                                    >
+                                        Show side events
+                                    </label>
+                                    <Switch
+                                        id={switchId}
+                                        checked={showSideEvents}
+                                        onCheckedChange={setShowSideEvents}
+                                    />
+                                </div>
+                            )}
+                            <SeasonTimeline groups={groups} gameLogo={gameLogo} game={game} />
+                        </>
+                    )}
+                    <div className="mt-10 xl:hidden">{aside}</div>
                 </div>
-            )}
-            <SeasonTimeline groups={groups} gameLogo={gameLogo} game={game} />
-            <aside className="absolute top-0 right-full bottom-0 mr-8 hidden w-48 @[1792px]:block">
-                <div className="sticky top-12">
-                    <ArticleToc headings={tocHeadings} variant="sidebar" />
-                </div>
-            </aside>
-            <ArticleToc
-                headings={tocHeadings}
-                variant="bottom"
-                bottomHideClass="@[1792px]:hidden"
-            />
+            </div>
+            <ArticleToc headings={tocHeadings} variant="bottom" />
         </>
     );
 };

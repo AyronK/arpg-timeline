@@ -91,43 +91,38 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
             />
-            <div className="relative container mx-auto pt-6 pb-24 md:pt-8">
-                <Breadcrumbs crumbs={crumbs} />
-                <header className="mb-6 max-w-2xl">
-                    <h1 className="font-heading text-3xl md:text-4xl">
-                        {game.name} {terms.One} Timeline
-                    </h1>
-                    <p className="text-muted-foreground mt-3 text-lg leading-relaxed">
-                        {buildSummarySentences(game.name, terms.many, summary).map((sentence) => (
-                            <span key={sentence} className="block">
-                                {sentence}
-                            </span>
-                        ))}
-                    </p>
-                    <p className="text-muted-foreground mt-3 text-sm italic">
-                        Data is provided on a best-effort basis and may not be 100% accurate. Dates
-                        and durations can be estimated or assumed and may contain errors -
-                        especially for older data.
-                    </p>
-                </header>
-                <div className="@container">
-                    <div className="relative mx-auto w-full md:max-w-6xl">
-                        <TimelineView
-                            entries={entries}
-                            gameLogo={game.logo}
-                            game={game}
-                            emptyText={`No ${terms.many} tracked yet.`}
-                        />
-                        <aside className="absolute top-0 bottom-0 left-full ml-8 hidden w-72 @[1792px]:block">
-                            <div className="sticky top-12">
-                                <TimelineAside related={related} shareTitle={shareTitle} />
-                            </div>
-                        </aside>
-                    </div>
-                    <div className="mt-10 @[1792px]:hidden">
-                        <TimelineAside related={related} shareTitle={shareTitle} />
-                    </div>
-                </div>
+            <div className="relative container mx-auto pt-6 pb-24 md:pt-8 xl:pb-10">
+                <TimelineView
+                    entries={entries}
+                    gameLogo={game.logo}
+                    game={game}
+                    emptyText={`No ${terms.many} tracked yet.`}
+                    header={
+                        <>
+                            <Breadcrumbs crumbs={crumbs} />
+                            <header className="mb-6">
+                                <h1 className="font-heading text-3xl md:text-4xl">
+                                    {game.name} {terms.One} Timeline
+                                </h1>
+                                <p className="text-muted-foreground mt-3 text-lg leading-relaxed">
+                                    {buildSummarySentences(game.name, terms.many, summary).map(
+                                        (sentence) => (
+                                            <span key={sentence} className="block">
+                                                {sentence}
+                                            </span>
+                                        ),
+                                    )}
+                                </p>
+                                <p className="text-muted-foreground mt-3 text-sm italic">
+                                    Data is provided on a best-effort basis and may not be 100%
+                                    accurate. Dates and durations can be estimated or assumed and
+                                    may contain errors - especially for older data.
+                                </p>
+                            </header>
+                        </>
+                    }
+                    aside={<TimelineAside related={related} shareTitle={shareTitle} />}
+                />
             </div>
         </>
     );
