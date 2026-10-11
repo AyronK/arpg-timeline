@@ -22,7 +22,7 @@ import { addUTMParameters } from "@/lib/utm";
 
 import { cardClassName } from "./OverviewCard";
 
-const utm = (campaign: string, gameSlug: string) =>
+export const utm = (campaign: string, gameSlug: string) =>
     addUTMParameters({
         utm_source: "arpg-timeline",
         utm_medium: "link",
@@ -64,7 +64,7 @@ export const SupportCard = ({ className }: { className?: string }) => {
     );
 };
 
-const hostname = (url: string) => {
+export const hostname = (url: string) => {
     try {
         return new URL(url).hostname.replace(/^www\./, "");
     } catch {
@@ -72,7 +72,7 @@ const hostname = (url: string) => {
     }
 };
 
-const ExternalRow = ({
+export const ExternalRow = ({
     href,
     saClick,
     icon,

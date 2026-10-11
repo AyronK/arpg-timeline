@@ -1,7 +1,6 @@
 import { SanityImageAssetDocument } from "next-sanity";
 
 import { Game as CMSGame } from "@/lib/cms/games.types";
-import { SteamNewsItem } from "@/lib/steam/getSteamNews";
 
 export interface GamePageProps {
     params: Promise<{ gameSlug: string }>;
@@ -38,18 +37,6 @@ export interface StatisticsCardProps {
     className?: string;
 }
 
-export interface QuickLinksSectionProps {
-    game: CMSGame;
-    gameSlug: string;
-    steamAppId?: number | null;
-}
-
-export interface PlatformIntegrationSectionProps {
-    steamAppId?: number | null;
-    gameUrl?: string | null;
-    gameNews: SteamNewsItem[];
-}
-
 export interface ArchivalSeason {
     name: string;
     startDate: Date;
@@ -58,19 +45,6 @@ export interface ArchivalSeason {
     url?: string;
     patchNotesUrl?: string;
     logo?: SanityImageAssetDocument;
-}
-
-export interface ArchivalSeasonsSectionProps {
-    seasons: ArchivalSeason[];
-    gameLogo: SanityImageAssetDocument;
-    seasonKeyword: string;
-    gameSlug: string;
-}
-
-export interface GameHeaderSectionProps {
-    game: CMSGame;
-    gameSlug: string;
-    steamAppId?: number | null;
 }
 
 export interface StatisticsSectionProps {

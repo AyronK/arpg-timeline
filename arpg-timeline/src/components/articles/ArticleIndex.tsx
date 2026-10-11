@@ -20,6 +20,8 @@ interface ArticleIndexProps {
     // Rendered after the articles; when set, an empty article list is hidden
     extra?: ReactNode;
     emptyText?: string;
+    // Replaces emptyText when there are no articles
+    emptyState?: ReactNode;
     compact?: boolean;
 }
 
@@ -35,6 +37,7 @@ export const ArticleIndex = ({
     showBreadcrumbs = true,
     extra,
     compact,
+    emptyState,
     emptyText = "No articles here yet - check back soon.",
 }: ArticleIndexProps) => (
     <div className={cn("relative container mx-auto", compact ? "py-6" : "py-8 md:py-10")}>
@@ -64,7 +67,7 @@ export const ArticleIndex = ({
             extra ? (
                 <div className="max-w-3xl">{extra}</div>
             ) : (
-                <p className="text-muted-foreground">{emptyText}</p>
+                (emptyState ?? <p className="text-muted-foreground">{emptyText}</p>)
             )
         ) : (
             // With extra content, articles and extra sit side by side on wide screens

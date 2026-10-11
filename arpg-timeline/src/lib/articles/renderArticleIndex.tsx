@@ -25,6 +25,7 @@ interface IndexArgs {
 interface RenderArgs extends IndexArgs {
     extra?: ReactNode;
     emptyText?: string;
+    emptyState?: ReactNode;
 }
 
 const CATEGORY_LABEL: Record<ArticleCategory, string> = {
@@ -70,7 +71,7 @@ async function resolveIndex({ category, gameSlug, page: pageParam }: IndexArgs) 
     return { page, items, pageCount, basePath, title, intro, crumbs, showGame: !game };
 }
 
-export async function renderArticleIndex({ extra, emptyText, ...args }: RenderArgs) {
+export async function renderArticleIndex({ extra, emptyText, emptyState, ...args }: RenderArgs) {
     const { page, items, pageCount, basePath, title, intro, crumbs, showGame } =
         await resolveIndex(args);
 
@@ -94,6 +95,7 @@ export async function renderArticleIndex({ extra, emptyText, ...args }: RenderAr
                 // Narrower cards under the game hub
                 compact={!showGame}
                 emptyText={emptyText}
+                emptyState={emptyState}
             />
         </>
     );
