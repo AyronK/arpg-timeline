@@ -13,7 +13,7 @@ import {
     IndexQueryResult,
 } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
-import { buildSeasonTerms } from "@/lib/seasonTerms";
+import { buildSeasonTerms, SeasonTerms } from "@/lib/seasonTerms";
 import { SITE_URL } from "@/lib/siteUrl";
 
 import { GamePageProps } from "../types";
@@ -26,12 +26,12 @@ const fetchOptions = { revalidate: 24 * 60 * 60, tags: ["season", "game"] };
 
 const buildSummarySentences = (
     gameName: string,
-    many: string,
+    terms: SeasonTerms,
     summary: TimelineSummary,
 ): string[] => {
-    if (summary.count === 0) return [`Every ${gameName} ${many.slice(0, -1)} and event in order.`];
+    if (summary.count === 0) return [`Every ${gameName} ${terms.one} and event in order.`];
     return [
-        `${summary.count} ${gameName} ${many} tracked since ${summary.firstYear}.`,
+        `${summary.count} ${gameName} ${terms.many} tracked since ${summary.firstYear}.`,
         ...(summary.next ? [`Next up: ${summary.next.name} (${summary.next.label}).`] : []),
     ];
 };
@@ -85,7 +85,9 @@ const TimelinePage = async ({ params }: GamePageProps) => {
             <BreadcrumbSchema crumbs={crumbs} />
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(itemList).replace(/</g, "\\u003c"),
+                }}
             />
             <div className="relative container mx-auto pt-6 pb-24 md:pt-8 xl:pb-10">
                 <TimelineView
@@ -101,7 +103,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                                     {game.name} {terms.One} Timeline
                                 </h1>
                                 <p className="text-muted-foreground mt-3 text-lg leading-relaxed">
-                                    {buildSummarySentences(game.name, terms.many, summary).map(
+                                    {buildSummarySentences(game.name, terms, summary).map(
                                         (sentence) => (
                                             <span key={sentence} className="block">
                                                 {sentence}

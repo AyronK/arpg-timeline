@@ -51,10 +51,6 @@ export const TimelineView = ({
                     </div>
                 </aside>
 
-                <aside className="hidden xl:col-start-3 xl:row-start-1 xl:block xl:justify-self-start">
-                    <div className="sticky top-12 w-72">{aside}</div>
-                </aside>
-
                 <div className="mx-auto w-full max-w-[55rem] min-w-0 xl:col-start-2 xl:row-start-1">
                     {header}
                     {entries.length === 0 ? (
@@ -79,8 +75,11 @@ export const TimelineView = ({
                             <SeasonTimeline groups={groups} gameLogo={gameLogo} game={game} />
                         </>
                     )}
-                    <div className="mt-10 xl:hidden">{aside}</div>
                 </div>
+
+                <aside className="mt-10 xl:col-start-3 xl:row-start-1 xl:mt-0 xl:justify-self-start">
+                    <div className="xl:sticky xl:top-12 xl:w-72">{aside}</div>
+                </aside>
             </div>
             <ArticleToc headings={tocHeadings} variant="bottom" />
         </>

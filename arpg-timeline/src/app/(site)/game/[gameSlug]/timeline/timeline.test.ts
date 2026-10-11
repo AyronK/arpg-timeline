@@ -93,9 +93,9 @@ describe("buildTimelineEntries", () => {
             NOW,
         );
         expect(entries.filter((e) => e.status === "upcoming").map((e) => e.startLabel)).toEqual([
+            "Jun 1, 2026",
             "TBA",
             "Summer 2026",
-            "Jun 1, 2026",
         ]);
         expect(entries.at(-1)!.status).toBe("live");
     });
@@ -180,7 +180,7 @@ describe("buildTimelineEntries", () => {
 });
 
 describe("groupByYear", () => {
-    it("puts upcoming first, then groups by UTC year", () => {
+    it("puts upcoming first (soonest first, undated last), then groups by UTC year", () => {
         const entries = buildTimelineEntries(
             [
                 season("a", "2024-05-01T00:00:00Z"),
@@ -194,7 +194,7 @@ describe("groupByYear", () => {
         );
         const groups = groupByYear(entries);
         expect(groups.map((g) => g.label)).toEqual(["Next", "2025", "2024"]);
-        expect(groups[0]!.entries.map((e) => e.id)).toEqual(["e", "d"]);
+        expect(groups[0]!.entries.map((e) => e.id)).toEqual(["d", "e"]);
         expect(groups[1]!.entries.map((e) => e.id)).toEqual(["c", "b"]);
     });
 

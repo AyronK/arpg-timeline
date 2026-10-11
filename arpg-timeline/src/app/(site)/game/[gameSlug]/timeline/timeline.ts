@@ -134,9 +134,12 @@ export const buildTimelineEntries = (
         const bUp = b.status === "upcoming";
         if (aUp !== bUp) return aUp ? -1 : 1;
         if (!a.startDate && !b.startDate) return 0;
-        if (!a.startDate) return -1;
-        if (!b.startDate) return 1;
-        return b.startDate.getTime() - a.startDate.getTime();
+        // Undated upcoming last; dated upcoming soonest first, everything else newest first
+        if (!a.startDate) return 1;
+        if (!b.startDate) return -1;
+        return aUp
+            ? a.startDate.getTime() - b.startDate.getTime()
+            : b.startDate.getTime() - a.startDate.getTime();
     });
 };
 
@@ -168,7 +171,7 @@ export interface TimelineSummary {
 export const buildTimelineSummary = (entries: TimelineEntry[]): TimelineSummary => {
     const main = entries.filter((e) => !e.isSideEvent && e.status !== "upcoming" && e.startDate);
     const durations = main.map((e) => e.durationDays).filter((d): d is number => d !== null);
-    const next = entries.findLast((e) => e.status === "upcoming" && e.startDate);
+    const next = entries.find((e) => e.status === "upcoming" && e.startDate);
 
     return {
         count: main.length,
