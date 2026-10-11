@@ -45,7 +45,7 @@ describe("buildTimelineDescription", () => {
     it("omits missing parts", () => {
         const description = buildTimelineDescription(input({ currentName: null, next: null }));
         expect(description).not.toContain("current");
-        expect(description).not.toContain("next");
+        expect(description).toContain("when the next season starts");
         expect(description).toContain("32 seasons since 2016");
     });
 
@@ -71,6 +71,9 @@ describe("buildTimelineKeywords", () => {
         expect(keywords).toContain("Test Game past seasons");
         expect(keywords).toContain("Test Game current season");
         expect(keywords).toContain("TG season history");
+        expect(keywords).toContain("next TG season");
+        expect(keywords).toContain("Test Game next season start date");
+        expect(keywords).toContain("when is TG next season");
     });
 
     it("skips a short name identical to the name", () => {

@@ -26,7 +26,9 @@ export const buildTimelineDescription = (input: TimelineMetaInput): string => {
             ? `the full archive of ${count} ${terms.many} since ${firstYear}`
             : `the full ${terms.one} archive`;
     const live = currentName ? `current ${terms.one} (${currentName})` : null;
-    const upcoming = next ? `next ${terms.one} start date (${next.label})` : null;
+    const upcoming = next
+        ? `next ${terms.one} start date (${next.label})`
+        : `when the next ${terms.one} starts`;
 
     const sentence = (parts: (string | null)[]) => {
         const items = parts.filter(Boolean) as string[];
@@ -66,6 +68,12 @@ export const buildTimelineKeywords = ({
             `${n} ${terms.one} release dates`,
             `${n} ${terms.one} length`,
             `${n} ${terms.one} timeline`,
+            `next ${n} ${terms.one}`,
+            `${n} next ${terms.one}`,
+            `${n} next ${terms.one} start date`,
+            `${n} next ${terms.one} release date`,
+            `when is ${n} next ${terms.one}`,
+            `when does ${n} ${terms.one} start`,
         ]),
         "arpg timeline",
     ];
