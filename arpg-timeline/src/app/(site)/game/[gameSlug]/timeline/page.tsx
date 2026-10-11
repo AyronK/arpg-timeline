@@ -19,12 +19,8 @@ import { SITE_URL } from "@/lib/siteUrl";
 import { GamePageProps } from "../types";
 import { TimelineAside } from "./components/TimelineAside";
 import { TimelineView } from "./components/TimelineView";
-import {
-    buildTimelineEntries,
-    buildTimelineSummary,
-    formatApproxMonths,
-    TimelineSummary,
-} from "./timeline";
+import { buildTimelineDescription, buildTimelineKeywords, buildTimelineTitle } from "./metadata";
+import { buildTimelineEntries, buildTimelineSummary, TimelineSummary } from "./timeline";
 
 const fetchOptions = { revalidate: 24 * 60 * 60, tags: ["season", "game"] };
 
@@ -141,22 +137,24 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
     }
 
     const terms = buildSeasonTerms(game.seasonKeyword);
-    const title = `${game.name} ${terms.One} Timeline | aRPG Timeline`;
     const summary = buildTimelineSummary(buildTimelineEntries(data.seasons, gameSlug, new Date()));
-    const description = summary.count
-        ? `${game.name} ${terms.many} timeline: ${summary.count} ${terms.many} since ${summary.firstYear}${
-              summary.averageDays
-                  ? `, averaging ${formatApproxMonths(summary.averageDays)} each`
-                  : ""
-          }. Start dates, durations and events${
-              summary.next ? `, plus the next ${terms.one} (${summary.next.label})` : ""
-          }.`
-        : `Full history of ${game.name} ${terms.many}: start dates, durations and events.`;
+    const metaInput = {
+        gameName: game.name,
+        shortName: game.shortName,
+        terms,
+        currentName: game.currentSeason?.name,
+        next: summary.next,
+        count: summary.count,
+        firstYear: summary.firstYear,
+    };
+    const title = buildTimelineTitle(metaInput);
+    const description = buildTimelineDescription(metaInput);
     const path = `/game/${gameSlug}/timeline`;
 
     return {
         title,
         description,
+        keywords: buildTimelineKeywords(metaInput),
         alternates: { canonical: path },
         openGraph: {
             title,
