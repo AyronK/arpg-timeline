@@ -98,8 +98,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         const games = data.games || [];
 
-        games.forEach((game: { slug: string }) => {
+        games.forEach((game: { slug: string; categories?: string[] }) => {
             if (game.slug) {
+                if (game.categories?.includes("seasonal")) {
+                    sitemap.push({
+                        url: `${baseUrl}/game/${game.slug}/timeline`,
+                        lastModified: new Date(),
+                        changeFrequency: "weekly",
+                        priority: 0.6,
+                    });
+                }
                 sitemap.push(
                     {
                         url: `${baseUrl}/game/${game.slug}`,

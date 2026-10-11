@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { SanityImage } from "@/components/SanityImage";
 
 import { ArchivalSeasonsSectionProps } from "../types";
@@ -6,6 +8,7 @@ export const ArchivalSeasonsSection = ({
     seasons,
     gameLogo,
     seasonKeyword,
+    gameSlug,
 }: ArchivalSeasonsSectionProps) => {
     if (seasons.length === 0) {
         return null;
@@ -14,7 +17,15 @@ export const ArchivalSeasonsSection = ({
     return (
         <div className="h-full">
             <div className="bg-card text-card-foreground flex h-full flex-col gap-2 rounded-lg border p-4 md:p-6">
-                <h2 className="font-heading text-lg md:text-xl">Archival {seasonKeyword}s</h2>
+                <div className="flex items-baseline justify-between gap-2">
+                    <h2 className="font-heading text-lg md:text-xl">Archival {seasonKeyword}s</h2>
+                    <Link
+                        href={`/game/${gameSlug}/timeline`}
+                        className="text-muted-foreground hover:text-foreground text-sm hover:underline"
+                    >
+                        View full timeline
+                    </Link>
+                </div>
                 <div className="mt-2 max-h-72 space-y-2 overflow-y-auto">
                     {seasons.map((season, index) => {
                         const endDate = season.endDate ?? seasons[index - 1]?.startDate;
