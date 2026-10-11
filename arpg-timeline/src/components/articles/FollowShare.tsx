@@ -16,7 +16,15 @@ const addUTM = addUTMParameters({
 const iconClass =
     "bg-card text-foreground hover:border-border hover:text-primary flex size-10 cursor-pointer items-center justify-center rounded-lg border transition-all hover:shadow-sm";
 
-export const FollowShare = ({ title, className }: { title: string; className?: string }) => {
+export const FollowShare = ({
+    title,
+    className,
+    subject = "article",
+}: {
+    title: string;
+    className?: string;
+    subject?: string;
+}) => {
     const share = async () => {
         const url = addUTM(window.location.href);
         if (navigator.share) {
@@ -54,7 +62,7 @@ export const FollowShare = ({ title, className }: { title: string; className?: s
                 <button
                     type="button"
                     onClick={share}
-                    aria-label="Share this article"
+                    aria-label={`Share this ${subject}`}
                     data-sa-click="article-share"
                     className={iconClass}
                 >

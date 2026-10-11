@@ -15,8 +15,6 @@ import { extractToc } from "@/lib/articles/tableOfContents";
 import type { Article, ArticleListItem } from "@/lib/cms/queries/articleQuery";
 import { Chip } from "@/ui/Chip";
 
-import { PatreonFunding } from "../PatreonFunding";
-
 const sameDay = (a: string, b: string) => a.slice(0, 10) === b.slice(0, 10);
 
 const CATEGORY_LABEL: Record<Article["category"], string> = {
@@ -59,9 +57,6 @@ export const ArticleLayout = ({ article, related }: ArticleLayoutProps) => {
                 </aside>
 
                 <article className="mx-auto max-w-[55rem] min-w-0 xl:col-start-2 xl:row-start-1">
-                    <div className="mb-6">
-                        <PatreonFunding />
-                    </div>
                     <Breadcrumbs crumbs={crumbs} />
 
                     <div className="mb-3 flex flex-wrap items-center gap-2">

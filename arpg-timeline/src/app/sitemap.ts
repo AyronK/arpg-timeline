@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { getTimelinePath, isSeasonalGame } from "@/app/(site)/game/[gameSlug]/timeline/timeline";
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { getArticlePath } from "@/lib/articles/articleUrl";
 import { getArticleStaticParams } from "@/lib/articles/getArticleData";
@@ -98,30 +99,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         const games = data.games || [];
 
-        games.forEach((game: { slug: string }) => {
-            if (game.slug) {
-                sitemap.push(
-                    {
-                        url: `${baseUrl}/game/${game.slug}`,
-                        lastModified: new Date(),
-                        changeFrequency: "daily",
-                        priority: 0.8,
-                    },
-                    {
-                        url: `${baseUrl}/docs/html/${game.slug}`,
-                        lastModified: new Date(),
-                        changeFrequency: "yearly",
-                        priority: 0.6,
-                    },
-                    {
-                        url: `${baseUrl}/docs/obs/${game.slug}`,
-                        lastModified: new Date(),
-                        changeFrequency: "yearly",
-                        priority: 0.6,
-                    },
-                );
-            }
-        });
+        games.forEach(
+            (game: {
+                slug: string;
+                categories?: string[];
+                isDormant?: boolean;
+                isComingSoon?: boolean;
+            }) => {
+                if (game.slug) {
+                    if (isSeasonalGame(game)) {
+                        sitemap.push({
+                            url: `${baseUrl}${getTimelinePath(game.slug)}`,
+                            lastModified: new Date(),
+                            changeFrequency: "weekly",
+                            priority: 0.6,
+                        });
+                    }
+                    sitemap.push(
+                        {
+                            url: `${baseUrl}/game/${game.slug}`,
+                            lastModified: new Date(),
+                            changeFrequency: "daily",
+                            priority: 0.8,
+                        },
+                        {
+                            url: `${baseUrl}/docs/html/${game.slug}`,
+                            lastModified: new Date(),
+                            changeFrequency: "yearly",
+                            priority: 0.6,
+                        },
+                        {
+                            url: `${baseUrl}/docs/obs/${game.slug}`,
+                            lastModified: new Date(),
+                            changeFrequency: "yearly",
+                            priority: 0.6,
+                        },
+                    );
+                }
+            },
+        );
 
         Object.keys(DashboardConfig)
             .filter((dashboard) => dashboard !== "featured" && dashboard !== "everything")

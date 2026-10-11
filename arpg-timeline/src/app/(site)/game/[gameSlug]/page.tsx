@@ -188,6 +188,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                             seasons={archivalSeasons}
                             gameLogo={game.logo}
                             seasonKeyword={game.seasonKeyword}
+                            gameSlug={gameSlug}
                         />
                     </div>
                 )}
