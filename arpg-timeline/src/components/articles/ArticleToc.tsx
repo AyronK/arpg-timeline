@@ -12,9 +12,11 @@ type Variant = "sidebar" | "bottom";
 interface Props {
     headings: TocHeading[];
     variant: Variant;
+    // Tailwind class that hides the bottom bar once the sidebar variant is visible
+    bottomHideClass?: string;
 }
 
-export const ArticleToc = ({ headings, variant }: Props) => {
+export const ArticleToc = ({ headings, variant, bottomHideClass = "xl:hidden" }: Props) => {
     const ids = useMemo(() => headings.map((h) => h.id), [headings]);
     const active = useActiveHeading(ids);
     const [open, setOpen] = useState(false);
@@ -62,7 +64,12 @@ export const ArticleToc = ({ headings, variant }: Props) => {
     }
 
     return (
-        <div className="bg-background/95 border-border/60 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur xl:hidden">
+        <div
+            className={cn(
+                "bg-background/95 border-border/60 fixed inset-x-0 bottom-0 z-30 border-t backdrop-blur",
+                bottomHideClass,
+            )}
+        >
             <div
                 className={cn(
                     "grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none",

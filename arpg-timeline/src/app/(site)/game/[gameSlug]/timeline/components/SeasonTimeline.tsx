@@ -40,7 +40,7 @@ export const SeasonTimeline = ({ groups, gameLogo, game }: SeasonTimelineProps) 
                             return (
                                 <li
                                     key={entry.id}
-                                    className="relative pl-10 md:grid md:grid-cols-2 md:gap-x-12 md:pl-0"
+                                    className="reveal-on-scroll relative pl-10 md:grid md:grid-cols-2 md:gap-x-12 md:pl-0"
                                 >
                                     <span
                                         aria-hidden

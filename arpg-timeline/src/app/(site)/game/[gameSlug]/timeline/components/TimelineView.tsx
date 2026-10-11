@@ -3,6 +3,7 @@
 import { SanityImageAssetDocument } from "next-sanity";
 import { useId, useMemo, useState } from "react";
 
+import { ArticleToc } from "@/components/articles/ArticleToc";
 import { Game } from "@/lib/cms/games.types";
 import { Switch } from "@/ui/Switch";
 
@@ -26,37 +27,40 @@ export const TimelineView = ({ entries, gameLogo, game, emptyText }: TimelineVie
         [entries, showSideEvents],
     );
 
+    const tocHeadings = useMemo(
+        () => groups.map((g) => ({ id: `year-${g.key}`, text: g.label, level: 2 as const })),
+        [groups],
+    );
+
     if (entries.length === 0) {
         return <p className="text-muted-foreground">{emptyText}</p>;
     }
 
     return (
         <>
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                {groups.length > 1 ? (
-                    <a
-                        href={`#year-${groups[groups.length - 1]!.key}`}
-                        className="text-muted-foreground hover:text-foreground text-sm hover:underline"
-                    >
-                        Jump to oldest
-                    </a>
-                ) : (
-                    <span />
-                )}
-                {hasSideEvents && (
-                    <div className="flex items-center gap-2">
-                        <label htmlFor={switchId} className="text-muted-foreground text-sm">
-                            Show side events
-                        </label>
-                        <Switch
-                            id={switchId}
-                            checked={showSideEvents}
-                            onCheckedChange={setShowSideEvents}
-                        />
-                    </div>
-                )}
-            </div>
+            {hasSideEvents && (
+                <div className="mb-2 flex items-center justify-end gap-2">
+                    <label htmlFor={switchId} className="text-muted-foreground text-sm">
+                        Show side events
+                    </label>
+                    <Switch
+                        id={switchId}
+                        checked={showSideEvents}
+                        onCheckedChange={setShowSideEvents}
+                    />
+                </div>
+            )}
             <SeasonTimeline groups={groups} gameLogo={gameLogo} game={game} />
+            <aside className="absolute top-0 right-full bottom-0 mr-8 hidden w-48 @[1792px]:block">
+                <div className="sticky top-12">
+                    <ArticleToc headings={tocHeadings} variant="sidebar" />
+                </div>
+            </aside>
+            <ArticleToc
+                headings={tocHeadings}
+                variant="bottom"
+                bottomHideClass="@[1792px]:hidden"
+            />
         </>
     );
 };

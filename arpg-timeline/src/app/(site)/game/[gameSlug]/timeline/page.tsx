@@ -91,7 +91,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
             />
-            <div className="relative container mx-auto py-6 md:py-8">
+            <div className="relative container mx-auto pt-6 pb-24 md:pt-8">
                 <Breadcrumbs crumbs={crumbs} />
                 <header className="mb-6 max-w-2xl">
                     <h1 className="font-heading text-3xl md:text-4xl">
