@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Path of Exile - game hub</title>
+<!-- Design mockup exported from the design canvas. Static reference only, not app code. -->
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#fff6e0}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="background: #17171c; color: #d6d6dc; font-family: Montserrat, system-ui, sans-serif; min-height: 1520px; box-sizing: border-box; padding-bottom: 64px">
+
+<div style="background: #1c1c21; border-bottom: 1px solid #2e2e36">
+<div style="max-width: 1180px; margin: 0 auto; padding: 28px 24px 0; display: flex; flex-direction: column; gap: 22px">
+<nav aria-label="Breadcrumb" style="font-size: 13px; color: #9a9aa3; display: flex; gap: 8px"><a href="#" style="color: #9a9aa3; text-decoration: none">Home</a><span aria-hidden="true">/</span><span style="color: #e4e4ea">Path of Exile</span></nav>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center">
+<div style="width: 96px; height: 68px; border-radius: 8px; background: #2a2219; border: 1px solid #4a3b26; color: #e2c38a; font-size: 11px; display: flex; align-items: center; justify-content: center; text-align: center">[logo]</div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 36px; color: #f4f1ea">Path of Exile</h1>
+<div style="font-size: 14px; color: #b4b4bd">3.29 Curse of the Allflame - <span style="color: #fff6e0; font-weight: 600">39 days left</span> - next league not announced yet</div>
+<div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; background: #1b2838; color: #c7d5e0; padding: 4px 10px; border-radius: 999px; font-size: 13px"><span style="width: 7px; height: 7px; border-radius: 4px; background: #5fd38d"></span>6,268 playing on Steam</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<button type="button" style="background: #fff6e0; color: #17171c; border: 0; border-radius: 8px; padding: 12px 18px; font: 600 14px Montserrat, sans-serif; min-height: 44px">Get notified</button>
+<button type="button" aria-label="Share" style="background: #26262c; color: #e4e4ea; border: 1px solid #3a3a44; border-radius: 8px; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
+</div>
+</div>
+<div role="tablist" aria-label="Path of Exile sections" style="display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: -1px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="max-width: 1180px; margin: 0 auto; padding: 36px 24px 0">
+
+<sc-if value="{{isOverview}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+
+<section style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 260px; background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: flex-start; background: #1f4f8a; color: #fff; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 4px">Now</span>
+<div style="font-family: Cinzel, serif; font-size: 22px; color: #f4f1ea">Curse of the Allflame</div>
+<div style="height: 8px; background: #2e2e36; border-radius: 4px"><div style="width: 67%; height: 8px; background: #3b82f6; border-radius: 4px"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #9a9aa3"><span>Day 79 of 118</span><span>Ends Nov 19</span></div>
+</div>
+<div style="flex: 1 1 260px; background: #1f1f24; border: 1px solid #3d5a46; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: flex-start; background: #1d6b45; color: #fff; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 4px">Next</span>
+<div style="font-family: Cinzel, serif; font-size: 22px; color: #f4f1ea">Not announced yet</div>
+<div style="font-size: 14px; line-height: 1.6; color: #b4b4bd">We'll add it the moment it's announced.</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto">
+<button type="button" style="background: #fff6e0; color: #17171c; border: 0; border-radius: 8px; padding: 10px 14px; font: 600 13px Montserrat, sans-serif; min-height: 44px">Add to calendar</button>
+<a href="#" style="background: #2b2d5c; color: #e8e9ff; border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 600; text-decoration: none; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Discord bot</a>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px"><h2 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 22px; color: #f4f1ea">League rhythm</h2>
+<div role="group" aria-label="Range" style="display: flex; border: 1px solid #2e2e36; border-radius: 8px; overflow: hidden">
+<button type="button" aria-pressed="true" style="background: #2e2e36; color: #f4f1ea; border: 0; padding: 10px 14px; font: 500 13px Montserrat, sans-serif; min-height: 44px">All 48 leagues</button>
+<button type="button" aria-pressed="false" style="background: transparent; color: #b4b4bd; border: 0; padding: 10px 14px; font: 500 13px Montserrat, sans-serif; min-height: 44px">Last 3</button>
+</div></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><div style="font-size: 28px; font-weight: 700; color: #fff6e0">~3.5 months</div><div style="font-size: 14px; color: #b4b4bd; line-height: 1.5">per league on average (108 days). Most ran between 72 and 144 days.</div></div>
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><div style="font-size: 28px; font-weight: 700; color: #fff6e0">3-4 a year</div><div style="font-size: 14px; color: #b4b4bd; line-height: 1.5">new leagues on average, plus short events between them.</div></div>
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><div style="font-size: 28px; font-weight: 700; color: #fff6e0">Fri, 10:00 PM</div><div style="font-size: 14px; color: #b4b4bd; line-height: 1.5">is when most past leagues launched, in your time zone.</div></div>
+</div>
+<button type="button" onClick="{{goStats}}" style="align-self: flex-start; background: none; border: 0; padding: 10px 0; color: #fff6e0; text-decoration: underline; font: 500 14px Montserrat, sans-serif; cursor: pointer">All statistics in the Stats tab</button>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center"><h2 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 22px; color: #f4f1ea">Latest</h2><button type="button" onClick="{{goNews}}" style="background: none; border: 0; padding: 10px 0; color: #fff6e0; text-decoration: underline; font: 500 14px Montserrat, sans-serif; cursor: pointer">All news</button></div>
+<div style="display: flex; flex-direction: column; border: 1px solid #2e2e36; border-radius: 12px; overflow: hidden">
+<a href="#" style="display: flex; gap: 14px; padding: 16px 20px; background: #1f1f24; text-decoration: none; color: #e4e4ea; border-bottom: 1px solid #2e2e36; font-size: 15px"><span style="font-size: 12px; font-weight: 600; color: #c7d5e0; background: #1b2838; padding: 2px 8px; border-radius: 4px; flex: none; align-self: center">Steam</span><span style="font-size: 12px; color: #9a9aa3; width: 52px; flex: none">Oct 1</span>ExileCon 2026 Race Qualifier VODs</a>
+<a href="#" style="display: flex; gap: 14px; padding: 16px 20px; background: #1f1f24; text-decoration: none; color: #e4e4ea; border-bottom: 1px solid #2e2e36; font-size: 15px"><span style="font-size: 12px; font-weight: 600; color: #c7d5e0; background: #1b2838; padding: 2px 8px; border-radius: 4px; flex: none; align-self: center">Steam</span><span style="font-size: 12px; color: #9a9aa3; width: 52px; flex: none">Sep 23</span>The Final Path of Exile I ExileCon Qualifier Begins Tomorrow</a>
+<a href="#" style="display: flex; gap: 14px; padding: 16px 20px; background: #1f1f24; text-decoration: none; color: #e4e4ea; font-size: 15px"><span style="font-size: 12px; font-weight: 600; color: #c7d5e0; background: #1b2838; padding: 2px 8px; border-radius: 4px; flex: none; align-self: center">Steam</span><span style="font-size: 12px; color: #9a9aa3; width: 52px; flex: none">Sep 17</span>The Third Path of Exile I ExileCon Qualifier Is Going Live!</a>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center"><h2 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 22px; color: #f4f1ea">Recent leagues</h2><button type="button" onClick="{{goTimeline}}" style="background: none; border: 0; padding: 10px 0; color: #fff6e0; text-decoration: underline; font: 500 14px Montserrat, sans-serif; cursor: pointer">Full timeline</button></div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 14px 20px; background: #1f1f24; border: 1px solid #2e2e36; border-radius: 10px; font-size: 14px"><span style="color: #e4e4ea; font-weight: 600">3.28 Mirage</span><span style="color: #9a9aa3">Mar 6 - Jul 20, 2026 - 137 days</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 14px 20px; background: #1f1f24; border: 1px solid #2e2e36; border-radius: 10px; font-size: 14px"><span style="color: #e4e4ea; font-weight: 600">3.27 Keepers of the Flame</span><span style="color: #9a9aa3">Oct 31, 2025 - Mar 2, 2026 - 122 days</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 14px 20px; background: #1f1f24; border: 1px solid #2e2e36; border-radius: 10px; font-size: 14px"><span style="color: #e4e4ea; font-weight: 600">3.26 Secrets of the Atlas</span><span style="color: #9a9aa3">Jun 13 - Oct 27, 2025 - 136 days</span></div>
+</div>
+</section>
+</main>
+
+<aside style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 24px">
+<section style="background: #1f1f24; border: 1px solid #3a3a44; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 15px; font-weight: 600; color: #f4f1ea">Keep aRPG Timeline free</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.55; color: #b4b4bd">Hosting costs $25/month. Patreon keeps it running for 30K+ players.</p>
+<a href="#" style="background: #26262c; border: 1px solid #4a4a55; color: #f4f1ea; border-radius: 8px; padding: 12px 14px; font-size: 14px; font-weight: 600; text-decoration: none; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center">Support on Patreon</a>
+</section>
+<section style="display: flex; flex-direction: column; gap: 8px; font-size: 14px">
+<h2 style="margin: 0 0 4px; font-size: 15px; font-weight: 600; color: #f4f1ea">Links</h2>
+<a href="#">Builds (maxroll)</a><a href="#">Official website</a><a href="#">Steam</a><a href="#">Twitch</a>
+</section>
+<section style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #9a9aa3; border-top: 1px solid #2e2e36; padding-top: 18px">
+<span>For creators: <a href="#">OBS</a>, <a href="#">HTML widget</a></span>
+</section>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{isTimeline}}" hint-placeholder-val="{{false}}">
+<div style="max-width: 880px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px">
+<div><h2 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 26px; color: #f4f1ea">League timeline</h2><p style="margin: 6px 0 0; font-size: 15px; color: #b4b4bd">48 Path of Exile leagues tracked since 2013. Today's /timeline page, under the shared game header.</p></div>
+<span style="font-size: 13px; color: #9a9aa3">Show side events: on</span>
+</div>
+<h3 style="margin: 8px 0 0; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9aa3">2026</h3>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 16px 20px; background: #1f1f24; border: 1px solid #3b82f6; border-radius: 10px; font-size: 14px"><span style="color: #f4f1ea; font-weight: 600">3.29 - Curse of the Allflame <span style="margin-left: 8px; background: #1f4f8a; color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 4px">Now</span></span><span style="color: #9a9aa3">Jul 24 - Nov 19, 2026 - 118 days</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 12px 20px 12px 36px; background: #1c1c21; border: 1px dashed #3a3a44; border-radius: 10px; font-size: 13px"><span style="color: #d8c69a">Event - Return of the Ancestors</span><span style="color: #9a9aa3">Jun 25 - Jul 16, 2026 - 21 days</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 16px 20px; background: #1f1f24; border: 1px solid #2e2e36; border-radius: 10px; font-size: 14px"><span style="color: #e4e4ea; font-weight: 600">3.28 - Mirage</span><span style="color: #9a9aa3">Mar 6 - Jul 20, 2026 - 137 days</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 12px 20px 12px 36px; background: #1c1c21; border: 1px dashed #3a3a44; border-radius: 10px; font-size: 13px"><span style="color: #d8c69a">The Legacy of Phrecia Event</span><span style="color: #9a9aa3">Jan 29 - Feb 19, 2026 - 21 days</span></div>
+</div>
+<h3 style="margin: 8px 0 0; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9aa3">2025</h3>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 16px 20px; background: #1f1f24; border: 1px solid #2e2e36; border-radius: 10px; font-size: 14px"><span style="color: #e4e4ea; font-weight: 600">3.27 - Keepers of the Flame</span><span style="color: #9a9aa3">Oct 31, 2025 - Mar 2, 2026 - 122 days</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 16px 20px; background: #1f1f24; border: 1px solid #2e2e36; border-radius: 10px; font-size: 14px"><span style="color: #e4e4ea; font-weight: 600">3.26 - Secrets of the Atlas</span><span style="color: #9a9aa3">Jun 13 - Oct 27, 2025 - 136 days</span></div>
+</div>
+<div style="font-size: 13px; color: #9a9aa3">... 42 more leagues back to 2013</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isNews}}" hint-placeholder-val="{{false}}">
+<div style="max-width: 880px; display: flex; flex-direction: column; gap: 20px">
+<div><h2 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 26px; color: #f4f1ea">News</h2><p style="margin: 6px 0 0; font-size: 15px; color: #b4b4bd">Official announcements via Steam. Our own articles would appear in the same list.</p></div>
+<div style="display: flex; flex-direction: column; border: 1px solid #2e2e36; border-radius: 12px; overflow: hidden">
+<a href="#" style="display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; background: #1f1f24; text-decoration: none; color: #e4e4ea; border-bottom: 1px solid #2e2e36"><span style="display: flex; gap: 10px; align-items: center; font-size: 12px; color: #9a9aa3"><span style="font-weight: 600; color: #c7d5e0; background: #1b2838; padding: 2px 8px; border-radius: 4px">Steam</span>Oct 1, 2026</span><span style="font-size: 16px; font-weight: 600">ExileCon 2026 Race Qualifier VODs</span><span style="font-size: 14px; line-height: 1.55; color: #b4b4bd">With the Path of Exile 1 ExileCon Qualifier Races now done and dusted, take a look back at the memorable moments from the competition!</span></a>
+<a href="#" style="display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; background: #1f1f24; text-decoration: none; color: #e4e4ea; border-bottom: 1px solid #2e2e36"><span style="display: flex; gap: 10px; align-items: center; font-size: 12px; color: #9a9aa3"><span style="font-weight: 600; color: #c7d5e0; background: #1b2838; padding: 2px 8px; border-radius: 4px">Steam</span>Sep 25, 2026</span><span style="font-size: 16px; font-weight: 600">The Last of the Druids Sale - Get One Free Mystery Box When You Spend Points</span><span style="font-size: 14px; line-height: 1.55; color: #b4b4bd">This weekend, we're running a sale on microtransactions from past Mystery Boxes, including the Last of the Druids cosmetic effects.</span></a>
+<a href="#" style="display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; background: #1f1f24; text-decoration: none; color: #e4e4ea; border-bottom: 1px solid #2e2e36"><span style="display: flex; gap: 10px; align-items: center; font-size: 12px; color: #9a9aa3"><span style="font-weight: 600; color: #c7d5e0; background: #1b2838; padding: 2px 8px; border-radius: 4px">Steam</span>Sep 23, 2026</span><span style="font-size: 16px; font-weight: 600">The Final Path of Exile I ExileCon Qualifier Begins Tomorrow - New Twitch Drops</span><span style="font-size: 14px; line-height: 1.55; color: #b4b4bd">The fourth and final Path of Exile 1 Qualifier tomorrow will conclude our series of in-game ExileCon events.</span></a>
+<a href="#" style="display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; background: #1f1f24; text-decoration: none; color: #e4e4ea"><span style="display: flex; gap: 10px; align-items: center; font-size: 12px; color: #9a9aa3"><span style="font-weight: 600; color: #c7d5e0; background: #1b2838; padding: 2px 8px; border-radius: 4px">Steam</span>Sep 17, 2026</span><span style="font-size: 16px; font-weight: 600">The Third Path of Exile I ExileCon Qualifier Is Going Live!</span><span style="font-size: 14px; line-height: 1.55; color: #b4b4bd">Join the third Path of Exile 1 Qualifier for your chance to earn a spot in the finale.</span></a>
+</div>
+<a href="#" style="align-self: flex-start; font-size: 14px; font-weight: 600">All announcements on Steam</a>
+</div>
+</sc-if>
+
+<sc-if value="{{isGuides}}" hint-placeholder-val="{{false}}">
+<div style="max-width: 880px; display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 26px; color: #f4f1ea">Guides</h2>
+<div style="background: #1f1f24; border: 1px dashed #4a4a55; border-radius: 12px; padding: 40px 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start">
+<div style="font-size: 18px; font-weight: 600; color: #f4f1ea">No Path of Exile guides on aRPG Timeline yet</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #b4b4bd; max-width: 560px">This is what most games would show today. Until there are articles, the tab can only point elsewhere:</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="#" style="background: #fff6e0; color: #17171c; border-radius: 8px; padding: 12px 16px; font-size: 14px; font-weight: 600; text-decoration: none; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Builds on maxroll</a>
+<a href="#" style="background: #26262c; border: 1px solid #3a3a44; border-radius: 8px; padding: 12px 16px; font-size: 14px; color: #e4e4ea; text-decoration: none; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Guides on maxroll</a>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isStats}}" hint-placeholder-val="{{false}}">
+<div style="max-width: 880px; display: flex; flex-direction: column; gap: 24px">
+<div><h2 style="margin: 0; font-family: Cinzel, serif; font-weight: 600; font-size: 26px; color: #f4f1ea">Statistics</h2><p style="margin: 6px 0 0; font-size: 15px; color: #b4b4bd">Based on 48 leagues tracked since June 7, 2013.</p></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 18px"><div style="font-size: 26px; font-weight: 700; color: #fff6e0">108 <span style="font-size: 14px; color: #9a9aa3; font-weight: 500">days</span></div><div style="font-size: 14px; color: #b4b4bd">Average length</div></div>
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 18px"><div style="font-size: 26px; font-weight: 700; color: #fff6e0">96 <span style="font-size: 14px; color: #9a9aa3; font-weight: 500">days</span></div><div style="font-size: 14px; color: #b4b4bd">Median length</div></div>
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 18px"><div style="font-size: 26px; font-weight: 700; color: #fff6e0">±36 <span style="font-size: 14px; color: #9a9aa3; font-weight: 500">days</span></div><div style="font-size: 14px; color: #b4b4bd">Spread</div></div>
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 18px"><div style="font-size: 26px; font-weight: 700; color: #fff6e0">81-319 <span style="font-size: 14px; color: #9a9aa3; font-weight: 500">days</span></div><div style="font-size: 14px; color: #b4b4bd">Shortest to longest</div></div>
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 18px"><div style="font-size: 26px; font-weight: 700; color: #fff6e0">3-4 <span style="font-size: 14px; color: #9a9aa3; font-weight: 500">/ year</span></div><div style="font-size: 14px; color: #b4b4bd">New leagues</div></div>
+<div style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 18px"><div style="font-size: 26px; font-weight: 700; color: #fff6e0">Fri, 10:00 PM</div><div style="font-size: 14px; color: #b4b4bd">Most common launch, your time</div></div>
+</div>
+<section style="background: #1f1f24; border: 1px solid #2e2e36; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #f4f1ea">Players on Steam</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 28px"><div><div style="font-size: 24px; font-weight: 700; color: #fff6e0">6,268</div><div style="font-size: 13px; color: #9a9aa3">right now</div></div><div><div style="font-size: 24px; font-weight: 700; color: #fff6e0">7,149</div><div style="font-size: 13px; color: #9a9aa3">24-hour peak</div></div><div><div style="font-size: 24px; font-weight: 700; color: #fff6e0">229,337</div><div style="font-size: 13px; color: #9a9aa3">all-time peak</div></div></div>
+<div style="height: 160px; border-radius: 8px; background: #1b2838; color: #8fa6bd; font-size: 13px; display: flex; align-items: center; justify-content: center">[SteamDB 7-day player chart]</div>
+</section>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1520}}'>
+class Component extends DCLogic {
+renderVals() {
+const tab = (this.state && this.state.tab) || 'overview';
+const base = 'background: none; border: 0; cursor: pointer; font-family: Montserrat, sans-serif; font-size: 14px; padding: 14px 16px; min-height: 44px; ';
+const tabs = [['overview', 'Overview'], ['timeline', 'Timeline'], ['news', 'News'], ['guides', 'Guides'], ['stats', 'Stats']].map(([id, label]) => ({
+id,
+label,
+selected: String(id === tab),
+style: base + (id === tab ? 'color: #fff6e0; font-weight: 600; border-bottom: 2px solid #fff6e0' : 'color: #b4b4bd; font-weight: 500; border-bottom: 2px solid transparent'),
+pick: () => this.setState({ tab: id })
+}));
+return {
+tabs,
+isOverview: tab === 'overview',
+isTimeline: tab === 'timeline',
+isNews: tab === 'news',
+isGuides: tab === 'guides',
+isStats: tab === 'stats',
+goNews: () => this.setState({ tab: 'news' }),
+goTimeline: () => this.setState({ tab: 'timeline' }),
+goStats: () => this.setState({ tab: 'stats' })
+};
+}
+}
+</script>
+</body>
+</html>
