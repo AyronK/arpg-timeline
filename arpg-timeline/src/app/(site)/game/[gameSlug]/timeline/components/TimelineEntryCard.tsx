@@ -62,6 +62,7 @@ export const TimelineEntryCard = ({ entry, gameLogo, align, game }: TimelineEntr
             className={cn(
                 "bg-card text-card-foreground flex flex-col gap-3 rounded-lg border p-3 md:p-4",
                 entry.status === "live" && "border-sky-500/50",
+                entry.status === "upcoming" && "border-emerald-500/50",
             )}
         >
             <div
