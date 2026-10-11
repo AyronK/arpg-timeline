@@ -13,11 +13,13 @@ const pickSeason = (season: Season | null | undefined) =>
 export const GameHubHeader = ({
     game,
     steam,
+    hasGuides,
 }: {
     game: Game;
     steam: { appId: number; currentPlayers: number } | null;
+    hasGuides: boolean;
 }) => {
-    const tabs = getHubTabs(game);
+    const tabs = getHubTabs(game, { hasGuides });
 
     return (
         <div className="container mx-auto pt-6 md:pt-8">

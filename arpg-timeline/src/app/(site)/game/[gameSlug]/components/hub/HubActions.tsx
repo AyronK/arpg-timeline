@@ -1,20 +1,12 @@
 "use client";
 
-import { Bell, CalendarSync, Share2 } from "lucide-react";
-import Link from "next/link";
+import { CalendarSync, Share2 } from "lucide-react";
 import { useState } from "react";
-import { FaDiscord } from "react-icons/fa6";
 
 import { CalendarSubscribeDialog } from "@/components/CalendarSubscribeDialog";
 import { sa_event } from "@/lib/sa_event";
 import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/ui/DropdownMenu";
 import { toast } from "@/ui/hooks/useToast";
 
 const addUTM = addUTMParameters({
@@ -23,6 +15,7 @@ const addUTM = addUTMParameters({
     utm_campaign: "game_share",
 });
 
+// Discord bot already sits in the site header, so the hub only offers the calendar
 export const HubActions = ({ gameSlug, gameName }: { gameSlug: string; gameName: string }) => {
     const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -44,36 +37,30 @@ export const HubActions = ({ gameSlug, gameName }: { gameSlug: string; gameName:
     };
 
     return (
-        <div className="flex flex-wrap gap-2">
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button data-sa-click={`${gameSlug}-hub-get-notified`}>
-                        <Bell className="mr-2 h-4 w-4" aria-hidden />
-                        Get notified
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                        data-sa-click={`${gameSlug}-hub-calendar-subscribe`}
-                        onSelect={() => {
-                            sa_event("calendar_subscribe_opened", { game: gameSlug });
-                            setCalendarOpen(true);
-                        }}
-                    >
-                        <CalendarSync className="mr-2 h-4 w-4" aria-hidden />
-                        Add to calendar
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                        <Link href="/discord-bot" data-sa-click={`${gameSlug}-hub-discord-bot`}>
-                            <FaDiscord className="mr-2 h-4 w-4" aria-hidden />
-                            Discord bot
-                        </Link>
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-            <Button variant="outline" onClick={share} data-sa-click={`${gameSlug}-hub-share`}>
-                <Share2 className="mr-2 h-4 w-4" aria-hidden />
-                Share
+        <div className="flex items-start gap-1">
+            {/* Caption sits under the calendar button */}
+            <div className="flex flex-col items-center gap-1">
+                <Button
+                    variant="outlineCard"
+                    data-sa-click={`${gameSlug}-hub-calendar-subscribe`}
+                    onClick={() => {
+                        sa_event("calendar_subscribe_opened", { game: gameSlug });
+                        setCalendarOpen(true);
+                    }}
+                >
+                    <CalendarSync className="mr-2 h-4 w-4" aria-hidden />
+                    Add to calendar
+                </Button>
+                <span className="text-muted-foreground text-xs">Free · no sign-up</span>
+            </div>
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={share}
+                aria-label={`Share ${gameName}`}
+                data-sa-click={`${gameSlug}-hub-share`}
+            >
+                <Share2 className="h-4 w-4" aria-hidden />
             </Button>
             <CalendarSubscribeDialog
                 open={calendarOpen}

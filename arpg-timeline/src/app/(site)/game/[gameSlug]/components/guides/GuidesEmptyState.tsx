@@ -5,18 +5,16 @@ import { Game } from "@/lib/cms/games.types";
 import { cardClassName } from "../overview/OverviewCard";
 import { ExternalRow, hostname, utm } from "../overview/OverviewSidebar";
 
-// Most games have no guides yet, so point to the game's external build/guide sites
+// Guides aren't written here, so point to the game's external build/guide sites
 export const GuidesEmptyState = ({ game }: { game: Game }) => {
     const slug = game.slug;
     const hasLinks = game.buildsUrl || game.guidesUrl;
 
     return (
         <section className={`${cardClassName} max-w-xl`}>
-            <h2 className="font-heading text-lg">No {game.name} guides here yet</h2>
+            <h2 className="font-heading text-lg">Builds and guides for {game.name}</h2>
             <p className="text-muted-foreground mt-2 text-sm">
-                {hasLinks
-                    ? "Until we write some, these are good places to start:"
-                    : "Check back soon."}
+                {hasLinks ? "The best places to find them:" : "Nothing here yet."}
             </p>
             {hasLinks && (
                 <ul className="mt-3">

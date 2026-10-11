@@ -86,12 +86,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: "daily",
             priority: 0.7,
         },
-        {
-            url: `${baseUrl}/resources`,
-            lastModified: new Date(),
-            changeFrequency: "weekly",
-            priority: 0.6,
-        },
     ];
 
     try {
@@ -170,7 +164,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const gameIndexes = new Set<string>();
 
         articles.forEach((article) => {
-            if (!article.slug) return;
+            // Resources (guides) are left out of the sitemap for now
+            if (!article.slug || article.category === "resources") return;
             sitemap.push({
                 url: `${baseUrl}${getArticlePath({
                     category: article.category,

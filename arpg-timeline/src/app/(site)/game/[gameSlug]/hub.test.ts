@@ -7,7 +7,7 @@ const fmt = (iso: string) => iso.slice(0, 10);
 
 describe("getHubTabs", () => {
     it("includes Timeline and Stats for seasonal games", () => {
-        const tabs = getHubTabs({ slug: "poe", categories: ["seasonal"] });
+        const tabs = getHubTabs({ slug: "poe", categories: ["seasonal"] }, { hasGuides: true });
         expect(tabs.map((t) => t.id)).toEqual(["overview", "timeline", "news", "guides", "stats"]);
         expect(tabs.map((t) => t.href)).toEqual([
             "/game/poe",
@@ -19,12 +19,23 @@ describe("getHubTabs", () => {
     });
 
     it("hides Timeline and Stats for non-seasonal and coming-soon games", () => {
-        expect(getHubTabs({ slug: "x" }).map((t) => t.id)).toEqual(["overview", "news", "guides"]);
+        expect(getHubTabs({ slug: "x" }).map((t) => t.id)).toEqual(["overview", "news"]);
         expect(
             getHubTabs({ slug: "x", categories: ["seasonal"], isComingSoon: true }).map(
                 (t) => t.id,
             ),
-        ).toEqual(["overview", "news", "guides"]);
+        ).toEqual(["overview", "news"]);
+    });
+});
+
+describe("getHubTabs guides", () => {
+    it("hides Guides without guide articles", () => {
+        expect(getHubTabs({ slug: "poe", categories: ["seasonal"] }).map((t) => t.id)).toEqual([
+            "overview",
+            "timeline",
+            "news",
+            "stats",
+        ]);
     });
 });
 

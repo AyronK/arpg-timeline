@@ -106,7 +106,9 @@ Structure:
 - `/stats` is indexed, with its own metadata, and added to `sitemap.ts` for seasonal games.
 
 Notify actions:
-- Header "Get notified" opens a menu (Add to calendar / Discord bot) on every tab.
+- Header offers "Add to calendar" ("Free · no sign-up") and an icon Share button on every tab.
+  No Discord bot here: the site header already has that CTA. (Revised: "Get notified" read
+  like a newsletter sign-up.)
 - Next card keeps "Add to calendar" and "Discord bot" as equal-weight buttons while the next
   season is unannounced.
 

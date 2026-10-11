@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 
+import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { gameDetailsQuery, GameDetailsQueryResult } from "@/lib/cms/queries/indexQuery";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
@@ -27,13 +28,17 @@ const GameHubLayout = async ({
     if (!game) notFound();
 
     const appId = data.games.find((g) => g.slug === gameSlug)?.steam?.appId;
-    const steam = appId ? await getSteamCurrentPlayers(appId) : null;
+    const [steam, articles] = await Promise.all([
+        appId ? getSteamCurrentPlayers(appId) : null,
+        getGameArticlesPreview(gameSlug),
+    ]);
 
     return (
         <>
             <GameHubHeader
                 game={game}
                 steam={steam && { appId: steam.appId, currentPlayers: steam.currentPlayers }}
+                hasGuides={articles.resources.length > 0}
             />
             {children}
         </>

@@ -32,13 +32,14 @@ const TAB_LABELS: Record<HubTabId, string> = {
 const hasSeasonHistory = (game: HubGame) =>
     !!game.categories?.includes("seasonal") && !game.isComingSoon;
 
-export const getHubTabs = (game: HubGame): HubTab[] => {
+// Guides only shows when the game has guide articles
+export const getHubTabs = (game: HubGame, { hasGuides = false } = {}): HubTab[] => {
     const seasonal = hasSeasonHistory(game);
     const ids: HubTabId[] = [
         "overview",
         ...(seasonal ? ["timeline" as const] : []),
         "news",
-        "guides",
+        ...(hasGuides ? ["guides" as const] : []),
         ...(seasonal ? ["stats" as const] : []),
     ];
 
