@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 
-import { getTimelinePath, isSeasonalGame } from "@/app/(site)/game/[gameSlug]/timeline/timeline";
+import {
+    getTimelinePath,
+    isSeasonalGame,
+} from "@/app/(site)/game/[gameSlug]/(hub)/timeline/timeline";
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { getArticlePath } from "@/lib/articles/articleUrl";
 import { getArticleStaticParams } from "@/lib/articles/getArticleData";

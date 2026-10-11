@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { SanityImage } from "@/components/SanityImage";
 
-import { getTimelinePath } from "../timeline/timeline";
+import { getTimelinePath } from "../(hub)/timeline/timeline";
 import { ArchivalSeasonsSectionProps } from "../types";
 
 export const ArchivalSeasonsSection = ({

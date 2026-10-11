@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/articles/Breadcrumbs";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
 import { getRelatedArticles } from "@/lib/articles/getArticleListData";
@@ -16,7 +15,7 @@ import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms, SeasonTerms } from "@/lib/seasonTerms";
 import { SITE_URL } from "@/lib/siteUrl";
 
-import { GamePageProps } from "../types";
+import { GamePageProps } from "../../types";
 import { TimelineAside } from "./components/TimelineAside";
 import { TimelineView } from "./components/TimelineView";
 import { buildTimelineDescription, buildTimelineKeywords, buildTimelineTitle } from "./metadata";
@@ -92,35 +91,32 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                     __html: JSON.stringify(itemList).replace(/</g, "\\u003c"),
                 }}
             />
-            <div className="relative container mx-auto pt-6 pb-24 md:pt-10 lg:pb-10">
+            <div className="relative container mx-auto pt-6 pb-24 lg:pb-10">
                 <TimelineView
                     entries={displayEntries}
                     gameLogo={game.logo}
                     game={game}
                     emptyText={`No ${terms.many} tracked yet.`}
                     header={
-                        <>
-                            <Breadcrumbs crumbs={crumbs} />
-                            <header className="mb-6">
-                                <h1 className="font-heading text-3xl md:text-4xl">
-                                    {game.name} {terms.One} Timeline
-                                </h1>
-                                <p className="text-muted-foreground mt-3 text-lg leading-relaxed">
-                                    {buildSummarySentences(game.name, terms, summary).map(
-                                        (sentence) => (
-                                            <span key={sentence} className="block">
-                                                {sentence}
-                                            </span>
-                                        ),
-                                    )}
-                                </p>
-                                <p className="text-muted-foreground mt-3 text-sm italic">
-                                    Data is provided on a best-effort basis and may not be 100%
-                                    accurate. Dates and durations can be estimated or assumed and
-                                    may contain errors - especially for older data.
-                                </p>
-                            </header>
-                        </>
+                        <header className="mb-6">
+                            <h1 className="font-heading text-3xl md:text-4xl">
+                                {game.name} {terms.One} Timeline
+                            </h1>
+                            <p className="text-muted-foreground mt-3 text-lg leading-relaxed">
+                                {buildSummarySentences(game.name, terms, summary).map(
+                                    (sentence) => (
+                                        <span key={sentence} className="block">
+                                            {sentence}
+                                        </span>
+                                    ),
+                                )}
+                            </p>
+                            <p className="text-muted-foreground mt-3 text-sm italic">
+                                Data is provided on a best-effort basis and may not be 100%
+                                accurate. Dates and durations can be estimated or assumed and may
+                                contain errors - especially for older data.
+                            </p>
+                        </header>
                     }
                     aside={<TimelineAside related={related} shareTitle={shareTitle} />}
                 />

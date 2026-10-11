@@ -13,6 +13,7 @@ interface ArticleIndexProps {
     page: number;
     pageCount: number;
     showGame?: boolean;
+    showBreadcrumbs?: boolean;
 }
 
 export const ArticleIndex = ({
@@ -24,9 +25,10 @@ export const ArticleIndex = ({
     page,
     pageCount,
     showGame = true,
+    showBreadcrumbs = true,
 }: ArticleIndexProps) => (
     <div className="relative container mx-auto py-8 md:py-10">
-        <Breadcrumbs crumbs={crumbs} />
+        {showBreadcrumbs && <Breadcrumbs crumbs={crumbs} />}
 
         <header className="mb-8 max-w-2xl">
             <h1 className="font-heading text-3xl md:text-4xl">{title}</h1>

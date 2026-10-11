@@ -82,6 +82,8 @@ export async function renderArticleIndex(args: IndexArgs) {
                 page={page}
                 pageCount={pageCount}
                 showGame={showGame}
+                // Game indexes sit under the game hub header, which has its own breadcrumbs
+                showBreadcrumbs={showGame}
             />
         </>
     );

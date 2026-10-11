@@ -1,6 +1,4 @@
-import { LayoutDashboard, Twitch } from "lucide-react";
 import { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -19,9 +17,6 @@ import { GameNewsService } from "@/lib/gameNewsService";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { sanitizeNewsDescription } from "@/lib/steam/sanitizeNewsDescription";
-import { cn } from "@/lib/utils";
-import { addUTMParameters } from "@/lib/utm";
-import { Button } from "@/ui/Button";
 
 import {
     ArchivalSeasonsSection,
@@ -29,20 +24,20 @@ import {
     GameHeaderSection,
     PlatformIntegrationSection,
     StatisticsSection,
-} from "./components";
+} from "../components";
 import {
     buildGamePageDescription,
     buildGamePageOgDescription,
     buildGamePageOgTitle,
     buildGamePageTitle,
-} from "./metadata";
-import { GamePageProps } from "./types";
+} from "../metadata";
+import { GamePageProps } from "../types";
 import {
     calculateGameStatistics,
     countTrackedSeasons,
     getArchivalSeasons,
     getOldestSeasonInfo,
-} from "./utils";
+} from "../utils";
 
 const RECENT_SEASON_COUNT = 3;
 
@@ -123,47 +118,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                     }}
                 />
             )}
-            <div className="relative container mx-auto py-6 md:py-8">
-                <div className="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-6">
-                    <h1 className="font-heading text-3xl md:text-4xl">{game.name}</h1>
-                    <div
-                        className={cn("grid w-full gap-3 md:w-auto", {
-                            "grid-cols-2": game.twitchCategory,
-                        })}
-                    >
-                        {game.twitchCategory && (
-                            <Button
-                                asChild
-                                size="default"
-                                className="!bg-[#6441a5] px-4 text-white hover:!bg-[#6441a5]/90"
-                            >
-                                <Link
-                                    target="_blank"
-                                    rel="noopener noreferrer nofollow"
-                                    data-sa-click={`${gameSlug}-twitch-heading`}
-                                    href={addUTMParameters({
-                                        utm_source: "arpg-timeline",
-                                        utm_medium: "link",
-                                        utm_campaign: "twitch-category",
-                                        utm_content: gameSlug,
-                                    })(
-                                        `https://www.twitch.tv/directory/category/${game.twitchCategory}`,
-                                    )}
-                                >
-                                    <Twitch className="mr-2 h-4 w-4" />
-                                    Twitch
-                                </Link>
-                            </Button>
-                        )}
-                        <Button variant="default" size="default" asChild className="px-4">
-                            <Link href="/" data-sa-click="back-to-homepage">
-                                <LayoutDashboard className="mr-2 h-4 w-4" />
-                                Other games
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-
+            <div className="relative container mx-auto py-6">
                 <GameHeaderSection game={game} gameSlug={gameSlug} steamAppId={steamAppId} />
 
                 <div className="mb-4 flex flex-col justify-between gap-4 md:mb-6 md:gap-6 lg:flex-row">

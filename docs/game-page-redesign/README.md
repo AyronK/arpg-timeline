@@ -30,10 +30,9 @@ An audit of the current page found it has no single job. It is ten same-weight c
    | News | `/game/[gameSlug]/news` | Steam/official feed plus site articles in one list |
    | Guides | `/game/[gameSlug]/resources` | existing resources index. Needs a useful empty state (most games have no articles) |
    | Stats | `/game/[gameSlug]/stats` | **new route**: full statistics + Steam players |
-2. **No estimates, anywhere.** If the next season is not announced, say "Not announced yet".
-   Never show a predicted or simulated date. Note: `parseGamesFromSanity` fills in simulated
-   dates (`calculateSimulatedDate`) for an unconfirmed next season. The new UI must only
-   render confirmed dates.
+2. **Same date rules as the dashboard.** Now/Next cards and the header status line follow
+   exactly the dashboard `GameCard` rules for progress, end dates and unconfirmed seasons
+   (superseded the earlier "no estimates anywhere" rule).
 3. **Keep the official news feed** (Steam / Blizzard via `GameNewsService`, the `game_news`
    table). There are few editorial articles, so the feed is the main news source. Label each
    item with its source.
@@ -97,12 +96,51 @@ Implementation notes:
 - Responsive: header actions wrap, sidebar stacks under the main column on mobile, tab bar
   scrolls horizontally if it overflows. No mobile mockup exists yet.
 
-## Open questions (ask the owner before deciding)
+## Resolved decisions (grilling session, 2026-10-11)
 
-- Calendar vs Discord bot weight: equal buttons (as mocked) or calendar primary, bot secondary?
-- News feed items: titles only or with a one-line excerpt? Filter out store sales?
-- Header "Get notified" and the Next-card buttons both appear on Overview. Keep both or one?
-- States not mocked: announced next season with a date, non-seasonal/dormant games, games without Steam.
+Structure:
+- Tab routes move into `[gameSlug]/(hub)/` (route group, URLs unchanged), including
+  `news/page/[page]` and `resources/page/[page]`. `[articleSlug]` detail pages stay outside.
+- h1: game name on Overview; on sub-pages the tab title is the h1 and the header game name
+  is a styled non-heading element.
+- `/stats` is indexed, with its own metadata, and added to `sitemap.ts` for seasonal games.
+
+Notify actions:
+- Header "Get notified" opens a menu (Add to calendar / Discord bot) on every tab.
+- Next card keeps "Add to calendar" and "Discord bot" as equal-weight buttons while the next
+  season is unannounced.
+
+News:
+- News tab: two blocks, "Official announcements" above "Our articles". Official block on
+  page 1 only; `/news/page/[n]` stays articles-only. Hide empty blocks; one "No news yet"
+  message if both are empty.
+- Source label derived, no schema change: `steam_app_id` set -> "Steam", null -> "Official";
+  Sanity articles -> "aRPG Timeline". No store-sale filtering.
+- Overview "Latest": 3 newest across both sources, mixed by date, titles only. News tab shows
+  a one-line clamped excerpt.
+
+Stats:
+- Players: live count + `SteamDBEmbed` 7-day chart only (no 24h/all-time peak numbers, no new
+  data source).
+- Rhythm "All / Last 3": both sets computed server-side, small client toggle, default All.
+
+States:
+| Game | Overview | Hidden tabs |
+|---|---|---|
+| Dormant | Now card "No active {season}"; Next, Rhythm, Recent stay | - |
+| Coming soon | One Release card replaces Now/Next; no Rhythm/Recent | Timeline, Stats |
+| Non-seasonal | Latest + sidebar only | Timeline, Stats |
+| No Steam | No player chip; Stats tab without players section | - |
+
+Delivery: five phases, stopping after each for review/commit:
+1. Hub layout, shared header, tab bar on existing pages
+2. Overview rebuild
+3. News blocks
+4. Stats route
+5. Guides empty state + delete unused page components (shared ones only if unused elsewhere)
+
+Add unit tests for new pure helpers (Now/Next state, rhythm tiles, news source labels, tab
+visibility per game type).
 
 ## Repo rules
 
