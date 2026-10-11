@@ -10,7 +10,7 @@ import { sa_event } from "@/lib/sa_event";
 
 // Same segmented footer look as the dashboard game cards
 const segmentClassName =
-    "hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring flex flex-1 cursor-pointer items-center justify-center gap-1.5 px-3 text-xs font-medium opacity-75 transition-colors hover:opacity-100 focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset";
+    "whitespace-nowrap hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring flex flex-1 cursor-pointer items-center justify-center gap-1.5 px-3 text-xs font-medium opacity-75 transition-colors hover:opacity-100 focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset";
 
 export const NextSeasonCtas = ({ gameSlug, gameName }: { gameSlug: string; gameName: string }) => {
     const [open, setOpen] = useState(false);
@@ -28,7 +28,8 @@ export const NextSeasonCtas = ({ gameSlug, gameName }: { gameSlug: string; gameN
                     }}
                 >
                     <CalendarSync className="h-3.5 w-3.5" aria-hidden />
-                    Subscribe to calendar
+                    <span className="md:hidden">Calendar</span>
+                    <span className="hidden md:inline">Subscribe to calendar</span>
                 </button>
                 <Link
                     href="/discord-bot"
@@ -36,7 +37,8 @@ export const NextSeasonCtas = ({ gameSlug, gameName }: { gameSlug: string; gameN
                     data-sa-click={`${gameSlug}-timeline-discord-bot`}
                 >
                     <FaDiscord className="h-3.5 w-3.5" aria-hidden />
-                    Get the Discord bot
+                    <span className="md:hidden">Discord bot</span>
+                    <span className="hidden md:inline">Get the Discord bot</span>
                 </Link>
             </div>
             <CalendarSubscribeDialog
