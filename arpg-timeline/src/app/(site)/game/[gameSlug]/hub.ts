@@ -1,4 +1,4 @@
-export type HubTabId = "overview" | "timeline" | "news" | "guides";
+export type HubTabId = "overview" | "timeline" | "news" | "guides" | "stats";
 
 export interface HubTab {
     id: HubTabId;
@@ -18,6 +18,7 @@ const TAB_SEGMENTS: Record<HubTabId, string | null> = {
     timeline: "timeline",
     news: "news",
     guides: "resources",
+    stats: "stats",
 };
 
 const TAB_LABELS: Record<HubTabId, string> = {
@@ -25,17 +26,20 @@ const TAB_LABELS: Record<HubTabId, string> = {
     timeline: "Timeline",
     news: "News",
     guides: "Guides",
+    stats: "Stats",
 };
 
 const hasSeasonHistory = (game: HubGame) =>
     !!game.categories?.includes("seasonal") && !game.isComingSoon;
 
 export const getHubTabs = (game: HubGame): HubTab[] => {
+    const seasonal = hasSeasonHistory(game);
     const ids: HubTabId[] = [
         "overview",
-        ...(hasSeasonHistory(game) ? ["timeline" as const] : []),
+        ...(seasonal ? ["timeline" as const] : []),
         "news",
         "guides",
+        ...(seasonal ? ["stats" as const] : []),
     ];
 
     return ids.map((id) => {
@@ -47,6 +51,8 @@ export const getHubTabs = (game: HubGame): HubTab[] => {
         };
     });
 };
+
+export const getStatsPath = (gameSlug: string): string => `/game/${gameSlug}/stats`;
 
 export const getActiveHubTab = (segment: string | null): HubTabId =>
     (Object.entries(TAB_SEGMENTS).find(([, s]) => s !== null && s === segment)?.[0] as

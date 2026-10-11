@@ -21,6 +21,7 @@ import { OverviewSidebar } from "../components/overview/OverviewSidebar";
 import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
 import { NextCard, NowCard } from "../components/overview/StatusCards";
 import { getGameFeed } from "../feed";
+import { getStatsPath } from "../hub";
 import {
     buildGamePageDescription,
     buildGamePageOgDescription,
@@ -143,6 +144,14 @@ const GamePage = async ({ params }: GamePageProps) => {
                             recentCount={RECENT_SEASON_COUNT}
                             terms={terms}
                             gameSlug={gameSlug}
+                            footer={
+                                <CardLink
+                                    href={getStatsPath(gameSlug)}
+                                    saClick={`${gameSlug}-rhythm-all-stats`}
+                                >
+                                    All statistics
+                                </CardLink>
+                            }
                         />
                     )}
 

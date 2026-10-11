@@ -4,6 +4,7 @@ import {
     getTimelinePath,
     isSeasonalGame,
 } from "@/app/(site)/game/[gameSlug]/(hub)/timeline/timeline";
+import { getStatsPath } from "@/app/(site)/game/[gameSlug]/hub";
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { getArticlePath } from "@/lib/articles/articleUrl";
 import { getArticleStaticParams } from "@/lib/articles/getArticleData";
@@ -116,6 +117,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                             lastModified: new Date(),
                             changeFrequency: "weekly",
                             priority: 0.6,
+                        });
+                    }
+                    if (isSeasonalGame(game) && !game.isComingSoon) {
+                        sitemap.push({
+                            url: `${baseUrl}${getStatsPath(game.slug)}`,
+                            lastModified: new Date(),
+                            changeFrequency: "weekly",
+                            priority: 0.5,
                         });
                     }
                     sitemap.push(

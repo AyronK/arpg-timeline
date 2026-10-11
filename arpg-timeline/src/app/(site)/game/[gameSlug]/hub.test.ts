@@ -6,18 +6,19 @@ const now = new Date("2026-10-11T12:00:00Z");
 const fmt = (iso: string) => iso.slice(0, 10);
 
 describe("getHubTabs", () => {
-    it("includes Timeline for seasonal games", () => {
+    it("includes Timeline and Stats for seasonal games", () => {
         const tabs = getHubTabs({ slug: "poe", categories: ["seasonal"] });
-        expect(tabs.map((t) => t.id)).toEqual(["overview", "timeline", "news", "guides"]);
+        expect(tabs.map((t) => t.id)).toEqual(["overview", "timeline", "news", "guides", "stats"]);
         expect(tabs.map((t) => t.href)).toEqual([
             "/game/poe",
             "/game/poe/timeline",
             "/game/poe/news",
             "/game/poe/resources",
+            "/game/poe/stats",
         ]);
     });
 
-    it("hides Timeline for non-seasonal and coming-soon games", () => {
+    it("hides Timeline and Stats for non-seasonal and coming-soon games", () => {
         expect(getHubTabs({ slug: "x" }).map((t) => t.id)).toEqual(["overview", "news", "guides"]);
         expect(
             getHubTabs({ slug: "x", categories: ["seasonal"], isComingSoon: true }).map(
@@ -34,6 +35,7 @@ describe("getActiveHubTab", () => {
         expect(getActiveHubTab("timeline")).toBe("timeline");
         expect(getActiveHubTab("news")).toBe("news");
         expect(getActiveHubTab("resources")).toBe("guides");
+        expect(getActiveHubTab("stats")).toBe("stats");
     });
 });
 

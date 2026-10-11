@@ -137,6 +137,7 @@ export const StatisticsSection = ({
     statistics,
     recentStatistics,
     recentSeasonCount = 3,
+    totalCount,
     oldestSeasonInfo,
 }: StatisticsSectionProps) => {
     const terms = buildSeasonTerms(game.seasonKeyword);
@@ -159,10 +160,10 @@ export const StatisticsSection = ({
                     <h2 className="font-heading text-lg md:text-xl">{terms.One} statistics</h2>
                     <TabsList className={tabsListClass}>
                         <TabsTrigger className={tabsTriggerClass} value="all-time">
-                            All {terms.many}
+                            All {totalCount ?? ""} {terms.many}
                         </TabsTrigger>
                         <TabsTrigger className={tabsTriggerClass} value="recent">
-                            Last {recentSeasonCount} {terms.many}
+                            Last {recentSeasonCount}
                         </TabsTrigger>
                     </TabsList>
                 </div>

@@ -80,5 +80,7 @@ export interface StatisticsSectionProps {
     recentStatistics?: GameStatistics;
     /** Number of seasons the recent scope is based on (used for labels/headings). */
     recentSeasonCount?: number;
+    // Shown in the "All" toggle, matching the Overview rhythm card
+    totalCount?: number;
     oldestSeasonInfo: string;
 }
