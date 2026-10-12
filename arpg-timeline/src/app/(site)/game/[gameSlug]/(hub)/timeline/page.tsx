@@ -23,7 +23,6 @@ import {
     buildTimelineSummary,
     countGameEntries,
     getTimelinePath,
-    hasSeasonHistory,
     hasTimeline,
     TimelineSummary,
 } from "./timeline";
@@ -63,18 +62,16 @@ const TimelinePage = async ({ params }: GamePageProps) => {
 
     const summary = buildTimelineSummary(entries);
     // Same soft hint as the Overview Next card while the next season is unannounced
-    const cadenceHint =
-        hasSeasonHistory(game) && !game.isDormant
-            ? buildCadenceHint({
-                  currentStart: game.currentSeason?.start?.startDate,
-                  medianDays: calculateGameStatistics(data, gameSlug).medianDuration,
-                  trackedCount: countTrackedSeasons(data, gameSlug),
-                  terms,
-                  now: new Date(),
-              })
-            : null;
-    const displayEntries =
-        game.isDormant || game.isComingSoon ? entries : addNextPlaceholder(entries, terms.One);
+    const cadenceHint = !game.isDormant
+        ? buildCadenceHint({
+              currentStart: game.currentSeason?.start?.startDate,
+              medianDays: calculateGameStatistics(data, gameSlug).medianDuration,
+              trackedCount: countTrackedSeasons(data, gameSlug),
+              terms,
+              now: new Date(),
+          })
+        : null;
+    const displayEntries = game.isComingSoon ? entries : addNextPlaceholder(entries, terms.One);
     const itemList = buildTimelineItemList(
         entries,
         `${game.name} ${terms.many} timeline`,

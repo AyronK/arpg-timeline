@@ -1,9 +1,11 @@
+import { CommunityLabel } from "@/components/CommunityLabel";
 import { SanityImage } from "@/components/SanityImage";
 import { SteamPlayersChip } from "@/components/SteamPlayersChip";
 import { Game, Season } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
 
 import { getHubTabs, HubTabFlags } from "../../hub";
+import { EarlyAccessChip } from "../InfoChips";
 import { HubActions } from "./HubActions";
 import { HubBreadcrumbs, HubTabs, HubTitle } from "./HubNav";
 import { HubStatus } from "./HubStatus";
@@ -21,19 +23,13 @@ export const GameHubHeader = ({
     tabFlags: HubTabFlags;
 }) => {
     const tabs = getHubTabs(game.slug, tabFlags);
+    const isCommunity = !game.isOfficial;
+    const showStage = game.isComingSoon || !!game.categories?.includes("early-access");
 
     return (
         <div className="container mx-auto pt-6 md:pt-8">
             <HubBreadcrumbs gameName={game.name} tabs={tabs} />
-            {/* Share alone (dormant, no calendar) stays on the title row instead of its own line */}
-            <div
-                className={cn(
-                    "flex gap-4",
-                    game.isDormant
-                        ? "items-start justify-between md:items-center"
-                        : "flex-col md:flex-row md:items-center md:justify-between",
-                )}
-            >
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 {/* Mobile: logo + title on one row, status full width below. md+: status under the title */}
                 <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-x-4 gap-y-2 md:gap-y-1">
                     {game.logo && (
@@ -48,7 +44,7 @@ export const GameHubHeader = ({
                             />
                         </div>
                     )}
-                    {/* Player chip beside the title; wraps under it when the name is long */}
+                    {/* Badges beside the title; wrap under it when the name is long */}
                     <div
                         className={cn(
                             "flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 md:self-end",
@@ -56,13 +52,27 @@ export const GameHubHeader = ({
                         )}
                     >
                         <HubTitle name={game.name} />
-                        {steam && (
-                            <SteamPlayersChip
-                                playersCount={steam.currentPlayers}
-                                isComingSoon={steam.currentPlayers <= 0 && game.isComingSoon}
-                                appId={steam.appId}
-                                game={game.slug}
-                            />
+                        {/* One group so the badges wrap together */}
+                        {(isCommunity || showStage || steam) && (
+                            <div className="flex items-center gap-2">
+                                {isCommunity && <CommunityLabel />}
+                                {showStage && (
+                                    <EarlyAccessChip
+                                        gameSlug={game.slug}
+                                        isComingSoon={game.isComingSoon}
+                                    />
+                                )}
+                                {steam && (
+                                    <SteamPlayersChip
+                                        playersCount={steam.currentPlayers}
+                                        isComingSoon={
+                                            steam.currentPlayers <= 0 && game.isComingSoon
+                                        }
+                                        appId={steam.appId}
+                                        game={game.slug}
+                                    />
+                                )}
+                            </div>
                         )}
                     </div>
                     <div
@@ -82,16 +92,12 @@ export const GameHubHeader = ({
                         />
                     </div>
                 </div>
-                {/* Mobile dormant: level with the title row (logo h-16), not the whole block */}
-                <div className={cn(game.isDormant && "mt-3.5 md:mt-0")}>
-                    <HubActions
-                        gameSlug={game.slug}
-                        gameName={game.name}
-                        showCalendar={!game.isDormant}
-                        // Mobile: calendar left, share at the far right of its own row
-                        className={cn(!game.isDormant && "justify-between md:justify-start")}
-                    />
-                </div>
+                <HubActions
+                    gameSlug={game.slug}
+                    gameName={game.name}
+                    // Mobile: calendar left, share at the far right of its own row
+                    className="justify-between md:justify-start"
+                />
             </div>
             <HubTabs tabs={tabs} gameSlug={game.slug} />
         </div>

@@ -40,9 +40,7 @@ export const TimelineView = ({
 
     // CTAs go on the first upcoming main season, only while no upcoming start date is confirmed
     const upcomingMain = entries.filter((e) => e.status === "upcoming" && !e.isSideEvent);
-    // No calendar/bot prompts for dormant games
-    const ctaEntryId =
-        game.isDormant || upcomingMain.some((e) => e.startDate) ? undefined : upcomingMain[0]?.id;
+    const ctaEntryId = upcomingMain.some((e) => e.startDate) ? undefined : upcomingMain[0]?.id;
     // Dormant games: the newest started main entry is the last update, live or not
     const latestEntryId = game.isDormant
         ? entries.find((e) => e.status !== "upcoming" && !e.isSideEvent)?.id
@@ -56,7 +54,7 @@ export const TimelineView = ({
     return (
         <>
             {/* Same grid as the hub Overview: main column | sidebar */}
-            <div className="grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
+            <div className="grid gap-4 md:gap-6 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-x-12">
                 <div className="min-w-0">
                     {header}
                     {entries.length === 0 ? (
@@ -92,7 +90,7 @@ export const TimelineView = ({
 
                 <aside>
                     {/* Support card first so it sits at the same height on every hub tab */}
-                    <div className="flex flex-col gap-4 md:gap-6 lg:sticky lg:top-12">
+                    <div className="flex flex-col gap-4 md:gap-6 xl:sticky xl:top-12">
                         {aside}
                         <div className="hidden xl:block">
                             <ArticleToc headings={tocHeadings} variant="sidebar" />

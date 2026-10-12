@@ -20,12 +20,10 @@ const addUTM = addUTMParameters({
 export const HubActions = ({
     gameSlug,
     gameName,
-    showCalendar,
     className,
 }: {
     gameSlug: string;
     gameName: string;
-    showCalendar: boolean;
     className?: string;
 }) => {
     const [calendarOpen, setCalendarOpen] = useState(false);
@@ -49,25 +47,21 @@ export const HubActions = ({
 
     return (
         <div className={cn("flex items-start gap-1", className)}>
-            {showCalendar && (
-                <>
-                    {/* Caption beside the button on mobile, under it from md up */}
-                    <div className="flex items-center gap-3 md:flex-col md:gap-1">
-                        <Button
-                            variant="outlineCard"
-                            data-sa-click={`${gameSlug}-hub-calendar-subscribe`}
-                            onClick={() => {
-                                sa_event("calendar_subscribe_opened", { game: gameSlug });
-                                setCalendarOpen(true);
-                            }}
-                        >
-                            <CalendarSync className="mr-2 h-4 w-4" aria-hidden />
-                            Add to calendar
-                        </Button>
-                        <span className="text-muted-foreground text-xs">Free · no sign-up</span>
-                    </div>
-                </>
-            )}
+            {/* Caption beside the button on mobile, under it from md up */}
+            <div className="flex items-center gap-3 md:flex-col md:gap-1">
+                <Button
+                    variant="outlineCard"
+                    data-sa-click={`${gameSlug}-hub-calendar-subscribe`}
+                    onClick={() => {
+                        sa_event("calendar_subscribe_opened", { game: gameSlug });
+                        setCalendarOpen(true);
+                    }}
+                >
+                    <CalendarSync className="mr-2 h-4 w-4" aria-hidden />
+                    Add to calendar
+                </Button>
+                <span className="text-muted-foreground text-xs">Free · no sign-up</span>
+            </div>
             <Button
                 variant="ghost"
                 size="icon"
@@ -77,14 +71,12 @@ export const HubActions = ({
             >
                 <Share2 className="h-4 w-4" aria-hidden />
             </Button>
-            {showCalendar && (
-                <CalendarSubscribeDialog
-                    open={calendarOpen}
-                    onOpenChange={setCalendarOpen}
-                    gameSlug={gameSlug}
-                    gameName={gameName}
-                />
-            )}
+            <CalendarSubscribeDialog
+                open={calendarOpen}
+                onOpenChange={setCalendarOpen}
+                gameSlug={gameSlug}
+                gameName={gameName}
+            />
         </div>
     );
 };

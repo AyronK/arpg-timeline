@@ -8,14 +8,13 @@ import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
 import { getStructuredDataForGame } from "@/lib/games/getStructuredDataForGame";
 import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms } from "@/lib/seasonTerms";
-import { cn } from "@/lib/utils";
 
 import { LatestList } from "../components/overview/LatestList";
 import { LeagueRhythm, RhythmData } from "../components/overview/LeagueRhythm";
 import { CardLink, OverviewCard } from "../components/overview/OverviewCard";
 import { OverviewSidebar } from "../components/overview/OverviewSidebar";
 import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
-import { NextCard, NowCard } from "../components/overview/StatusCards";
+import { NextCard, NowCard, PrelaunchCard } from "../components/overview/StatusCards";
 import { getGameFeed } from "../feed";
 import { getGameDetails } from "../gameData";
 import { getStatsPath, hasSeasonStats, isPlaceholderNext } from "../hub";
@@ -28,7 +27,7 @@ import {
 import { buildCadenceHint, buildLengthTile, buildPerYearTile, mergeLatest } from "../overview";
 import { GamePageProps, GameStatistics } from "../types";
 import { calculateGameStatistics, countTrackedSeasons, getArchivalSeasons } from "../utils";
-import { getTimelinePath, hasSeasonHistory } from "./timeline/timeline";
+import { countGameEntries, getTimelinePath, hasTimeline } from "./timeline/timeline";
 
 const RECENT_SEASON_COUNT = 3;
 const LATEST_COUNT = 3;
@@ -47,7 +46,8 @@ const GamePage = async ({ params }: GamePageProps) => {
     );
 
     const terms = buildSeasonTerms(game.seasonKeyword);
-    const hasSeasons = hasSeasonHistory(game);
+    // Same rule as the Timeline tab, so non-seasonal games with history get Now/Next too
+    const hasSeasons = hasTimeline(game, countGameEntries(data.seasons, gameSlug));
 
     const [feed, gameArticles] = await Promise.all([
         getGameFeed(gameSlug, LATEST_COUNT),
@@ -83,18 +83,25 @@ const GamePage = async ({ params }: GamePageProps) => {
           })
         : null;
 
-    // Dormant games only show Next when something is actually announced
-    const showNext = !game.isDormant || !isPlaceholderNext(game.currentSeason, game.nextSeason);
-    const status = game.isComingSoon ? (
-        <NextCard game={game} />
-    ) : hasSeasons || game.isDormant ? (
-        <div className={cn("grid gap-4 md:gap-6", showNext && "md:grid-cols-2")}>
-            <NowCard game={game} />
-            {showNext && <NextCard game={game} cadenceHint={game.isDormant ? null : cadenceHint} />}
+    // Before launch: pre-launch Now card beside the Release/Next card
+    const isPrelaunch =
+        game.isComingSoon ||
+        (!hasSeasons &&
+            !game.isDormant &&
+            !!game.nextSeason &&
+            !isPlaceholderNext(game.currentSeason, game.nextSeason));
+    const status = isPrelaunch ? (
+        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+            {/* Next card shows the calendar/bot strip while its date is unconfirmed */}
+            <PrelaunchCard game={game} showCtas={!!game.nextSeason?.start?.confirmed} />
+            <NextCard game={game} />
         </div>
-    ) : game.nextSeason && !isPlaceholderNext(game.currentSeason, game.nextSeason) ? (
-        // Non-seasonal games: only an announced upcoming entry earns a card
-        <NextCard game={game} />
+    ) : hasSeasons || game.isDormant ? (
+        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+            <NowCard game={game} />
+            {/* No cadence hint for dormant games: their history doesn't predict the next update */}
+            <NextCard game={game} cadenceHint={game.isDormant ? null : cadenceHint} />
+        </div>
     ) : null;
 
     const structuredData = getStructuredDataForGame(game);
@@ -127,7 +134,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                     }}
                 />
             )}
-            <div className="relative container mx-auto grid items-start gap-4 py-6 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
+            <div className="relative container mx-auto grid items-start gap-4 py-6 md:gap-6 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-x-12">
                 <div className="flex min-w-0 flex-col gap-4 md:gap-6">
                     {status}
                     {hasRhythm && (

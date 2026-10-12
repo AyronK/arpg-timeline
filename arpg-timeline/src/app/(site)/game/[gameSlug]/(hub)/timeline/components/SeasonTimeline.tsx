@@ -35,11 +35,11 @@ export const SeasonTimeline = ({
         <div className="relative w-full">
             <div
                 aria-hidden
-                className="bg-border absolute top-0 bottom-0 left-3 w-px -translate-x-1/2 md:left-1/2"
+                className="bg-border absolute top-0 bottom-0 left-3 w-px -translate-x-1/2 lg:left-1/2"
             />
             {groups.map((group) => (
                 <section key={group.key} id={`year-${group.key}`} aria-label={group.label}>
-                    <h2 className="py-2 pl-10 md:pl-0 md:text-center">
+                    <h2 className="py-2 pl-10 lg:pl-0 lg:text-center">
                         <span className="bg-background font-heading text-muted-foreground inline-block rounded-md border px-3 py-1 text-sm md:text-base">
                             {group.label}
                         </span>
@@ -50,16 +50,16 @@ export const SeasonTimeline = ({
                             return (
                                 <li
                                     key={entry.id}
-                                    className="reveal-on-scroll relative pl-10 md:grid md:grid-cols-2 md:gap-x-12 md:pl-0"
+                                    className="reveal-on-scroll relative pl-10 lg:grid lg:grid-cols-2 lg:gap-x-12 lg:pl-0"
                                 >
                                     <span
                                         aria-hidden
                                         className={cn(
-                                            "bg-background absolute top-6 left-3 size-3 -translate-x-1/2 rounded-full border-2 md:left-1/2",
+                                            "bg-background absolute top-6 left-3 size-3 -translate-x-1/2 rounded-full border-2 lg:left-1/2",
                                             DOT_COLOR[entry.status],
                                         )}
                                     />
-                                    <div className={left ? "md:col-start-1" : "md:col-start-2"}>
+                                    <div className={left ? "lg:col-start-1" : "lg:col-start-2"}>
                                         <TimelineEntryCard
                                             entry={entry}
                                             gameLogo={gameLogo}

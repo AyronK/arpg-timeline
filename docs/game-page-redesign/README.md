@@ -105,8 +105,8 @@ Structure:
   is a styled non-heading element.
 - `/stats` is indexed, with its own metadata, and listed in `sitemap.ts`.
 - Tab visibility (`hub.ts`, `timeline.ts`): Timeline for released games with 2+ entries
-  (seasonal or not); Stats for released seasonal games (full stats) or released Steam games
-  (players only); Guides only when the game has guide articles. Sitemap follows the same rules
+  (seasonal or not); Stats for released games with 3+ tracked entries (full stats, seasonal or not) or released
+  Steam games (players only); Guides only when the game has guide articles. Sitemap follows the same rules
   and leaves out all `resources` URLs for now.
 
 Notify actions:
@@ -116,6 +116,7 @@ Notify actions:
 - Next card keeps "Add to calendar" and "Get the Discord bot" as an equal-weight strip
   (`NextSeasonCtas`) while the next season is unannounced.
 - Dormant games get no calendar/bot prompts anywhere (header, Next card, Timeline).
+  (Superseded 2026-10-12: dormant games get the calendar button and CTAs like any other game.)
 
 News:
 - News tab: our article cards plus a compact "Official announcements" list (5 newest feed
@@ -145,9 +146,9 @@ Overview (as built):
 States:
 | Game | Overview | Hidden tabs |
 |---|---|---|
-| Dormant | Header + Now card: "No recent updates", last update month; Next only if announced | - |
-| Coming soon | One Release card replaces Now/Next; no Rhythm/Recent | Timeline, Stats |
-| Non-seasonal | Latest + sidebar (Now card only when dormant) | Timeline <2 entries; Stats without Steam |
+| Dormant | Now card ("No recent updates", last update month) + Next card with CTAs; header calendar button; no cadence hint | - |
+| Coming soon | Pre-launch Now card + Release card (superseded the single Release card); no Rhythm/Recent | Timeline, Stats |
+| Non-seasonal | Same as seasonal once it has a timeline (2+ entries): Now/Next, Rhythm (3+ tracked), Recent | Timeline <2 entries; Stats without Steam and <3 tracked |
 | No Steam | No player chip; Stats tab without players section | - |
 
 Delivery: five phases, stopping after each for review/commit:
@@ -226,8 +227,23 @@ Open items:
   the support card (articles, then the official feed, at full column width). Overview keeps one
   Now card (latest entry, like the dashboard).
 - Steam excerpts drop Markdown escapes. Next card hides "We'll add it..." when editor text exists.
-- Kept on purpose: two player counts on Stats (ours + SteamDB), Next-card button wording,
+- Kept on purpose: Next-card button wording,
   dashboard side-event behaviour.
+
+## Feedback round (2026-10-12)
+
+- Non-seasonal games (e.g. Ravenswatch) are no longer cut down: Overview Now/Next, Recent and
+  cadence hint follow `hasTimeline` (released, seasonal or 2+ entries); Rhythm and full Stats
+  need 3+ tracked entries regardless of category. `hasSeasonHistory` removed.
+- Timeline card logos are 16:9; logo size and stacking follow the card width (container queries).
+- Sidebar column (support card etc.) starts at `xl` instead of `lg` on every hub tab; below
+  that it stacks under the main column.
+- Header badges (one wrapping group): community (dashboard `CommunityLabel`), Early Access or
+  Coming soon (neutral, links to `/dashboard/early-access`), Steam. Side event chip is neutral
+  with a tooltip.
+- A game whose only entry is upcoming (e.g. Emberville) gets a pre-launch Now card ("Not
+  released yet" + calendar / Discord bot strip) beside the Next card. Coming-soon games use the
+  same pair; the strip shows on only one card (Next while its date is unconfirmed).
 
 ## Repo rules
 

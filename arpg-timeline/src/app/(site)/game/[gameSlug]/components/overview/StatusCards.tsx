@@ -38,12 +38,35 @@ export const NowCard = ({ game }: { game: Game }) => {
     );
 };
 
+// Fills the Now slot before launch. No CTAs when the Next card beside it already has them.
+export const PrelaunchCard = ({ game, showCtas }: { game: Game; showCtas: boolean }) => (
+    // CTA strip sits outside the padded body so it runs edge to edge, like the Next card
+    <div className={cn(cardClassName, "flex flex-col overflow-hidden !p-0")}>
+        <div className="flex flex-1 flex-col gap-3 p-4 md:p-6">
+            <Chip className={cn(ChipColorMap.now, "w-12 text-center text-xs")}>Now</Chip>
+            <p className="font-heading text-xl leading-tight md:text-2xl">Not released yet</p>
+            <p className="text-muted-foreground text-sm">
+                {showCtas
+                    ? "Add it to your calendar or get the Discord bot to know the moment it launches."
+                    : "We'll update this page the moment it launches."}
+            </p>
+        </div>
+        {showCtas && (
+            <NextSeasonCtas
+                gameSlug={game.slug}
+                gameName={game.name}
+                placement="prelaunch"
+                className="!m-0"
+            />
+        )}
+    </div>
+);
+
 // Also used as the Release card for coming-soon games.
 export const NextCard = ({ game, cadenceHint }: { game: Game; cadenceHint?: string | null }) => {
     const heading = buildNextSeasonHeading(game);
     const confirmed = !!game.nextSeason?.start?.confirmed;
-    // Dormant games get no calendar/bot prompts
-    const showCtas = !confirmed && !game.isDormant;
+    const showCtas = !confirmed;
     // Editor text already says what's known about the date
     const showPromise = showCtas && !getEditorStartText(game.nextSeason?.start);
 

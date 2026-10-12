@@ -71,7 +71,7 @@ export const ArticleIndex = ({
         return (
             <div className={containerClass}>
                 {showBreadcrumbs && <Breadcrumbs crumbs={crumbs} />}
-                <div className="grid items-start gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
+                <div className="grid items-start gap-4 md:gap-6 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-x-12">
                     <div className="flex min-w-0 flex-col gap-10">
                         <div>
                             {header}
@@ -99,7 +99,7 @@ export const ArticleIndex = ({
                         </div>
                         {extra}
                     </div>
-                    <aside className="lg:sticky lg:top-12">{aside}</aside>
+                    <aside className="xl:sticky xl:top-12">{aside}</aside>
                 </div>
             </div>
         );

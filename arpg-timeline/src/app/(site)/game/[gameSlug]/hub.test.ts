@@ -36,12 +36,12 @@ describe("tab rules", () => {
         expect(hasTimeline({ categories: ["seasonal"], isComingSoon: true }, 5)).toBe(false);
     });
 
-    it("gives Stats to seasonal games with enough history and released Steam games", () => {
-        expect(hasStatsTab({ categories: ["seasonal"] }, false, 3)).toBe(true);
-        expect(hasStatsTab({ categories: ["seasonal"] }, false, 2)).toBe(false);
-        expect(hasStatsTab({ categories: ["seasonal"] }, true, 1)).toBe(true);
-        expect(hasStatsTab({}, true, 0)).toBe(true);
+    it("gives Stats to games with enough history and released Steam games", () => {
+        expect(hasStatsTab({}, false, 3)).toBe(true);
+        expect(hasStatsTab({}, false, 2)).toBe(false);
+        expect(hasStatsTab({}, true, 1)).toBe(true);
         expect(hasStatsTab({}, false, 0)).toBe(false);
+        expect(hasStatsTab({ isComingSoon: true }, false, 5)).toBe(false);
         expect(hasStatsTab({ isComingSoon: true }, true, 0)).toBe(false);
     });
 });

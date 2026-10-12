@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
+import { SideEventChip } from "../../../components/InfoChips";
 import { PatchNotesLink, SeasonBadgeRow, SeasonTitle } from "../../../components/SeasonCardParts";
-import { SideEventChip } from "../../../components/SideEventChip";
 import { getEditorStartText } from "../../../hub";
 import { formatApproxMonths, TimelineEntry } from "../timeline";
 import { LocalStartDate } from "./LocalStartDate";
@@ -140,26 +140,27 @@ export const TimelineEntryCard = ({
     return (
         <div
             className={cn(
-                "bg-card text-card-foreground flex flex-col gap-3 rounded-lg border p-3 md:p-4",
+                "bg-card text-card-foreground @container flex flex-col gap-3 rounded-lg border p-3 md:p-4",
                 entry.status === "live" && !isDormantLatest && "border-sky-500/50",
                 entry.status === "upcoming" && "border-emerald-500/50",
             )}
         >
             {(chips || patchNotes) && <SeasonBadgeRow chips={chips} action={patchNotes} />}
-            {/* Logo on the centre-line side; text always reads left to right like the Overview cards */}
+            {/* Logo on the centre-line side; stacked above the title when the card is narrow */}
             <div
                 className={cn(
-                    "flex items-center gap-3 md:gap-4",
-                    align === "left" && "md:flex-row-reverse",
+                    "flex flex-col items-start gap-3 @sm:flex-row @sm:items-center @md:gap-4",
+                    // Mirror only while the timeline is two-sided
+                    align === "left" && "lg:@sm:flex-row-reverse",
                 )}
             >
-                <div className="grid h-14 w-14 shrink-0 place-items-center md:h-24 md:w-24">
+                <div className="grid aspect-video w-24 shrink-0 place-items-center @md:w-40">
                     <SanityImage
                         loading="lazy"
                         src={entry.logo ?? gameLogo}
                         alt={`${entry.name} logo`}
-                        width={96}
-                        height={96}
+                        width={160}
+                        height={90}
                         objectFit="contain"
                         className="h-full w-full"
                     />

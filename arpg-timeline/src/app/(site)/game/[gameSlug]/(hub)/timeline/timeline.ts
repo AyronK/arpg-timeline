@@ -227,10 +227,4 @@ export const hasTimeline = (
     entryCount: number,
 ): boolean => !game.isComingSoon && (isSeasonalGame(game) || entryCount >= 2);
 
-// Seasonal and already released: has league stats
-export const hasSeasonHistory = (game: {
-    categories?: string[];
-    isComingSoon?: boolean | null;
-}): boolean => isSeasonalGame(game) && !game.isComingSoon;
-
 export const getTimelinePath = (gameSlug: string): string => `/game/${gameSlug}/timeline`;

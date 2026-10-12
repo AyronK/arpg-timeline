@@ -50,30 +50,39 @@ export const SeasonTitle = ({
     className?: string;
     saClick?: string;
     onClick?: () => void;
-}) => (
-    <Tag className={cn("font-heading leading-tight", className)}>
-        {href ? (
-            <GuardedExternalLink
-                href={href}
-                isOfficial={isOfficial}
-                noIcon
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-fit underline decoration-transparent underline-offset-4 hover:decoration-current/75"
-                data-sa-click={saClick}
-                onClick={onClick}
-            >
-                {/* One inline span so the icon follows the last word when the title wraps */}
-                <span>
-                    {title}
-                    <ExternalLinkIcon
-                        className="ml-1 inline-block h-3.5 w-3.5 align-baseline opacity-70"
-                        aria-hidden
-                    />
-                </span>
-            </GuardedExternalLink>
-        ) : (
-            title
-        )}
-    </Tag>
-);
+}) => {
+    const split = title.lastIndexOf(" ") + 1;
+    const head = title.slice(0, split);
+    const lastWord = title.slice(split);
+
+    return (
+        <Tag className={cn("font-heading leading-tight", className)}>
+            {href ? (
+                <GuardedExternalLink
+                    href={href}
+                    isOfficial={isOfficial}
+                    noIcon
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-fit underline decoration-transparent underline-offset-4 hover:decoration-current/75"
+                    data-sa-click={saClick}
+                    onClick={onClick}
+                >
+                    {/* Last word and icon never split, so the icon can't wrap onto its own line */}
+                    <span>
+                        {head}
+                        <span className="whitespace-nowrap">
+                            {lastWord}
+                            <ExternalLinkIcon
+                                className="ml-1 inline-block h-3.5 w-3.5 align-text-top opacity-70"
+                                aria-hidden
+                            />
+                        </span>
+                    </span>
+                </GuardedExternalLink>
+            ) : (
+                title
+            )}
+        </Tag>
+    );
+};

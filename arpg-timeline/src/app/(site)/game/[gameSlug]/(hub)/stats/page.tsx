@@ -38,7 +38,7 @@ const StatsPage = async ({ params }: GamePageProps) => {
         notFound();
     }
 
-    // Non-seasonal games and short histories only get the Steam players section
+    // Short histories only get the Steam players section
     const seasonal = hasSeasonStats(game, trackedCount);
     const terms = buildSeasonTerms(game.seasonKeyword);
     const statistics = calculateGameStatistics(data, gameSlug);
@@ -59,7 +59,7 @@ const StatsPage = async ({ params }: GamePageProps) => {
     return (
         <>
             <BreadcrumbSchema crumbs={crumbs} />
-            <div className="relative container mx-auto grid items-start gap-4 py-6 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
+            <div className="relative container mx-auto grid items-start gap-4 py-6 md:gap-6 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-x-12">
                 <div className="flex min-w-0 flex-col gap-4 md:gap-6">
                     <header>
                         <h1 className="font-heading text-2xl md:text-3xl">
@@ -85,16 +85,6 @@ const StatsPage = async ({ params }: GamePageProps) => {
 
                     {steam && (
                         <OverviewCard title="Players on Steam">
-                            {steam.currentPlayers > 0 && (
-                                <p className="mb-4">
-                                    <span className="font-heading text-2xl">
-                                        {steam.currentPlayers.toLocaleString("en-US")}
-                                    </span>{" "}
-                                    <span className="text-muted-foreground text-sm">
-                                        playing right now
-                                    </span>
-                                </p>
-                            )}
                             {seasonal || steam.currentPlayers > 0 ? (
                                 <SteamDBEmbed appId={steam.appId} />
                             ) : (
@@ -108,7 +98,7 @@ const StatsPage = async ({ params }: GamePageProps) => {
                     )}
                 </div>
 
-                <aside className="lg:sticky lg:top-12">
+                <aside className="xl:sticky xl:top-12">
                     <SupportCard />
                 </aside>
             </div>

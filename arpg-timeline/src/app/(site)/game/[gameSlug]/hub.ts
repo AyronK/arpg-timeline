@@ -1,7 +1,5 @@
 import { buildSeasonTerms } from "@/lib/seasonTerms";
 
-import { hasSeasonHistory } from "./(hub)/timeline/timeline";
-
 export type HubTabId = "overview" | "timeline" | "news" | "guides" | "stats";
 
 export interface HubTab {
@@ -20,14 +18,15 @@ export interface HubTabFlags {
 // Fewer tracked seasons than this make averages and ranges meaningless
 export const MIN_STATS_SEASONS = 3;
 
+// Seasonal or not: any released game with enough history
 export const hasSeasonStats = (
-    game: { categories?: string[]; isComingSoon?: boolean | null },
+    game: { isComingSoon?: boolean | null },
     trackedCount: number,
-): boolean => hasSeasonHistory(game) && trackedCount >= MIN_STATS_SEASONS;
+): boolean => !game.isComingSoon && trackedCount >= MIN_STATS_SEASONS;
 
-// Seasonal games with enough history get league stats; other released games get Steam players only
+// Games with enough history get season stats; other released games get Steam players only
 export const hasStatsTab = (
-    game: { categories?: string[]; isComingSoon?: boolean | null },
+    game: { isComingSoon?: boolean | null },
     hasSteam: boolean,
     trackedCount: number,
 ): boolean => hasSeasonStats(game, trackedCount) || (!game.isComingSoon && hasSteam);

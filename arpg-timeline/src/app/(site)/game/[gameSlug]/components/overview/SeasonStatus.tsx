@@ -12,8 +12,8 @@ import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
 import { getEditorStartText, isPlaceholderNext } from "../../hub";
+import { SideEventChip } from "../InfoChips";
 import { PatchNotesLink, SeasonBadgeRow, SeasonTitle } from "../SeasonCardParts";
-import { SideEventChip } from "../SideEventChip";
 
 // Overview-sized variant of GameToSeasonWidget: same Content rules, larger title.
 export const SeasonStatus = ({
