@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
@@ -9,7 +10,6 @@ import { sanityFetch } from "@/lib/sanity/sanityClient";
 import { buildSeasonTerms, SeasonTerms } from "@/lib/seasonTerms";
 import { SITE_URL } from "@/lib/siteUrl";
 
-import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { getGameDetails } from "../../gameData";
 import { buildCadenceHint } from "../../overview";
 import { GamePageProps } from "../../types";

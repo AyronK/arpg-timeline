@@ -11,6 +11,7 @@ import {
     formatDateRange,
     formatSeasonRow,
     mergeLatest,
+    pickStatusLayout,
 } from "./overview";
 import type { GameStatistics } from "./types";
 
@@ -205,5 +206,39 @@ describe("feedSource", () => {
     it("labels Steam items and falls back to Official", () => {
         expect(feedSource(238960)).toBe("Steam");
         expect(feedSource(null)).toBe("Official");
+    });
+});
+
+describe("pickStatusLayout", () => {
+    const current = { _id: "s1" };
+    const announced = { _id: "s2" };
+    const placeholder = { _id: "s1" };
+
+    it("gives seasonal and timeline games Now + Next", () => {
+        expect(pickStatusLayout({ currentSeason: current, nextSeason: placeholder }, true)).toBe(
+            "now-next",
+        );
+    });
+
+    it("gives dormant games Now + Next even without history", () => {
+        expect(pickStatusLayout({ isDormant: true, currentSeason: current }, false)).toBe(
+            "now-next",
+        );
+    });
+
+    it("uses the pre-launch pair for coming-soon games", () => {
+        expect(pickStatusLayout({ isComingSoon: true, nextSeason: announced }, false)).toBe(
+            "prelaunch",
+        );
+    });
+
+    it("uses the pre-launch pair when the only entry is an announced upcoming one", () => {
+        expect(pickStatusLayout({ nextSeason: announced }, false)).toBe("prelaunch");
+    });
+
+    it("shows nothing for a game with too little history and nothing announced", () => {
+        expect(pickStatusLayout({ currentSeason: current, nextSeason: placeholder }, false)).toBe(
+            null,
+        );
     });
 });

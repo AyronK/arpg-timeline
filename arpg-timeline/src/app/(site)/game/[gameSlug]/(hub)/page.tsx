@@ -17,14 +17,20 @@ import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
 import { NextCard, NowCard, PrelaunchCard } from "../components/overview/StatusCards";
 import { getGameFeed } from "../feed";
 import { getGameDetails } from "../gameData";
-import { getStatsPath, hasSeasonStats, isPlaceholderNext } from "../hub";
+import { getStatsPath, hasSeasonStats } from "../hub";
 import {
     buildGamePageDescription,
     buildGamePageOgDescription,
     buildGamePageOgTitle,
     buildGamePageTitle,
 } from "../metadata";
-import { buildCadenceHint, buildLengthTile, buildPerYearTile, mergeLatest } from "../overview";
+import {
+    buildCadenceHint,
+    buildLengthTile,
+    buildPerYearTile,
+    mergeLatest,
+    pickStatusLayout,
+} from "../overview";
 import { GamePageProps, GameStatistics } from "../types";
 import { calculateGameStatistics, countTrackedSeasons, getArchivalSeasons } from "../utils";
 import { countGameEntries, getTimelinePath, hasTimeline } from "./timeline/timeline";
@@ -83,26 +89,21 @@ const GamePage = async ({ params }: GamePageProps) => {
           })
         : null;
 
-    // Before launch: pre-launch Now card beside the Release/Next card
-    const isPrelaunch =
-        game.isComingSoon ||
-        (!hasSeasons &&
-            !game.isDormant &&
-            !!game.nextSeason &&
-            !isPlaceholderNext(game.currentSeason, game.nextSeason));
-    const status = isPrelaunch ? (
-        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
-            {/* Next card shows the calendar/bot strip while its date is unconfirmed */}
-            <PrelaunchCard game={game} showCtas={!!game.nextSeason?.start?.confirmed} />
-            <NextCard game={game} />
-        </div>
-    ) : hasSeasons || game.isDormant ? (
-        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
-            <NowCard game={game} />
-            {/* No cadence hint for dormant games: their history doesn't predict the next update */}
-            <NextCard game={game} cadenceHint={game.isDormant ? null : cadenceHint} />
-        </div>
-    ) : null;
+    const layout = pickStatusLayout(game, hasSeasons);
+    const status =
+        layout === "prelaunch" ? (
+            <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+                {/* Next card shows the calendar/bot strip while its date is unconfirmed */}
+                <PrelaunchCard game={game} showCtas={!!game.nextSeason?.start?.confirmed} />
+                <NextCard game={game} />
+            </div>
+        ) : layout === "now-next" ? (
+            <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+                <NowCard game={game} />
+                {/* No cadence hint for dormant games: their history doesn't predict the next update */}
+                <NextCard game={game} cadenceHint={game.isDormant ? null : cadenceHint} />
+            </div>
+        ) : null;
 
     const structuredData = getStructuredDataForGame(game);
     const faqSchema =

@@ -8,7 +8,7 @@ import { useChip } from "@/hoc/GameToSeasonWidget/useChip";
 import { Game } from "@/lib/cms/games.types";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
-import { addUTMParameters } from "@/lib/utm";
+import { addGameLinkUTM, addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
 import { getEditorStartText, isPlaceholderNext } from "../../hub";
@@ -55,12 +55,7 @@ export const SeasonStatus = ({
                     season.patchNotesUrl &&
                     !isPlaceholder && (
                         <PatchNotesLink
-                            href={addUTMParameters({
-                                utm_source: "arpg-timeline",
-                                utm_medium: "link",
-                                utm_campaign: "patch-notes",
-                                utm_content: game.slug,
-                            })(season.patchNotesUrl)}
+                            href={addGameLinkUTM("patch-notes", game.slug)(season.patchNotesUrl)}
                             isOfficial={game.isOfficial}
                             saClick={`${season.name}-patch-notes`}
                         />
@@ -79,6 +74,7 @@ export const SeasonStatus = ({
                 }
                 isOfficial={game.isOfficial}
                 className="text-xl md:text-2xl"
+                saClick={`${title}-season-link`}
                 onClick={() => sa_event(`${title}-link-click`)}
             />
             <div className="sr-only">

@@ -100,8 +100,6 @@ export async function renderArticleIndex({
                 showBreadcrumbs={showGame}
                 extra={extra}
                 aside={aside}
-                // Narrower cards under the game hub
-                compact={!showGame}
                 emptyText={emptyText}
                 emptyState={emptyState}
             />

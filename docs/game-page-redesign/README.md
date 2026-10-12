@@ -104,8 +104,8 @@ Structure:
 - h1: game name on Overview; on sub-pages the tab title is the h1 and the header game name
   is a styled non-heading element.
 - `/stats` is indexed, with its own metadata, and listed in `sitemap.ts`.
-- Tab visibility (`hub.ts`, `timeline.ts`): Timeline for released games with 2+ entries
-  (seasonal or not); Stats for released games with 3+ tracked entries (full stats, seasonal or not) or released
+- Tab visibility (`hub.ts`, `timeline.ts`): Timeline for released games that are seasonal or have 2+ entries
+  (confirmed in the pre-merge review); Stats for released games with 3+ tracked entries (full stats, seasonal or not) or released
   Steam games (players only); Guides only when the game has guide articles. Sitemap follows the same rules
   and leaves out all `resources` URLs for now.
 
@@ -179,9 +179,7 @@ Open items:
   - Path of Diablo Season 14 has `additionalText` "No info", shown on the Next card and in the
     FAQ text ("It is likely starting No info").
   - Slash Diablo starts are stored as CET midnight (`23:00Z` the day before).
-- Code review leftovers (judgement calls): `placement?: string` on `NextSeasonCtas` could be a
-  union; link helpers (`ExternalRow`, `utm`, `hostname`) live in `OverviewSidebar` but are
-  shared; `ArticleIndex` has several flags driven by one fact (game index or not).
+- Code review leftovers: resolved in the pre-merge review (see below).
 - Header calendar analytics name changed to `{slug}-hub-calendar-subscribe` (old quick link was
   `{slug}-calendar-subscribe-quick-link`).
 - Pre-existing lint error in `components/TopCarousel.tsx` (`react-hooks/purity`) makes
@@ -251,7 +249,7 @@ Open items:
 - One bar per finished season, oldest first, neutral grey (`foreground/35`), 4px rounded top,
   capped at 24px, 1px gaps on phones; all seasons always shown.
 - Running season: last bar as a 2px sky outline at its length so far, plus a key under the
-  chart ("{name}, running (N days so far)"); none for dormant games or between seasons.
+  chart ("Running: {name} · N days so far"); none for dormant games or between seasons.
 - Median (finished seasons only) as a 2px dashed foreground line; its label and the running
   season live in a key under the chart, not in the plot. Caption carries the unit ("in days").
 - Far outliers (over Q3 + 3*IQR and over 2x the median, e.g. PoE's ~318-day league) don't set
@@ -262,6 +260,16 @@ Open items:
 - A season counts as finished once its confirmed end has passed or the next season started
   (applies to all stats, not just the chart).
 - Desktop hover/focus tooltip only; no tap details, no bar labels, no list.
+
+## Pre-merge review (2026-10-12)
+
+- Fixed: `data-sa-click` on the Overview season title, `CtaPlacement` union, one
+  `addGameLinkUTM` helper in `@/lib/utm`, shared sidebar parts in `components/hub/SidebarParts`,
+  dead side-by-side layout and `compact` flag removed from `ArticleIndex`, `pickStatusLayout`
+  and `getRunningSeason` tested.
+- Kept on purpose: the unrelated `859955d lock` commit (swagger-ui-react / dompurify lockfile
+  bump), mention it in the PR description.
+- Backlog: one card-rules helper shared by Overview and Timeline cards; one computed game phase.
 
 ## Repo rules
 

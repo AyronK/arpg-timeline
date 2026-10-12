@@ -1,9 +1,10 @@
 import { BookOpen, GitBranch } from "lucide-react";
 
 import { Game } from "@/lib/cms/games.types";
+import { addGameLinkUTM } from "@/lib/utm";
 
+import { ExternalRow, hostname } from "../hub/SidebarParts";
 import { cardClassName } from "../overview/OverviewCard";
-import { ExternalRow, hostname, utm } from "../overview/OverviewSidebar";
 
 // Guides aren't written here, so point to the game's external build/guide sites
 export const GuidesEmptyState = ({ game }: { game: Game }) => {
@@ -20,7 +21,7 @@ export const GuidesEmptyState = ({ game }: { game: Game }) => {
                 <ul className="mt-3">
                     {game.buildsUrl && (
                         <ExternalRow
-                            href={utm("builds", slug)(game.buildsUrl)}
+                            href={addGameLinkUTM("builds", slug)(game.buildsUrl)}
                             saClick={`${slug}-guides-empty-builds`}
                             icon={<GitBranch className="h-4 w-4" />}
                         >
@@ -30,7 +31,7 @@ export const GuidesEmptyState = ({ game }: { game: Game }) => {
                     )}
                     {game.guidesUrl && (
                         <ExternalRow
-                            href={utm("guides", slug)(game.guidesUrl)}
+                            href={addGameLinkUTM("guides", slug)(game.guidesUrl)}
                             saClick={`${slug}-guides-empty-guides`}
                             icon={<BookOpen className="h-4 w-4" />}
                         >

@@ -3,6 +3,7 @@ import type { ArticleListItem } from "@/lib/cms/queries/articleQuery";
 import type { SeasonTerms } from "@/lib/seasonTerms";
 import type { GameNewsDbEntry } from "@/types/game-news";
 
+import { isPlaceholderNext } from "./hub";
 import type { ArchivalSeason, GameStatistics } from "./types";
 
 export interface RhythmTile {
@@ -165,4 +166,26 @@ export const buildCadenceHint = ({
         ...(estimate.getUTCFullYear() !== now.getUTCFullYear() && { year: "numeric" }),
     });
     return `If it follows past ${terms.many}, expect it around ${partOfMonth(estimate)} ${month}.`;
+};
+
+export type StatusLayout = "prelaunch" | "now-next" | null;
+
+// Which cards open the Overview: pre-launch + Release/Next, Now + Next, or none
+export const pickStatusLayout = (
+    game: {
+        isComingSoon?: boolean;
+        isDormant?: boolean;
+        currentSeason?: { _id?: string } | null;
+        nextSeason?: { _id?: string } | null;
+    },
+    hasSeasons: boolean,
+): StatusLayout => {
+    const announcedOnly =
+        !hasSeasons &&
+        !game.isDormant &&
+        !!game.nextSeason &&
+        !isPlaceholderNext(game.currentSeason, game.nextSeason);
+    if (game.isComingSoon || announcedOnly) return "prelaunch";
+    if (hasSeasons || game.isDormant) return "now-next";
+    return null;
 };

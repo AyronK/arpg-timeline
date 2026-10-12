@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import {
     articleIndexGameParams,
@@ -8,7 +9,6 @@ import {
 } from "@/lib/articles/renderArticleIndex";
 
 import { OfficialAnnouncements } from "../../components/news/OfficialAnnouncements";
-import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { getGameFeed } from "../../feed";
 
 interface Props {

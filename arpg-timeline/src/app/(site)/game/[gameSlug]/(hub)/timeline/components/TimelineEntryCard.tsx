@@ -5,7 +5,7 @@ import { ChipColorMap, ChipColorText } from "@/components/SeasonWidget";
 import { Content } from "@/hoc/GameToSeasonWidget/Content";
 import { Game } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
-import { addUTMParameters } from "@/lib/utm";
+import { addGameLinkUTM } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
 import { SideEventChip } from "../../../components/InfoChips";
@@ -114,12 +114,7 @@ export const TimelineEntryCard = ({
     const showUrl = !!entry.url && isActive;
 
     const withUtm = (campaign: string, url: string) =>
-        addUTMParameters({
-            utm_source: "arpg-timeline",
-            utm_medium: "link",
-            utm_campaign: campaign,
-            utm_content: game?.slug ?? "",
-        })(url);
+        addGameLinkUTM(campaign, game?.slug ?? "")(url);
 
     const chips = (chip || entry.isSideEvent) && (
         <>

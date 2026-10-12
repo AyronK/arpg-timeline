@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
@@ -11,7 +12,6 @@ import { SITE_URL } from "@/lib/siteUrl";
 import { getSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 
 import { OverviewCard } from "../../components/overview/OverviewCard";
-import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { StatisticsSection } from "../../components/StatisticsSection";
 import { getGameDetails } from "../../gameData";
 import { getStatsPath, hasSeasonStats, hasStatsTab } from "../../hub";

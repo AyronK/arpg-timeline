@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { parsePageParam } from "@/lib/articles/pagination";
 import {
     gameArticleIndexPageParams,
     renderArticleIndex,
     resolveArticleIndexMetadata,
 } from "@/lib/articles/renderArticleIndex";
-
-import { SupportCard } from "../../../../components/overview/OverviewSidebar";
 
 interface Props {
     params: Promise<{ gameSlug: string; page: string }>;

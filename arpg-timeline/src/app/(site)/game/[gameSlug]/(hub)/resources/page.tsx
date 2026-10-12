@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import {
     articleIndexGameParams,
     renderArticleIndex,
@@ -7,7 +8,6 @@ import {
 } from "@/lib/articles/renderArticleIndex";
 
 import { GuidesEmptyState } from "../../components/guides/GuidesEmptyState";
-import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { getGameDetails } from "../../gameData";
 
 interface Props {

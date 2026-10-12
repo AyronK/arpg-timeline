@@ -13,6 +13,9 @@ import { cn } from "@/lib/utils";
 const segmentClassName =
     "whitespace-nowrap hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring flex flex-1 cursor-pointer items-center justify-center gap-1.5 px-3 text-xs font-medium opacity-75 transition-colors hover:opacity-100 focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset";
 
+// Prefixes the analytics event names; "timeline" keeps the original ones
+export type CtaPlacement = "timeline" | "next" | "prelaunch";
+
 export const NextSeasonCtas = ({
     gameSlug,
     gameName,
@@ -21,7 +24,7 @@ export const NextSeasonCtas = ({
 }: {
     gameSlug: string;
     gameName: string;
-    placement?: string;
+    placement?: CtaPlacement;
     className?: string;
 }) => {
     const [open, setOpen] = useState(false);
