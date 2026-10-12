@@ -118,7 +118,13 @@ const GamePage = async ({ params }: GamePageProps) => {
 
     return (
         <>
-            <BreadcrumbSchema path={`game/${gameSlug}`} />
+            {/* Same items as the visible breadcrumb (Home / Game) */}
+            <BreadcrumbSchema
+                crumbs={[
+                    { name: "Home", href: "/" },
+                    { name: game.name, href: `/game/${gameSlug}` },
+                ]}
+            />
             {structuredData && (
                 <script
                     type="application/ld+json"
