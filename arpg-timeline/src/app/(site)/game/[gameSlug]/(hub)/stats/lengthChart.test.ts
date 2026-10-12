@@ -44,11 +44,11 @@ describe("fitYearLabels", () => {
         expect(pick(fitYearLabels(years, 20, 400, 32))).toEqual([2016, 2017, 2018, 2019]);
     });
 
-    it("keeps first and newest, skipping years in between that collide", () => {
+    it("skips years whose labels would collide", () => {
         expect(pick(fitYearLabels(years, 8, 88, 32))).toEqual([2016, 2019]);
     });
 
-    it("flips a label at the right edge and checks it against its neighbour", () => {
+    it("flips a label at the right edge and drops a newer one it would hit", () => {
         const labels = fitYearLabels(
             [
                 { index: 0, year: 2024 },
@@ -61,7 +61,7 @@ describe("fitYearLabels", () => {
         );
         expect(labels).toEqual([
             { index: 0, year: 2024, flip: false },
-            { index: 9, year: 2026, flip: true },
+            { index: 8, year: 2025, flip: true },
         ]);
     });
 });

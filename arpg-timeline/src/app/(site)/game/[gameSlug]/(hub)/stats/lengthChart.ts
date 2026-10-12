@@ -28,31 +28,23 @@ export interface YearLabel {
 const LABEL_PAD_PX = 4;
 const MIN_SPACE_PX = 8;
 
-// Keeps the first and newest year, then every other year whose label doesn't collide
+// Left to right, a year is kept only if its label (flipped at the right edge) clears the previous one
 export const fitYearLabels = (
     years: { index: number; year: number }[],
     slotPx: number,
     widthPx: number,
     labelPx: number,
 ): YearLabel[] => {
-    const placed = years.map((y) => {
+    const kept: (YearLabel & { end: number })[] = [];
+    for (const y of years) {
         const x = y.index * slotPx;
         const flip = x + LABEL_PAD_PX + labelPx > widthPx;
         const start = flip ? x - LABEL_PAD_PX - labelPx : x + LABEL_PAD_PX;
-        return { ...y, flip, start, end: start + labelPx };
-    });
-    if (placed.length <= 1) return placed.map(({ index, year, flip }) => ({ index, year, flip }));
-
-    const first = placed[0];
-    const last = placed[placed.length - 1];
-    const clear = (a: { end: number }, b: { start: number }) => b.start - a.end >= MIN_SPACE_PX;
-
-    const kept = [first];
-    for (const y of placed.slice(1, -1)) {
-        if (clear(kept[kept.length - 1], y) && clear(y, last)) kept.push(y);
+        const prev = kept[kept.length - 1];
+        if (!prev || start - prev.end >= MIN_SPACE_PX) {
+            kept.push({ ...y, flip, end: start + labelPx });
+        }
     }
-    if (clear(kept[kept.length - 1], last)) kept.push(last);
-
     return kept.map(({ index, year, flip }) => ({ index, year, flip }));
 };
 
