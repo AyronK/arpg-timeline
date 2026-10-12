@@ -16,6 +16,13 @@ const segmentClassName =
 // Prefixes the analytics event names; "timeline" keeps the original ones
 export type CtaPlacement = "timeline" | "next" | "prelaunch";
 
+// Undated seasons have nothing to add yet, only a feed to subscribe to
+const CALENDAR_LABEL: Record<CtaPlacement, { short: string; wide: string }> = {
+    timeline: { short: "Subscribe", wide: "Subscribe to calendar" },
+    next: { short: "Subscribe", wide: "Subscribe to calendar" },
+    prelaunch: { short: "Calendar", wide: "Add to calendar" },
+};
+
 export const NextSeasonCtas = ({
     gameSlug,
     gameName,
@@ -47,8 +54,8 @@ export const NextSeasonCtas = ({
                     }}
                 >
                     <CalendarSync className="h-3.5 w-3.5" aria-hidden />
-                    <span className="@md:hidden">Calendar</span>
-                    <span className="hidden @md:inline">Add to calendar</span>
+                    <span className="@md:hidden">{CALENDAR_LABEL[placement].short}</span>
+                    <span className="hidden @md:inline">{CALENDAR_LABEL[placement].wide}</span>
                 </button>
                 <Link
                     href="/discord-bot"

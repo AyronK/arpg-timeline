@@ -58,7 +58,7 @@ export const HubActions = ({
                     }}
                 >
                     <CalendarSync className="mr-2 h-4 w-4" aria-hidden />
-                    Add to calendar
+                    Subscribe to calendar
                 </Button>
                 <span className="text-muted-foreground text-xs">Free · no sign-up</span>
             </div>

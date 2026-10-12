@@ -46,7 +46,8 @@ export const SeasonTimeline = ({
                     </h2>
                     <ol className="space-y-4 pb-4 md:space-y-6">
                         {group.entries.map((entry) => {
-                            const left = index++ % 2 === 0;
+                            // Next starts on the right, Now on the left
+                            const left = index++ % 2 === 1;
                             return (
                                 <li
                                     key={entry.id}

@@ -44,6 +44,18 @@ describe("rhythm tiles", () => {
         expect(buildLengthTile({ ...stats, averageDurationDays: null }, terms)).toBeNull();
     });
 
+    it("names the count instead of 'most' for recent seasons", () => {
+        expect(buildLengthTile(stats, terms, 3)?.text).toBe(
+            "per league on average (108 days). The last 3 ran 81 to 319 days.",
+        );
+        const flat = {
+            ...stats,
+            minDuration: { days: 90, name: "A" },
+            maxDuration: { days: 90, name: "B" },
+        };
+        expect(buildLengthTile(flat, terms, 3)?.text).toBe("per league on average (108 days).");
+    });
+
     it("builds the per-year tile", () => {
         expect(buildPerYearTile(stats, terms)).toEqual({
             value: "3-4 a year",

@@ -26,7 +26,15 @@ const Tile = ({ value, text }: { value: ReactNode; text: string }) => (
     </div>
 );
 
-const Tiles = ({ data, terms }: { data: RhythmData; terms: SeasonTerms }) => (
+const Tiles = ({
+    data,
+    terms,
+    recentCount,
+}: {
+    data: RhythmData;
+    terms: SeasonTerms;
+    recentCount?: number;
+}) => (
     <div className="grid gap-4 sm:grid-cols-3 md:gap-6">
         {data.length && <Tile {...data.length} />}
         {data.perYear && <Tile {...data.perYear} />}
@@ -40,7 +48,11 @@ const Tiles = ({ data, terms }: { data: RhythmData; terms: SeasonTerms }) => (
                         </span>
                     </ClientOnlyVisibleWrapper>
                 }
-                text={`is when most past ${terms.many} launched, in your time zone.`}
+                text={
+                    recentCount
+                        ? `is when the last ${recentCount} ${terms.many} usually launched, in your time zone.`
+                        : `is when most past ${terms.many} launched, in your time zone.`
+                }
             />
         )}
     </div>
@@ -95,7 +107,7 @@ export const LeagueRhythm = ({
                         <Tiles data={all} terms={terms} />
                     </TabsContent>
                     <TabsContent value="recent">
-                        <Tiles data={recent} terms={terms} />
+                        <Tiles data={recent} terms={terms} recentCount={recentCount} />
                     </TabsContent>
                 </Tabs>
             ) : (

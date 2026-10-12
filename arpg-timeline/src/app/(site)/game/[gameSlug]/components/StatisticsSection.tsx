@@ -20,10 +20,13 @@ const groupHeadingClass = "text-muted-foreground mb-3 text-xs font-medium tracki
 const StatisticsGroups = ({
     statistics,
     terms,
+    recentCount,
 }: {
     statistics: GameStatistics;
     terms: SeasonTerms;
+    recentCount?: number;
 }) => {
+    const past = recentCount ? `the last ${recentCount} ${terms.many}` : `past ${terms.many}`;
     const {
         minDuration,
         maxDuration,
@@ -46,13 +49,17 @@ const StatisticsGroups = ({
                         value={averageDurationDays ?? "N/A"}
                         unit={averageDurationDays !== null ? "days" : undefined}
                         label="Average"
-                        info={`Typical ${terms.one} length across every finished ${terms.one}.`}
+                        info={
+                            recentCount
+                                ? `Typical ${terms.one} length across ${past}.`
+                                : `Typical ${terms.one} length across every finished ${terms.one}.`
+                        }
                     />
                     <StatisticsCard
                         value={medianDuration ?? "N/A"}
                         unit={medianDuration !== null ? "days" : undefined}
                         label="Median"
-                        info={`Half of past ${terms.many} were shorter than this, half were longer.`}
+                        info={`Half of ${past} were shorter than this, half were longer.`}
                     />
                     <StatisticsCard
                         value={durationStdDev !== null ? `±${durationStdDev}` : "N/A"}
@@ -86,7 +93,7 @@ const StatisticsGroups = ({
                         unit={averagePerYear !== "N/A" ? "/ year" : undefined}
                         label={`New ${terms.many} a year`}
                         subValue="on average"
-                        info={`Based on the gaps between past ${terms.one} starts.`}
+                        info={`Based on the gaps between ${recentCount ? `the last ${recentCount}` : "past"} ${terms.one} starts.`}
                     />
                     <StatisticsCard
                         value={
@@ -102,7 +109,7 @@ const StatisticsGroups = ({
                         }
                         label="Usual launch day"
                         subValue="your timezone"
-                        info={`Weekday past ${terms.many} launched on most often, in your time.`}
+                        info={`Weekday ${past} launched on most often, in your time.`}
                     />
                     <StatisticsCard
                         value={
@@ -118,7 +125,7 @@ const StatisticsGroups = ({
                         }
                         label="Usual launch time"
                         subValue="your timezone"
-                        info={`Time of day past ${terms.many} launched most often, in your time.`}
+                        info={`Time of day ${past} launched most often, in your time.`}
                     />
                 </div>
             </section>
@@ -178,7 +185,11 @@ export const StatisticsSection = ({
                     <h3 className="sr-only">
                         Last {recentSeasonCount} {terms.many} statistics
                     </h3>
-                    <StatisticsGroups statistics={recentStatistics} terms={terms} />
+                    <StatisticsGroups
+                        statistics={recentStatistics}
+                        terms={terms}
+                        recentCount={recentSeasonCount}
+                    />
                     <div className={captionClass}>
                         Based on the {recentSeasonCount} most recently recorded {terms.many}.
                     </div>

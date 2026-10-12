@@ -25,13 +25,24 @@ export const formatPerYear = (averagePerYear: string): string | null => {
     return floor === ceil ? `${floor}` : `${floor}-${ceil}`;
 };
 
-export const buildLengthTile = (stats: GameStatistics, terms: SeasonTerms): RhythmTile | null => {
+// recentCount scopes the copy to the last N seasons, where "most" reads wrong
+export const buildLengthTile = (
+    stats: GameStatistics,
+    terms: SeasonTerms,
+    recentCount?: number,
+): RhythmTile | null => {
     const avg = stats.averageDurationDays;
     if (avg === null) return null;
 
     let text = `per ${terms.one} on average (${avg} days).`;
     const sd = stats.durationStdDev;
-    if (sd !== null && sd > 0) {
+    const { days: min } = stats.minDuration;
+    const { days: max } = stats.maxDuration;
+    if (recentCount) {
+        if (min !== null && max !== null && min !== max) {
+            text += ` The last ${recentCount} ran ${min} to ${max} days.`;
+        }
+    } else if (sd !== null && sd > 0) {
         const low = Math.max(avg - sd, stats.minDuration.days ?? 0);
         const high = Math.min(avg + sd, stats.maxDuration.days ?? avg + sd);
         text += ` Most ran between ${low} and ${high} days.`;

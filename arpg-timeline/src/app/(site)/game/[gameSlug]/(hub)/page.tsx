@@ -61,8 +61,8 @@ const GamePage = async ({ params }: GamePageProps) => {
     ]);
     const latest = mergeLatest(feed, gameArticles.news, gameSlug, LATEST_COUNT, new Date());
 
-    const toRhythm = (stats: GameStatistics): RhythmData => ({
-        length: buildLengthTile(stats, terms),
+    const toRhythm = (stats: GameStatistics, recentCount?: number): RhythmData => ({
+        length: buildLengthTile(stats, terms, recentCount),
         perYear: buildPerYearTile(stats, terms),
         confirmedStartDates: stats.confirmedStartDates,
         usualStartTime: stats.usualStartTime,
@@ -74,6 +74,7 @@ const GamePage = async ({ params }: GamePageProps) => {
         trackedCount > RECENT_SEASON_COUNT
             ? toRhythm(
                   calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT }),
+                  RECENT_SEASON_COUNT,
               )
             : undefined;
     const hasRhythm = hasSeasonStats(game, trackedCount) && !!(rhythm.length || rhythm.perYear);
@@ -165,7 +166,7 @@ const GamePage = async ({ params }: GamePageProps) => {
 
                     {latest.length > 0 && (
                         <OverviewCard
-                            title="Latest"
+                            title="Latest news"
                             action={
                                 <CardLink
                                     href={`/game/${gameSlug}/news`}
