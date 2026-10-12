@@ -17,6 +17,7 @@ interface TimelineViewProps {
     emptyText: string;
     header: ReactNode;
     aside: ReactNode;
+    cadenceHint?: string | null;
 }
 
 export const TimelineView = ({
@@ -26,6 +27,7 @@ export const TimelineView = ({
     emptyText,
     header,
     aside,
+    cadenceHint,
 }: TimelineViewProps) => {
     const switchId = useId();
     const [showSideEvents, setShowSideEvents] = useState(true);
@@ -41,6 +43,10 @@ export const TimelineView = ({
     // No calendar/bot prompts for dormant games
     const ctaEntryId =
         game.isDormant || upcomingMain.some((e) => e.startDate) ? undefined : upcomingMain[0]?.id;
+    // Dormant games: the newest started main entry is the last update, live or not
+    const latestEntryId = game.isDormant
+        ? entries.find((e) => e.status !== "upcoming" && !e.isSideEvent)?.id
+        : undefined;
 
     const tocHeadings = useMemo(
         () => groups.map((g) => ({ id: `year-${g.key}`, text: g.label, level: 2 as const })),
@@ -77,6 +83,8 @@ export const TimelineView = ({
                                 gameLogo={gameLogo}
                                 game={game}
                                 ctaEntryId={ctaEntryId}
+                                latestEntryId={latestEntryId}
+                                cadenceHint={cadenceHint}
                             />
                         </>
                     )}

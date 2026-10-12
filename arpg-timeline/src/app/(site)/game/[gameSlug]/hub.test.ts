@@ -112,6 +112,29 @@ describe("buildHubStatus", () => {
         ).toEqual(["Curse of the Allflame", "39 days left", "3.30 Fate starts 2026-11-19"]);
     });
 
+    it("marks a current season whose confirmed end has passed as ended", () => {
+        expect(
+            buildHubStatus(
+                {
+                    seasonKeyword: "season",
+                    currentSeason: {
+                        _id: "s7",
+                        name: "Season 7",
+                        start: { startDate: "2024-10-01T00:00:00Z", confirmed: true },
+                        end: { endDate: "2025-01-19T00:00:00Z", confirmed: true },
+                    },
+                    nextSeason: {
+                        _id: "s8",
+                        name: "Season 8",
+                        start: { startDate: null, confirmed: false },
+                    },
+                },
+                now,
+                fmt,
+            ),
+        ).toEqual(["Season 7", "ended 2025-01-19", "Season 8: date not announced"]);
+    });
+
     it("groups current and next into separate lines", () => {
         expect(
             buildHubStatusLines(

@@ -1,7 +1,7 @@
 import { SanityImageAssetDocument } from "next-sanity";
 
 import { SanityImage } from "@/components/SanityImage";
-import { ChipColorMap } from "@/components/SeasonWidget";
+import { ChipColorMap, ChipColorText } from "@/components/SeasonWidget";
 import { Content } from "@/hoc/GameToSeasonWidget/Content";
 import { Game } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ import { Chip } from "@/ui/Chip";
 
 import { PatchNotesLink, SeasonBadgeRow, SeasonTitle } from "../../../components/SeasonCardParts";
 import { SideEventChip } from "../../../components/SideEventChip";
+import { getEditorStartText } from "../../../hub";
 import { formatApproxMonths, TimelineEntry } from "../timeline";
 import { LocalStartDate } from "./LocalStartDate";
 import { NextSeasonCtas } from "./NextSeasonCtas";
@@ -20,6 +21,9 @@ interface TimelineEntryCardProps {
     align: "left" | "right";
     game?: Game;
     showCtas?: boolean;
+    // Dormant games: the newest started entry, badged "Latest"
+    isDormantLatest?: boolean;
+    cadenceHint?: string | null;
 }
 
 const STATUS_CHIP: Partial<Record<TimelineEntry["status"], { label: string; className: string }>> =
@@ -53,6 +57,8 @@ const buildLiveGame = (game: Game, entry: TimelineEntry): Game | null => {
     };
 };
 
+const OVER_CHIP = { label: ChipColorText.over, className: ChipColorMap.over };
+
 const DORMANT_LATEST_CHIP = { label: "Latest", className: ChipColorMap.dormant };
 
 export const TimelineEntryCard = ({
@@ -61,10 +67,20 @@ export const TimelineEntryCard = ({
     align,
     game,
     showCtas,
+    isDormantLatest = false,
+    cadenceHint,
 }: TimelineEntryCardProps) => {
-    // Dormant games: the newest entry is the last update, not something running now
-    const isDormantLatest = !!game?.isDormant && entry.status === "live";
-    const chip = isDormantLatest ? DORMANT_LATEST_CHIP : STATUS_CHIP[entry.status];
+    // The game's current season has ended and nothing replaced it yet: "Over", as on Overview
+    const isEndedCurrent =
+        !!game &&
+        !game.isDormant &&
+        entry.status === "past" &&
+        entry.id === game.currentSeason?._id;
+    const chip = isDormantLatest
+        ? DORMANT_LATEST_CHIP
+        : isEndedCurrent
+          ? OVER_CHIP
+          : STATUS_CHIP[entry.status];
     const duration =
         entry.durationDays !== null
             ? formatApproxMonths(entry.durationDays)
@@ -83,10 +99,17 @@ export const TimelineEntryCard = ({
         !selector && game && entry.status === "live" && !isDormantLatest && entry.startDate
             ? buildLiveGame(game, entry)
             : null;
-    const contentGame = selector ? game : liveContent;
+    // Dormant cards stay plain like the Overview dormant card (no "Released on" repeat)
+    const contentGame = isDormantLatest ? null : selector ? game : liveContent;
     const contentSelector = selector ?? (liveContent ? "current" : null);
-    // Links on every running or upcoming card, like the Overview Now/Next cards
-    const isActive = entry.status !== "past" && !isDormantLatest;
+    // Next card mirrors the Overview Next card: date only in Content, hint while unannounced
+    const isNextCard = selector === "next" || !!entry.placeholder;
+    const title = entry.placeholder ? "Not announced yet" : entry.name;
+    const editorText = getEditorStartText(game?.nextSeason?.start);
+    const nextHint = entry.placeholder ? (editorText ?? cadenceHint) : null;
+    const showPromise = !!showCtas && !editorText;
+    // Links on every running, upcoming or just-ended card, like the Overview Now/Next cards
+    const isActive = (entry.status !== "past" || isEndedCurrent) && !isDormantLatest;
     const showPatchNotes = !!entry.patchNotesUrl && isActive;
     const showUrl = !!entry.url && isActive;
 
@@ -144,29 +167,26 @@ export const TimelineEntryCard = ({
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                     <SeasonTitle
                         as="h3"
-                        title={entry.name}
+                        title={title}
                         href={game && showUrl ? withUtm("season-link", entry.url!) : null}
                         isOfficial={!!game?.isOfficial}
                         className="text-base break-words md:text-lg"
                         saClick={`${entry.name}-season-link`}
                     />
-                    <div className="text-muted-foreground text-sm">
-                        <span className="text-foreground font-medium">
-                            {entry.localizeStart && entry.startDate ? (
-                                <LocalStartDate
-                                    utcDate={entry.startDate.toISOString()}
-                                    fallback={entry.startLabel}
-                                />
-                            ) : (
-                                entry.startLabel
-                            )}
-                        </span>
-                        {duration && <span>{` · ${duration}`}</span>}
-                    </div>
-                    {showCtas && (
-                        <p className="text-muted-foreground text-xs">
-                            Get updates via the buttons below.
-                        </p>
+                    {!isNextCard && (
+                        <div className="text-muted-foreground text-sm">
+                            <span className="text-foreground font-medium">
+                                {entry.localizeStart && entry.startDate ? (
+                                    <LocalStartDate
+                                        utcDate={entry.startDate.toISOString()}
+                                        fallback={entry.startLabel}
+                                    />
+                                ) : (
+                                    entry.startLabel
+                                )}
+                            </span>
+                            {duration && <span>{` · ${duration}`}</span>}
+                        </div>
                     )}
                 </div>
             </div>
@@ -179,6 +199,12 @@ export const TimelineEntryCard = ({
                         progressTextBelow
                     />
                 </div>
+            )}
+            {nextHint && <p className="text-muted-foreground text-sm italic">{nextHint}</p>}
+            {showPromise && (
+                <p className="text-muted-foreground text-sm">
+                    We&apos;ll add it the moment it&apos;s announced.
+                </p>
             )}
             {game && showCtas && <NextSeasonCtas gameSlug={game.slug} gameName={game.name} />}
         </div>

@@ -8,6 +8,8 @@ import {
     resolveArticleIndexMetadata,
 } from "@/lib/articles/renderArticleIndex";
 
+import { SupportCard } from "../../../../components/overview/OverviewSidebar";
+
 interface Props {
     params: Promise<{ gameSlug: string; page: string }>;
 }
@@ -15,7 +17,7 @@ interface Props {
 export default async function GameNewsIndexPagedPage({ params }: Props) {
     const { gameSlug, page } = await params;
     if (parsePageParam(page) < 2) notFound();
-    return renderArticleIndex({ category: "news", gameSlug, page });
+    return renderArticleIndex({ category: "news", gameSlug, page, aside: <SupportCard /> });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

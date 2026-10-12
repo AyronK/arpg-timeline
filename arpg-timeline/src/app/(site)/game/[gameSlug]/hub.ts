@@ -150,6 +150,9 @@ export const buildHubStatusLines = (
         const endConfirmed = current.end?.confirmed || next?.start?.confirmed;
         if (endConfirmed && isFuture(current.end?.endDate, now)) {
             parts.push(formatDaysLeft(new Date(current.end!.endDate!).getTime() - now.getTime()));
+        } else if (endConfirmed && isPast(current.end?.endDate, now)) {
+            // Over, with nothing new yet: say so instead of reading as current
+            parts.push(`ended ${formatDate(current.end!.endDate!)}`);
         }
     }
 

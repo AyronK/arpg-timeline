@@ -7,6 +7,7 @@ import {
 } from "@/lib/articles/renderArticleIndex";
 
 import { GuidesEmptyState } from "../../components/guides/GuidesEmptyState";
+import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { getGameDetails } from "../../gameData";
 
 interface Props {
@@ -21,6 +22,7 @@ export default async function GameResourcesIndexPage({ params }: Props) {
         category: "resources",
         gameSlug,
         emptyState: game && <GuidesEmptyState game={game} />,
+        aside: <SupportCard />,
     });
 }
 

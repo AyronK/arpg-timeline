@@ -218,6 +218,13 @@ Open items:
   Content widget with progress text below. Text is always left-aligned; only the logo mirrors.
   Every running card gets progress, patch notes and the title link, not only the parsed current
   season (a league running alongside a current side event ends at the confirmed next start).
+- Audit round 2 (2026-10-12): Timeline Next card built like the Overview one (date only in the
+  countdown/Content, cadence hint and "We'll add it..." while unannounced, placeholder titled
+  "Not announced yet"); ended current season reads "{name} · ended {date}" in the header and gets
+  an "Over" badge on Timeline; dormant games' newest started card is "Latest" even when past, with
+  no Content repeat; News, paged News and Guides always use the main column | sidebar grid with
+  the support card (articles, then the official feed, at full column width). Overview keeps one
+  Now card (latest entry, like the dashboard).
 - Steam excerpts drop Markdown escapes. Next card hides "We'll add it..." when editor text exists.
 - Kept on purpose: two player counts on Stats (ours + SteamDB), Next-card button wording,
   dashboard side-event behaviour.

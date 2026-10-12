@@ -22,7 +22,7 @@ interface ArticleIndexProps {
     emptyText?: string;
     // Replaces emptyText when there are no articles
     emptyState?: ReactNode;
-    // Sidebar next to extra when there are no articles, like the other game hub tabs
+    // Sidebar like the other game hub tabs; articles and extra stack in the main column
     aside?: ReactNode;
     compact?: boolean;
 }
@@ -66,14 +66,37 @@ export const ArticleIndex = ({
     );
     const containerClass = cn("relative container mx-auto", compact ? "py-6" : "py-8 md:py-10");
 
-    // Only extra content: same main column | sidebar grid as the other hub tabs, header included
-    if (articles.length === 0 && extra && aside) {
+    // Game hub: same main column | sidebar grid as the other tabs; articles, then the feed below
+    if (aside) {
         return (
             <div className={containerClass}>
                 {showBreadcrumbs && <Breadcrumbs crumbs={crumbs} />}
                 <div className="grid items-start gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
-                    <div className="max-w-3xl min-w-0">
-                        {header}
+                    <div className="flex min-w-0 flex-col gap-10">
+                        <div>
+                            {header}
+                            {articles.length > 0 ? (
+                                <>
+                                    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                                        {articles.map((article) => (
+                                            <ArticleCard
+                                                key={article._id}
+                                                article={article}
+                                                showGame={showGame}
+                                            />
+                                        ))}
+                                    </div>
+                                    <ArticlePagination
+                                        basePath={basePath}
+                                        page={page}
+                                        pageCount={pageCount}
+                                    />
+                                </>
+                            ) : (
+                                !extra &&
+                                (emptyState ?? <p className="text-muted-foreground">{emptyText}</p>)
+                            )}
+                        </div>
                         {extra}
                     </div>
                     <aside className="lg:sticky lg:top-12">{aside}</aside>
