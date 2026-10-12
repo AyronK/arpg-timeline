@@ -9,6 +9,7 @@ export interface GamePageProps {
 export interface SeasonDuration {
     duration: number;
     name: string;
+    startDate: string;
 }
 
 export interface GameStatistics {

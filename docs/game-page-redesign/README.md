@@ -245,6 +245,24 @@ Open items:
   released yet" + calendar / Discord bot strip) beside the Next card. Coming-soon games use the
   same pair; the strip shows on only one card (Next while its date is unconfirmed).
 
+## Season length chart (Stats, grilled 2026-10-12)
+
+- Seasonal games with 5+ finished main seasons; own card after the statistics.
+- One bar per finished season, oldest first, neutral grey (`foreground/35`), 4px rounded top,
+  capped at 24px, 1px gaps on phones; all seasons always shown.
+- Running season: last bar as a 2px sky outline at its length so far, plus a key under the
+  chart ("{name}, running (N days so far)"); none for dormant games or between seasons.
+- Median (finished seasons only) as a 2px dashed foreground line; its label and the running
+  season live in a key under the chart, not in the plot. Caption carries the unit ("in days").
+- Far outliers (over Q3 + 3*IQR and over 2x the median, e.g. PoE's ~318-day league) don't set
+  the scale; they're drawn clipped with a break mark and their value on top.
+- Year ticks + labels under the first season of each year; first and newest always kept, the
+  newest flips left of its tick at the right edge, others dropped when they'd collide.
+- 192px tall on phones, 256px from md.
+- A season counts as finished once its confirmed end has passed or the next season started
+  (applies to all stats, not just the chart).
+- Desktop hover/focus tooltip only; no tap details, no bar labels, no list.
+
 ## Repo rules
 
 Follow `CLAUDE.md`: run `npm run format:all`, `npm run lint` and `npm run typecheck` in

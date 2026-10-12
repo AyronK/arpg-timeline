@@ -17,15 +17,25 @@ import { getGameDetails } from "../../gameData";
 import { getStatsPath, hasSeasonStats, hasStatsTab } from "../../hub";
 import { formatPerYear } from "../../overview";
 import { GamePageProps } from "../../types";
-import { calculateGameStatistics, countTrackedSeasons, getOldestSeasonInfo } from "../../utils";
+import {
+    calculateGameStatistics,
+    countTrackedSeasons,
+    getOldestSeasonInfo,
+    getRunningSeason,
+    getSeasonDurations,
+} from "../../utils";
+import { isSeasonalGame } from "../timeline/timeline";
 import {
     buildPlayersDescription,
     buildPlayersTitle,
     buildStatsDescription,
     buildStatsTitle,
 } from "./metadata";
+import { SeasonLengthChart } from "./SeasonLengthChart";
 
 const RECENT_SEASON_COUNT = 3;
+// Fewer bars than this say nothing the Average/Median tiles don't
+const MIN_CHART_SEASONS = 5;
 const fetchOptions = { revalidate: 24 * 60 * 60, tags: ["season", "game"] };
 
 const StatsPage = async ({ params }: GamePageProps) => {
@@ -47,6 +57,8 @@ const StatsPage = async ({ params }: GamePageProps) => {
             ? calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT })
             : undefined;
     const oldestSeasonInfo = getOldestSeasonInfo(data, game);
+    const durations = getSeasonDurations(data, gameSlug);
+    const running = game.isDormant ? null : getRunningSeason(data, gameSlug, new Date());
 
     const steam = appId ? await getSteamCurrentPlayers(appId) : null;
 
@@ -81,6 +93,17 @@ const StatsPage = async ({ params }: GamePageProps) => {
                             totalCount={trackedCount}
                             oldestSeasonInfo={oldestSeasonInfo}
                         />
+                    )}
+
+                    {seasonal && isSeasonalGame(game) && durations.length >= MIN_CHART_SEASONS && (
+                        <OverviewCard title={`${terms.One} lengths`}>
+                            <SeasonLengthChart
+                                durations={durations}
+                                running={running}
+                                median={statistics.medianDuration}
+                                terms={terms}
+                            />
+                        </OverviewCard>
                     )}
 
                     {steam && (

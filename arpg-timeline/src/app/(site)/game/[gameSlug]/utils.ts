@@ -88,6 +88,8 @@ export const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDura
     const completedSeasons = gameSeasons.filter((s, index) => {
         if (!s?.start?.startDate || !s?.start?.confirmed || !s?.end?.endDate || !s?.end?.confirmed)
             return false;
+        // Over once its confirmed end has passed or the next season has started
+        if (new Date(s.end.endDate) <= now) return true;
         const nextSeason = gameSeasons[index + 1];
         return !!nextSeason?.start?.startDate && new Date(nextSeason.start.startDate) <= now;
     });
@@ -100,6 +102,7 @@ export const calculateSeasonDurations = (gameSeasons: LocalSeason[]): SeasonDura
             return {
                 duration: Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)),
                 name: s.name || "Unknown",
+                startDate: s.start.startDate,
             };
         })
         .filter((s): s is NonNullable<typeof s> => s !== null);
@@ -138,12 +141,9 @@ export const countTrackedSeasons = (data: { seasons: SanitySeason[] }, gameSlug:
     data.seasons.filter((s) => s?.game === gameSlug && !s?.isSideEvent && isTrackedSeason(s))
         .length;
 
-export const calculateGameStatistics = (
-    data: GameDetailsQueryResult,
-    gameSlug: string,
-    options?: { recentCount?: number },
-): GameStatistics => {
-    let gameSeasons = data.seasons
+// Main (non-side) seasons with confirmed past starts, oldest first, end dates filled in
+const getTrackedMainSeasons = (data: GameDetailsQueryResult, gameSlug: string) => {
+    const gameSeasons = data.seasons
         .filter((s) => s?.game === gameSlug && !s?.isSideEvent)
         .sort(
             (a, b) =>
@@ -152,7 +152,43 @@ export const calculateGameStatistics = (
 
     adjustMissingEndDates(gameSeasons);
 
-    gameSeasons = gameSeasons.filter(isTrackedSeason);
+    return gameSeasons.filter(isTrackedSeason);
+};
+
+// Finished main seasons, same set the length statistics use
+export const getSeasonDurations = (
+    data: GameDetailsQueryResult,
+    gameSlug: string,
+): SeasonDuration[] => calculateSeasonDurations(getTrackedMainSeasons(data, gameSlug));
+
+export interface RunningSeason {
+    name: string;
+    daysSoFar: number;
+}
+
+// Newest main season while it's still running (no confirmed end in the past)
+export const getRunningSeason = (
+    data: GameDetailsQueryResult,
+    gameSlug: string,
+    now: Date,
+): RunningSeason | null => {
+    const last = getTrackedMainSeasons(data, gameSlug).at(-1);
+    const start = last?.start?.startDate;
+    if (!last || !start) return null;
+    const end = last.end?.endDate;
+    if (end && last.end?.confirmed && new Date(end) <= now) return null;
+    return {
+        name: last.name || "Unknown",
+        daysSoFar: Math.floor((now.getTime() - new Date(start).getTime()) / (1000 * 60 * 60 * 24)),
+    };
+};
+
+export const calculateGameStatistics = (
+    data: GameDetailsQueryResult,
+    gameSlug: string,
+    options?: { recentCount?: number },
+): GameStatistics => {
+    let gameSeasons = getTrackedMainSeasons(data, gameSlug);
 
     if (options?.recentCount && options.recentCount > 0) {
         gameSeasons = gameSeasons.slice(-options.recentCount);
