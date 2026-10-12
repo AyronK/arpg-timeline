@@ -83,11 +83,12 @@ export const TimelineView = ({
                 </div>
 
                 <aside>
+                    {/* Support card first so it sits at the same height on every hub tab */}
                     <div className="flex flex-col gap-4 md:gap-6 lg:sticky lg:top-12">
+                        {aside}
                         <div className="hidden xl:block">
                             <ArticleToc headings={tocHeadings} variant="sidebar" />
                         </div>
-                        {aside}
                     </div>
                 </aside>
             </div>

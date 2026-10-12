@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { CalendarSubscribeDialog } from "@/components/CalendarSubscribeDialog";
 import { sa_event } from "@/lib/sa_event";
+import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 import { Button } from "@/ui/Button";
 import { toast } from "@/ui/hooks/useToast";
@@ -20,10 +21,12 @@ export const HubActions = ({
     gameSlug,
     gameName,
     showCalendar,
+    className,
 }: {
     gameSlug: string;
     gameName: string;
     showCalendar: boolean;
+    className?: string;
 }) => {
     const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -45,11 +48,11 @@ export const HubActions = ({
     };
 
     return (
-        <div className="flex items-start gap-1">
+        <div className={cn("flex items-start gap-1", className)}>
             {showCalendar && (
                 <>
-                    {/* Caption sits under the calendar button */}
-                    <div className="flex flex-col items-center gap-1">
+                    {/* Caption beside the button on mobile, under it from md up */}
+                    <div className="flex items-center gap-3 md:flex-col md:gap-1">
                         <Button
                             variant="outlineCard"
                             data-sa-click={`${gameSlug}-hub-calendar-subscribe`}

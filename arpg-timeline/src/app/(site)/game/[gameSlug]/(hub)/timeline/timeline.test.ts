@@ -164,14 +164,32 @@ describe("buildTimelineEntries", () => {
         expect(byId.side!.durationDays).toBe(14);
     });
 
-    it("leaves a side event without an end date with no duration", () => {
+    it("leaves an older side event without an end date in the past, with no duration", () => {
         const entries = buildTimelineEntries(
-            [season("side", "2025-02-01T00:00:00Z", { isSideEvent: true })],
+            [
+                season("side", "2025-02-01T00:00:00Z", { isSideEvent: true }),
+                season("b", "2025-04-01T00:00:00Z"),
+            ],
             GAME,
             NOW,
         );
-        expect(entries[0]!.status).toBe("past");
-        expect(entries[0]!.durationDays).toBeNull();
+        const side = entries.find((e) => e.id === "side")!;
+        expect(side.status).toBe("past");
+        expect(side.durationDays).toBeNull();
+    });
+
+    it("marks an open-ended side event that started last as live, next to the main season", () => {
+        const entries = buildTimelineEntries(
+            [
+                season("b", "2025-04-01T00:00:00Z"),
+                season("side", "2025-05-01T00:00:00Z", { isSideEvent: true }),
+            ],
+            GAME,
+            NOW,
+        );
+        const byId = Object.fromEntries(entries.map((e) => [e.id, e]));
+        expect(byId.side!.status).toBe("live");
+        expect(byId.b!.status).toBe("live");
     });
 
     it("formats a confirmed start as short month, day and year in UTC", () => {

@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import { hasTimeline } from "./(hub)/timeline/timeline";
-import { buildHubStatus, getActiveHubTab, getHubTabs, hasStatsTab } from "./hub";
+import {
+    buildHubStatus,
+    buildHubStatusLines,
+    getActiveHubTab,
+    getHubTabs,
+    hasStatsTab,
+} from "./hub";
 
 const now = new Date("2026-10-11T12:00:00Z");
 const fmt = (iso: string) => iso.slice(0, 10);
@@ -18,6 +24,7 @@ describe("getHubTabs", () => {
             "/game/poe/stats",
         ]);
         expect(getHubTabs("x").map((t) => t.id)).toEqual(["overview", "news"]);
+        expect(getHubTabs("x", { hasNews: false }).map((t) => t.id)).toEqual(["overview"]);
     });
 });
 
@@ -29,11 +36,13 @@ describe("tab rules", () => {
         expect(hasTimeline({ categories: ["seasonal"], isComingSoon: true }, 5)).toBe(false);
     });
 
-    it("gives Stats to seasonal games and released Steam games", () => {
-        expect(hasStatsTab({ categories: ["seasonal"] }, false)).toBe(true);
-        expect(hasStatsTab({}, true)).toBe(true);
-        expect(hasStatsTab({}, false)).toBe(false);
-        expect(hasStatsTab({ isComingSoon: true }, true)).toBe(false);
+    it("gives Stats to seasonal games with enough history and released Steam games", () => {
+        expect(hasStatsTab({ categories: ["seasonal"] }, false, 3)).toBe(true);
+        expect(hasStatsTab({ categories: ["seasonal"] }, false, 2)).toBe(false);
+        expect(hasStatsTab({ categories: ["seasonal"] }, true, 1)).toBe(true);
+        expect(hasStatsTab({}, true, 0)).toBe(true);
+        expect(hasStatsTab({}, false, 0)).toBe(false);
+        expect(hasStatsTab({ isComingSoon: true }, true, 0)).toBe(false);
     });
 });
 
@@ -103,6 +112,24 @@ describe("buildHubStatus", () => {
         ).toEqual(["Curse of the Allflame", "39 days left", "3.30 Fate starts 2026-11-19"]);
     });
 
+    it("groups current and next into separate lines", () => {
+        expect(
+            buildHubStatusLines(
+                {
+                    seasonKeyword: "league",
+                    currentSeason: current,
+                    nextSeason: {
+                        _id: "s2",
+                        name: "3.30 Fate",
+                        start: { startDate: "2026-11-19T20:00:00Z", confirmed: true },
+                    },
+                },
+                now,
+                fmt,
+            ),
+        ).toEqual([["Curse of the Allflame", "39 days left"], ["3.30 Fate starts 2026-11-19"]]);
+    });
+
     it("shows an announced next season without a date", () => {
         expect(
             buildHubStatus(
@@ -119,6 +146,28 @@ describe("buildHubStatus", () => {
                 fmt,
             ),
         ).toEqual(["Curse of the Allflame", "Season 12: date not announced"]);
+    });
+
+    it("uses editor-written start text for an unconfirmed next season", () => {
+        const withText = (overrideText: string) =>
+            buildHubStatus(
+                {
+                    seasonKeyword: "season",
+                    currentSeason: current,
+                    nextSeason: {
+                        _id: "s2",
+                        name: "Season 12",
+                        start: { startDate: null, confirmed: false, overrideText },
+                    },
+                },
+                now,
+                fmt,
+            );
+        expect(withText("Q4 2026")).toEqual(["Curse of the Allflame", "Season 12: Q4 2026"]);
+        expect(withText("To be announced")).toEqual([
+            "Curse of the Allflame",
+            "Season 12: date not announced",
+        ]);
     });
 
     it("handles dormant and coming-soon games", () => {

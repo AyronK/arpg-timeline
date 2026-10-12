@@ -1,5 +1,5 @@
 /**
- * Strips emojis and URLs from a Steam news description so it renders as clean plain text.
+ * Strips emojis, URLs and Markdown escapes from a Steam news description so it renders as clean plain text.
  */
 export function sanitizeNewsDescription(text: string): string {
     return text
@@ -7,6 +7,7 @@ export function sanitizeNewsDescription(text: string): string {
         .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F3FB}-\u{1F3FF}\u{FE0F}\u{200D}\u{20E3}]/gu, "")
         .replace(/https?:\/\/\S+/gi, "")
         .replace(/www\.\S+/gi, "")
+        .replace(/\\([\\`*_{}[\]()#+\-.!>~|])/g, "$1")
         .replace(/\s+/g, " ")
         .trim();
 }

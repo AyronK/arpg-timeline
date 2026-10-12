@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import {
     articleIndexGameParams,
     renderArticleIndex,
@@ -7,6 +8,7 @@ import {
 } from "@/lib/articles/renderArticleIndex";
 
 import { OfficialAnnouncements } from "../../components/news/OfficialAnnouncements";
+import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { getGameFeed } from "../../feed";
 
 interface Props {
@@ -23,13 +25,24 @@ export default async function GameNewsIndexPage({ params }: Props) {
         category: "news",
         gameSlug,
         extra: feed.length > 0 && <OfficialAnnouncements entries={feed} gameSlug={gameSlug} />,
+        aside: <SupportCard />,
         emptyText: "No news yet.",
     });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { gameSlug } = await params;
-    return resolveArticleIndexMetadata({ category: "news", gameSlug });
+    const [metadata, articles, feed] = await Promise.all([
+        resolveArticleIndexMetadata({ category: "news", gameSlug }),
+        getGameArticlesPreview(gameSlug),
+        getGameFeed(gameSlug, 1),
+    ]);
+
+    // The hub hides the News tab for games with no news; keep the empty page out of search
+    if (articles.news.length === 0 && feed.length === 0) {
+        return { ...metadata, robots: { index: false, follow: true } };
+    }
+    return metadata;
 }
 
 export function generateStaticParams() {

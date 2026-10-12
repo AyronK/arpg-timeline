@@ -38,6 +38,7 @@ export interface StatisticsCardProps {
 }
 
 export interface ArchivalSeason {
+    id: string;
     name: string;
     startDate: Date;
     endDate: Date | null;

@@ -34,7 +34,7 @@ const buildSummarySentences = (
 ): string[] => {
     if (summary.count === 0) return [`Every ${gameName} ${terms.one} and event in order.`];
     return [
-        `${summary.count} ${gameName} ${terms.many} tracked since ${summary.firstYear}.`,
+        `${summary.count} ${gameName} ${summary.count === 1 ? terms.one : terms.many} tracked since ${summary.firstYear}.`,
         ...(summary.next ? [`Next up: ${summary.next.name} (${summary.next.label}).`] : []),
     ];
 };

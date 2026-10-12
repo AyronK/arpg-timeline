@@ -168,13 +168,16 @@ sidebar, `24f7a04` Stats, `3b7035e` Guides empty state + cleanup, `3dde506` head
 and Guides hidden, `af9605c` review fixes + dormant/non-seasonal rules.
 
 Open items:
-- Desktop/mobile audit of every game page not done yet. Playwright + Chromium are installed in
-  `arpg-timeline/node_modules`, but Chromium needs `sudo apt-get install -y libasound2t64` on
-  this WSL box first. Plan: run against a production build (`npm run build && npm start`),
-  1440x900 and 390x844, parallel agents split by game.
-- No mobile mockup; mobile layout only checked by reasoning, not visually.
-- Sanity data: lowercase `seasonKeyword` "Content update" for Hell Clock and Ravenswatch
-  (renders mid-sentence). Not changed yet.
+- Audit done 2026-10-12 (Playwright, production build, 1440x900 + 390x844, all games). Fixes
+  and decisions are in "Audit follow-up" below. A visual re-check of the follow-up is still open.
+- Sanity data issues found by the audit, left as is on purpose (owner decision):
+  - `isDormant` / `isComingSoon` are hand-set flags. Grim Dawn, Hell Clock, Pale Coins and Cult
+    of Shadows are dormant despite Jul-Aug 2026 updates (so "No recent updates" sits above
+    October patch notes). GDCL is not dormant though its last season ended Jan 2025.
+    Emberville is not coming soon though Early Access starts Oct 27.
+  - Path of Diablo Season 14 has `additionalText` "No info", shown on the Next card and in the
+    FAQ text ("It is likely starting No info").
+  - Slash Diablo starts are stored as CET midnight (`23:00Z` the day before).
 - Code review leftovers (judgement calls): `placement?: string` on `NextSeasonCtas` could be a
   union; link helpers (`ExternalRow`, `utm`, `hostname`) live in `OverviewSidebar` but are
   shared; `ArticleIndex` has several flags driven by one fact (game index or not).
@@ -182,6 +185,42 @@ Open items:
   `{slug}-calendar-subscribe-quick-link`).
 - Pre-existing lint error in `components/TopCarousel.tsx` (`react-hooks/purity`) makes
   `npm run lint` / `format:all` fail; unrelated to this work.
+
+## Audit follow-up (2026-10-12)
+
+- Hydration: relative "Started N days ago" / "N days left" / progress text in `Content` render
+  after mount (stale ISR HTML caused React #418).
+- Stats footnote counts the same seasons as the "All N" toggle.
+- Plurals: "~1 week", keyword plurals ("patches"), "1 {keyword} tracked". `buildSeasonTerms`
+  lowercases the keyword (CMS has "Content update").
+- Header status uses editor-written start text ("Q4 2026") instead of "date not announced".
+- Players-only Stats page without players shows a note instead of the empty SteamDB embed.
+- No news (no articles, no feed): no Latest card, no News tab; `/news` renders with noindex.
+- Under 3 tracked seasons: no Rhythm on Overview; Stats tab only for Steam games (players only).
+- Non-seasonal games with an announced upcoming entry show the Next card on Overview.
+- Timeline: an open-ended side event that started last is Now (matches the header); dormant
+  games' newest card reads "Latest" without "Ongoing".
+- Recent list: all past entries incl. events, local dates like Timeline; main seasons end at
+  the next main season (events don't cut them short).
+- News tab without articles: feed in the main column, support card in the sidebar.
+- Sidebar: support card is always first and starts level with the content on every tab
+  (Timeline's "On this page" sits below it; News puts its heading inside the main column).
+- Rhythm tile values in the body font; dormant header keeps Share on the title row.
+- Header on mobile: logo + title on one row, status full width below with current and next on
+  separate lines (`buildHubStatusLines`); one "·" line from md up. Steam chip sits beside the
+  title; on mobile the calendar caption sits beside the button and Share at the row's end.
+- Parser: a latest season only becomes current once its start is confirmed and passed; a passed
+  unconfirmed estimate stays next and restarts from now + 10% of the offset (Path of Diablo
+  Season 14). Next card never shows the dormant "Play" chip; empty start text falls back to
+  "To be announced".
+- Timeline cards follow the Overview Now/Next layout (`components/SeasonCardParts.tsx`): badge
+  row (status, side event, patch notes) across the top, title links out, then date and the
+  Content widget with progress text below. Text is always left-aligned; only the logo mirrors.
+  Every running card gets progress, patch notes and the title link, not only the parsed current
+  season (a league running alongside a current side event ends at the confirmed next start).
+- Steam excerpts drop Markdown escapes. Next card hides "We'll add it..." when editor text exists.
+- Kept on purpose: two player counts on Stats (ours + SteamDB), Next-card button wording,
+  dashboard side-event behaviour.
 
 ## Repo rules
 

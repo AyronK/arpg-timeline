@@ -1,14 +1,15 @@
 import { SanityImageAssetDocument } from "next-sanity";
 
-import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { SanityImage } from "@/components/SanityImage";
+import { ChipColorMap } from "@/components/SeasonWidget";
 import { Content } from "@/hoc/GameToSeasonWidget/Content";
 import { Game } from "@/lib/cms/games.types";
-import { buildSeasonTerms } from "@/lib/seasonTerms";
 import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
+import { PatchNotesLink, SeasonBadgeRow, SeasonTitle } from "../../../components/SeasonCardParts";
+import { SideEventChip } from "../../../components/SideEventChip";
 import { formatApproxMonths, TimelineEntry } from "../timeline";
 import { LocalStartDate } from "./LocalStartDate";
 import { NextSeasonCtas } from "./NextSeasonCtas";
@@ -27,7 +28,32 @@ const STATUS_CHIP: Partial<Record<TimelineEntry["status"], { label: string; clas
         upcoming: { label: "Next", className: "bg-emerald-800 border border-transparent" },
     };
 
-const linkClassName = "text-card-foreground hover:text-card-foreground/80 text-sm hover:underline";
+// Game copy whose current season is this entry; null when its end is unknown (no progress to show)
+const buildLiveGame = (game: Game, entry: TimelineEntry): Game | null => {
+    const next = game.nextSeason;
+    const nextMainStart =
+        !entry.isSideEvent && next?.start?.confirmed && !next.isSideEvent
+            ? next.start.startDate
+            : null;
+    const endDate = entry.endDate?.toISOString() ?? nextMainStart;
+    if (!endDate || !entry.startDate) return null;
+
+    return {
+        ...game,
+        currentSeason: {
+            _id: entry.id,
+            _updatedAt: "",
+            name: entry.name,
+            url: entry.url,
+            patchNotesUrl: entry.patchNotesUrl,
+            isSideEvent: entry.isSideEvent,
+            start: { startDate: entry.startDate.toISOString(), confirmed: true },
+            end: { endDate, confirmed: !!entry.endDate },
+        },
+    };
+};
+
+const DORMANT_LATEST_CHIP = { label: "Latest", className: ChipColorMap.dormant };
 
 export const TimelineEntryCard = ({
     entry,
@@ -36,11 +62,13 @@ export const TimelineEntryCard = ({
     game,
     showCtas,
 }: TimelineEntryCardProps) => {
-    const chip = STATUS_CHIP[entry.status];
+    // Dormant games: the newest entry is the last update, not something running now
+    const isDormantLatest = !!game?.isDormant && entry.status === "live";
+    const chip = isDormantLatest ? DORMANT_LATEST_CHIP : STATUS_CHIP[entry.status];
     const duration =
         entry.durationDays !== null
             ? formatApproxMonths(entry.durationDays)
-            : entry.status === "live"
+            : entry.status === "live" && !isDormantLatest
               ? "Ongoing"
               : null;
 
@@ -50,12 +78,17 @@ export const TimelineEntryCard = ({
             : game && entry.status === "upcoming" && entry.id === game.nextSeason?._id
               ? "next"
               : null;
-    const nextHasPatchNotes =
-        selector === "next" &&
-        !!game?.nextSeason?.start?.confirmed &&
-        !!game.nextSeason.start.startDate;
-    const showPatchNotes = !!entry.patchNotesUrl && selector !== null && !nextHasPatchNotes;
-    const showUrl = !!entry.url && selector !== null;
+    // A league running alongside the current event gets its own progress, like the parsed current
+    const liveContent =
+        !selector && game && entry.status === "live" && !isDormantLatest && entry.startDate
+            ? buildLiveGame(game, entry)
+            : null;
+    const contentGame = selector ? game : liveContent;
+    const contentSelector = selector ?? (liveContent ? "current" : null);
+    // Links on every running or upcoming card, like the Overview Now/Next cards
+    const isActive = entry.status !== "past" && !isDormantLatest;
+    const showPatchNotes = !!entry.patchNotesUrl && isActive;
+    const showUrl = !!entry.url && isActive;
 
     const withUtm = (campaign: string, url: string) =>
         addUTMParameters({
@@ -65,18 +98,36 @@ export const TimelineEntryCard = ({
             utm_content: game?.slug ?? "",
         })(url);
 
+    const chips = (chip || entry.isSideEvent) && (
+        <>
+            {chip && (
+                <Chip className={cn(chip.className, "min-w-12 text-center")}>{chip.label}</Chip>
+            )}
+            {entry.isSideEvent && <SideEventChip />}
+        </>
+    );
+    const patchNotes = game && showPatchNotes && (
+        <PatchNotesLink
+            href={withUtm("patch-notes", entry.patchNotesUrl!)}
+            isOfficial={game.isOfficial}
+            saClick={`${entry.name}-patch-notes`}
+        />
+    );
+
     return (
         <div
             className={cn(
                 "bg-card text-card-foreground flex flex-col gap-3 rounded-lg border p-3 md:p-4",
-                entry.status === "live" && "border-sky-500/50",
+                entry.status === "live" && !isDormantLatest && "border-sky-500/50",
                 entry.status === "upcoming" && "border-emerald-500/50",
             )}
         >
+            {(chips || patchNotes) && <SeasonBadgeRow chips={chips} action={patchNotes} />}
+            {/* Logo on the centre-line side; text always reads left to right like the Overview cards */}
             <div
                 className={cn(
                     "flex items-center gap-3 md:gap-4",
-                    align === "left" && "md:flex-row-reverse md:text-right",
+                    align === "left" && "md:flex-row-reverse",
                 )}
             >
                 <div className="grid h-14 w-14 shrink-0 place-items-center md:h-24 md:w-24">
@@ -90,27 +141,15 @@ export const TimelineEntryCard = ({
                         className="h-full w-full"
                     />
                 </div>
-                <div className="flex min-w-0 flex-1 flex-col gap-1">
-                    <div
-                        className={cn(
-                            "flex flex-wrap items-center gap-2",
-                            align === "left" && "md:justify-end",
-                        )}
-                    >
-                        <h3 className="font-heading text-base leading-tight break-words md:text-lg">
-                            {entry.name}
-                        </h3>
-                        {chip && (
-                            <Chip className={cn(chip.className, "min-w-12 text-center")}>
-                                {chip.label}
-                            </Chip>
-                        )}
-                        {entry.isSideEvent && (
-                            <span className="text-foreground font-heading rounded-md border border-rose-400/75 bg-rose-400/15 px-1 py-[1px] text-xs leading-4 font-semibold select-none">
-                                side event
-                            </span>
-                        )}
-                    </div>
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                    <SeasonTitle
+                        as="h3"
+                        title={entry.name}
+                        href={game && showUrl ? withUtm("season-link", entry.url!) : null}
+                        isOfficial={!!game?.isOfficial}
+                        className="text-base break-words md:text-lg"
+                        saClick={`${entry.name}-season-link`}
+                    />
                     <div className="text-muted-foreground text-sm">
                         <span className="text-foreground font-medium">
                             {entry.localizeStart && entry.startDate ? (
@@ -131,37 +170,14 @@ export const TimelineEntryCard = ({
                     )}
                 </div>
             </div>
-            {game && selector && (
-                <div className="flex flex-col gap-2 text-left">
-                    <Content game={game} selector={selector} />
-                </div>
-            )}
-            {game && (showUrl || showPatchNotes) && (
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-left">
-                    {showUrl && (
-                        <GuardedExternalLink
-                            href={withUtm("season-link", entry.url!)}
-                            isOfficial={game.isOfficial}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={linkClassName}
-                            data-sa-click={`${entry.name}-season-link`}
-                        >
-                            {buildSeasonTerms(game.seasonKeyword).One} page
-                        </GuardedExternalLink>
-                    )}
-                    {showPatchNotes && (
-                        <GuardedExternalLink
-                            href={withUtm("patch-notes", entry.patchNotesUrl!)}
-                            isOfficial={game.isOfficial}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={linkClassName}
-                            data-sa-click={`${entry.name}-patch-notes`}
-                        >
-                            Patch notes
-                        </GuardedExternalLink>
-                    )}
+            {contentGame && contentSelector && (
+                <div className="flex flex-col gap-2">
+                    <Content
+                        game={contentGame}
+                        selector={contentSelector}
+                        hidePatchNotes
+                        progressTextBelow
+                    />
                 </div>
             )}
             {game && showCtas && <NextSeasonCtas gameSlug={game.slug} gameName={game.name} />}

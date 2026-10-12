@@ -14,11 +14,10 @@ import { OverviewCard } from "../../components/overview/OverviewCard";
 import { SupportCard } from "../../components/overview/OverviewSidebar";
 import { StatisticsSection } from "../../components/StatisticsSection";
 import { getGameDetails } from "../../gameData";
-import { getStatsPath, hasStatsTab } from "../../hub";
+import { getStatsPath, hasSeasonStats, hasStatsTab } from "../../hub";
 import { formatPerYear } from "../../overview";
 import { GamePageProps } from "../../types";
 import { calculateGameStatistics, countTrackedSeasons, getOldestSeasonInfo } from "../../utils";
-import { hasSeasonHistory } from "../timeline/timeline";
 import {
     buildPlayersDescription,
     buildPlayersTitle,
@@ -34,15 +33,15 @@ const StatsPage = async ({ params }: GamePageProps) => {
 
     const { data, game, steamAppId: appId } = await getGameDetails(gameSlug);
 
-    if (!game || !hasStatsTab(game, !!appId)) {
+    const trackedCount = countTrackedSeasons(data, gameSlug);
+    if (!game || !hasStatsTab(game, !!appId, trackedCount)) {
         notFound();
     }
 
-    // Non-seasonal games only get the Steam players section
-    const seasonal = hasSeasonHistory(game);
+    // Non-seasonal games and short histories only get the Steam players section
+    const seasonal = hasSeasonStats(game, trackedCount);
     const terms = buildSeasonTerms(game.seasonKeyword);
     const statistics = calculateGameStatistics(data, gameSlug);
-    const trackedCount = countTrackedSeasons(data, gameSlug);
     const recentStatistics =
         trackedCount > RECENT_SEASON_COUNT
             ? calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT })
@@ -96,7 +95,15 @@ const StatsPage = async ({ params }: GamePageProps) => {
                                     </span>
                                 </p>
                             )}
-                            <SteamDBEmbed appId={steam.appId} />
+                            {seasonal || steam.currentPlayers > 0 ? (
+                                <SteamDBEmbed appId={steam.appId} />
+                            ) : (
+                                // SteamDB has no chart for apps nobody plays yet (demos, pre-release)
+                                <p className="text-muted-foreground text-sm">
+                                    No one is playing on Steam right now, so there is no player
+                                    chart yet.
+                                </p>
+                            )}
                         </OverviewCard>
                     )}
                 </div>
@@ -116,19 +123,20 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
 
     const { data, game, steamAppId } = await getGameDetails(gameSlug);
 
-    if (!game || !hasStatsTab(game, !!steamAppId)) {
+    const trackedCount = countTrackedSeasons(data, gameSlug);
+    if (!game || !hasStatsTab(game, !!steamAppId, trackedCount)) {
         return { title: "Game Not Found" };
     }
 
     const terms = buildSeasonTerms(game.seasonKeyword);
     const statistics = calculateGameStatistics(data, gameSlug);
-    const seasonal = hasSeasonHistory(game);
+    const seasonal = hasSeasonStats(game, trackedCount);
     const title = seasonal ? buildStatsTitle(game.name, terms) : buildPlayersTitle(game.name);
     const description = seasonal
         ? buildStatsDescription(game.name, terms, {
               averageDurationDays: statistics.averageDurationDays,
               perYear: formatPerYear(statistics.averagePerYear),
-              count: countTrackedSeasons(data, gameSlug),
+              count: trackedCount,
           })
         : buildPlayersDescription(game.name);
     const path = getStatsPath(gameSlug);
@@ -160,7 +168,9 @@ export async function generateStaticParams() {
     const data: IndexQueryResult = await sanityFetch({ query: indexQuery, ...fetchOptions });
 
     return data.games
-        .filter((g) => g.slug && hasStatsTab(g, !!g.steam?.appId))
+        .filter(
+            (g) => g.slug && hasStatsTab(g, !!g.steam?.appId, countTrackedSeasons(data, g.slug)),
+        )
         .map((g) => ({ gameSlug: g.slug }));
 }
 

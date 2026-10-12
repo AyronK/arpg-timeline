@@ -1,4 +1,5 @@
 "use client";
+import { useHasMounted } from "@react-hooks-library/core";
 import { InfoIcon, TimerReset } from "lucide-react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
@@ -37,6 +38,8 @@ export const Content = ({
     hidePatchNotes?: boolean;
     progressTextBelow?: boolean;
 }) => {
+    // Relative times ("Started 52 days ago") go stale in cached HTML, so render them after mount
+    const hasMounted = useHasMounted();
     const season = selector === "current" ? game.currentSeason : game.nextSeason;
 
     if (!season) {
@@ -154,8 +157,9 @@ export const Content = ({
                 <>
                     <IconLabel icon={TimerReset}>
                         <i>
-                            {season.start?.overrideText ??
-                                game.currentSeason?.end?.overrideText ??
+                            {/* || so empty CMS strings fall through too */}
+                            {season.start?.overrideText ||
+                                game.currentSeason?.end?.overrideText ||
                                 "To be announced"}
                         </i>
                     </IconLabel>
@@ -176,19 +180,24 @@ export const Content = ({
             <>
                 <div className="flex flex-row flex-wrap justify-between">
                     <ClientOnlyVisibleWrapper>
-                        {getProgressStartContent(
-                            season.start?.startDate,
-                            season.end?.endDate ?? null,
-                            null,
-                            game.isDormant,
+                        {hasMounted ? (
+                            getProgressStartContent(
+                                season.start?.startDate,
+                                season.end?.endDate ?? null,
+                                null,
+                                game.isDormant,
+                            )
+                        ) : (
+                            <IconLabel icon={TimerReset}>&nbsp;</IconLabel>
                         )}
                     </ClientOnlyVisibleWrapper>
                     <ClientOnlyVisibleWrapper>
                         <div className="ml-auto">
-                            {getProgressEndContent(
-                                season.end?.overrideText ?? null,
-                                season.end?.confirmed ? season.end?.endDate : null,
-                            )}
+                            {hasMounted &&
+                                getProgressEndContent(
+                                    season.end?.overrideText ?? null,
+                                    season.end?.confirmed ? season.end?.endDate : null,
+                                )}
                         </div>
                     </ClientOnlyVisibleWrapper>
                 </div>
@@ -203,8 +212,8 @@ export const Content = ({
                 )}
                 {!game.isDormant && progressTextBelow && progressText && (
                     <ClientOnlyVisibleWrapper>
-                        <p className="text-muted-foreground text-sm" suppressHydrationWarning>
-                            {progressText}
+                        <p className="text-muted-foreground text-sm">
+                            {hasMounted ? progressText : "\u00a0"}
                         </p>
                     </ClientOnlyVisibleWrapper>
                 )}

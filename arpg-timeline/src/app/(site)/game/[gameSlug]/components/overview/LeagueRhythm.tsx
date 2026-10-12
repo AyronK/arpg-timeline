@@ -20,7 +20,8 @@ export interface RhythmData {
 
 const Tile = ({ value, text }: { value: ReactNode; text: string }) => (
     <div className="bg-background/40 rounded-md border p-4">
-        <p className="font-heading text-lg">{value}</p>
+        {/* Body font: the heading font's decimal point nearly disappears ("~3.5" reads "~35") */}
+        <p className="text-lg font-semibold tabular-nums">{value}</p>
         <p className="text-muted-foreground mt-1 text-sm">{text}</p>
     </div>
 );

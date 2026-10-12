@@ -6,6 +6,7 @@ import {
     hasTimeline,
 } from "@/app/(site)/game/[gameSlug]/(hub)/timeline/timeline";
 import { getStatsPath, hasStatsTab } from "@/app/(site)/game/[gameSlug]/hub";
+import { countTrackedSeasons } from "@/app/(site)/game/[gameSlug]/utils";
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { getArticlePath } from "@/lib/articles/articleUrl";
 import { getArticleStaticParams } from "@/lib/articles/getArticleData";
@@ -115,7 +116,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                             priority: 0.6,
                         });
                     }
-                    if (hasStatsTab(game, !!game.steam?.appId)) {
+                    if (
+                        hasStatsTab(
+                            game,
+                            !!game.steam?.appId,
+                            countTrackedSeasons({ seasons: data.seasons || [] }, game.slug),
+                        )
+                    ) {
                         sitemap.push({
                             url: `${baseUrl}${getStatsPath(game.slug)}`,
                             lastModified: new Date(),

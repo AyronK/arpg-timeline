@@ -21,11 +21,14 @@ describe("buildSeasonTerms", () => {
         });
     });
 
-    it("naively pluralizes by appending 's' (no linguistic rules)", () => {
+    it("pluralizes common keyword endings", () => {
         expect(buildSeasonTerms("cycle").many).toBe("cycles");
         expect(buildSeasonTerms("chapter").many).toBe("chapters");
-        // Known limitation: words ending in "s"/"y" are not special-cased.
-        expect(buildSeasonTerms("series").many).toBe("seriess");
+        expect(buildSeasonTerms("patch").many).toBe("patches");
+        expect(buildSeasonTerms("series").many).toBe("series");
+        expect(buildSeasonTerms("story").many).toBe("stories");
+        expect(buildSeasonTerms("Content update").many).toBe("content updates");
+        expect(buildSeasonTerms("Content update").Many).toBe("Content updates");
     });
 
     it.each([undefined, null, "", "   "])("falls back to 'season' for %j", (value) => {
@@ -46,8 +49,8 @@ describe("buildSeasonTerms", () => {
         });
     });
 
-    it("capitalizes only the first character, preserving the rest", () => {
-        expect(buildSeasonTerms("mapDrop").One).toBe("MapDrop");
-        expect(buildSeasonTerms("ARPG cycle").One).toBe("ARPG cycle");
+    it("lowercases the keyword and capitalizes only the first character", () => {
+        expect(buildSeasonTerms("Ladder Reset").one).toBe("ladder reset");
+        expect(buildSeasonTerms("Ladder Reset").One).toBe("Ladder reset");
     });
 });

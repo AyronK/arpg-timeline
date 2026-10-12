@@ -17,6 +17,8 @@ export interface TimelineEntry {
     startLabel: string;
     localizeStart: boolean;
     durationDays: number | null;
+    // Known end of a started entry: confirmed end, or the next main season's start
+    endDate?: Date | null;
     placeholder?: boolean;
 }
 
@@ -79,6 +81,10 @@ export const buildTimelineEntries = (
         .filter((p) => p.confirmedStart && p.startDate! <= now && !p.season.isSideEvent)
         .sort((a, b) => b.startDate!.getTime() - a.startDate!.getTime());
     const newestMainId = startedMain[0]?.season._id;
+    // Matches the header: an open-ended side event that started last is the current entry
+    const newestStartedId = parsed
+        .filter((p) => p.confirmedStart && p.startDate! <= now)
+        .sort((a, b) => b.startDate!.getTime() - a.startDate!.getTime())[0]?.season._id;
 
     const newestMainStart = startedMain[0]?.startDate ?? null;
 
@@ -102,7 +108,9 @@ export const buildTimelineEntries = (
                         .sort((a, b) => a.getTime() - b.getTime())[0] ?? null;
             }
             const isLive = isSideEvent
-                ? !!endDate && endDate > now
+                ? endDate
+                    ? endDate > now
+                    : season._id === newestStartedId
                 : confirmedStart && season._id === newestMainId && (!end || end > now);
             status = isLive ? "live" : "past";
         }
@@ -127,6 +135,7 @@ export const buildTimelineEntries = (
             startLabel: buildStartLabel(season, hideEstimate ? null : startDate),
             localizeStart: !season.start?.overrideText && !!season.start?.confirmed && !!startDate,
             durationDays,
+            endDate: status === "upcoming" ? null : end,
         };
     });
 

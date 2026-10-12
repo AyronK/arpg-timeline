@@ -22,6 +22,8 @@ interface ArticleIndexProps {
     emptyText?: string;
     // Replaces emptyText when there are no articles
     emptyState?: ReactNode;
+    // Sidebar next to extra when there are no articles, like the other game hub tabs
+    aside?: ReactNode;
     compact?: boolean;
 }
 
@@ -36,14 +38,13 @@ export const ArticleIndex = ({
     showGame = true,
     showBreadcrumbs = true,
     extra,
+    aside,
     compact,
     emptyState,
     emptyText = "No articles here yet - check back soon.",
-}: ArticleIndexProps) => (
-    <div className={cn("relative container mx-auto", compact ? "py-6" : "py-8 md:py-10")}>
-        {showBreadcrumbs && <Breadcrumbs crumbs={crumbs} />}
-
-        {/* Compact matches the other game hub tabs */}
+}: ArticleIndexProps) => {
+    const header = (
+        // Compact matches the other game hub tabs
         <header className={cn("max-w-2xl", compact ? "mb-6" : "mb-8")}>
             <h1
                 className={cn(
@@ -62,36 +63,69 @@ export const ArticleIndex = ({
                 {intro}
             </p>
         </header>
+    );
+    const containerClass = cn("relative container mx-auto", compact ? "py-6" : "py-8 md:py-10");
 
-        {articles.length === 0 ? (
-            extra ? (
-                <div className="max-w-3xl">{extra}</div>
-            ) : (
-                (emptyState ?? <p className="text-muted-foreground">{emptyText}</p>)
-            )
-        ) : (
-            // With extra content, articles and extra sit side by side on wide screens
-            <div className={cn(extra && "grid gap-10 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]")}>
-                <div className="min-w-0">
-                    <div
-                        className={cn(
-                            "grid gap-4",
-                            !compact && "sm:grid-cols-2 lg:grid-cols-3",
-                            compact && "sm:grid-cols-3 lg:grid-cols-4",
-                            compact &&
-                                (extra
-                                    ? "xl:grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]"
-                                    : "xl:grid-cols-5"),
-                        )}
-                    >
-                        {articles.map((article) => (
-                            <ArticleCard key={article._id} article={article} showGame={showGame} />
-                        ))}
+    // Only extra content: same main column | sidebar grid as the other hub tabs, header included
+    if (articles.length === 0 && extra && aside) {
+        return (
+            <div className={containerClass}>
+                {showBreadcrumbs && <Breadcrumbs crumbs={crumbs} />}
+                <div className="grid items-start gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-12">
+                    <div className="max-w-3xl min-w-0">
+                        {header}
+                        {extra}
                     </div>
-                    <ArticlePagination basePath={basePath} page={page} pageCount={pageCount} />
+                    <aside className="lg:sticky lg:top-12">{aside}</aside>
                 </div>
-                {extra && <div className="max-w-3xl min-w-0">{extra}</div>}
             </div>
-        )}
-    </div>
-);
+        );
+    }
+
+    return (
+        <div className={containerClass}>
+            {showBreadcrumbs && <Breadcrumbs crumbs={crumbs} />}
+
+            {header}
+
+            {articles.length === 0 ? (
+                extra ? (
+                    <div className="max-w-3xl">{extra}</div>
+                ) : (
+                    (emptyState ?? <p className="text-muted-foreground">{emptyText}</p>)
+                )
+            ) : (
+                // With extra content, articles and extra sit side by side on wide screens
+                <div
+                    className={cn(
+                        extra && "grid gap-10 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
+                    )}
+                >
+                    <div className="min-w-0">
+                        <div
+                            className={cn(
+                                "grid gap-4",
+                                !compact && "sm:grid-cols-2 lg:grid-cols-3",
+                                compact && "sm:grid-cols-3 lg:grid-cols-4",
+                                compact &&
+                                    (extra
+                                        ? "xl:grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]"
+                                        : "xl:grid-cols-5"),
+                            )}
+                        >
+                            {articles.map((article) => (
+                                <ArticleCard
+                                    key={article._id}
+                                    article={article}
+                                    showGame={showGame}
+                                />
+                            ))}
+                        </div>
+                        <ArticlePagination basePath={basePath} page={page} pageCount={pageCount} />
+                    </div>
+                    {extra && <div className="max-w-3xl min-w-0">{extra}</div>}
+                </div>
+            )}
+        </div>
+    );
+};

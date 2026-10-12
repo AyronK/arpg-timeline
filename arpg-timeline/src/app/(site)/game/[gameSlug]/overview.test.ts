@@ -31,6 +31,8 @@ describe("rhythm tiles", () => {
     it("formats approximate lengths", () => {
         expect(formatApproxLength(108)).toBe("~3.5 months");
         expect(formatApproxLength(21)).toBe("~3 weeks");
+        expect(formatApproxLength(10)).toBe("~1 week");
+        expect(formatApproxLength(2)).toBe("~1 week");
     });
 
     it("builds the length tile with a clamped typical range", () => {

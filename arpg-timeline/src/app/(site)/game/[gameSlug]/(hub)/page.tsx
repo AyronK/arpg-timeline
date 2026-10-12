@@ -18,7 +18,7 @@ import { RecentSeasonsList } from "../components/overview/RecentSeasonsList";
 import { NextCard, NowCard } from "../components/overview/StatusCards";
 import { getGameFeed } from "../feed";
 import { getGameDetails } from "../gameData";
-import { getStatsPath, isPlaceholderNext } from "../hub";
+import { getStatsPath, hasSeasonStats, isPlaceholderNext } from "../hub";
 import {
     buildGamePageDescription,
     buildGamePageOgDescription,
@@ -70,7 +70,7 @@ const GamePage = async ({ params }: GamePageProps) => {
                   calculateGameStatistics(data, gameSlug, { recentCount: RECENT_SEASON_COUNT }),
               )
             : undefined;
-    const hasRhythm = hasSeasons && !!(rhythm.length || rhythm.perYear);
+    const hasRhythm = hasSeasonStats(game, trackedCount) && !!(rhythm.length || rhythm.perYear);
     const recentSeasons = hasSeasons ? getArchivalSeasons(data, game).slice(0, 3) : [];
 
     const cadenceHint = hasSeasons
@@ -92,6 +92,9 @@ const GamePage = async ({ params }: GamePageProps) => {
             <NowCard game={game} />
             {showNext && <NextCard game={game} cadenceHint={game.isDormant ? null : cadenceHint} />}
         </div>
+    ) : game.nextSeason && !isPlaceholderNext(game.currentSeason, game.nextSeason) ? (
+        // Non-seasonal games: only an announced upcoming entry earns a card
+        <NextCard game={game} />
     ) : null;
 
     const structuredData = getStructuredDataForGame(game);
@@ -146,19 +149,21 @@ const GamePage = async ({ params }: GamePageProps) => {
                         />
                     )}
 
-                    <OverviewCard
-                        title="Latest"
-                        action={
-                            <CardLink
-                                href={`/game/${gameSlug}/news`}
-                                saClick={`${gameSlug}-latest-all-news`}
-                            >
-                                All news
-                            </CardLink>
-                        }
-                    >
-                        <LatestList items={latest} gameSlug={gameSlug} />
-                    </OverviewCard>
+                    {latest.length > 0 && (
+                        <OverviewCard
+                            title="Latest"
+                            action={
+                                <CardLink
+                                    href={`/game/${gameSlug}/news`}
+                                    saClick={`${gameSlug}-latest-all-news`}
+                                >
+                                    All news
+                                </CardLink>
+                            }
+                        >
+                            <LatestList items={latest} gameSlug={gameSlug} />
+                        </OverviewCard>
+                    )}
 
                     {recentSeasons.length > 0 && (
                         <OverviewCard

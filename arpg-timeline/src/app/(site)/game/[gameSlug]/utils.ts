@@ -4,6 +4,7 @@ import {
     SanitySeason,
     SeasonEndDateInfo,
 } from "@/lib/cms/queries/indexQuery";
+import { buildSeasonTerms } from "@/lib/seasonTerms";
 
 import { ArchivalSeason, GameStatistics, LocalSeason, SeasonDuration } from "./types";
 
@@ -133,7 +134,7 @@ export const calculateAverageDurationDays = (seasonDurations: SeasonDuration[]):
 const isTrackedSeason = (s: LocalSeason): boolean =>
     !!s?.start?.startDate && !!s?.start?.confirmed && new Date(s.start.startDate) <= new Date();
 
-export const countTrackedSeasons = (data: GameDetailsQueryResult, gameSlug: string): number =>
+export const countTrackedSeasons = (data: { seasons: SanitySeason[] }, gameSlug: string): number =>
     data.seasons.filter((s) => s?.game === gameSlug && !s?.isSideEvent && isTrackedSeason(s))
         .length;
 
@@ -192,35 +193,24 @@ export const calculateGameStatistics = (
     };
 };
 
+// Counts the same seasons as the "All N" toggle (countTrackedSeasons)
 export const getOldestSeasonInfo = (data: GameDetailsQueryResult, game: Game): string => {
-    const gameSeasons = data.seasons.filter((s) => s?.game === game.slug);
-    if (gameSeasons.length === 0) return "No season data available";
-
-    const seasonsWithConfirmedStartDates = gameSeasons.filter(
-        (s) => s?.start?.startDate && s?.start?.confirmed,
+    const tracked = data.seasons.filter(
+        (s) => s?.game === game.slug && !s?.isSideEvent && isTrackedSeason(s),
     );
-    if (seasonsWithConfirmedStartDates.length === 0)
-        return "No confirmed season start dates available";
+    if (tracked.length === 0) return "No confirmed season start dates available";
 
-    const oldestSeason = seasonsWithConfirmedStartDates.reduce((oldest, season) => {
-        if (!season?.start?.startDate || !oldest?.start?.startDate) return oldest || season;
-        const currentDate = new Date(season.start.startDate);
-        const oldestDate = new Date(oldest.start.startDate);
-        return currentDate < oldestDate ? season : oldest;
-    });
-
-    if (!oldestSeason?.start?.startDate) return "No valid season data available";
-
-    const oldestDate = new Date(oldestSeason.start.startDate);
-    const formattedOldestDate = oldestDate.toLocaleDateString("en-US", {
+    const oldestMs = Math.min(...tracked.map((s) => new Date(s.start!.startDate!).getTime()));
+    const formattedOldestDate = new Date(oldestMs).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
+        timeZone: "UTC",
     });
 
-    const count = getArchivalSeasons(data, game).length;
-    const seasonKeyword = game.seasonKeyword?.trim() || "season";
-    return `Based on ${count} ${seasonKeyword}s tracked since ${formattedOldestDate}.`;
+    const terms = buildSeasonTerms(game.seasonKeyword);
+    const noun = tracked.length === 1 ? terms.one : terms.many;
+    return `Based on ${tracked.length} ${noun} tracked since ${formattedOldestDate}.`;
 };
 
 export const getArchivalSeasons = (data: GameDetailsQueryResult, game: Game): ArchivalSeason[] => {
@@ -238,15 +228,20 @@ export const getArchivalSeasons = (data: GameDetailsQueryResult, game: Game): Ar
             (a, b) =>
                 new Date(b.start!.startDate!).getTime() - new Date(a.start!.startDate!).getTime(),
         )
-        .slice(1)
         .map((season, index, arr) => {
             const startDate = new Date(season.start!.startDate!);
-            const prevStart = arr[index - 1]?.start?.startDate;
+            // A main season ends when the next main season starts; side events don't cut it short
+            const nextMainStart = season.isSideEvent
+                ? undefined
+                : arr
+                      .slice(0, index)
+                      .filter((s) => !s.isSideEvent)
+                      .at(-1)?.start?.startDate;
             const endDate =
                 season.end?.endDate && season.end?.confirmed
                     ? new Date(season.end.endDate)
-                    : prevStart
-                      ? new Date(prevStart)
+                    : nextMainStart
+                      ? new Date(nextMainStart)
                       : null;
 
             const duration = endDate
@@ -258,6 +253,7 @@ export const getArchivalSeasons = (data: GameDetailsQueryResult, game: Game): Ar
             }
 
             return {
+                id: season._id,
                 name: season.name || "Unknown",
                 startDate,
                 endDate,
@@ -268,7 +264,7 @@ export const getArchivalSeasons = (data: GameDetailsQueryResult, game: Game): Ar
             };
         })
         .filter((s): s is NonNullable<typeof s> => s !== null)
-        .filter((s) => s.name !== game.currentSeason?.name)
+        .filter((s) => s.id !== game.currentSeason?._id)
         .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
 };
 

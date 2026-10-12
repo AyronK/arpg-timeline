@@ -10,8 +10,11 @@ export interface RhythmTile {
     text: string;
 }
 
-export const formatApproxLength = (days: number): string =>
-    days < 45 ? `~${Math.round(days / 7)} weeks` : `~${Math.round((days / 30.44) * 2) / 2} months`;
+export const formatApproxLength = (days: number): string => {
+    if (days >= 45) return `~${Math.round((days / 30.44) * 2) / 2} months`;
+    const weeks = Math.max(Math.round(days / 7), 1);
+    return `~${weeks} ${weeks === 1 ? "week" : "weeks"}`;
+};
 
 export const formatPerYear = (averagePerYear: string): string | null => {
     if (averagePerYear === "N/A") return null;
@@ -98,28 +101,30 @@ export const mergeLatest = (
     return (pinned ? [pinned, ...rest] : rest).slice(0, limit);
 };
 
-const dayFormat = (withYear: boolean): Intl.DateTimeFormatOptions => ({
+// UTC on the server so cached HTML matches across visitors; local renders in the browser
+const dayFormat = (withYear: boolean, local: boolean): Intl.DateTimeFormatOptions => ({
     month: "short",
     day: "numeric",
-    timeZone: "UTC",
+    ...(!local && { timeZone: "UTC" }),
     ...(withYear && { year: "numeric" }),
 });
 
-// UTC so server-rendered dates match across visitors.
-export const formatShortDate = (date: Date | string, withYear = false): string =>
-    new Date(date).toLocaleDateString("en-US", dayFormat(withYear));
+export const formatShortDate = (date: Date | string, withYear = false, local = false): string =>
+    new Date(date).toLocaleDateString("en-US", dayFormat(withYear, local));
 
-export const formatDateRange = (start: Date, end: Date | null): string => {
-    if (!end) return formatShortDate(start, true);
-    const sameYear = start.getUTCFullYear() === end.getUTCFullYear();
-    return `${formatShortDate(start, !sameYear)} - ${formatShortDate(end, true)}`;
+export const formatDateRange = (start: Date, end: Date | null, local = false): string => {
+    if (!end) return formatShortDate(start, true, local);
+    const year = (d: Date) => (local ? d.getFullYear() : d.getUTCFullYear());
+    const sameYear = year(start) === year(end);
+    return `${formatShortDate(start, !sameYear, local)} - ${formatShortDate(end, true, local)}`;
 };
 
 export const formatSeasonRow = (
     season: Pick<ArchivalSeason, "startDate" | "endDate" | "duration">,
+    local = false,
 ) =>
     [
-        formatDateRange(season.startDate, season.endDate),
+        formatDateRange(season.startDate, season.endDate, local),
         season.duration && `${season.duration} days`,
     ]
         .filter(Boolean)

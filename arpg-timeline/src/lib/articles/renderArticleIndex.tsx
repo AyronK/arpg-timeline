@@ -24,6 +24,7 @@ interface IndexArgs {
 
 interface RenderArgs extends IndexArgs {
     extra?: ReactNode;
+    aside?: ReactNode;
     emptyText?: string;
     emptyState?: ReactNode;
 }
@@ -71,7 +72,13 @@ async function resolveIndex({ category, gameSlug, page: pageParam }: IndexArgs) 
     return { page, items, pageCount, basePath, title, intro, crumbs, showGame: !game };
 }
 
-export async function renderArticleIndex({ extra, emptyText, emptyState, ...args }: RenderArgs) {
+export async function renderArticleIndex({
+    extra,
+    aside,
+    emptyText,
+    emptyState,
+    ...args
+}: RenderArgs) {
     const { page, items, pageCount, basePath, title, intro, crumbs, showGame } =
         await resolveIndex(args);
 
@@ -92,6 +99,7 @@ export async function renderArticleIndex({ extra, emptyText, emptyState, ...args
                 // Game indexes sit under the game hub header, which has its own breadcrumbs
                 showBreadcrumbs={showGame}
                 extra={extra}
+                aside={aside}
                 // Narrower cards under the game hub
                 compact={!showGame}
                 emptyText={emptyText}

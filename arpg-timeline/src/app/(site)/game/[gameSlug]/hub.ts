@@ -1,3 +1,5 @@
+import { buildSeasonTerms } from "@/lib/seasonTerms";
+
 import { hasSeasonHistory } from "./(hub)/timeline/timeline";
 
 export type HubTabId = "overview" | "timeline" | "news" | "guides" | "stats";
@@ -9,16 +11,26 @@ export interface HubTab {
 }
 
 export interface HubTabFlags {
+    hasNews?: boolean;
     hasTimeline?: boolean;
     hasGuides?: boolean;
     hasStats?: boolean;
 }
 
-// Seasonal games get league stats; other released games get Steam players only
+// Fewer tracked seasons than this make averages and ranges meaningless
+export const MIN_STATS_SEASONS = 3;
+
+export const hasSeasonStats = (
+    game: { categories?: string[]; isComingSoon?: boolean | null },
+    trackedCount: number,
+): boolean => hasSeasonHistory(game) && trackedCount >= MIN_STATS_SEASONS;
+
+// Seasonal games with enough history get league stats; other released games get Steam players only
 export const hasStatsTab = (
     game: { categories?: string[]; isComingSoon?: boolean | null },
     hasSteam: boolean,
-): boolean => hasSeasonHistory(game) || (!game.isComingSoon && hasSteam);
+    trackedCount: number,
+): boolean => hasSeasonStats(game, trackedCount) || (!game.isComingSoon && hasSteam);
 
 // Route segment under (hub) for each tab; Overview is the bare game route.
 const TAB_SEGMENTS: Record<HubTabId, string | null> = {
@@ -39,12 +51,12 @@ const TAB_LABELS: Record<HubTabId, string> = {
 
 export const getHubTabs = (
     gameSlug: string,
-    { hasTimeline = false, hasGuides = false, hasStats = false }: HubTabFlags = {},
+    { hasNews = true, hasTimeline = false, hasGuides = false, hasStats = false }: HubTabFlags = {},
 ): HubTab[] => {
     const ids: HubTabId[] = [
         "overview",
         ...(hasTimeline ? ["timeline" as const] : []),
-        "news",
+        ...(hasNews ? ["news" as const] : []),
         ...(hasGuides ? ["guides" as const] : []),
         ...(hasStats ? ["stats" as const] : []),
     ];
@@ -68,7 +80,11 @@ export const getActiveHubTab = (segment: string | null): HubTabId =>
 interface StatusSeason {
     _id?: string;
     name?: string | null;
-    start?: { startDate?: string | null; confirmed?: boolean | null } | null;
+    start?: {
+        startDate?: string | null;
+        confirmed?: boolean | null;
+        overrideText?: string | null;
+    } | null;
     end?: { endDate?: string | null; confirmed?: boolean | null } | null;
 }
 
@@ -81,6 +97,14 @@ interface StatusGame {
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+// Editor-written start text; the parser's "To be announced" and "Avg." fallbacks don't count
+export const getEditorStartText = (
+    start: { overrideText?: string | null } | null | undefined,
+): string | null => {
+    const text = start?.overrideText;
+    return text && text !== "To be announced" && !text.startsWith("Avg. ") ? text : null;
+};
 
 const isPast = (date: string | null | undefined, now: Date) =>
     !!date && new Date(date).getTime() <= now.getTime();
@@ -104,13 +128,15 @@ const formatDaysLeft = (msLeft: number) => {
 };
 
 // Mirrors the dashboard: only confirmed dates produce a countdown or days left.
-export const buildHubStatus = (
+// Two groups (current, next) so the header can put each on its own line on mobile.
+export const buildHubStatusLines = (
     game: StatusGame,
     now: Date,
     formatDate: (iso: string) => string,
-): string[] => {
+): string[][] => {
     const parts: string[] = [];
-    const kw = game.seasonKeyword;
+    const nextParts: string[] = [];
+    const kw = buildSeasonTerms(game.seasonKeyword).one;
     const current = game.currentSeason;
     const next = game.nextSeason;
 
@@ -131,12 +157,19 @@ export const buildHubStatus = (
 
     if (!next || isPlaceholderNext(current, next)) {
         // Dormant games are unlikely to get one, so don't mention it
-        if (!game.isDormant) parts.push(`${nextLabel} not announced yet`);
+        if (!game.isDormant) nextParts.push(`${nextLabel} not announced yet`);
     } else if (next.start?.confirmed && isFuture(next.start.startDate, now)) {
-        parts.push(`${next.name ?? nextLabel} starts ${formatDate(next.start.startDate!)}`);
+        nextParts.push(`${next.name ?? nextLabel} starts ${formatDate(next.start.startDate!)}`);
     } else if (!next.start?.confirmed) {
-        parts.push(`${next.name ?? nextLabel}: date not announced`);
+        const editorText = getEditorStartText(next.start);
+        nextParts.push(`${next.name ?? nextLabel}: ${editorText ?? "date not announced"}`);
     }
 
-    return parts;
+    return [parts, nextParts].filter((line) => line.length > 0);
 };
+
+export const buildHubStatus = (
+    game: StatusGame,
+    now: Date,
+    formatDate: (iso: string) => string,
+): string[] => buildHubStatusLines(game, now, formatDate).flat();

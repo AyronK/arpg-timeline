@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Chip } from "@/ui/Chip";
 
 import { NextSeasonCtas } from "../../(hub)/timeline/components/NextSeasonCtas";
-import { formatMonthYear } from "../../hub";
+import { formatMonthYear, getEditorStartText } from "../../hub";
 import { buildNextSeasonHeading } from "../../nextSeasonHeading";
 import { cardClassName } from "./OverviewCard";
 import { SeasonStatus } from "./SeasonStatus";
@@ -44,6 +44,8 @@ export const NextCard = ({ game, cadenceHint }: { game: Game; cadenceHint?: stri
     const confirmed = !!game.nextSeason?.start?.confirmed;
     // Dormant games get no calendar/bot prompts
     const showCtas = !confirmed && !game.isDormant;
+    // Editor text already says what's known about the date
+    const showPromise = showCtas && !getEditorStartText(game.nextSeason?.start);
 
     return (
         // CTA strip sits outside the padded body so it runs edge to edge
@@ -54,7 +56,7 @@ export const NextCard = ({ game, cadenceHint }: { game: Game; cadenceHint?: stri
             <div className="flex flex-1 flex-col gap-3 p-4 md:p-6">
                 {heading && <h2 className="sr-only">{heading}</h2>}
                 <SeasonStatus game={game} selector="next" cadenceHint={cadenceHint} />
-                {showCtas && (
+                {showPromise && (
                     <p className="text-muted-foreground text-sm">
                         We&apos;ll add it the moment it&apos;s announced.
                     </p>

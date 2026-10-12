@@ -1,8 +1,5 @@
 "use client";
 
-import { ExternalLinkIcon } from "lucide-react";
-
-import { GuardedExternalLink } from "@/components/GuardedExternalLink";
 import { ChipColorMap, ChipColorText } from "@/components/SeasonWidget";
 import { Content } from "@/hoc/GameToSeasonWidget/Content";
 import { SeoText } from "@/hoc/GameToSeasonWidget/SeoText";
@@ -14,7 +11,9 @@ import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
-import { isPlaceholderNext } from "../../hub";
+import { getEditorStartText, isPlaceholderNext } from "../../hub";
+import { PatchNotesLink, SeasonBadgeRow, SeasonTitle } from "../SeasonCardParts";
+import { SideEventChip } from "../SideEventChip";
 
 // Overview-sized variant of GameToSeasonWidget: same Content rules, larger title.
 export const SeasonStatus = ({
@@ -27,7 +26,9 @@ export const SeasonStatus = ({
     cadenceHint?: string | null;
 }) => {
     const season = selector === "current" ? game.currentSeason : game.nextSeason;
-    const chip = useChip({ game, selector });
+    const gameChip = useChip({ game, selector });
+    // The dashboard's dormant "Play" chip describes the game; an upcoming season is still "Next"
+    const chip = selector === "next" && gameChip === "dormant" ? "next" : gameChip;
 
     if (!season) return null;
 
@@ -36,61 +37,50 @@ export const SeasonStatus = ({
         ? "Not announced yet"
         : (season.name ?? `${SelectorLabels[selector]} ${game.seasonKeyword}`);
     const url = !isPlaceholder ? season.url : null;
-    // Editor-written text wins; the parser's default and "Avg." fallback give way to the cadence hint
-    const overrideText = season.start?.overrideText;
-    const isEditorText =
-        !!overrideText && overrideText !== "To be announced" && !overrideText.startsWith("Avg. ");
-    const hint = isEditorText ? overrideText : cadenceHint;
+    // Editor-written text wins over the cadence hint
+    const hint = getEditorStartText(season.start) ?? cadenceHint;
 
     return (
         <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-4">
-                <Chip className={cn(ChipColorMap[chip], "w-12 text-center text-xs")}>
-                    {ChipColorText[chip]}
-                </Chip>
-                {season.patchNotesUrl && !isPlaceholder && (
-                    <GuardedExternalLink
-                        href={addUTMParameters({
-                            utm_source: "arpg-timeline",
-                            utm_medium: "link",
-                            utm_campaign: "patch-notes",
-                            utm_content: game.slug,
-                        })(season.patchNotesUrl)}
-                        isOfficial={game.isOfficial}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-foreground text-sm whitespace-nowrap hover:underline"
-                        data-sa-click={`${season.name}-patch-notes`}
-                    >
-                        Patch notes
-                    </GuardedExternalLink>
-                )}
-            </div>
-            <p className="font-heading text-xl leading-tight md:text-2xl">
-                {url ? (
-                    <GuardedExternalLink
-                        href={addUTMParameters({
-                            utm_source: "arpg-timeline",
-                            utm_content: "season_link",
-                            utm_term: encodeURIComponent(title),
-                        })(url)}
-                        isOfficial={game.isOfficial}
-                        noIcon
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-fit underline decoration-transparent underline-offset-4 hover:decoration-current/75"
-                        onClick={() => sa_event(`${title}-link-click`)}
-                    >
-                        {title}
-                        <ExternalLinkIcon
-                            className="mt-1 h-3.5 w-3.5 shrink-0 opacity-70"
-                            aria-hidden
+            <SeasonBadgeRow
+                chips={
+                    <>
+                        <Chip className={cn(ChipColorMap[chip], "w-12 text-center text-xs")}>
+                            {ChipColorText[chip]}
+                        </Chip>
+                        {season.isSideEvent && !isPlaceholder && <SideEventChip />}
+                    </>
+                }
+                action={
+                    season.patchNotesUrl &&
+                    !isPlaceholder && (
+                        <PatchNotesLink
+                            href={addUTMParameters({
+                                utm_source: "arpg-timeline",
+                                utm_medium: "link",
+                                utm_campaign: "patch-notes",
+                                utm_content: game.slug,
+                            })(season.patchNotesUrl)}
+                            isOfficial={game.isOfficial}
+                            saClick={`${season.name}-patch-notes`}
                         />
-                    </GuardedExternalLink>
-                ) : (
-                    title
-                )}
-            </p>
+                    )
+                }
+            />
+            <SeasonTitle
+                title={title}
+                href={
+                    url &&
+                    addUTMParameters({
+                        utm_source: "arpg-timeline",
+                        utm_content: "season_link",
+                        utm_term: encodeURIComponent(title),
+                    })(url)
+                }
+                isOfficial={game.isOfficial}
+                className="text-xl md:text-2xl"
+                onClick={() => sa_event(`${title}-link-click`)}
+            />
             <div className="sr-only">
                 <SeoText game={game} selector={selector} />
             </div>
