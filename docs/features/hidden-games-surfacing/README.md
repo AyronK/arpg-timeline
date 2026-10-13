@@ -97,6 +97,6 @@ Draft ticket split (final split comes from `/to-tickets`):
 5. Dialog: "Reset to Featured preset" button and strip off switch (17, 22). After 4.
 6. `CantFindGame` rewrite (21). After 4.
 7. Analytics events (12). After 2–5.
-8. Cleanup: remove the prototype switcher, the unused context fields and `HiddenGamesPrototype.tsx`; finish these docs. Last.
+8. Cleanup, last: delete `HiddenGamesPrototype.tsx`, `PrototypeSwitcher.tsx` and any prototype-only context fields, then delete this whole folder (README, patch, SPEC, tickets) so only the implementation is merged. The mockups and decision log stay recoverable from commit `deb5a2d` on `feature/filters-onboarding`; mention that commit in the PR description.
 
 The working tree currently holds the variant G prototype (`HiddenGamesPrototype.tsx`, `PrototypeSwitcher.tsx`, plus the `Games.tsx` / `GameFilterContext.tsx` / `GamesAndEventsGrid.tsx` changes). It is a reference to be rewritten properly, not shipped.
