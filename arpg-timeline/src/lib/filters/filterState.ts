@@ -115,6 +115,8 @@ export const getHiddenGamesSummary = ({
     };
 };
 
+const gamesHidden = (count: number) => `${count} ${count === 1 ? "game" : "games"} hidden`;
+
 export type PresetControlLabel = { full: string; short: string };
 
 export const getPresetControlLabel = ({
@@ -134,5 +136,27 @@ export const getPresetControlLabel = ({
 export const getMobilePresetTabLabel = ({ state, hiddenCount }: HiddenGamesSummary): string => {
     // Kept short: the dashboard selector already names Featured, and the tab must clear it
     if (state === "all-shown") return "All games shown";
-    return state === "preset" ? `${hiddenCount} games hidden` : `${hiddenCount} hidden by you`;
+    return state === "preset" ? gamesHidden(hiddenCount) : `${hiddenCount} hidden by you`;
+};
+
+export type StripEntries = { chips: HiddenGame[]; more: HiddenGame[]; moreLabel: string | null };
+
+// Chips past the cap fold into "+N more"; with nothing starting soon, one entry lists all hidden
+export const getStripEntries = (
+    { hiddenCount, hidden, startingSoon, others }: HiddenGamesSummary,
+    cap: number,
+): StripEntries => {
+    if (startingSoon.length === 0) {
+        return {
+            chips: [],
+            more: hidden,
+            moreLabel: gamesHidden(hiddenCount),
+        };
+    }
+    const more = [...startingSoon.slice(cap), ...others];
+    return {
+        chips: startingSoon.slice(0, cap),
+        more,
+        moreLabel: more.length > 0 ? `+${more.length} more` : null,
+    };
 };

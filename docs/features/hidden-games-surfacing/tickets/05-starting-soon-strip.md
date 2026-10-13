@@ -11,20 +11,20 @@ Context: [SPEC](../SPEC.md) → Desktop header; Strip and popover. User stories 
 
 **Blocked by:** 03, 04.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The strip reads `startingSoon` and `others` from the summary. Caps are presentation only, and chips past the cap fold into "+N more".
-- [ ] The strip is not rendered when `hiddenCount` is 0 or on non-Featured tabs.
-- [ ] Popover behaviour:
+- [x] The strip reads `startingSoon` and `others` from the summary. Caps are presentation only, and chips past the cap fold into "+N more".
+- [x] The strip is not rendered when `hiddenCount` is 0 or on non-Featured tabs.
+- [x] Popover behaviour:
   - Opens on tap/click and on mouse hover.
   - Closes on outside tap and on scroll.
   - Is rendered outside the grid so it's never clipped.
   - Stays within the viewport.
-- [ ] The popover footer:
+- [x] The popover footer:
   - **Edit filters** opens the desktop dialog or the mobile drawer through the controls from 03/04, with no DOM lookup.
   - **Hide this strip** hides it for the session; ticket 07 makes it persist.
-- [ ] No in-grid markers; the grid layout is unchanged.
-- [ ] Opening a popover fires `hidden_marker_opened`.
+- [x] No in-grid markers; the grid layout is unchanged.
+- [x] Opening a popover fires `hidden_marker_opened`.
 - [ ] Manual check on desktop (lg, xl, 2xl) and mobile:
   - caps per width
   - `~` on estimates

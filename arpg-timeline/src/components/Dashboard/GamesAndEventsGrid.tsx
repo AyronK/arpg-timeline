@@ -14,6 +14,7 @@ import { CantFindGame } from "./CantFindGame";
 import { DashboardSelector } from "./DashboardSelector";
 import { Events } from "./Events";
 import { Games } from "./Games";
+import { HiddenGamesStrip } from "./HiddenGamesStrip";
 import { MobileBottomMenu } from "./MobileBottomMenu";
 
 export const GamesAndEventsGrid = ({
@@ -44,6 +45,7 @@ export const GamesAndEventsGrid = ({
                         <h1 className="font-heading text-foreground sm:text-md text-base leading-4 text-pretty">
                             The most complete aRPG season tracker
                         </h1>
+                        <HiddenGamesStrip />
                     </div>
                     <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
                         <DashboardSelector

@@ -7,6 +7,7 @@ import {
     getHiddenGamesSummary,
     getMobilePresetTabLabel,
     getPresetControlLabel,
+    getStripEntries,
     getUrlExcludesToPersist,
     resolveExcludedSlugs,
 } from "./filterState";
@@ -312,5 +313,43 @@ describe("getMobilePresetTabLabel", () => {
 
     it("says when all games are shown", () => {
         expect(getMobilePresetTabLabel(summarize([]))).toBe("All games shown");
+    });
+});
+
+describe("getStripEntries", () => {
+    const soon = (slug: string, days: number) => game(slug, { nextSeason: startingIn(days) });
+
+    it("shows starting-soon chips up to the cap and folds the rest into more", () => {
+        const { chips, more, moreLabel } = getStripEntries(
+            summarize([soon("a", 3), soon("b", 5), soon("c", 9), game("undated")]),
+            2,
+        );
+        expect(slugs(chips)).toEqual(["a", "b"]);
+        expect(slugs(more)).toEqual(["c", "undated"]);
+        expect(moreLabel).toBe("+2 more");
+    });
+
+    it("has no more entry when every hidden game fits as a chip", () => {
+        const { chips, more, moreLabel } = getStripEntries(summarize([soon("a", 3)]), 2);
+        expect(slugs(chips)).toEqual(["a"]);
+        expect(more).toEqual([]);
+        expect(moreLabel).toBeNull();
+    });
+
+    it("lists every hidden game when nothing starts soon", () => {
+        const { chips, more, moreLabel } = getStripEntries(
+            summarize([game("a"), game("b", { nextSeason: startingIn(40) })]),
+            2,
+        );
+        expect(chips).toEqual([]);
+        expect(slugs(more)).toEqual(["a", "b"]);
+        expect(moreLabel).toBe("2 games hidden");
+    });
+
+    it("uses the singular for one hidden game", () => {
+        expect(getStripEntries(summarize([game("a")]), 2).moreLabel).toBe("1 game hidden");
+        expect(getMobilePresetTabLabel(summarize([game("a")], { isPreset: true }))).toBe(
+            "1 game hidden",
+        );
     });
 });
