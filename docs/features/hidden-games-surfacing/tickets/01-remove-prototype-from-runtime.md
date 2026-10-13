@@ -6,12 +6,12 @@ Context: [SPEC](../SPEC.md) → Implementation Decisions → Prototype.
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done (`a1dd17b`). Lint still fails on the pre-existing `TopCarousel.tsx:87` error, unrelated to this ticket.
 
-- [ ] The dashboard grid shows no prototype strip, popover or variant bar in dev or production, with or without `?variant=`.
-- [ ] The prototype component and the variant switcher component are deleted.
-- [ ] The filter context no longer exposes fields that existed only for the prototype (`categoryGames`, `excludedSlugs`), unless a later ticket in this spec needs them, in which case keep them and note it.
-- [ ] The games grid still uses the extracted single game tile and grid-order helper, and the card order is unchanged from `main`.
-- [ ] The prototype header slot in the dashboard grid is removed.
+- [x] The dashboard grid shows no prototype strip, popover or variant bar in dev or production, with or without `?variant=`.
+- [x] The prototype component and the variant switcher component are deleted.
+- [x] The filter context no longer exposes fields that existed only for the prototype (`categoryGames`, `excludedSlugs`), unless a later ticket in this spec needs them, in which case keep them and note it.
+- [x] The games grid still uses the extracted single game tile and grid-order helper, and the card order is unchanged from `main`.
+- [x] The prototype header slot in the dashboard grid is removed.
 - [ ] `npm run typecheck`, `npm run lint` and `npm test` pass.
-- [ ] The variant G reference stays recoverable from commit `deb5a2d` (nothing to do; just don't rewrite history).
+- [x] The variant G reference stays recoverable from commit `deb5a2d` (nothing to do; just don't rewrite history).

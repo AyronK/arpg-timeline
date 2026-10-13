@@ -11,7 +11,7 @@ All of this comes from the new pure filter-state module, starting with `resolveE
 
 **Blocked by:** 01.
 
-**Status:** ready-for-agent
+**Status:** done (`04320bb`); the two manual checks below are pending a human.
 
 - [x] A new pure filter-state module exports `resolveExcludedSlugs({ category, games, stored, urlExcludes })`:
   - Any non-Featured category → `[]`.
