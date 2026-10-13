@@ -9,7 +9,7 @@ interface MobileBottomMenuCounterProps {
 export function MobileBottomMenuCounter({ label, onClick }: MobileBottomMenuCounterProps) {
     const className =
         "origin-bottom-right rounded-tl-md border-t border-slate-500 bg-gray-600 px-3 py-1 text-xs font-medium text-white";
-    const text = <span className={cn({ invisible: !label })}>{label ?? "Featured preset"}</span>;
+    const text = <span className={cn({ invisible: !label })}>{label ?? "All games shown"}</span>;
 
     return (
         <div className="absolute top-0 right-0 -z-10 -translate-y-full">

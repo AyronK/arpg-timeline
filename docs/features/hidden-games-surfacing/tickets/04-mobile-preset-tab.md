@@ -2,7 +2,7 @@
 
 Context: [SPEC](../SPEC.md) → Mobile. User stories 38–40.
 
-**What to build:** on mobile, the bottom menu's "Showing X of Y" tab becomes the persistent preset reminder: `Featured preset · N hidden` / `Custom filters · N hidden` / `All games shown`. Tapping it opens the filters drawer. The mobile Filters button keeps working, but loses its duplicate count badge and ping.
+**What to build:** on mobile, the bottom menu's "Showing X of Y" tab becomes the persistent preset reminder: `N games hidden` / `N hidden by you` / `All games shown` (short, so it clears the dashboard selector, which already names Featured). Tapping it opens the filters drawer. The mobile Filters button keeps working, but loses its duplicate count badge and ping.
 
 **Blocked by:** 03.
 

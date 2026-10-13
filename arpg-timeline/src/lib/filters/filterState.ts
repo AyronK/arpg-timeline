@@ -132,7 +132,7 @@ export const getPresetControlLabel = ({
 };
 
 export const getMobilePresetTabLabel = ({ state, hiddenCount }: HiddenGamesSummary): string => {
+    // Kept short: the dashboard selector already names Featured, and the tab must clear it
     if (state === "all-shown") return "All games shown";
-    const preset = state === "preset" ? "Featured preset" : "Custom filters";
-    return `${preset} · ${hiddenCount} hidden`;
+    return state === "preset" ? `${hiddenCount} games hidden` : `${hiddenCount} hidden by you`;
 };

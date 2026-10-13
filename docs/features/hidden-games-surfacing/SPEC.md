@@ -176,7 +176,7 @@ Make the preset visible state, and show what it hides without blocking the page 
 
 ### Mobile
 
-- The bottom menu's counter tab shows `Featured preset · N hidden` / `Custom filters · N hidden` / `All games shown`, and opens the filters drawer on tap.
+- The bottom menu's counter tab shows `N games hidden` / `N hidden by you` / `All games shown` (short, so it clears the dashboard selector, which already names Featured), and opens the filters drawer on tap.
 - The mobile Filters button loses its count badge and ping.
 - The strip renders under the page title on one line, scrolling sideways, capped at 2 chips.
 
