@@ -6,12 +6,12 @@ Context: [SPEC](../SPEC.md) → Can't-find card. User stories 41–43.
 
 **Blocked by:** 05.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The count comes from `hiddenCount` in the summary.
-- [ ] "N games are hidden by filters" opens the hidden-games popover listing all hidden games, reusing the strip's popover component.
-- [ ] Edit filters opens the dialog or drawer; Full Catalog navigates to the Full Catalog tab; Discord keeps the existing link attributes.
-- [ ] On non-Featured tabs or with 0 hidden, the hidden line and Edit filters aren't shown.
-- [ ] The card keeps its existing grid position behaviour at every breakpoint.
-- [ ] Copy follows the plain-label style (describes what things are or do).
+- [x] The count comes from `hiddenCount` in the summary.
+- [x] "N games are hidden by filters" opens the hidden-games popover listing all hidden games, reusing the strip's popover component.
+- [x] Edit filters opens the dialog or drawer; Full Catalog navigates to the Full Catalog tab; Discord keeps the existing link attributes.
+- [x] On non-Featured tabs or with 0 hidden, the hidden line and Edit filters aren't shown.
+- [x] The card keeps its existing grid position behaviour at every breakpoint.
+- [x] Copy follows the plain-label style (describes what things are or do).
 - [ ] Manual check on desktop and mobile, on Featured and on another tab.

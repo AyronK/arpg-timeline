@@ -4,6 +4,7 @@ import type { Game } from "@/lib/cms/games.types";
 import type { GameFilterCategory } from "@/lib/cms/gameTags";
 
 import {
+    getHiddenByFiltersLabel,
     getHiddenGamesSummary,
     getMobilePresetTabLabel,
     getPresetControlLabel,
@@ -370,5 +371,17 @@ describe("getStripEntries", () => {
         expect(getMobilePresetTabLabel(summarize([game("a")], { isPreset: true }))).toBe(
             "1 game hidden",
         );
+    });
+});
+
+describe("getHiddenByFiltersLabel", () => {
+    it("states how many games are hidden", () => {
+        expect(getHiddenByFiltersLabel(summarize([game("a"), game("b")]))).toBe(
+            "2 games are hidden by filters",
+        );
+    });
+
+    it("uses the singular for one game", () => {
+        expect(getHiddenByFiltersLabel(summarize([game("a")]))).toBe("1 game is hidden by filters");
     });
 });

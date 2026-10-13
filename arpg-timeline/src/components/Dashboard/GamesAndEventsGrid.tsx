@@ -89,7 +89,7 @@ export const GamesAndEventsGrid = ({
                     )}
                 >
                     <Games games={allGames} statistics={statistics} peekedSlugs={peekedSlugs} />
-                    <CantFindGame />
+                    <CantFindGame peekedSlugs={peekedSlugs} onPeek={peekGame} />
                     {filteredGames.length > 1 && <Events events={events} />}
                 </div>
             </article>

@@ -165,3 +165,8 @@ export const getStripEntries = (
         moreLabel: more.length > 0 ? `+${more.length} more` : null,
     };
 };
+
+export const getHiddenByFiltersLabel = ({ hiddenCount }: HiddenGamesSummary): string =>
+    hiddenCount === 1
+        ? "1 game is hidden by filters"
+        : `${hiddenCount} games are hidden by filters`;
