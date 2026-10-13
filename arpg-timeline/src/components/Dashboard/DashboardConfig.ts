@@ -14,7 +14,8 @@ export const DashboardConfig: Partial<
 > = {
     featured: {
         description: "Featured",
-        tooltip: "Default set is shown until you customize the filters",
+        tooltip:
+            "A curated set: hides community projects and games with no recent updates or confirmed season. Change it in Filters.",
         icon: LogoIcon,
     },
     "early-access": {

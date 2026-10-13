@@ -22,7 +22,7 @@ Filters also behave oddly outside Featured:
 Make the preset visible state, and show what it hides without blocking the page or taking grid space.
 
 - **Filters exist only on Featured.** Other tabs are fixed lists with Filters disabled, as Full Catalog already is.
-- **The Filters button becomes the preset control.** It says what is applied and how many games it hides: `Filters · Featured preset · 23 hidden`, `Filters · Custom · 12 hidden`, or `Filters · All games shown`. It replaces the separate count, the yellow badge, the ping and the wide-screen hint.
+- **The desktop Filters button stays plain `Filters`.** The strip shows what is filtered out and the Featured tab's tooltip explains the preset (README decision 30). The separate count, the yellow badge, the ping and the wide-screen hint are removed.
 - **A one-line starting-soon strip** sits in the header. It lists hidden games whose next season starts within 30 days, each as a chip with the full game name and "in Nd", then "+N more", which opens the Filters dialog. Each chip opens a popover with the game's date and why it's hidden, plus **Edit filters**.
 - **On mobile**, the bottom menu's counter tab becomes the preset label and opens the filters drawer. The strip sits under the page title and scrolls sideways.
 - **The Filters dialog** gains a "Reset to Featured preset" button and a "Show filtered-out games starting soon" switch.
@@ -33,12 +33,7 @@ Make the preset visible state, and show what it hides without blocking the page 
 ### Understanding the preset
 
 1. As a first-time visitor, I want to see that a preset is applied by default, so that I know the dashboard isn't showing every game.
-2. As a first-time visitor, I want the Filters control to tell me how many games are hidden, so that I understand the scale of what I'm not seeing.
-3. As a visitor who never touched filters, I want the control to name the preset ("Featured preset"), so that I understand the hidden games are a default choice, not missing data.
-4. As a visitor who customized filters, I want the control to say "Custom", so that I know my own choices are in effect.
-5. As a visitor who un-hid everything, I want the control to say "All games shown", so that I know nothing is filtered.
-6. As a desktop visitor on a narrower screen, I want a shortened control label, so that the header still fits on one line.
-7. As a visitor, I want the preset label to be the same thing I click to change it, so that the cause and the fix are in one place.
+Stories 2–7 (a desktop preset control naming the preset and count) were dropped after implementation; see README decision 30. Story 1 is covered by the strip and the Featured tab's tooltip, which says what the preset hides.
 8. As a visitor, I want the hidden count shown once, so that I'm not confused by several numbers that mean the same thing.
 
 ### Discovering hidden games
@@ -55,7 +50,7 @@ Make the preset visible state, and show what it hides without blocking the page 
 ### Understanding why a game is hidden
 
 17. As a visitor, I want to open a hidden game's details by tapping or clicking it, so that I learn about it without leaving the page.
-18. As a visitor, I want to see why each game is hidden (No recent updates, Community, No confirmed season, or Hidden by your filters), so that I learn how the preset works.
+18. As a visitor, I want to see why each game is hidden (No recent updates, Community, Non-seasonal, or Hidden by your filters), so that I learn how the preset works.
 19. As a visitor, I want to see the game's next season date in the popover, so that I can decide whether I care.
 20. As a touch-screen visitor, I want every popover to work on tap, so that I'm not locked out of hover-only features.
 21. As a visitor, I want the popover to close when I tap elsewhere or scroll, so that it never blocks the page.
@@ -77,7 +72,7 @@ Stories 22–25 (a "Show here" peek) were dropped after implementation; see READ
 31. Dropped (dismissing from the popover); see README decision 27.
 32. As a visitor, I want a "Show filtered-out games starting soon" switch in the Filters dialog, so that I can turn the strip off and back on in one place.
 33. As a visitor, I want my strip preference remembered on this device, so that I don't have to dismiss it again.
-34. As a visitor, I want the preset control to stay visible even with the strip off, so that I always know filters are applied.
+34. Dropped on desktop (README decision 30): with the strip off, the user chose that in Filters. The mobile tab still always shows the count.
 
 ### Other tabs
 
@@ -99,7 +94,7 @@ Stories 22–25 (a "Show here" peek) were dropped after implementation; see READ
 
 ### Maintainer
 
-44. As the maintainer, I want events for opening a hidden game's popover, turning the strip off, resetting to the preset and clicking the preset control, so that I can tell discovery apart from preset changes.
+44. As the maintainer, I want events for opening a hidden game's popover, turning the strip off, resetting to the preset and clicking the mobile preset tab, so that I can tell discovery apart from preset changes.
 45. As the maintainer, I want the onboarding modal left unchanged for now, so that I can compare 4 weeks of data before deciding to remove it.
 46. As the maintainer, I want existing stored filters and `?exclude=` links to keep working on Featured, so that the change is backward compatible.
 
@@ -116,18 +111,20 @@ Stories 22–25 (a "Show here" peek) were dropped after implementation; see READ
 - **`getHiddenGamesSummary({ games, excludedSlugs, isPreset, now })`** returns everything the UI shows. `now` is injected so tests are deterministic. Shape, refined from the prototype:
 
   ```ts
-  type HiddenReason = "No recent updates" | "Community" | "No confirmed season" | "Hidden by your filters";
-  type HiddenGame = { game: Game; reason: HiddenReason; startsInDays: number | null; confirmed: boolean };
+  type HiddenReason = "No recent updates" | "Community" | "Non-seasonal" | "Hidden by your filters";
+  type HiddenGame = { game: Game; reason: HiddenReason; startsInDays: number | null; confirmed: boolean; startedAt: number | null };
   type HiddenGamesSummary = {
+      now: number;                // the clock the summary was computed with
       state: "preset" | "custom" | "all-shown";
       hiddenCount: number;
       hidden: HiddenGame[];
+      justStarted: HiddenGame[];  // season started within the grid's grace period, newest first
       startingSoon: HiddenGame[]; // starts within 30 days, sorted by start ascending
-      others: HiddenGame[];       // hidden minus startingSoon
+      others: HiddenGame[];       // hidden minus justStarted and startingSoon
   };
   ```
 
-  - Reasons are checked in order: No recent updates (dormant games; "dormant" is internal and never shown), then Community, then No confirmed season, else Hidden by your filters.
+  - Reasons are checked in order: No recent updates (dormant games; "dormant" is internal and never shown), then Community, then Non-seasonal, else Hidden by your filters.
   - Dormant games have no upcoming date, so they never appear in `startingSoon`. They go last in `hidden` and `others`.
   - Only confirmed starts count as starting soon; unconfirmed games go into `others`.
   - `state` is `preset` when there is no stored Featured record, `all-shown` when nothing is excluded, otherwise `custom`.
@@ -143,15 +140,15 @@ Stories 22–25 (a "Show here" peek) were dropped after implementation; see READ
 
 ### Desktop header
 
-- **Row 2:** the Filters button becomes the preset control.
-  - Labels: `Filters · Featured preset · N hidden` / `Filters · Custom · N hidden` / `Filters · All games shown`. At the `lg` breakpoint it shortens to `Filters · N hidden`.
+- **Row 2:** the Filters button keeps its plain `Filters` label and filled style.
+- **Featured tab tooltip:** "A curated set: hides community projects and games with no recent updates or confirmed season. Change it in Filters."
   - Removed: the yellow count badge and its ping.
 - **Row 1, right side:** the strip replaces the wide-screen hint and the game count display, which are both removed.
 - **Strip chip caps:** lg 2, xl 3, 2xl and up 4. Caps are applied by breakpoint, presentation only; the summary returns the full list.
 
 ### Strip and popover
 
-- The chips follow a muted `Filtered out:` label. Each chip shows the full game name, never truncated, and `in Nd`. No logo.
+- The chips follow a muted `Filtered out:` label. Just-started games come first (`just started` under 2 hours, then `started Nh ago`, for the grid's 72-hour grace period), then starting-soon games (`in Nh` under a day, else `in Nd`). Each chip shows the full game name, never truncated. No logo. Times use a clock that ticks every minute.
 - **"+N more"** (or "N games hidden" when nothing starts soon) opens the Filters dialog or drawer; there is no full-list popover. It fires `hidden_marker_opened` with `entry: "more" | "all"`.
 - The popover:
   - Opens on tap/click only, with no hover-open.
@@ -163,7 +160,7 @@ Stories 22–25 (a "Show here" peek) were dropped after implementation; see READ
 ### Strip off switch
 
 - "Show filtered-out games starting soon" in the Filters dialog (desktop) and drawer (mobile). It is the only way to turn the strip off or back on. It is on by default and saved in browser storage, following the existing onboarding-storage helpers.
-- The preset control and mobile tab are never hidden.
+- The mobile tab is never hidden.
 
 ### Mobile
 
@@ -178,7 +175,7 @@ Stories 22–25 (a "Show here" peek) were dropped after implementation; see READ
 
 ### Analytics
 
-- New events, using the existing `sa_event` convention: `preset_chip_clicked`, `hidden_marker_opened`, `hidden_markers_disabled`, `filters_reset_to_featured`.
+- New events, using the existing `sa_event` convention: `preset_chip_clicked` (mobile tab only), `hidden_marker_opened`, `hidden_markers_disabled`, `filters_reset_to_featured`.
 - The existing filter-adoption analytics keep working. Adoption still means "changed the default preset".
 
 ### Unchanged
@@ -202,7 +199,7 @@ Stories 22–25 (a "Show here" peek) were dropped after implementation; see READ
     - The preset includes dormant, community and unconfirmed non-seasonal games, and excludes seasonal, early access and confirmed games.
   - `getHiddenGamesSummary`:
     - Each `state` value.
-    - Reason order: dormant and community gives No recent updates; community gives Community; non-seasonal unconfirmed gives No confirmed season; otherwise Hidden by your filters.
+    - Reason order: dormant and community gives No recent updates; community gives Community; non-seasonal unconfirmed gives Non-seasonal; otherwise Hidden by your filters.
     - The 30-day boundary: inclusive at day 30, excluded at day 31 and for past dates.
     - Sorting by start date.
     - Dormant games never in `startingSoon`, and last in `hidden` and `others`.

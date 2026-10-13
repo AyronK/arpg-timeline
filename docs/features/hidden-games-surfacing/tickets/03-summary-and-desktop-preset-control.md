@@ -1,5 +1,7 @@
 # 03: Hidden-games summary and the desktop preset control
 
+**Desktop control reverted after implementation** (README decision 30): the button is plain `Filters` again and `getPresetControlLabel` was removed. The summary part stands.
+
 Context: [SPEC](../SPEC.md) → Filter state module; Desktop header; Analytics. User stories 1–8.
 
 **What to build:** on desktop, the Filters button becomes the preset control. It says what is applied and how many games it hides, and it's the only place the hidden count appears in the header.
@@ -19,7 +21,7 @@ The labels come from `getHiddenGamesSummary`, exposed through the filter context
 - [x] The filter-state module exports `getHiddenGamesSummary({ games, excludedSlugs, isPreset, now })` with this shape (refined from the prototype):
 
   ```ts
-  type HiddenReason = "Dormant" | "Community" | "No confirmed season" | "Hidden by your filters";
+  type HiddenReason = "Dormant" | "Community" | "Non-seasonal" | "Hidden by your filters";
   type HiddenGame = { game: Game; reason: HiddenReason; startsInDays: number | null; confirmed: boolean };
   type HiddenGamesSummary = {
       state: "preset" | "custom" | "all-shown";
@@ -31,7 +33,7 @@ The labels come from `getHiddenGamesSummary`, exposed through the filter context
   ```
 
 - [x] The summary follows these rules:
-  - Reasons are checked in order: Dormant, then Community, then No confirmed season, else Hidden by your filters.
+  - Reasons are checked in order: Dormant, then Community, then Non-seasonal, else Hidden by your filters.
   - Dormant games are never in `startingSoon`.
   - `others` = `hidden` minus `startingSoon`.
   - `state`: `preset` when there's no stored Featured record, `all-shown` when nothing is excluded, otherwise `custom`.

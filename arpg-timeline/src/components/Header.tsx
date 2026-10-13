@@ -48,7 +48,7 @@ export const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="max-xl:bg-card relative h-[56px] max-sm:shadow-sm 3xl:container 3xl:mx-auto xl:h-[80px] xl:pt-6 xl:pb-0">
+        <header className="max-xl:bg-card 3xl:container 3xl:mx-auto relative h-[56px] max-sm:shadow-sm xl:h-[80px] xl:pt-6 xl:pb-0">
             <div className="relative h-full w-full">
                 <Link
                     href="/"

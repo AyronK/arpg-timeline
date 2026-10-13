@@ -169,7 +169,12 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         setStoredHiddenStripEnabled(enabled);
         if (!enabled) sa_event("hidden_markers_disabled");
     }, []);
-    const [now] = useState(Date.now);
+    // Ticks so strip countdowns and just-started chips stay current
+    const [now, setNow] = useState(Date.now);
+    useEffect(() => {
+        const interval = setInterval(() => setNow(Date.now()), 60_000);
+        return () => clearInterval(interval);
+    }, []);
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {

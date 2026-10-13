@@ -7,11 +7,6 @@ import { forwardRef } from "react";
 import { SanityImage } from "@/components/SanityImage";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import {
-    getPresetControlLabel,
-    HiddenGamesSummary,
-    PresetControlLabel,
-} from "@/lib/filters/filterState";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
@@ -47,11 +42,9 @@ export const FiltersDialog = ({
     onCheckedChange,
     onGroupCheckedChange,
     disabled = false,
-    hiddenGamesSummary,
     open,
     onOpenChange,
 }: FiltersDialogProps & {
-    hiddenGamesSummary: HiddenGamesSummary | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
 }) => {
@@ -59,24 +52,13 @@ export const FiltersDialog = ({
     const { isLg } = useBreakpoint("lg");
 
     if (!isMounted) {
-        return <Trigger label={null} />;
+        return <Trigger />;
     }
-
-    const label =
-        hiddenGamesSummary && !disabled ? getPresetControlLabel(hiddenGamesSummary) : null;
 
     return (
         <Dialog open={open && isLg} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
-                <Trigger
-                    label={label}
-                    disabled={disabled}
-                    onClick={() => {
-                        if (hiddenGamesSummary) {
-                            sa_event("preset_chip_clicked", { state: hiddenGamesSummary.state });
-                        }
-                    }}
-                />
+                <Trigger disabled={disabled} />
             </DialogTrigger>
             <DialogContent className="max-h-[80vh] w-full max-w-7xl!">
                 <DialogDescription className="sr-only">Filters dialog</DialogDescription>
@@ -99,10 +81,9 @@ export const FiltersDialog = ({
 const Trigger = forwardRef<
     HTMLButtonElement,
     React.ComponentPropsWithoutRef<typeof Button> & {
-        label: PresetControlLabel | null;
         disabled?: boolean;
     }
->(({ label, disabled = false, ...rest }, ref) => (
+>(({ disabled = false, ...rest }, ref) => (
     <Button
         {...rest}
         ref={ref}
@@ -115,16 +96,7 @@ const Trigger = forwardRef<
         className="relative inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
     >
         <Filter className="h-4 w-4" />
-        <span className="text-center leading-0 font-medium whitespace-nowrap">
-            {label ? (
-                <>
-                    <span className="xl:hidden">{label.short}</span>
-                    <span className="hidden xl:inline">{label.full}</span>
-                </>
-            ) : (
-                "Filters"
-            )}
-        </span>
+        <span className="text-center leading-0 font-medium whitespace-nowrap">Filters</span>
     </Button>
 ));
 
@@ -143,12 +115,12 @@ export const FilterPresetControls = () => {
                 Show filtered-out games starting soon
             </label>
             <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 disabled={hiddenGamesSummary.state === "preset"}
                 onClick={resetToPreset}
             >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-4 w-4 mr-2" />
                 Reset to Featured preset
             </Button>
         </div>

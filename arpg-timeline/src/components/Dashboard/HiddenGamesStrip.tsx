@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { getStripEntries, HiddenGame } from "@/lib/filters/filterState";
+import { getStripEntries, getStripTimeLabel, HiddenGame } from "@/lib/filters/filterState";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 
@@ -72,7 +72,7 @@ export const HiddenGamesStrip = () => {
                     entries={[entry]}
                     eventProps={{ entry: "chip", game: entry.game.slug }}
                     triggerClassName="group hover:bg-accent/50 hover:text-accent-foreground flex shrink-0 items-center gap-2 rounded-full border px-2.5 py-0.5 transition-[color,box-shadow]"
-                    trigger={<StripChip entry={entry} />}
+                    trigger={<StripChip entry={entry} now={hiddenGamesSummary.now} />}
                 />
             ))}
             {moreLabel && (
@@ -94,9 +94,11 @@ export const HiddenGamesStrip = () => {
     );
 };
 
-const StripChip = ({ entry: { game, startsInDays } }: { entry: HiddenGame }) => (
+const StripChip = ({ entry, now }: { entry: HiddenGame; now: number }) => (
     <>
-        <span className="text-foreground/80 group-hover:text-accent-foreground">{game.name}</span>
-        <span className="opacity-70">in {startsInDays}d</span>
+        <span className="text-foreground/80 group-hover:text-accent-foreground">
+            {entry.game.name}
+        </span>
+        <span className="opacity-70">{getStripTimeLabel(entry, now)}</span>
     </>
 );

@@ -5,7 +5,7 @@ Context: [SPEC](../SPEC.md) → Desktop header; Strip and popover. User stories 
 **What to build:** a one-line strip that shows hidden games about to start, plus a popover explaining each one.
 - **Desktop:** the strip sits in header row 1, where the old hint and count were.
 - **Mobile:** it sits under the page title, on one line that scrolls sideways.
-- **Chips:** after a muted `Filtered out:` label, each shows the full game name and `in Nd`, with no logo. Only confirmed starts become chips. Capped at lg 2 / xl 3 / 2xl+ 4 / mobile 1 (right edge fades if it still overflows).
+- **Chips:** after a muted `Filtered out:` label, each shows the full game name and a time label, with no logo: just-started games first (`just started` / `started Nh ago`, grid grace period), then confirmed starts (`in Nh` under a day, else `in Nd`). Capped at lg 2 / xl 3 / 2xl+ 4 / mobile 1 (right edge fades if it still overflows).
 - **After the chips:** "+N more", or "N games hidden" with nothing starting soon. Either opens the Filters dialog or drawer (README decision 29).
 - **Popover:** tapping or clicking an entry lists each game with its name, the grid's start text (date, override text or "To be announced") and reason, plus **Edit filters**.
 

@@ -7,8 +7,8 @@ import {
     getHiddenByFiltersLabel,
     getHiddenGamesSummary,
     getMobilePresetTabLabel,
-    getPresetControlLabel,
     getStripEntries,
+    getStripTimeLabel,
     getUrlExcludesToPersist,
     resolveExcludedSlugs,
 } from "./filterState";
@@ -207,8 +207,8 @@ describe("getHiddenGamesSummary reasons", () => {
         expect(reasonOf(game("a", { categories: ["community"] }))).toBe("Community");
     });
 
-    it("gives No confirmed season for unconfirmed non-seasonal games", () => {
-        expect(reasonOf(game("a", { categories: [] }))).toBe("No confirmed season");
+    it("gives Non-seasonal for unconfirmed non-seasonal games", () => {
+        expect(reasonOf(game("a", { categories: [] }))).toBe("Non-seasonal");
     });
 
     it("gives Hidden by your filters otherwise", () => {
@@ -298,31 +298,6 @@ describe("getHiddenGamesSummary starting soon", () => {
     });
 });
 
-describe("getPresetControlLabel", () => {
-    it("names the preset and count", () => {
-        expect(
-            getPresetControlLabel(summarize([game("a"), game("b")], { isPreset: true })),
-        ).toEqual({
-            full: "Filters · Featured preset · 2 hidden",
-            short: "Filters · 2 hidden",
-        });
-    });
-
-    it("names a custom selection", () => {
-        expect(getPresetControlLabel(summarize([game("a")]))).toEqual({
-            full: "Filters · Custom · 1 hidden",
-            short: "Filters · 1 hidden",
-        });
-    });
-
-    it("says when all games are shown", () => {
-        expect(getPresetControlLabel(summarize([]))).toEqual({
-            full: "Filters · All games shown",
-            short: "Filters · All games shown",
-        });
-    });
-});
-
 describe("getMobilePresetTabLabel", () => {
     it("names the preset and count", () => {
         expect(getMobilePresetTabLabel(summarize([game("a"), game("b")], { isPreset: true }))).toBe(
@@ -386,5 +361,70 @@ describe("getHiddenByFiltersLabel", () => {
 
     it("uses the singular for one game", () => {
         expect(getHiddenByFiltersLabel(summarize([game("a")]))).toBe("1 game is hidden by filters");
+    });
+});
+
+describe("just started", () => {
+    const HOUR_MS = 60 * 60 * 1000;
+    const startedAgo = (hours: number) =>
+        ({
+            start: { startDate: new Date(NOW - hours * HOUR_MS).toISOString(), confirmed: true },
+        }) as Game["currentSeason"];
+
+    it("lists games whose current season started within the grace period, newest first", () => {
+        const summary = summarize([
+            game("older", { currentSeason: startedAgo(30) }),
+            game("newer", { currentSeason: startedAgo(5) }),
+            game("expired", { currentSeason: startedAgo(80) }),
+        ]);
+        expect(slugs(summary.justStarted)).toEqual(["newer", "older"]);
+        expect(slugs(summary.others)).toEqual(["expired"]);
+    });
+
+    it("counts a confirmed next season whose start has passed", () => {
+        const summary = summarize([game("a", { nextSeason: startingIn(-0.1) })]);
+        expect(slugs(summary.justStarted)).toEqual(["a"]);
+        expect(summary.startingSoon).toEqual([]);
+    });
+
+    it("ignores unconfirmed starts that have passed", () => {
+        expect(summarize([game("a", { nextSeason: startingIn(-0.1, false) })]).justStarted).toEqual(
+            [],
+        );
+    });
+
+    it("ignores a current season that already ended", () => {
+        const currentSeason = {
+            ...startedAgo(5),
+            end: { endDate: new Date(NOW - HOUR_MS).toISOString() },
+        } as Game["currentSeason"];
+        expect(summarize([game("a", { currentSeason })]).justStarted).toEqual([]);
+    });
+
+    it("lists a just-started game once even with a next start soon", () => {
+        const summary = summarize([
+            game("a", { currentSeason: startedAgo(5), nextSeason: startingIn(10) }),
+        ]);
+        expect(slugs(summary.justStarted)).toEqual(["a"]);
+        expect(summary.startingSoon).toEqual([]);
+    });
+
+    it("puts just-started chips before starting-soon ones", () => {
+        const { chips } = getStripEntries(
+            summarize([
+                game("soon", { nextSeason: startingIn(2) }),
+                game("started", { currentSeason: startedAgo(5) }),
+            ]),
+            2,
+        );
+        expect(slugs(chips)).toEqual(["started", "soon"]);
+    });
+
+    it("labels chips by time", () => {
+        const label = (g: Game) => getStripTimeLabel(summarize([g]).hidden[0], NOW);
+        expect(label(game("a", { currentSeason: startedAgo(1) }))).toBe("just started");
+        expect(label(game("a", { currentSeason: startedAgo(5) }))).toBe("started 5h ago");
+        expect(label(game("a", { nextSeason: startingIn(4.5 / 24) }))).toBe("in 5h");
+        expect(label(game("a", { nextSeason: startingIn(1.5) }))).toBe("in 2d");
     });
 });

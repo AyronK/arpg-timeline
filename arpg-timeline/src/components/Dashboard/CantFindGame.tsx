@@ -68,7 +68,7 @@ export const CantFindGame = () => {
             {hasHidden && (
                 <button
                     type="button"
-                    className="cursor-pointer text-sm font-semibold underline underline-offset-2"
+                    className="text-foreground/80 hover:text-foreground decoration-muted-foreground hover:decoration-foreground cursor-pointer text-sm font-semibold underline underline-offset-2 transition-colors"
                     onClick={() => {
                         sa_event("hidden_marker_opened", {
                             entry: "cant-find",

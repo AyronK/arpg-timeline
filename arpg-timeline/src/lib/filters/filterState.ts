@@ -1,24 +1,30 @@
 import type { Game } from "@/lib/cms/games.types";
 import type { GameFilterCategory } from "@/lib/cms/gameTags";
+import { DAY, HOUR } from "@/lib/date";
+import { GRACE_PERIOD } from "@/lib/games/sortBySeasons";
 import type { GameFiltersStorage } from "@/lib/storage/gameFiltersStorage";
 
 export const STARTING_SOON_WINDOW_DAYS = 30;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export type HiddenReason =
-    "No recent updates" | "Community" | "No confirmed season" | "Hidden by your filters";
+    "No recent updates" | "Community" | "Non-seasonal" | "Hidden by your filters";
 
 export type HiddenGame = {
     game: Game;
     reason: HiddenReason;
     startsInDays: number | null;
     confirmed: boolean;
+    // Start of a season inside the grid's grace period
+    startedAt: number | null;
 };
 
 export type HiddenGamesSummary = {
+    now: number;
     state: "preset" | "custom" | "all-shown";
     hiddenCount: number;
     hidden: HiddenGame[];
+    justStarted: HiddenGame[]; // newest first
     startingSoon: HiddenGame[];
     others: HiddenGame[];
 };
@@ -34,7 +40,7 @@ const getDefaultHiddenReason = (
         !g.categories?.includes("early-access") &&
         !g.nextSeason?.start?.confirmed
     )
-        return "No confirmed season";
+        return "Non-seasonal";
     return null;
 };
 
@@ -75,6 +81,24 @@ const daysUntil = (start: number, now: number) => {
     return days < 0 ? Math.floor(days) : Math.ceil(days);
 };
 
+// A confirmed next start that passed counts too: games are parsed once per page load
+const getStartedAt = (game: Game, now: number): number | null => {
+    if (game.isDormant) return null;
+    const next = game.nextSeason?.start;
+    const current = game.currentSeason;
+    const candidates = [
+        next?.confirmed ? next.startDate : null,
+        current?.end?.endDate && new Date(current.end.endDate).getTime() <= now
+            ? null
+            : current?.start?.startDate,
+    ];
+    for (const date of candidates) {
+        const start = date ? new Date(date).getTime() : NaN;
+        if (start < now && now - start < GRACE_PERIOD) return start;
+    }
+    return null;
+};
+
 const toHiddenGame = (game: Game, now: number): HiddenGame => {
     const startDate = game.isDormant ? null : game.nextSeason?.start?.startDate;
     return {
@@ -82,6 +106,7 @@ const toHiddenGame = (game: Game, now: number): HiddenGame => {
         reason: getDefaultHiddenReason(game) ?? "Hidden by your filters",
         startsInDays: startDate ? daysUntil(new Date(startDate).getTime(), now) : null,
         confirmed: !!game.nextSeason?.start?.confirmed,
+        startedAt: getStartedAt(game, now),
     };
 };
 
@@ -110,34 +135,25 @@ export const getHiddenGamesSummary = ({
         .map((g) => toHiddenGame(g, now))
         // Games with no recent updates go last; sort is stable
         .sort((a, b) => Number(!!a.game.isDormant) - Number(!!b.game.isDormant));
-    const startingSoon = hidden.filter(isStartingSoon).sort((a, b) => startTime(a) - startTime(b));
+    const justStarted = hidden
+        .filter((h) => h.startedAt !== null)
+        .sort((a, b) => b.startedAt! - a.startedAt!);
+    const startingSoon = hidden
+        .filter((h) => !justStarted.includes(h) && isStartingSoon(h))
+        .sort((a, b) => startTime(a) - startTime(b));
 
     return {
+        now,
         state: isPreset ? "preset" : hidden.length === 0 ? "all-shown" : "custom",
         hiddenCount: hidden.length,
         hidden,
+        justStarted,
         startingSoon,
-        others: hidden.filter((h) => !startingSoon.includes(h)),
+        others: hidden.filter((h) => !justStarted.includes(h) && !startingSoon.includes(h)),
     };
 };
 
 const gamesHidden = (count: number) => `${count} ${count === 1 ? "game" : "games"} hidden`;
-
-export type PresetControlLabel = { full: string; short: string };
-
-export const getPresetControlLabel = ({
-    state,
-    hiddenCount,
-}: HiddenGamesSummary): PresetControlLabel => {
-    if (state === "all-shown") {
-        return { full: "Filters · All games shown", short: "Filters · All games shown" };
-    }
-    const preset = state === "preset" ? "Featured preset" : "Custom";
-    return {
-        full: `Filters · ${preset} · ${hiddenCount} hidden`,
-        short: `Filters · ${hiddenCount} hidden`,
-    };
-};
 
 export const getMobilePresetTabLabel = ({ state, hiddenCount }: HiddenGamesSummary): string => {
     // Kept short: the dashboard selector already names Featured, and the tab must clear it
@@ -147,24 +163,35 @@ export const getMobilePresetTabLabel = ({ state, hiddenCount }: HiddenGamesSumma
 
 export type StripEntries = { chips: HiddenGame[]; more: HiddenGame[]; moreLabel: string | null };
 
-// Chips past the cap fold into "+N more"; with nothing starting soon, one entry lists all hidden
+// Chips past the cap fold into "+N more"; with no chips, one entry covers all hidden
 export const getStripEntries = (
-    { hiddenCount, hidden, startingSoon, others }: HiddenGamesSummary,
+    { hiddenCount, hidden, justStarted, startingSoon, others }: HiddenGamesSummary,
     cap: number,
 ): StripEntries => {
-    if (startingSoon.length === 0) {
+    const lead = [...justStarted, ...startingSoon];
+    if (lead.length === 0) {
         return {
             chips: [],
             more: hidden,
             moreLabel: hidden.length > 0 ? gamesHidden(hiddenCount) : null,
         };
     }
-    const more = [...startingSoon.slice(cap), ...others];
+    const more = [...lead.slice(cap), ...others];
     return {
-        chips: startingSoon.slice(0, cap),
+        chips: lead.slice(0, cap),
         more,
         moreLabel: more.length > 0 ? `+${more.length} more` : null,
     };
+};
+
+// Same wording as the grid's grace-period text, shortened for a chip
+export const getStripTimeLabel = ({ game, startedAt, startsInDays }: HiddenGame, now: number) => {
+    if (startedAt !== null) {
+        const hours = (now - startedAt) / HOUR;
+        return hours < 2 ? "just started" : `started ${hours.toFixed(0)}h ago`;
+    }
+    const untilStart = new Date(game.nextSeason?.start?.startDate ?? NaN).getTime() - now;
+    return untilStart < DAY ? `in ${Math.ceil(untilStart / HOUR)}h` : `in ${startsInDays}d`;
 };
 
 export const getHiddenByFiltersLabel = ({ hiddenCount }: HiddenGamesSummary): string =>

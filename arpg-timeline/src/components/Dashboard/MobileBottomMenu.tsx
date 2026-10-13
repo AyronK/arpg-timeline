@@ -3,6 +3,7 @@ import { useHasMounted } from "@react-hooks-library/core";
 import { useEffect } from "react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
+import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useScrollVisibility } from "@/hooks/useScrollVisibility";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
@@ -31,7 +32,8 @@ export function MobileBottomMenu({
     const { isLg } = useBreakpoint("lg");
     const { isFiltersOpen, setFiltersOpen } = filtersProps;
     // Stored filters are only known in the browser
-    const hiddenGamesSummary = useHasMounted() ? filtersProps.hiddenGamesSummary : null;
+    const { hiddenGamesSummary: summary } = useGameFilterContext();
+    const hiddenGamesSummary = useHasMounted() ? summary : null;
     // The desktop dialog owns the shared open state at lg and up
     const isDrawerOpen = isFiltersOpen && !isLg;
 

@@ -6,7 +6,6 @@ import { createPortal } from "react-dom";
 
 import LocalDate from "@/components/LocalDate";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
-import { Game } from "@/lib/cms/games.types";
 import { HiddenGame } from "@/lib/filters/filterState";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
@@ -131,7 +130,13 @@ export const HiddenGamesPopover = ({
 };
 
 // Same start text as the grid's next-season widget
-const StartText = ({ game }: { game: Game }) => {
+const StartText = ({ entry: { game, startedAt } }: { entry: HiddenGame }) => {
+    if (startedAt !== null)
+        return (
+            <>
+                Started <LocalDate utcDate={new Date(startedAt).toISOString()} dateOnly />
+            </>
+        );
     const start = game.nextSeason?.start;
     if (start?.confirmed && start.startDate)
         return start.overrideText || <LocalDate utcDate={start.startDate} dateOnly />;
@@ -139,17 +144,17 @@ const StartText = ({ game }: { game: Game }) => {
     return start?.overrideText || game.currentSeason?.end?.overrideText || "To be announced";
 };
 
-const HiddenGameRow = ({ entry: { game, reason } }: { entry: HiddenGame }) => (
+const HiddenGameRow = ({ entry }: { entry: HiddenGame }) => (
     <li className="flex min-w-0 flex-col">
-        <span className="truncate font-medium">{game.name}</span>
+        <span className="truncate font-medium">{entry.game.name}</span>
         <span className="text-muted-foreground text-xs">
-            {!game.isDormant && (
+            {!entry.game.isDormant && (
                 <>
-                    <StartText game={game} />
+                    <StartText entry={entry} />
                     {" · "}
                 </>
             )}
-            {reason}
+            {entry.reason}
         </span>
     </li>
 );

@@ -142,9 +142,7 @@ export const CalendarEventMockup = ({
                 <span className="text-sky-400 underline underline-offset-2">arpg-timeline.com</span>
             </DetailRow>
             <DetailRow icon={<CalendarDays />}>
-                <span className="flex items-center gap-2">
-                    {calendarName}
-                </span>
+                <span className="flex items-center gap-2">{calendarName}</span>
             </DetailRow>
         </div>
     </div>
