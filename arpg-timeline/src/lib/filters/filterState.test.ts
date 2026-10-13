@@ -346,6 +346,25 @@ describe("getStripEntries", () => {
         expect(moreLabel).toBe("2 games hidden");
     });
 
+    it("leaves peeked games out of chips and more, keeping the hidden count", () => {
+        const summary = summarize([soon("a", 3), soon("b", 5), soon("c", 9), game("d")]);
+        const { chips, more, moreLabel } = getStripEntries(summary, 2, ["a", "d"]);
+        expect(slugs(chips)).toEqual(["b", "c"]);
+        expect(more).toEqual([]);
+        expect(moreLabel).toBeNull();
+        expect(getStripEntries(summarize([game("x"), game("y")]), 2, ["x"]).moreLabel).toBe(
+            "2 games hidden",
+        );
+    });
+
+    it("is empty when every hidden game is peeked", () => {
+        expect(getStripEntries(summarize([game("a")]), 2, ["a"])).toEqual({
+            chips: [],
+            more: [],
+            moreLabel: null,
+        });
+    });
+
     it("uses the singular for one hidden game", () => {
         expect(getStripEntries(summarize([game("a")]), 2).moreLabel).toBe("1 game hidden");
         expect(getMobilePresetTabLabel(summarize([game("a")], { isPreset: true }))).toBe(

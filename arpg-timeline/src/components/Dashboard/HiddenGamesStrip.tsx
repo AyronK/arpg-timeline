@@ -15,7 +15,13 @@ const useChipCap = () => {
     return is2xl ? 4 : isXl ? 3 : 2;
 };
 
-export const HiddenGamesStrip = () => {
+export const HiddenGamesStrip = ({
+    peekedSlugs,
+    onPeek,
+}: {
+    peekedSlugs: string[];
+    onPeek: (slug: string) => void;
+}) => {
     const { hiddenGamesSummary } = useGameFilterContext();
     const cap = useChipCap();
     // Session only for now; ticket 07 persists it
@@ -23,7 +29,8 @@ export const HiddenGamesStrip = () => {
 
     if (!hiddenGamesSummary || hiddenGamesSummary.hiddenCount === 0 || isHidden) return null;
 
-    const { chips, more, moreLabel } = getStripEntries(hiddenGamesSummary, cap);
+    const { chips, more, moreLabel } = getStripEntries(hiddenGamesSummary, cap, peekedSlugs);
+    if (chips.length === 0 && !moreLabel) return null;
     const hideStrip = () => setIsHidden(true);
 
     return (
@@ -35,6 +42,7 @@ export const HiddenGamesStrip = () => {
                     entries={[entry]}
                     eventProps={{ entry: "chip", game: entry.game.slug }}
                     onHideStrip={hideStrip}
+                    onPeek={onPeek}
                     triggerClassName="group hover:border-foreground/40 hover:text-foreground flex shrink-0 items-center gap-2 rounded-full border py-0.5 pr-2.5 pl-0.5"
                     trigger={<StripChip entry={entry} />}
                 />
@@ -45,6 +53,7 @@ export const HiddenGamesStrip = () => {
                     entries={more}
                     eventProps={{ entry: chips.length > 0 ? "more" : "all", count: more.length }}
                     onHideStrip={hideStrip}
+                    onPeek={onPeek}
                     triggerClassName="hover:text-foreground shrink-0 underline-offset-2 hover:underline"
                     trigger={moreLabel}
                 />

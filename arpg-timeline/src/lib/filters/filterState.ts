@@ -145,17 +145,22 @@ export type StripEntries = { chips: HiddenGame[]; more: HiddenGame[]; moreLabel:
 export const getStripEntries = (
     { hiddenCount, hidden, startingSoon, others }: HiddenGamesSummary,
     cap: number,
+    // Peeked games leave the strip, but the hidden count stays
+    peekedSlugs: string[] = [],
 ): StripEntries => {
-    if (startingSoon.length === 0) {
+    const notPeeked = (h: HiddenGame) => !peekedSlugs.includes(h.game.slug);
+    const soon = startingSoon.filter(notPeeked);
+    if (soon.length === 0) {
+        const all = hidden.filter(notPeeked);
         return {
             chips: [],
-            more: hidden,
-            moreLabel: gamesHidden(hiddenCount),
+            more: all,
+            moreLabel: all.length > 0 ? gamesHidden(hiddenCount) : null,
         };
     }
-    const more = [...startingSoon.slice(cap), ...others];
+    const more = [...soon.slice(cap), ...others.filter(notPeeked)];
     return {
-        chips: startingSoon.slice(0, cap),
+        chips: soon.slice(0, cap),
         more,
         moreLabel: more.length > 0 ? `+${more.length} more` : null,
     };

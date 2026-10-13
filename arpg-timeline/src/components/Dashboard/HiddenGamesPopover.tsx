@@ -10,6 +10,7 @@ import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { HiddenGame } from "@/lib/filters/filterState";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
+import { Button } from "@/ui/Button";
 
 const GAP = 6;
 const VIEWPORT_MARGIN = 8;
@@ -24,6 +25,7 @@ type HiddenGamesPopoverProps = {
     // Sent with hidden_marker_opened
     eventProps: Record<string, string | number>;
     onHideStrip?: () => void;
+    onPeek?: (slug: string) => void;
 };
 
 export const HiddenGamesPopover = ({
@@ -33,6 +35,7 @@ export const HiddenGamesPopover = ({
     triggerClassName,
     eventProps,
     onHideStrip,
+    onPeek,
 }: HiddenGamesPopoverProps) => {
     const { setFiltersOpen } = useGameFilterContext();
     const [open, setOpen] = useState(false);
@@ -157,7 +160,17 @@ export const HiddenGamesPopover = ({
                         </div>
                         <ul className="flex max-h-64 flex-col gap-2 overflow-y-auto">
                             {entries.map((entry) => (
-                                <HiddenGameRow key={entry.game.slug} entry={entry} />
+                                <HiddenGameRow
+                                    key={entry.game.slug}
+                                    entry={entry}
+                                    onPeek={
+                                        onPeek &&
+                                        (() => {
+                                            close();
+                                            onPeek(entry.game.slug);
+                                        })
+                                    }
+                                />
                             ))}
                         </ul>
                         <div className="flex items-center justify-between border-t pt-2 text-xs">
@@ -187,7 +200,13 @@ export const HiddenGamesPopover = ({
     );
 };
 
-const HiddenGameRow = ({ entry: { game, reason, confirmed } }: { entry: HiddenGame }) => {
+const HiddenGameRow = ({
+    entry: { game, reason, confirmed },
+    onPeek,
+}: {
+    entry: HiddenGame;
+    onPeek?: () => void;
+}) => {
     const startDate = game.isDormant ? null : game.nextSeason?.start?.startDate;
     return (
         <li className="flex items-center gap-2">
@@ -207,6 +226,11 @@ const HiddenGameRow = ({ entry: { game, reason, confirmed } }: { entry: HiddenGa
                     {reason}
                 </span>
             </div>
+            {onPeek && (
+                <Button size="sm" variant="outline" className="h-7 px-2 text-xs" onClick={onPeek}>
+                    Show here
+                </Button>
+            )}
         </li>
     );
 };

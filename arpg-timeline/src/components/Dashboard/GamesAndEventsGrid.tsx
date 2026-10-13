@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { GameFilters } from "@/components/GameFilters";
 import { OnboardingModal } from "@/components/OnboardingModal";
@@ -8,6 +8,8 @@ import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useGameCategories } from "@/hooks/useGameCategories";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
+import { processGamesWithGracePeriodAndSort } from "@/lib/cms/processGamesWithGracePeriodAndSort";
+import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 
 import { CantFindGame } from "./CantFindGame";
@@ -25,7 +27,30 @@ export const GamesAndEventsGrid = ({
     const [isLoading, setIsLoading] = useState(false);
     const { filteredGames, totalGames, category, ...filtersProps } = useGameFilterContext();
     const events = useTimelineEvents(filteredGames);
-    const { allGames } = useGameCategories(filteredGames);
+    const { hiddenGamesSummary, activeFilters } = filtersProps;
+
+    // Peeks live in memory only and reset when the tab or filters change
+    const peekKey = `${category}:${activeFilters.join(",")}`;
+    const [peeks, setPeeks] = useState({ key: peekKey, slugs: [] as string[] });
+    const peekedSlugs = useMemo(() => (peeks.key === peekKey ? peeks.slugs : []), [peeks, peekKey]);
+    const peekGame = useCallback(
+        (slug: string) => {
+            if (peekedSlugs.includes(slug)) return;
+            sa_event("hidden_peek_shown", { game: slug });
+            setPeeks({ key: peekKey, slugs: [...peekedSlugs, slug] });
+        },
+        [peekKey, peekedSlugs],
+    );
+
+    const gridGames = useMemo(() => {
+        const peeked = (hiddenGamesSummary?.hidden ?? [])
+            .filter((h) => peekedSlugs.includes(h.game.slug))
+            .map((h) => h.game);
+        return peeked.length > 0
+            ? processGamesWithGracePeriodAndSort([...filteredGames, ...peeked])
+            : filteredGames;
+    }, [filteredGames, hiddenGamesSummary, peekedSlugs]);
+    const { allGames } = useGameCategories(gridGames);
 
     const handleLoadingChange = (loading: boolean) => {
         setIsLoading(loading);
@@ -45,7 +70,7 @@ export const GamesAndEventsGrid = ({
                         <h1 className="font-heading text-foreground sm:text-md text-base leading-4 text-pretty">
                             The most complete aRPG season tracker
                         </h1>
-                        <HiddenGamesStrip />
+                        <HiddenGamesStrip peekedSlugs={peekedSlugs} onPeek={peekGame} />
                     </div>
                     <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
                         <DashboardSelector
@@ -63,7 +88,7 @@ export const GamesAndEventsGrid = ({
                         { "opacity-0": isLoading },
                     )}
                 >
-                    <Games games={allGames} statistics={statistics} />
+                    <Games games={allGames} statistics={statistics} peekedSlugs={peekedSlugs} />
                     <CantFindGame />
                     {filteredGames.length > 1 && <Events events={events} />}
                 </div>
