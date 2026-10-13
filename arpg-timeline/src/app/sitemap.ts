@@ -1,6 +1,12 @@
 import type { MetadataRoute } from "next";
 
-import { getTimelinePath, isSeasonalGame } from "@/app/(site)/game/[gameSlug]/timeline/timeline";
+import {
+    countGameEntries,
+    getTimelinePath,
+    hasTimeline,
+} from "@/app/(site)/game/[gameSlug]/(hub)/timeline/timeline";
+import { getStatsPath, hasStatsTab } from "@/app/(site)/game/[gameSlug]/hub";
+import { countTrackedSeasons } from "@/app/(site)/game/[gameSlug]/utils";
 import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { getArticlePath } from "@/lib/articles/articleUrl";
 import { getArticleStaticParams } from "@/lib/articles/getArticleData";
@@ -82,12 +88,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: "daily",
             priority: 0.7,
         },
-        {
-            url: `${baseUrl}/resources`,
-            lastModified: new Date(),
-            changeFrequency: "weekly",
-            priority: 0.6,
-        },
     ];
 
     try {
@@ -105,14 +105,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 categories?: string[];
                 isDormant?: boolean;
                 isComingSoon?: boolean;
+                steam?: { appId?: number | null } | null;
             }) => {
                 if (game.slug) {
-                    if (isSeasonalGame(game)) {
+                    if (hasTimeline(game, countGameEntries(data.seasons || [], game.slug))) {
                         sitemap.push({
                             url: `${baseUrl}${getTimelinePath(game.slug)}`,
                             lastModified: new Date(),
                             changeFrequency: "weekly",
                             priority: 0.6,
+                        });
+                    }
+                    if (
+                        hasStatsTab(
+                            game,
+                            !!game.steam?.appId,
+                            countTrackedSeasons({ seasons: data.seasons || [] }, game.slug),
+                        )
+                    ) {
+                        sitemap.push({
+                            url: `${baseUrl}${getStatsPath(game.slug)}`,
+                            lastModified: new Date(),
+                            changeFrequency: "weekly",
+                            priority: 0.5,
                         });
                     }
                     sitemap.push(
@@ -158,7 +173,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const gameIndexes = new Set<string>();
 
         articles.forEach((article) => {
-            if (!article.slug) return;
+            // Resources (guides) are left out of the sitemap for now
+            if (!article.slug || article.category === "resources") return;
             sitemap.push({
                 url: `${baseUrl}${getArticlePath({
                     category: article.category,

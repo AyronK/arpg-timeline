@@ -207,6 +207,29 @@ describe("parseGamesFromSanity", () => {
         });
     });
 
+    describe("latest season has a stale unconfirmed start", () => {
+        // endTooSoon is Path of Diablo: Season 2 estimated for Jul 31 but never confirmed
+        it("keeps it as next and the previous season as current", () => {
+            const game = parseOne(endTooSoon());
+
+            expect(game.currentSeason?.name).toBe("Season 1");
+            expect(game.currentSeason?.end).toMatchObject({
+                confirmed: true,
+                endDate: "2025-10-18T15:30:00.000Z",
+            });
+            expect(game.nextSeason?.name).toBe("Season 2");
+        });
+
+        it("restarts the passed estimate from now plus 10% of the default offset", () => {
+            const game = parseOne(endTooSoon());
+
+            expect(game.nextSeason?.start).toMatchObject({
+                confirmed: false,
+                startDate: plusDays(NOW, DEFAULT_OFFSET_DAYS * 0.1),
+            });
+        });
+    });
+
     describe("only one season and it has not started", () => {
         it("has no current season and keeps the next one as is", () => {
             const game = parseOne(singleUpcoming());
@@ -272,24 +295,6 @@ describe("parseGamesFromSanity", () => {
             const game = parseOne(input);
 
             expect(game.nextSeason?.start?.overrideText).toBe("December");
-        });
-
-        it("pushes a too close unconfirmed current end back by 10% of the default offset", () => {
-            const game = parseOne(endTooSoon());
-            const pushed = plusDays("2026-10-18T22:30:00.000Z", DEFAULT_OFFSET_DAYS * 0.1);
-
-            expect(game.currentSeason?.name).toBe("Season 2");
-            expect(game.currentSeason?.end).toMatchObject({
-                confirmed: false,
-                endDate: pushed,
-                overrideText: "",
-            });
-            expect(game.nextSeason?.start).toMatchObject({
-                startDate: pushed,
-                overrideText: "To be announced",
-            });
-            // The synthesized next end is not pushed
-            expect(game.nextSeason?.end?.endDate).toBe("2026-10-18T22:30:00.000Z");
         });
 
         it("simulates a missing current end as start + 110% of the default offset", () => {

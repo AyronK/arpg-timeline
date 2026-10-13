@@ -1,7 +1,6 @@
 import { SanityImageAssetDocument } from "next-sanity";
 
 import { Game as CMSGame } from "@/lib/cms/games.types";
-import { SteamNewsItem } from "@/lib/steam/getSteamNews";
 
 export interface GamePageProps {
     params: Promise<{ gameSlug: string }>;
@@ -10,6 +9,7 @@ export interface GamePageProps {
 export interface SeasonDuration {
     duration: number;
     name: string;
+    startDate: string;
 }
 
 export interface GameStatistics {
@@ -38,19 +38,8 @@ export interface StatisticsCardProps {
     className?: string;
 }
 
-export interface QuickLinksSectionProps {
-    game: CMSGame;
-    gameSlug: string;
-    steamAppId?: number | null;
-}
-
-export interface PlatformIntegrationSectionProps {
-    steamAppId?: number | null;
-    gameUrl?: string | null;
-    gameNews: SteamNewsItem[];
-}
-
 export interface ArchivalSeason {
+    id: string;
     name: string;
     startDate: Date;
     endDate: Date | null;
@@ -60,19 +49,6 @@ export interface ArchivalSeason {
     logo?: SanityImageAssetDocument;
 }
 
-export interface ArchivalSeasonsSectionProps {
-    seasons: ArchivalSeason[];
-    gameLogo: SanityImageAssetDocument;
-    seasonKeyword: string;
-    gameSlug: string;
-}
-
-export interface GameHeaderSectionProps {
-    game: CMSGame;
-    gameSlug: string;
-    steamAppId?: number | null;
-}
-
 export interface StatisticsSectionProps {
     game: CMSGame;
     statistics: GameStatistics;
@@ -80,5 +56,7 @@ export interface StatisticsSectionProps {
     recentStatistics?: GameStatistics;
     /** Number of seasons the recent scope is based on (used for labels/headings). */
     recentSeasonCount?: number;
+    // Shown in the "All" toggle, matching the Overview rhythm card
+    totalCount?: number;
     oldestSeasonInfo: string;
 }

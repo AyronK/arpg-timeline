@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { addUTMParameters } from "@/lib/utm";
 import { Chip } from "@/ui/Chip";
 
-const ChipColorMap: Record<SeasonChip, string> = {
+export const ChipColorMap: Record<SeasonChip, string> = {
     live: "bg-sky-800 border border-sky-300 motion-safe:animate-pulse",
     over: "bg-amber-900 border border-transparent",
     now: "bg-sky-800 border border-transparent",
@@ -14,7 +14,7 @@ const ChipColorMap: Record<SeasonChip, string> = {
     comingSoon: "bg-emerald-800 border border-transparent",
 };
 
-const ChipColorText: Record<SeasonChip, string> = {
+export const ChipColorText: Record<SeasonChip, string> = {
     live: "LIVE",
     over: "Over",
     now: "Now",

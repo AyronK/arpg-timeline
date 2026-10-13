@@ -20,8 +20,8 @@ export const PatreonFundingCompact = ({ className }: { className?: string }) => 
         >
             <FaPatreon className="size-4 shrink-0 text-white" aria-label="Patreon logo" />
             <span className="min-w-0 flex-1 text-xs leading-tight">
-                <span className="text-foreground block font-medium">Keep the site running</span>
-                <span className="text-muted-foreground">Support on Patreon</span>
+                <span className="text-foreground block font-medium">Patreon</span>
+                <span className="text-muted-foreground">Monthly support</span>
             </span>
             <ChevronRight
                 className="text-muted-foreground group-hover:text-foreground size-3.5 shrink-0 transition-colors"

@@ -49,6 +49,7 @@ export type Season = {
     patchNotesUrl?: string | null | undefined;
     name: string | null | undefined;
     logo?: SanityImageAssetDocument;
+    isSideEvent?: boolean | null | undefined;
 };
 
 export type BaseSeasonDate = {

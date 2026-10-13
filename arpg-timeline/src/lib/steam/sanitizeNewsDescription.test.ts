@@ -52,4 +52,10 @@ describe("sanitizeNewsDescription", () => {
             "Nouvelle saison — détails à venir",
         );
     });
+
+    it("removes Markdown escapes", () => {
+        expect(sanitizeNewsDescription("- \\[Ether Overworld] Buffed \\*all\\* bosses")).toBe(
+            "- [Ether Overworld] Buffed *all* bosses",
+        );
+    });
 });

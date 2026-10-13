@@ -6,6 +6,15 @@ export interface UTMParameters {
     utm_content?: string;
 }
 
+// Outbound links from game pages, tagged by campaign and game
+export const addGameLinkUTM = (campaign: string, gameSlug: string) =>
+    addUTMParameters({
+        utm_source: "arpg-timeline",
+        utm_medium: "link",
+        utm_campaign: campaign,
+        utm_content: gameSlug,
+    });
+
 /**
  * Decorator function that adds UTM parameters to a URL
  * @param utmParams - Object containing UTM parameters to add

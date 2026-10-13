@@ -46,6 +46,7 @@ export const indexQuery = `{
         url      
       },
       patchNotesUrl,
+      isSideEvent,
       start {
         startDate,
         confirmed,
@@ -135,6 +136,7 @@ export const gameDetailsQuery = `{
         url
       },
       patchNotesUrl,
+      isSideEvent,
       start {
         startDate,
         confirmed,

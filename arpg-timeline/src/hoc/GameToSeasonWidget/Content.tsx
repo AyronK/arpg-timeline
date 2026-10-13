@@ -1,4 +1,5 @@
 "use client";
+import { useHasMounted } from "@react-hooks-library/core";
 import { InfoIcon, TimerReset } from "lucide-react";
 
 import { CalendarMenu } from "@/components/CalendarMenu";
@@ -27,12 +28,18 @@ export const Content = ({
     selector,
     embed,
     compactEmbed,
+    hidePatchNotes,
+    progressTextBelow,
 }: {
     game: Game;
     selector: Selector;
     embed?: boolean | undefined;
     compactEmbed?: boolean | undefined;
+    hidePatchNotes?: boolean;
+    progressTextBelow?: boolean;
 }) => {
+    // Relative times ("Started 52 days ago") go stale in cached HTML, so render them after mount
+    const hasMounted = useHasMounted();
     const season = selector === "current" ? game.currentSeason : game.nextSeason;
 
     if (!season) {
@@ -70,7 +77,7 @@ export const Content = ({
                                     </IconLabel>
                                 </ClientOnlyVisibleWrapper>
                             )}
-                            {season.patchNotesUrl && (
+                            {season.patchNotesUrl && !hidePatchNotes && (
                                 <GuardedExternalLink
                                     href={addUTMParameters({
                                         utm_source: "arpg-timeline",
@@ -150,8 +157,9 @@ export const Content = ({
                 <>
                     <IconLabel icon={TimerReset}>
                         <i>
-                            {season.start?.overrideText ??
-                                game.currentSeason?.end?.overrideText ??
+                            {/* || so empty CMS strings fall through too */}
+                            {season.start?.overrideText ||
+                                game.currentSeason?.end?.overrideText ||
                                 "To be announced"}
                         </i>
                     </IconLabel>
@@ -161,23 +169,35 @@ export const Content = ({
         }
     } else if (season.start?.startDate) {
         const progress = getProgress(season.start?.startDate, season.end?.endDate ?? null);
+        const progressText = getProgressTooltipText(
+            season.start?.startDate,
+            season.end?.endDate,
+            // Parser sets the end to a confirmed next start
+            season.end?.confirmed || game.nextSeason?.start?.confirmed,
+            game.seasonKeyword,
+        );
         return (
             <>
                 <div className="flex flex-row flex-wrap justify-between">
                     <ClientOnlyVisibleWrapper>
-                        {getProgressStartContent(
-                            season.start?.startDate,
-                            season.end?.endDate ?? null,
-                            null,
-                            game.isDormant,
+                        {hasMounted ? (
+                            getProgressStartContent(
+                                season.start?.startDate,
+                                season.end?.endDate ?? null,
+                                null,
+                                game.isDormant,
+                            )
+                        ) : (
+                            <IconLabel icon={TimerReset}>&nbsp;</IconLabel>
                         )}
                     </ClientOnlyVisibleWrapper>
                     <ClientOnlyVisibleWrapper>
                         <div className="ml-auto">
-                            {getProgressEndContent(
-                                season.end?.overrideText ?? null,
-                                season.end?.confirmed ? season.end?.endDate : null,
-                            )}
+                            {hasMounted &&
+                                getProgressEndContent(
+                                    season.end?.overrideText ?? null,
+                                    season.end?.confirmed ? season.end?.endDate : null,
+                                )}
                         </div>
                     </ClientOnlyVisibleWrapper>
                 </div>
@@ -186,14 +206,16 @@ export const Content = ({
                         progress={progress}
                         clamp
                         pulse={isInGracePeriod}
-                        label={getProgressTooltipText(
-                            season.start?.startDate,
-                            season.end?.endDate,
-                            // Parser sets the end to a confirmed next start
-                            season.end?.confirmed || game.nextSeason?.start?.confirmed,
-                            game.seasonKeyword,
-                        )}
+                        label={progressText}
+                        tooltip={!progressTextBelow}
                     />
+                )}
+                {!game.isDormant && progressTextBelow && progressText && (
+                    <ClientOnlyVisibleWrapper>
+                        <p className="text-muted-foreground text-sm">
+                            {hasMounted ? progressText : "\u00a0"}
+                        </p>
+                    </ClientOnlyVisibleWrapper>
                 )}
             </>
         );

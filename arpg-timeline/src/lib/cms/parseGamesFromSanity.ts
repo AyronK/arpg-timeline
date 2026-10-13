@@ -106,7 +106,9 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
             (a, b) => b?.start?.startDate?.localeCompare(a?.start?.startDate ?? "") ?? 0,
         );
 
+        // An unconfirmed start that has passed is a stale estimate, not a launch
         const hasLatestSeasonStarted =
+            !!gameSeasons[0]?.start?.confirmed &&
             new Date().getTime() > new Date(gameSeasons[0]?.start?.startDate ?? "").getTime();
 
         game.currentSeason = hasLatestSeasonStarted ? gameSeasons[0] : gameSeasons[1];
@@ -208,10 +210,11 @@ export const parseGamesFromSanity = (data: Pick<IndexQueryResult, "games">): Gam
         }
 
         if (game.nextSeason?.start?.startDate && !game.nextSeason.start.confirmed) {
-            game.nextSeason.start.startDate = adjustDateIfTooSoon(
-                game.nextSeason.start?.startDate,
-                defaultSeasonOffset,
-            );
+            // A passed estimate (delayed, not updated by editors) restarts from now
+            const estimate = new Date(
+                Math.max(Date.parse(game.nextSeason.start.startDate), Date.now()),
+            ).toISOString();
+            game.nextSeason.start.startDate = adjustDateIfTooSoon(estimate, defaultSeasonOffset);
         }
 
         if (
