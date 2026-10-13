@@ -84,19 +84,10 @@ The patch touches `Games.tsx` (extracts `GameTile` and `gridOrderClass`), `GameF
 
 Next steps, run by the user:
 
-1. `/to-spec`, writing to `docs/features/hidden-games-surfacing/SPEC.md`.
-2. `/to-tickets`, writing one file per ticket to `docs/features/hidden-games-surfacing/tickets/` (not GitHub).
+1. ~~`/to-spec`~~ done: [SPEC.md](./SPEC.md).
+2. ~~`/to-tickets`~~ done: [tickets/](./tickets/).
 3. `/implement` per ticket in a fresh session, blockers first.
 
-Draft ticket split (final split comes from `/to-tickets`):
+Tickets: [`tickets/`](./tickets/), numbered blockers first. Ticket 01 takes the prototype out of the running app; 09 deletes this folder.
 
-1. Featured-only filters (16, 17 storage side).
-2. Merged desktop Filters control; remove the old indicators (18). After 1.
-3. Mobile counter tab as the preset label (19). After 1.
-4. Starting-soon strip, popover and peek, built properly to replace the prototype (13–15, 20). After 2.
-5. Dialog: "Reset to Featured preset" button and strip off switch (17, 22). After 4.
-6. `CantFindGame` rewrite (21). After 4.
-7. Analytics events (12). After 2–5.
-8. Cleanup, last: delete `HiddenGamesPrototype.tsx`, `PrototypeSwitcher.tsx` and any prototype-only context fields, then delete this whole folder (README, patch, SPEC, tickets) so only the implementation is merged. The mockups and decision log stay recoverable from commit `deb5a2d` on `feature/filters-onboarding`; mention that commit in the PR description.
-
-The working tree currently holds the variant G prototype (`HiddenGamesPrototype.tsx`, `PrototypeSwitcher.tsx`, plus the `Games.tsx` / `GameFilterContext.tsx` / `GamesAndEventsGrid.tsx` changes). It is a reference to be rewritten properly, not shipped.
+The working tree currently holds the variant G prototype (`HiddenGamesPrototype.tsx`, `PrototypeSwitcher.tsx`, plus the `Games.tsx` / `GameFilterContext.tsx` / `GamesAndEventsGrid.tsx` changes). It is a reference to be rewritten properly, not shipped; ticket 01 removes it from the runtime.
