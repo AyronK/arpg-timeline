@@ -1,10 +1,11 @@
 "use client";
 import { useHasMounted } from "@react-hooks-library/core";
-import { Filter } from "lucide-react";
+import { Filter, RotateCcw } from "lucide-react";
 import { SanityImageAssetDocument } from "next-sanity";
 import { forwardRef } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
+import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
     getPresetControlLabel,
@@ -82,6 +83,7 @@ export const FiltersDialog = ({
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
+                <FilterPresetControls />
                 <Filters
                     checked={checked}
                     filters={filters}
@@ -127,6 +129,31 @@ const Trigger = forwardRef<
 ));
 
 Trigger.displayName = "Trigger";
+
+export const FilterPresetControls = () => {
+    const { hiddenGamesSummary, resetToPreset, isHiddenStripEnabled, setHiddenStripEnabled } =
+        useGameFilterContext();
+    // Preset controls only exist on Featured
+    if (!hiddenGamesSummary) return null;
+
+    return (
+        <div className="border-border mb-6 flex flex-wrap items-center justify-between gap-3 border-b px-6 pb-4 lg:px-0">
+            <label className="flex cursor-pointer items-center gap-2 text-sm">
+                <Switch checked={isHiddenStripEnabled} onCheckedChange={setHiddenStripEnabled} />
+                Show hidden games starting soon
+            </label>
+            <Button
+                variant="outline"
+                size="sm"
+                disabled={hiddenGamesSummary.state === "preset"}
+                onClick={resetToPreset}
+            >
+                <RotateCcw className="h-4 w-4" />
+                Reset to Featured preset
+            </Button>
+        </div>
+    );
+};
 
 export const Filters = ({
     filters,

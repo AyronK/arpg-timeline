@@ -6,6 +6,7 @@ import {
     createContext,
     ReactNode,
     Suspense,
+    useCallback,
     useContext,
     useEffect,
     useMemo,
@@ -21,6 +22,11 @@ import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
 import { getHiddenGamesSummary, HiddenGamesSummary } from "@/lib/filters/filterState";
+import { sa_event } from "@/lib/sa_event";
+import {
+    getStoredHiddenStripEnabled,
+    setStoredHiddenStripEnabled,
+} from "@/lib/storage/filterOnboardingStorage";
 
 interface GameFilterContextType {
     gameFilters: {
@@ -42,6 +48,9 @@ interface GameFilterContextType {
     hiddenGamesSummary: HiddenGamesSummary | null;
     isFiltersOpen: boolean;
     setFiltersOpen: (open: boolean) => void;
+    resetToPreset: () => void;
+    isHiddenStripEnabled: boolean;
+    setHiddenStripEnabled: (enabled: boolean) => void;
 }
 
 const GameFilterContext = createContext<GameFilterContextType | undefined>(undefined);
@@ -117,6 +126,9 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
                             hiddenGamesSummary: null,
                             isFiltersOpen: false,
                             setFiltersOpen: () => {},
+                            resetToPreset: () => {},
+                            isHiddenStripEnabled: true,
+                            setHiddenStripEnabled: () => {},
                         }}
                     >
                         {children}
@@ -141,9 +153,22 @@ type UnsafeGameFilterProviderProps = Omit<
 const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilterProviderProps) => {
     const searchParams = useSearchParams();
 
-    const { excludedSlugs, isPreset, toggleGameFilter, toggleGroupFilter, updateFilters } =
-        useGameFilterState(games, category, searchParams);
+    const {
+        excludedSlugs,
+        isPreset,
+        toggleGameFilter,
+        toggleGroupFilter,
+        updateFilters,
+        resetToPreset,
+    } = useGameFilterState(games, category, searchParams);
     const [isFiltersOpen, setFiltersOpen] = useState(false);
+    const [isHiddenStripEnabled, setIsHiddenStripEnabled] = useState(getStoredHiddenStripEnabled);
+
+    const setHiddenStripEnabled = useCallback((enabled: boolean) => {
+        setIsHiddenStripEnabled(enabled);
+        setStoredHiddenStripEnabled(enabled);
+        if (!enabled) sa_event("hidden_markers_disabled");
+    }, []);
     const [now] = useState(Date.now);
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
@@ -179,10 +204,16 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
             hiddenGamesSummary,
             isFiltersOpen,
             setFiltersOpen,
+            resetToPreset,
+            isHiddenStripEnabled,
+            setHiddenStripEnabled,
         }),
         [
             hiddenGamesSummary,
             isFiltersOpen,
+            resetToPreset,
+            isHiddenStripEnabled,
+            setHiddenStripEnabled,
             gameFilters,
             toggleGameFilter,
             toggleGroupFilter,

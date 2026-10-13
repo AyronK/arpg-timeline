@@ -3,7 +3,12 @@ import { startTransition, useCallback, useEffect, useRef, useState } from "react
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { getUrlExcludesToPersist, resolveExcludedSlugs } from "@/lib/filters/filterState";
-import { getStoredFilters, setStoredFilters } from "@/lib/storage/gameFiltersStorage";
+import { sa_event } from "@/lib/sa_event";
+import {
+    clearStoredFilters,
+    getStoredFilters,
+    setStoredFilters,
+} from "@/lib/storage/gameFiltersStorage";
 import { getUrlFilters, updateUrlFilters } from "@/lib/url/gameFiltersUrl";
 
 const hasNoFeaturedRecord = () => getStoredFilters()?.category !== "featured";
@@ -62,6 +67,16 @@ export const useGameFilterState = (
         [category],
     );
 
+    const resetToPreset = useCallback(() => {
+        if (category !== "featured") return;
+
+        clearStoredFilters();
+        if (getUrlFilters(searchParams).length > 0) updateUrlFilters([]);
+        setExcludedSlugs(resolveExcludedSlugs({ category, games, stored: null, urlExcludes: [] }));
+        setIsPreset(true);
+        sa_event("filters_reset_to_featured");
+    }, [category, games, searchParams]);
+
     const toggleGameFilter = useCallback(
         (slug: string, value: boolean) => {
             const newExcludedSlugs = value
@@ -105,5 +120,6 @@ export const useGameFilterState = (
         toggleGameFilter,
         toggleGroupFilter,
         updateFilters,
+        resetToPreset,
     };
 };

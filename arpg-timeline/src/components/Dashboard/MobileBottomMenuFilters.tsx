@@ -19,7 +19,7 @@ import {
     DrawerTrigger,
 } from "@/ui/Drawer";
 
-import { Filters } from "../FiltersDialog";
+import { FilterPresetControls, Filters } from "../FiltersDialog";
 
 const title = "Choose your games";
 
@@ -81,6 +81,7 @@ export function MobileBottomMenuFilters({
                         </DrawerDescription>
                     </DrawerHeader>
                     <div className="overflow-y-auto pt-3">
+                        <FilterPresetControls />
                         <Filters
                             checked={filtersProps.activeFilters}
                             filters={filtersProps.gameFilters}

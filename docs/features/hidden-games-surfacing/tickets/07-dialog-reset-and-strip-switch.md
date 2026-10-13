@@ -8,14 +8,14 @@ Context: [SPEC](../SPEC.md) → Filter state wiring (reset); Strip off switch. U
 
 **Blocked by:** 05.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Reset clears the stored filters and the `?exclude=` parameter, and the summary `state` becomes `preset`.
-- [ ] The reset button is disabled when `state` is `preset`.
-- [ ] Reset fires `filters_reset_to_featured`.
-- [ ] The switch's preference is stored using the existing onboarding-storage helper pattern (localStorage, wrapped in try/catch).
-- [ ] When storage is unavailable, the strip is shown.
-- [ ] **Hide this strip** in the popover sets the same preference; the dialog switch shows it.
-- [ ] Turning the strip off from either place fires `hidden_markers_disabled`.
-- [ ] Both controls appear in the desktop dialog and the mobile drawer.
+- [x] Reset clears the stored filters and the `?exclude=` parameter, and the summary `state` becomes `preset`.
+- [x] The reset button is disabled when `state` is `preset`.
+- [x] Reset fires `filters_reset_to_featured`.
+- [x] The switch's preference is stored using the existing onboarding-storage helper pattern (localStorage, wrapped in try/catch).
+- [x] When storage is unavailable, the strip is shown.
+- [x] **Hide this strip** in the popover sets the same preference; the dialog switch shows it.
+- [x] Turning the strip off from either place fires `hidden_markers_disabled`.
+- [x] Both controls appear in the desktop dialog and the mobile drawer.
 - [ ] Manual check: customize → reset → label is back to preset. Hide from the popover → reload → still hidden → turn back on from the dialog.

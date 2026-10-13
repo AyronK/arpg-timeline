@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { SanityImage } from "@/components/SanityImage";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
@@ -22,16 +20,16 @@ export const HiddenGamesStrip = ({
     peekedSlugs: string[];
     onPeek: (slug: string) => void;
 }) => {
-    const { hiddenGamesSummary } = useGameFilterContext();
+    const { hiddenGamesSummary, isHiddenStripEnabled, setHiddenStripEnabled } =
+        useGameFilterContext();
     const cap = useChipCap();
-    // Session only for now; ticket 07 persists it
-    const [isHidden, setIsHidden] = useState(false);
 
-    if (!hiddenGamesSummary || hiddenGamesSummary.hiddenCount === 0 || isHidden) return null;
+    if (!hiddenGamesSummary || hiddenGamesSummary.hiddenCount === 0 || !isHiddenStripEnabled)
+        return null;
 
     const { chips, more, moreLabel } = getStripEntries(hiddenGamesSummary, cap, peekedSlugs);
     if (chips.length === 0 && !moreLabel) return null;
-    const hideStrip = () => setIsHidden(true);
+    const hideStrip = () => setHiddenStripEnabled(false);
 
     return (
         <div className="text-muted-foreground flex min-w-0 scrollbar-none flex-nowrap items-center gap-2 overflow-x-auto text-xs whitespace-nowrap lg:justify-end lg:overflow-visible">
