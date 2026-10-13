@@ -23,7 +23,7 @@ Make the preset visible state, and show what it hides without blocking the page 
 
 - **Filters exist only on Featured.** Other tabs are fixed lists with Filters disabled, as Full Catalog already is.
 - **The Filters button becomes the preset control.** It says what is applied and how many games it hides: `Filters · Featured preset · 23 hidden`, `Filters · Custom · 12 hidden`, or `Filters · All games shown`. It replaces the separate count, the yellow badge, the ping and the wide-screen hint.
-- **A one-line starting-soon strip** sits in the header. It lists hidden games whose next season starts within 30 days, each as a logo chip with "in Nd", then "+N more". Each chip opens a popover with the game's date and why it's hidden, plus **Show here** (shows the card in the grid until reload, without changing filters), **Edit filters** and **Hide this strip**.
+- **A one-line starting-soon strip** sits in the header. It lists hidden games whose next season starts within 30 days, each as a chip with the full game name and "in Nd", then "+N more". Each chip opens a popover with the game's date and why it's hidden, plus **Show here** (shows the card in the grid until reload, without changing filters), **Edit filters** and **Hide this strip**.
 - **On mobile**, the bottom menu's counter tab becomes the preset label and opens the filters drawer. The strip sits under the page title and scrolls sideways.
 - **The Filters dialog** gains a "Reset to Featured preset" button and a "Show hidden games starting soon" switch.
 - **The "Can't find a game?" card** points straight at the hidden list, the filters, Full Catalog and Discord.
@@ -44,7 +44,7 @@ Make the preset visible state, and show what it hides without blocking the page 
 ### Discovering hidden games
 
 9. As a fan of a hidden game, I want to see that it's starting within the next 30 days, so that I don't miss its launch because of a default filter.
-10. As a visitor, I want each starting-soon hidden game shown with its logo, short name and days until start, so that I can recognise it at a glance.
+10. As a visitor, I want each starting-soon hidden game shown with its full name and days until start, so that I can recognise it at a glance.
 11. As a visitor, I want estimated dates marked differently from confirmed ones, so that I don't treat a guess as an announcement.
 12. As a visitor, I want starting-soon games ordered by date, so that the most urgent appears first.
 13. As a visitor, I want a "+N more" entry for the rest of the hidden games, so that I can browse them all without the strip growing.
@@ -54,7 +54,7 @@ Make the preset visible state, and show what it hides without blocking the page 
 
 ### Understanding why a game is hidden
 
-17. As a visitor, I want to open a hidden game's details by tapping or hovering it, so that I learn about it without leaving the page.
+17. As a visitor, I want to open a hidden game's details by tapping or clicking it, so that I learn about it without leaving the page.
 18. As a visitor, I want to see why each game is hidden (Dormant, Community, No confirmed season, or Hidden by your filters), so that I learn how the preset works.
 19. As a visitor, I want to see the game's next season date in the popover, so that I can decide whether I care.
 20. As a touch-screen visitor, I want every popover to work on tap, so that I'm not locked out of hover-only features.
@@ -153,10 +153,10 @@ Make the preset visible state, and show what it hides without blocking the page 
 
 ### Strip and popover
 
-- Each chip shows a 24px logo, the short name (or name), and `in Nd`, with `~` before estimated dates.
+- The chips follow a muted `Filtered out:` label. Each chip shows the full game name, never truncated, and `in Nd`, with `~` before estimated dates. No logo.
 - **"+N more"** lists `others`. With no `startingSoon`, the strip shows "N games hidden", which lists all hidden games.
 - The popover:
-  - Opens on tap/click, and also on mouse hover.
+  - Opens on tap/click only, with no hover-open.
   - Closes on outside tap or scroll, and is rendered outside the grid so it is never clipped.
   - Each row shows the logo, name, `Est.` or confirmed date, the reason, and **Show here**.
   - Footer: **Edit filters** (opens the Filters dialog or drawer properly, not by finding the button in the DOM as the prototype did) and **Hide this strip**.
@@ -178,7 +178,7 @@ Make the preset visible state, and show what it hides without blocking the page 
 
 - The bottom menu's counter tab shows `N games hidden` / `N hidden by you` / `All games shown` (short, so it clears the dashboard selector, which already names Featured), and opens the filters drawer on tap.
 - The mobile Filters button loses its count badge and ping.
-- The strip renders under the page title on one line, scrolling sideways, capped at 2 chips.
+- The strip renders under the page title on one line, capped at 1 chip so "+N more" stays visible. If a long name still overflows, it scrolls sideways and the right edge fades.
 
 ### Can't-find card
 

@@ -1,18 +1,38 @@
 "use client";
 
 import { useHasMounted } from "@react-hooks-library/core";
+import { useEffect, useState } from "react";
 
-import { SanityImage } from "@/components/SanityImage";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { getStripEntries, HiddenGame } from "@/lib/filters/filterState";
+import { cn } from "@/lib/utils";
 
 import { HiddenGamesPopover } from "./HiddenGamesPopover";
 
 const useChipCap = () => {
     const { isXl } = useBreakpoint("xl");
     const { is2xl } = useBreakpoint("2xl");
-    return is2xl ? 4 : isXl ? 3 : 2;
+    const { isLg } = useBreakpoint("lg");
+    return is2xl ? 4 : isXl ? 3 : isLg ? 2 : 1;
+};
+
+// True while the row has content scrolled out past its right edge
+const useOverflowsRight = (el: HTMLElement | null) => {
+    const [overflows, setOverflows] = useState(false);
+    useEffect(() => {
+        if (!el) return;
+        const update = () => setOverflows(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+        update();
+        const observer = new ResizeObserver(update);
+        observer.observe(el);
+        el.addEventListener("scroll", update, { passive: true });
+        return () => {
+            observer.disconnect();
+            el.removeEventListener("scroll", update);
+        };
+    }, [el]);
+    return overflows;
 };
 
 export const HiddenGamesStrip = ({
@@ -25,6 +45,8 @@ export const HiddenGamesStrip = ({
     const { hiddenGamesSummary, isHiddenStripEnabled, setHiddenStripEnabled } =
         useGameFilterContext();
     const cap = useChipCap();
+    const [row, setRow] = useState<HTMLDivElement | null>(null);
+    const overflowsRight = useOverflowsRight(row);
     // Breakpoints, stored filters and the strip switch are only known in the browser
     const hasMounted = useHasMounted();
 
@@ -41,7 +63,15 @@ export const HiddenGamesStrip = ({
     const hideStrip = () => setHiddenStripEnabled(false);
 
     return (
-        <div className="text-muted-foreground flex min-w-0 scrollbar-none flex-nowrap items-center gap-2 overflow-x-auto text-xs whitespace-nowrap lg:justify-end lg:overflow-visible">
+        <div
+            ref={setRow}
+            className={cn(
+                "text-muted-foreground flex min-w-0 scrollbar-none flex-nowrap items-center justify-between gap-2 overflow-x-auto text-xs whitespace-nowrap lg:justify-end lg:overflow-visible",
+                overflowsRight &&
+                    "[mask-image:linear-gradient(to_right,black_85%,transparent)] lg:[mask-image:none]",
+            )}
+        >
+            {chips.length > 0 && <span className="shrink-0">Filtered out:</span>}
             {chips.map((entry) => (
                 <HiddenGamesPopover
                     key={entry.game.slug}
@@ -50,7 +80,7 @@ export const HiddenGamesStrip = ({
                     eventProps={{ entry: "chip", game: entry.game.slug }}
                     onHideStrip={hideStrip}
                     onPeek={onPeek}
-                    triggerClassName="group hover:border-foreground/40 hover:text-foreground flex shrink-0 items-center gap-2 rounded-full border py-0.5 pr-2.5 pl-0.5"
+                    triggerClassName="group hover:bg-accent/50 hover:text-accent-foreground flex shrink-0 items-center gap-2 rounded-full border px-2.5 py-0.5 transition-[color,box-shadow]"
                     trigger={<StripChip entry={entry} />}
                 />
             ))}
@@ -61,7 +91,7 @@ export const HiddenGamesStrip = ({
                     eventProps={{ entry: chips.length > 0 ? "more" : "all", count: more.length }}
                     onHideStrip={hideStrip}
                     onPeek={onPeek}
-                    triggerClassName="hover:text-foreground shrink-0 underline-offset-2 hover:underline"
+                    triggerClassName="hover:bg-accent/50 hover:text-accent-foreground shrink-0 rounded-full border border-transparent px-1.5 py-0.5 transition-[color,box-shadow]"
                     trigger={moreLabel}
                 />
             )}
@@ -71,12 +101,7 @@ export const HiddenGamesStrip = ({
 
 const StripChip = ({ entry: { game, startsInDays, confirmed } }: { entry: HiddenGame }) => (
     <>
-        <span className="bg-background relative block h-6 w-6 shrink-0 rounded-full border opacity-70 grayscale transition group-hover:opacity-100 group-hover:grayscale-0">
-            {game.logo && (
-                <SanityImage src={game.logo} alt="" fill objectFit="contain" className="p-px" />
-            )}
-        </span>
-        <span className="text-foreground/80">{game.shortName || game.name}</span>
+        <span className="text-foreground/80 group-hover:text-accent-foreground">{game.name}</span>
         <span className="opacity-70">
             in {!confirmed && "~"}
             {startsInDays}d

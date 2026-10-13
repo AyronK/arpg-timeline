@@ -14,8 +14,6 @@ import { Button } from "@/ui/Button";
 
 const GAP = 6;
 const VIEWPORT_MARGIN = 8;
-const HOVER_OPEN_DELAY_MS = 150;
-const HOVER_CLOSE_DELAY_MS = 200;
 
 type HiddenGamesPopoverProps = {
     title: string;
@@ -42,51 +40,14 @@ export const HiddenGamesPopover = ({
     const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
-    const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-    // A click right after a hover open keeps it open instead of toggling it shut
-    const openedByHover = useRef(false);
 
-    const clearHoverTimer = () => {
-        if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    };
+    const close = () => setOpen(false);
 
-    const show = () => {
-        clearHoverTimer();
-        if (open) return;
+    const handleClick = () => {
+        if (open) return close();
         setPos(null);
         setOpen(true);
         sa_event("hidden_marker_opened", eventProps);
-    };
-
-    const close = () => {
-        clearHoverTimer();
-        setOpen(false);
-    };
-
-    const scheduleOpen = (e: React.PointerEvent) => {
-        if (e.pointerType !== "mouse") return;
-        clearHoverTimer();
-        hoverTimer.current = setTimeout(() => {
-            openedByHover.current = true;
-            show();
-        }, HOVER_OPEN_DELAY_MS);
-    };
-
-    const scheduleClose = (e: React.PointerEvent) => {
-        if (e.pointerType !== "mouse") return;
-        clearHoverTimer();
-        hoverTimer.current = setTimeout(() => setOpen(false), HOVER_CLOSE_DELAY_MS);
-    };
-
-    const handleClick = () => {
-        if (!open) {
-            openedByHover.current = false;
-            show();
-        } else if (openedByHover.current) {
-            openedByHover.current = false;
-        } else {
-            close();
-        }
     };
 
     // Below the trigger, flipped above when it would overflow, clamped to the viewport
@@ -127,8 +88,6 @@ export const HiddenGamesPopover = ({
         };
     }, [open]);
 
-    useEffect(() => clearHoverTimer, []);
-
     return (
         <>
             <button
@@ -137,8 +96,6 @@ export const HiddenGamesPopover = ({
                 aria-expanded={open}
                 aria-haspopup="dialog"
                 className={cn("cursor-pointer", triggerClassName)}
-                onPointerEnter={scheduleOpen}
-                onPointerLeave={scheduleClose}
                 onClick={handleClick}
             >
                 {trigger}
@@ -150,8 +107,6 @@ export const HiddenGamesPopover = ({
                         role="dialog"
                         aria-label={title}
                         style={pos ?? { top: 0, left: 0, visibility: "hidden" }}
-                        onPointerEnter={clearHoverTimer}
-                        onPointerLeave={scheduleClose}
                         className="bg-popover text-popover-foreground fixed z-[90] flex w-72 max-w-[calc(100vw-1rem)] flex-col gap-2 rounded-md border p-3 text-sm shadow-lg"
                     >
                         <div className="text-muted-foreground flex items-center gap-1.5 text-xs">

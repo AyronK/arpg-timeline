@@ -5,9 +5,9 @@ Context: [SPEC](../SPEC.md) → Desktop header; Strip and popover. User stories 
 **What to build:** a one-line strip that shows hidden games about to start, plus a popover explaining each one.
 - **Desktop:** the strip sits in header row 1, where the old hint and count were.
 - **Mobile:** it sits under the page title, on one line that scrolls sideways.
-- **Chips:** each shows a 24px logo, the short name, and `in Nd`, with `~` before estimated dates. Capped at lg 2 / xl 3 / 2xl+ 4 / mobile 2.
+- **Chips:** after a muted `Filtered out:` label, each shows the full game name and `in Nd`, with no logo, with `~` before estimated dates. Capped at lg 2 / xl 3 / 2xl+ 4 / mobile 1 (right edge fades if it still overflows).
 - **After the chips:** "+N more". With nothing starting soon, the strip shows "N games hidden" instead.
-- **Popover:** tapping or hovering an entry lists each game with its logo, name, `Est.` or confirmed date and reason, plus **Edit filters** and **Hide this strip**.
+- **Popover:** tapping or clicking an entry lists each game with its logo, name, `Est.` or confirmed date and reason, plus **Edit filters** and **Hide this strip**.
 
 **Blocked by:** 03, 04.
 
@@ -16,7 +16,7 @@ Context: [SPEC](../SPEC.md) → Desktop header; Strip and popover. User stories 
 - [x] The strip reads `startingSoon` and `others` from the summary. Caps are presentation only, and chips past the cap fold into "+N more".
 - [x] The strip is not rendered when `hiddenCount` is 0 or on non-Featured tabs.
 - [x] Popover behaviour:
-  - Opens on tap/click and on mouse hover.
+  - Opens on tap/click only (README decision 25).
   - Closes on outside tap and on scroll.
   - Is rendered outside the grid so it's never clipped.
   - Stays within the viewport.
