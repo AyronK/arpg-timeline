@@ -14,7 +14,7 @@ The labels come from `getHiddenGamesSummary`, exposed through the filter context
 
 **Blocked by:** 02.
 
-**Status:** ready-for-agent
+**Status:** done (`f4e3f87`); the manual desktop check below is pending a human.
 
 - [x] The filter-state module exports `getHiddenGamesSummary({ games, excludedSlugs, isPreset, now })` with this shape (refined from the prototype):
 
