@@ -2,12 +2,15 @@
 import { useHasMounted } from "@react-hooks-library/core";
 import { Filter } from "lucide-react";
 import { SanityImageAssetDocument } from "next-sanity";
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
+import {
+    getPresetControlLabel,
+    HiddenGamesSummary,
+    PresetControlLabel,
+} from "@/lib/filters/filterState";
 import { sa_event } from "@/lib/sa_event";
-import { getFilterPingSeen, setFilterPingSeen } from "@/lib/storage/filterOnboardingStorage";
-import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import {
@@ -42,34 +45,34 @@ export const FiltersDialog = ({
     onCheckedChange,
     onGroupCheckedChange,
     disabled = false,
-}: FiltersDialogProps) => {
+    hiddenGamesSummary,
+    open,
+    onOpenChange,
+}: FiltersDialogProps & {
+    hiddenGamesSummary: HiddenGamesSummary | null;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}) => {
     const isMounted = useHasMounted();
-    const [pingSeen, setPingSeen] = useState(
-        () => getStoredFilters() !== null || getFilterPingSeen(),
-    );
-
-    const hiddenCount = filters.length - checked.length;
-    const showIndicator = hiddenCount > 0;
-
-    const handleOpenChange = (open: boolean) => {
-        if (open && !pingSeen) {
-            setFilterPingSeen();
-            setPingSeen(true);
-        }
-    };
 
     if (!isMounted) {
-        return <Trigger showIndicator={showIndicator} hiddenCount={hiddenCount} />;
+        return <Trigger label={null} />;
     }
 
+    const label =
+        hiddenGamesSummary && !disabled ? getPresetControlLabel(hiddenGamesSummary) : null;
+
     return (
-        <Dialog onOpenChange={handleOpenChange}>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
                 <Trigger
-                    showIndicator={showIndicator && !disabled}
-                    hiddenCount={hiddenCount}
-                    showPing={showIndicator && !disabled && !pingSeen}
+                    label={label}
                     disabled={disabled}
+                    onClick={() => {
+                        if (hiddenGamesSummary) {
+                            sa_event("preset_chip_clicked", { state: hiddenGamesSummary.state });
+                        }
+                    }}
                 />
             </DialogTrigger>
             <DialogContent className="max-h-[80vh] w-full max-w-7xl!">
@@ -92,40 +95,34 @@ export const FiltersDialog = ({
 const Trigger = forwardRef<
     HTMLButtonElement,
     React.ComponentPropsWithoutRef<typeof Button> & {
-        showIndicator?: boolean;
-        hiddenCount?: number;
-        showPing?: boolean;
+        label: PresetControlLabel | null;
         disabled?: boolean;
     }
->(({ showIndicator, hiddenCount, showPing, disabled = false, ...rest }, ref) => {
-    const hasMounted = useHasMounted();
-    return (
-        <Button
-            {...rest}
-            ref={ref}
-            variant="default"
-            size={"sm"}
-            disabled={disabled}
-            onMouseDown={() => {
-                sa_event("filters_opened");
-            }}
-            className="relative inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
-        >
-            <Filter className="h-4 w-4" />
-            <span className="text-center leading-0 font-medium whitespace-nowrap">Filters</span>
-            {hasMounted && showIndicator && (
-                <div className="absolute -top-2 -right-2">
-                    {showPing && (
-                        <div className="absolute inset-0 animate-ping rounded-full bg-yellow-600/50" />
-                    )}
-                    <div className="relative flex h-4 min-w-4 items-center justify-center rounded-full bg-yellow-600 px-1 text-[10px] leading-none font-semibold text-black">
-                        {hiddenCount}
-                    </div>
-                </div>
+>(({ label, disabled = false, ...rest }, ref) => (
+    <Button
+        {...rest}
+        ref={ref}
+        variant="default"
+        size={"sm"}
+        disabled={disabled}
+        onMouseDown={() => {
+            sa_event("filters_opened");
+        }}
+        className="relative inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
+    >
+        <Filter className="h-4 w-4" />
+        <span className="text-center leading-0 font-medium whitespace-nowrap">
+            {label ? (
+                <>
+                    <span className="xl:hidden">{label.short}</span>
+                    <span className="hidden xl:inline">{label.full}</span>
+                </>
+            ) : (
+                "Filters"
             )}
-        </Button>
-    );
-});
+        </span>
+    </Button>
+));
 
 Trigger.displayName = "Trigger";
 

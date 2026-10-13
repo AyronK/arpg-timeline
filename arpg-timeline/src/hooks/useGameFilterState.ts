@@ -6,6 +6,8 @@ import { getUrlExcludesToPersist, resolveExcludedSlugs } from "@/lib/filters/fil
 import { getStoredFilters, setStoredFilters } from "@/lib/storage/gameFiltersStorage";
 import { getUrlFilters, updateUrlFilters } from "@/lib/url/gameFiltersUrl";
 
+const hasNoFeaturedRecord = () => getStoredFilters()?.category !== "featured";
+
 export const useGameFilterState = (
     games: Game[],
     category: GameFilterCategory,
@@ -24,6 +26,7 @@ export const useGameFilterState = (
     }, [category, games, searchParams]);
 
     const [excludedSlugs, setExcludedSlugs] = useState<string[]>(initializeFilters);
+    const [isPreset, setIsPreset] = useState(hasNoFeaturedRecord);
 
     const prevCategoryRef = useRef(category);
     const prevSearchParamsRef = useRef(searchParams);
@@ -38,6 +41,7 @@ export const useGameFilterState = (
             const newFilters = initializeFilters();
             startTransition(() => {
                 setExcludedSlugs(newFilters);
+                setIsPreset(hasNoFeaturedRecord());
                 setIsInitialized(true);
             });
             isInitializedRef.current = true;
@@ -51,6 +55,7 @@ export const useGameFilterState = (
             if (category !== "featured") return;
 
             setExcludedSlugs(newExcludedSlugs);
+            setIsPreset(false);
             setStoredFilters({ excludedSlugs: newExcludedSlugs, category: "featured" });
             updateUrlFilters(newExcludedSlugs);
         },
@@ -95,6 +100,7 @@ export const useGameFilterState = (
 
     return {
         excludedSlugs,
+        isPreset,
         isInitialized,
         toggleGameFilter,
         toggleGroupFilter,

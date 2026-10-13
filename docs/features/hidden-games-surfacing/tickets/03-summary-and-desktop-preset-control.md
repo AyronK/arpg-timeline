@@ -16,7 +16,7 @@ The labels come from `getHiddenGamesSummary`, exposed through the filter context
 
 **Status:** ready-for-agent
 
-- [ ] The filter-state module exports `getHiddenGamesSummary({ games, excludedSlugs, isPreset, now })` with this shape (refined from the prototype):
+- [x] The filter-state module exports `getHiddenGamesSummary({ games, excludedSlugs, isPreset, now })` with this shape (refined from the prototype):
 
   ```ts
   type HiddenReason = "Dormant" | "Community" | "No confirmed season" | "Hidden by your filters";
@@ -30,13 +30,13 @@ The labels come from `getHiddenGamesSummary`, exposed through the filter context
   };
   ```
 
-- [ ] The summary follows these rules:
+- [x] The summary follows these rules:
   - Reasons are checked in order: Dormant, then Community, then No confirmed season, else Hidden by your filters.
   - Dormant games are never in `startingSoon`.
   - `others` = `hidden` minus `startingSoon`.
   - `state`: `preset` when there's no stored Featured record, `all-shown` when nothing is excluded, otherwise `custom`.
   - The 30-day window is a named constant.
-- [ ] Unit tests cover:
+- [x] Unit tests cover:
   - each `state` value
   - the reason order
   - the 30-day boundary (day 30 included, day 31 and past dates excluded)
@@ -44,9 +44,9 @@ The labels come from `getHiddenGamesSummary`, exposed through the filter context
   - dormant games excluded from `startingSoon`
   - the complement rule
   - `confirmed` and `startsInDays` values
-- [ ] The filter context exposes the summary.
-- [ ] The desktop Filters button shows the labels above, switching to the shortened form at the `lg` breakpoint.
-- [ ] Removed: the yellow count badge, its ping, the "N of M games shown" display and the wide-screen "Some games are hidden by default" hint.
-- [ ] The Filters dialog can be opened from code, so ticket 05 can open it.
-- [ ] Clicking the control fires `preset_chip_clicked` via `sa_event`. The existing `filters_opened` event still fires.
+- [x] The filter context exposes the summary.
+- [x] The desktop Filters button shows the labels above, switching to the shortened form at the `lg` breakpoint.
+- [x] Removed: the yellow count badge, its ping, the "N of M games shown" display and the wide-screen "Some games are hidden by default" hint.
+- [x] The Filters dialog can be opened from code, so ticket 05 can open it.
+- [x] Clicking the control fires `preset_chip_clicked` via `sa_event`. The existing `filters_opened` event still fires.
 - [ ] Manual check on desktop: all three label states, and the `lg` shortened form.

@@ -1,6 +1,5 @@
 "use client";
 
-import { Filter } from "lucide-react";
 import { useState } from "react";
 
 import { GameFilters } from "@/components/GameFilters";
@@ -9,14 +8,11 @@ import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useGameCategories } from "@/hooks/useGameCategories";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
-import { getFilterHintDismissed } from "@/lib/storage/filterOnboardingStorage";
-import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
 import { cn } from "@/lib/utils";
 
 import { CantFindGame } from "./CantFindGame";
 import { DashboardSelector } from "./DashboardSelector";
 import { Events } from "./Events";
-import { GameCountDisplay } from "./GameCountDisplay";
 import { Games } from "./Games";
 import { MobileBottomMenu } from "./MobileBottomMenu";
 
@@ -26,7 +22,6 @@ export const GamesAndEventsGrid = ({
     statistics: Record<string, GameStatistics>;
 }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [hintDismissed] = useState(() => getStoredFilters() !== null || getFilterHintDismissed());
     const { filteredGames, totalGames, shownGames, category, ...filtersProps } =
         useGameFilterContext();
     const events = useTimelineEvents(filteredGames);
@@ -50,21 +45,6 @@ export const GamesAndEventsGrid = ({
                         <h1 className="font-heading text-foreground sm:text-md text-base leading-4 text-pretty">
                             The most complete aRPG season tracker
                         </h1>
-                        <div className="hidden flex-row items-end gap-1 lg:flex">
-                            {category === "featured" && !hintDismissed && (
-                                <p className="text-warning/70 flex hidden items-center gap-1.5 text-center text-xs xl:flex">
-                                    <Filter className="h-4 w-4 shrink-0 opacity-60" />
-                                    <span>
-                                        Some games are hidden by default - use{" "}
-                                        <span className="text-warning tracking-[0.11rem]">
-                                            &quot;Filters&quot;
-                                        </span>{" "}
-                                        to customize your view -
-                                    </span>
-                                </p>
-                            )}
-                            <GameCountDisplay shownGames={shownGames} totalGames={totalGames} />
-                        </div>
                     </div>
                     <div className="hidden lg:flex lg:flex-row lg:items-end lg:gap-4">
                         <DashboardSelector
@@ -107,9 +87,6 @@ export const GamesAndEventsGridFallback = ({ games }: { games: Game[] }) => {
                 <h1 className="font-heading text-foreground text-base text-pretty sm:text-lg">
                     The most complete aRPG season tracker
                 </h1>
-                <div className="hidden lg:block">
-                    <GameCountDisplay shownGames={games.length} totalGames={games.length} />
-                </div>
             </div>
             <div>
                 <Games games={games} />

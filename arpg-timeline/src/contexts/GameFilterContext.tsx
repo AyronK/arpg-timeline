@@ -20,6 +20,7 @@ import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
+import { getHiddenGamesSummary, HiddenGamesSummary } from "@/lib/filters/filterState";
 
 interface GameFilterContextType {
     gameFilters: {
@@ -37,6 +38,10 @@ interface GameFilterContextType {
     totalGames: number;
     shownGames: number;
     category: GameFilterCategory;
+    // Null off Featured and while loading, where nothing is hidden
+    hiddenGamesSummary: HiddenGamesSummary | null;
+    isFiltersOpen: boolean;
+    setFiltersOpen: (open: boolean) => void;
 }
 
 const GameFilterContext = createContext<GameFilterContextType | undefined>(undefined);
@@ -109,6 +114,9 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
                             totalGames: games.length,
                             shownGames: games.length,
                             category,
+                            hiddenGamesSummary: null,
+                            isFiltersOpen: false,
+                            setFiltersOpen: () => {},
                         }}
                     >
                         {children}
@@ -133,8 +141,10 @@ type UnsafeGameFilterProviderProps = Omit<
 const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilterProviderProps) => {
     const searchParams = useSearchParams();
 
-    const { excludedSlugs, toggleGameFilter, toggleGroupFilter, updateFilters } =
+    const { excludedSlugs, isPreset, toggleGameFilter, toggleGroupFilter, updateFilters } =
         useGameFilterState(games, category, searchParams);
+    const [isFiltersOpen, setFiltersOpen] = useState(false);
+    const [now] = useState(Date.now);
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {
@@ -147,6 +157,14 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         return games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
     }, [games, excludedSlugs]);
 
+    const hiddenGamesSummary = useMemo(
+        () =>
+            category === "featured"
+                ? getHiddenGamesSummary({ games, excludedSlugs, isPreset, now })
+                : null,
+        [category, games, excludedSlugs, isPreset, now],
+    );
+
     const value = useMemo<GameFilterContextType>(
         () => ({
             gameFilters,
@@ -158,8 +176,13 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
             shownGames: filteredGames.length,
             totalGames: games.length,
             category,
+            hiddenGamesSummary,
+            isFiltersOpen,
+            setFiltersOpen,
         }),
         [
+            hiddenGamesSummary,
+            isFiltersOpen,
             gameFilters,
             toggleGameFilter,
             toggleGroupFilter,
