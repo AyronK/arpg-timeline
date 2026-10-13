@@ -2,78 +2,36 @@ import { startTransition, useCallback, useEffect, useRef, useState } from "react
 
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
+import { getUrlExcludesToPersist, resolveExcludedSlugs } from "@/lib/filters/filterState";
+import { sa_event } from "@/lib/sa_event";
 import {
-    GameFiltersStorage,
+    clearStoredFilters,
     getStoredFilters,
     setStoredFilters,
 } from "@/lib/storage/gameFiltersStorage";
 import { getUrlFilters, updateUrlFilters } from "@/lib/url/gameFiltersUrl";
+
+const hasNoFeaturedRecord = () => getStoredFilters()?.category !== "featured";
 
 export const useGameFilterState = (
     games: Game[],
     category: GameFilterCategory,
     searchParams: URLSearchParams,
 ) => {
-    const getDefaultExcludedSlugs = useCallback(() => {
-        if (category === "featured") {
-            return games
-                .filter(
-                    (g) =>
-                        g.isDormant ||
-                        g.categories?.includes("community") ||
-                        (!g.categories?.includes("seasonal") &&
-                            !g.categories?.includes("early-access") &&
-                            !g.nextSeason?.start?.confirmed),
-                )
-                .map((g) => g.slug!)
-                .filter(Boolean);
-        }
-        return [];
-    }, [category, games]);
-
     const initializeFilters = useCallback(() => {
         const stored = getStoredFilters();
-        const urlFilters = getUrlFilters(searchParams);
+        const urlExcludes = getUrlFilters(searchParams);
 
-        let initialFilters: string[];
-
-        if (stored && stored.category === category) {
-            initialFilters = stored.excludedSlugs;
-        } else if (urlFilters.length > 0) {
-            initialFilters = urlFilters;
-            const storageData: GameFiltersStorage = {
-                excludedSlugs: urlFilters,
-                category,
-            };
-            setStoredFilters(storageData);
-        } else {
-            initialFilters = getDefaultExcludedSlugs();
+        const toPersist = getUrlExcludesToPersist({ category, stored, urlExcludes });
+        if (toPersist) {
+            setStoredFilters({ excludedSlugs: toPersist, category: "featured" });
         }
 
-        return initialFilters;
-    }, [category, searchParams, getDefaultExcludedSlugs]);
+        return resolveExcludedSlugs({ category, games, stored, urlExcludes });
+    }, [category, games, searchParams]);
 
-    const [excludedSlugs, setExcludedSlugs] = useState<string[]>(() => {
-        const stored = getStoredFilters();
-        const urlFilters = getUrlFilters(searchParams);
-
-        let initialFilters: string[];
-
-        if (stored && stored.category === category) {
-            initialFilters = stored.excludedSlugs;
-        } else if (urlFilters.length > 0) {
-            initialFilters = urlFilters;
-            const storageData: GameFiltersStorage = {
-                excludedSlugs: urlFilters,
-                category,
-            };
-            setStoredFilters(storageData);
-        } else {
-            initialFilters = getDefaultExcludedSlugs();
-        }
-
-        return initialFilters;
-    });
+    const [excludedSlugs, setExcludedSlugs] = useState<string[]>(initializeFilters);
+    const [isPreset, setIsPreset] = useState(hasNoFeaturedRecord);
 
     const prevCategoryRef = useRef(category);
     const prevSearchParamsRef = useRef(searchParams);
@@ -88,6 +46,7 @@ export const useGameFilterState = (
             const newFilters = initializeFilters();
             startTransition(() => {
                 setExcludedSlugs(newFilters);
+                setIsPreset(hasNoFeaturedRecord());
                 setIsInitialized(true);
             });
             isInitializedRef.current = true;
@@ -98,18 +57,25 @@ export const useGameFilterState = (
 
     const updateFilters = useCallback(
         (newExcludedSlugs: string[]) => {
+            if (category !== "featured") return;
+
             setExcludedSlugs(newExcludedSlugs);
-
-            const storageData: GameFiltersStorage = {
-                excludedSlugs: newExcludedSlugs,
-                category,
-            };
-
-            setStoredFilters(storageData);
+            setIsPreset(false);
+            setStoredFilters({ excludedSlugs: newExcludedSlugs, category: "featured" });
             updateUrlFilters(newExcludedSlugs);
         },
         [category],
     );
+
+    const resetToPreset = useCallback(() => {
+        if (category !== "featured") return;
+
+        clearStoredFilters();
+        if (getUrlFilters(searchParams).length > 0) updateUrlFilters([]);
+        setExcludedSlugs(resolveExcludedSlugs({ category, games, stored: null, urlExcludes: [] }));
+        setIsPreset(true);
+        sa_event("filters_reset_to_featured");
+    }, [category, games, searchParams]);
 
     const toggleGameFilter = useCallback(
         (slug: string, value: boolean) => {
@@ -149,10 +115,11 @@ export const useGameFilterState = (
 
     return {
         excludedSlugs,
+        isPreset,
         isInitialized,
         toggleGameFilter,
         toggleGroupFilter,
         updateFilters,
-        defaultExcludedSlugs: getDefaultExcludedSlugs(),
+        resetToPreset,
     };
 };

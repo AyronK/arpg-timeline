@@ -12,10 +12,14 @@ import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { useGameFilterContext, useTimeBasedKey } from "@/contexts/GameFilterContext";
 import { parseGameStreamsFromSanity } from "@/lib/cms/parseGameStreamsFromSanity";
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
+import { HOUR } from "@/lib/date";
 import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/ui/Carousel";
 
 import { BuyMeACoffee } from "./BuyMeACoffee";
 import ClientOnlyVisibleWrapper from "./ClientOnlyVisibleWrapper";
+
+// Streams stay listed for 2 hours after their start
+const isRecentStream = (date: string) => new Date(date).getTime() > Date.now() - 2 * HOUR;
 
 const StreamCarouselSlides = memo(function StreamCarouselSlides({
     streams,
@@ -84,7 +88,7 @@ export const TopCarousel = ({ games }: { games: SanityGame[] }) => {
             (s) =>
                 filteredGames.find((g) => g.slug === s.gameSlug) &&
                 s.date &&
-                new Date(s.date).getTime() > Date.now() - 2 * 60 * 60 * 1000,
+                isRecentStream(s.date),
         );
     }, [filteredGames, parsedStreams]);
 

@@ -9,12 +9,20 @@ export type DashboardOption = GameFilterCategory | "news";
 export const DashboardConfig: Partial<
     Record<
         DashboardOption,
-        { description: string; tooltip: string; icon: React.ComponentType<{ className?: string }> }
+        {
+            description: string;
+            tooltip: string;
+            // One-line subtitle in the mobile selector; falls back to tooltip
+            shortTooltip?: string;
+            icon: React.ComponentType<{ className?: string }>;
+        }
     >
 > = {
     featured: {
         description: "Featured",
-        tooltip: "Default set is shown until you customize the filters",
+        tooltip:
+            "A curated set: hides community projects and games with no recent updates or confirmed season. Change it in Filters.",
+        shortTooltip: "Curated set of actively updated games",
         icon: LogoIcon,
     },
     "early-access": {

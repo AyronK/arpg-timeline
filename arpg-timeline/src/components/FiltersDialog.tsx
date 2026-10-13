@@ -1,13 +1,12 @@
 "use client";
 import { useHasMounted } from "@react-hooks-library/core";
-import { Filter } from "lucide-react";
+import { Filter, RotateCcw } from "lucide-react";
 import { SanityImageAssetDocument } from "next-sanity";
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
-import { sa_event } from "@/lib/sa_event";
-import { getFilterPingSeen, setFilterPingSeen } from "@/lib/storage/filterOnboardingStorage";
-import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
+import { useGameFilterContext } from "@/contexts/GameFilterContext";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import {
@@ -42,41 +41,30 @@ export const FiltersDialog = ({
     onCheckedChange,
     onGroupCheckedChange,
     disabled = false,
-}: FiltersDialogProps) => {
+    open,
+    onOpenChange,
+}: FiltersDialogProps & {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}) => {
     const isMounted = useHasMounted();
-    const [pingSeen, setPingSeen] = useState(
-        () => getStoredFilters() !== null || getFilterPingSeen(),
-    );
-
-    const hiddenCount = filters.length - checked.length;
-    const showIndicator = hiddenCount > 0;
-
-    const handleOpenChange = (open: boolean) => {
-        if (open && !pingSeen) {
-            setFilterPingSeen();
-            setPingSeen(true);
-        }
-    };
+    const { isLg } = useBreakpoint("lg");
 
     if (!isMounted) {
-        return <Trigger showIndicator={showIndicator} hiddenCount={hiddenCount} />;
+        return <Trigger />;
     }
 
     return (
-        <Dialog onOpenChange={handleOpenChange}>
+        <Dialog open={open && isLg} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
-                <Trigger
-                    showIndicator={showIndicator && !disabled}
-                    hiddenCount={hiddenCount}
-                    showPing={showIndicator && !disabled && !pingSeen}
-                    disabled={disabled}
-                />
+                <Trigger disabled={disabled} />
             </DialogTrigger>
             <DialogContent className="max-h-[80vh] w-full max-w-7xl!">
                 <DialogDescription className="sr-only">Filters dialog</DialogDescription>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
+                <FilterPresetControls />
                 <Filters
                     checked={checked}
                     filters={filters}
@@ -92,42 +80,48 @@ export const FiltersDialog = ({
 const Trigger = forwardRef<
     HTMLButtonElement,
     React.ComponentPropsWithoutRef<typeof Button> & {
-        showIndicator?: boolean;
-        hiddenCount?: number;
-        showPing?: boolean;
         disabled?: boolean;
     }
->(({ showIndicator, hiddenCount, showPing, disabled = false, ...rest }, ref) => {
-    const hasMounted = useHasMounted();
-    return (
-        <Button
-            {...rest}
-            ref={ref}
-            variant="default"
-            size={"sm"}
-            disabled={disabled}
-            onMouseDown={() => {
-                sa_event("filters_opened");
-            }}
-            className="relative inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
-        >
-            <Filter className="h-4 w-4" />
-            <span className="text-center leading-0 font-medium whitespace-nowrap">Filters</span>
-            {hasMounted && showIndicator && (
-                <div className="absolute -top-2 -right-2">
-                    {showPing && (
-                        <div className="absolute inset-0 animate-ping rounded-full bg-yellow-600/50" />
-                    )}
-                    <div className="relative flex h-4 min-w-4 items-center justify-center rounded-full bg-yellow-600 px-1 text-[10px] leading-none font-semibold text-black">
-                        {hiddenCount}
-                    </div>
-                </div>
-            )}
-        </Button>
-    );
-});
+>(({ disabled = false, ...rest }, ref) => (
+    <Button
+        {...rest}
+        ref={ref}
+        variant="default"
+        size={"sm"}
+        disabled={disabled}
+        className="relative inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
+    >
+        <Filter className="h-4 w-4" />
+        <span className="text-center leading-0 font-medium whitespace-nowrap">Filters</span>
+    </Button>
+));
 
 Trigger.displayName = "Trigger";
+
+export const FilterPresetControls = () => {
+    const { hiddenGamesSummary, resetToPreset, isHiddenStripEnabled, setHiddenStripEnabled } =
+        useGameFilterContext();
+    // Preset controls only exist on Featured
+    if (!hiddenGamesSummary) return null;
+
+    return (
+        <div className="border-border mb-6 flex flex-wrap items-center justify-between gap-3 border-b px-6 pb-4 lg:px-0">
+            <label className="flex cursor-pointer items-center gap-2 text-sm">
+                <Switch checked={isHiddenStripEnabled} onCheckedChange={setHiddenStripEnabled} />
+                Show filtered-out games starting soon
+            </label>
+            <Button
+                variant="ghost"
+                size="sm"
+                disabled={hiddenGamesSummary.state === "preset"}
+                onClick={resetToPreset}
+            >
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Reset to Featured preset
+            </Button>
+        </div>
+    );
+};
 
 export const Filters = ({
     filters,

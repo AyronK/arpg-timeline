@@ -163,7 +163,7 @@ const AppLink = ({
 );
 
 // webcal:// only has a reliable handler on Apple devices
-const noopSubscribe = () => () => { };
+const noopSubscribe = () => () => {};
 const getIsApple = () => /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
 
 export const CalendarAppButtons = ({
@@ -247,7 +247,7 @@ const SubscribeContent = ({
             <CalendarAppButtons url={url} calendarName={calendarName} game={gameSlug ?? "all"} />
 
             <div className="flex min-w-0 flex-col gap-3 overflow-hidden">
-                <p className="text-muted-foreground text-xs text-center text-pretty">
+                <p className="text-muted-foreground text-center text-xs text-pretty">
                     Other apps: copy the link and add it as a subscription (&quot;From URL&quot;).
                 </p>
                 <CopyableRow url={url} label={gameName ?? "All games"} compact={compact} />

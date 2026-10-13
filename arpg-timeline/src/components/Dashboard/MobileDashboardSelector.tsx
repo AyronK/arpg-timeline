@@ -51,7 +51,7 @@ export const MobileDashboardSelector = ({
                                                 { "text-primary-foreground/75": isActive },
                                             )}
                                         >
-                                            {config.tooltip}
+                                            {config.shortTooltip ?? config.tooltip}
                                         </span>
                                     </div>
                                 </div>

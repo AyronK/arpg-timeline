@@ -6,6 +6,7 @@ import {
     createContext,
     ReactNode,
     Suspense,
+    useCallback,
     useContext,
     useEffect,
     useMemo,
@@ -20,6 +21,12 @@ import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
 import { SanityGame } from "@/lib/cms/queries/indexQuery";
+import { getHiddenGamesSummary, HiddenGamesSummary } from "@/lib/filters/filterState";
+import { sa_event } from "@/lib/sa_event";
+import {
+    getStoredHiddenStripEnabled,
+    setStoredHiddenStripEnabled,
+} from "@/lib/storage/filterOnboardingStorage";
 
 interface GameFilterContextType {
     gameFilters: {
@@ -37,6 +44,13 @@ interface GameFilterContextType {
     totalGames: number;
     shownGames: number;
     category: GameFilterCategory;
+    // Null off Featured and while loading, where nothing is hidden
+    hiddenGamesSummary: HiddenGamesSummary | null;
+    isFiltersOpen: boolean;
+    setFiltersOpen: (open: boolean) => void;
+    resetToPreset: () => void;
+    isHiddenStripEnabled: boolean;
+    setHiddenStripEnabled: (enabled: boolean) => void;
 }
 
 const GameFilterContext = createContext<GameFilterContextType | undefined>(undefined);
@@ -109,6 +123,12 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
                             totalGames: games.length,
                             shownGames: games.length,
                             category,
+                            hiddenGamesSummary: null,
+                            isFiltersOpen: false,
+                            setFiltersOpen: () => {},
+                            resetToPreset: () => {},
+                            isHiddenStripEnabled: true,
+                            setHiddenStripEnabled: () => {},
                         }}
                     >
                         {children}
@@ -133,8 +153,33 @@ type UnsafeGameFilterProviderProps = Omit<
 const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilterProviderProps) => {
     const searchParams = useSearchParams();
 
-    const { excludedSlugs, toggleGameFilter, toggleGroupFilter, updateFilters } =
-        useGameFilterState(games, category, searchParams);
+    const {
+        excludedSlugs,
+        isPreset,
+        toggleGameFilter,
+        toggleGroupFilter,
+        updateFilters,
+        resetToPreset,
+    } = useGameFilterState(games, category, searchParams);
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+    // Every entry point opens Filters through here, so adoption counts include all of them
+    const setFiltersOpen = useCallback((open: boolean) => {
+        if (open) sa_event("filters_opened");
+        setIsFiltersOpen(open);
+    }, []);
+    const [isHiddenStripEnabled, setIsHiddenStripEnabled] = useState(getStoredHiddenStripEnabled);
+
+    const setHiddenStripEnabled = useCallback((enabled: boolean) => {
+        setIsHiddenStripEnabled(enabled);
+        setStoredHiddenStripEnabled(enabled);
+        if (!enabled) sa_event("hidden_markers_disabled");
+    }, []);
+    // Ticks so strip countdowns and just-started chips stay current
+    const [now, setNow] = useState(Date.now);
+    useEffect(() => {
+        const interval = setInterval(() => setNow(Date.now()), 60_000);
+        return () => clearInterval(interval);
+    }, []);
     const { gameFilters, getFilteredGames } = useGameFiltersData(games);
 
     const filteredGames = useMemo(() => {
@@ -147,6 +192,14 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         return games.map((g) => g!.slug!).filter((s) => !excludedSlugs.includes(s!));
     }, [games, excludedSlugs]);
 
+    const hiddenGamesSummary = useMemo(
+        () =>
+            category === "featured"
+                ? getHiddenGamesSummary({ games, excludedSlugs, isPreset, now })
+                : null,
+        [category, games, excludedSlugs, isPreset, now],
+    );
+
     const value = useMemo<GameFilterContextType>(
         () => ({
             gameFilters,
@@ -158,8 +211,20 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
             shownGames: filteredGames.length,
             totalGames: games.length,
             category,
+            hiddenGamesSummary,
+            isFiltersOpen,
+            setFiltersOpen,
+            resetToPreset,
+            isHiddenStripEnabled,
+            setHiddenStripEnabled,
         }),
         [
+            hiddenGamesSummary,
+            isFiltersOpen,
+            setFiltersOpen,
+            resetToPreset,
+            isHiddenStripEnabled,
+            setHiddenStripEnabled,
             gameFilters,
             toggleGameFilter,
             toggleGroupFilter,

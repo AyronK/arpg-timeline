@@ -17,6 +17,8 @@ export type GameFiltersProps = {
     toggleGroupFilter: (group: string, value: boolean) => void;
     activeFilters: string[];
     disabled?: boolean;
+    isFiltersOpen: boolean;
+    setFiltersOpen: (open: boolean) => void;
 };
 
 export const GameFilters = ({
@@ -25,6 +27,8 @@ export const GameFilters = ({
     toggleGameFilter,
     toggleGroupFilter,
     disabled = false,
+    isFiltersOpen,
+    setFiltersOpen,
 }: GameFiltersProps) => (
     <div className="">
         <ErrorBoundary fallback={<WidgetDiedFallback />}>
@@ -34,6 +38,8 @@ export const GameFilters = ({
                 onCheckedChange={toggleGameFilter}
                 onGroupCheckedChange={toggleGroupFilter}
                 disabled={disabled}
+                open={isFiltersOpen}
+                onOpenChange={setFiltersOpen}
             />
         </ErrorBoundary>
     </div>
