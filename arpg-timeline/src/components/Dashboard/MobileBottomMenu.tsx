@@ -1,4 +1,5 @@
 "use client";
+import { useHasMounted } from "@react-hooks-library/core";
 import { useEffect } from "react";
 
 import { GameFiltersProps } from "@/components/GameFilters";
@@ -28,7 +29,9 @@ export function MobileBottomMenu({
     isFiltersDisabled = false,
 }: MobileBottomMenuProps) {
     const { isLg } = useBreakpoint("lg");
-    const { hiddenGamesSummary, isFiltersOpen, setFiltersOpen } = filtersProps;
+    const { isFiltersOpen, setFiltersOpen } = filtersProps;
+    // Stored filters are only known in the browser
+    const hiddenGamesSummary = useHasMounted() ? filtersProps.hiddenGamesSummary : null;
     // The desktop dialog owns the shared open state at lg and up
     const isDrawerOpen = isFiltersOpen && !isLg;
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useHasMounted } from "@react-hooks-library/core";
+
 import { SanityImage } from "@/components/SanityImage";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
@@ -23,8 +25,15 @@ export const HiddenGamesStrip = ({
     const { hiddenGamesSummary, isHiddenStripEnabled, setHiddenStripEnabled } =
         useGameFilterContext();
     const cap = useChipCap();
+    // Breakpoints, stored filters and the strip switch are only known in the browser
+    const hasMounted = useHasMounted();
 
-    if (!hiddenGamesSummary || hiddenGamesSummary.hiddenCount === 0 || !isHiddenStripEnabled)
+    if (
+        !hasMounted ||
+        !hiddenGamesSummary ||
+        hiddenGamesSummary.hiddenCount === 0 ||
+        !isHiddenStripEnabled
+    )
         return null;
 
     const { chips, more, moreLabel } = getStripEntries(hiddenGamesSummary, cap, peekedSlugs);

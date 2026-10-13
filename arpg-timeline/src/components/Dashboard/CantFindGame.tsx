@@ -1,5 +1,6 @@
 "use client";
 
+import { useHasMounted } from "@react-hooks-library/core";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment, ReactNode } from "react";
@@ -20,7 +21,9 @@ export const CantFindGame = ({
     peekedSlugs?: string[];
     onPeek?: (slug: string) => void;
 }) => {
-    const { hiddenGamesSummary, category, setFiltersOpen } = useGameFilterContext();
+    const { hiddenGamesSummary: summary, category, setFiltersOpen } = useGameFilterContext();
+    // Stored filters are only known in the browser
+    const hiddenGamesSummary = useHasMounted() ? summary : null;
     const hasHidden = !!hiddenGamesSummary && hiddenGamesSummary.hiddenCount > 0;
     const hiddenLabel = hiddenGamesSummary ? getHiddenByFiltersLabel(hiddenGamesSummary) : "";
     const entries = (hiddenGamesSummary?.hidden ?? []).filter(
