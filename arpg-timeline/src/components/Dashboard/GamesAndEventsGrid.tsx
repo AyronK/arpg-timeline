@@ -5,7 +5,6 @@ import { useState } from "react";
 
 import { GameFilters } from "@/components/GameFilters";
 import { OnboardingModal } from "@/components/OnboardingModal";
-import { usePrototypeVariant } from "@/components/PrototypeSwitcher";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useGameCategories } from "@/hooks/useGameCategories";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
@@ -19,11 +18,6 @@ import { DashboardSelector } from "./DashboardSelector";
 import { Events } from "./Events";
 import { GameCountDisplay } from "./GameCountDisplay";
 import { Games } from "./Games";
-import {
-    HIDDEN_MARKER_VARIANTS,
-    HIDDEN_PROTOTYPE_HEADER_SLOT,
-    HiddenGamesPrototype,
-} from "./HiddenGamesPrototype";
 import { MobileBottomMenu } from "./MobileBottomMenu";
 
 export const GamesAndEventsGrid = ({
@@ -37,7 +31,6 @@ export const GamesAndEventsGrid = ({
         useGameFilterContext();
     const events = useTimelineEvents(filteredGames);
     const { allGames } = useGameCategories(filteredGames);
-    const prototypeVariant = usePrototypeVariant(HIDDEN_MARKER_VARIANTS);
 
     const handleLoadingChange = (loading: boolean) => {
         setIsLoading(loading);
@@ -81,7 +74,6 @@ export const GamesAndEventsGrid = ({
                         />
                         <GameFilters {...filtersProps} disabled={category === "all"} />
                     </div>
-                    {prototypeVariant && <div id={HIDDEN_PROTOTYPE_HEADER_SLOT} />}
                 </div>
                 <h2 className="sr-only">Seasons</h2>
                 <div
@@ -90,11 +82,7 @@ export const GamesAndEventsGrid = ({
                         { "opacity-0": isLoading },
                     )}
                 >
-                    {prototypeVariant ? (
-                        <HiddenGamesPrototype variant={prototypeVariant} statistics={statistics} />
-                    ) : (
-                        <Games games={allGames} statistics={statistics} />
-                    )}
+                    <Games games={allGames} statistics={statistics} />
                     <CantFindGame />
                     {filteredGames.length > 1 && <Events events={events} />}
                 </div>
