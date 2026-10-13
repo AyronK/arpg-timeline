@@ -41,7 +41,8 @@ export const GamesAndEventsGrid = ({
                         servers most trackers skip - every league start, content update, and
                         expansion counted down in one place.
                     </p>
-                    <div className="flex flex-col justify-between gap-2.5 lg:flex-row lg:gap-2">
+                    {/* Reserves the strip's chip height so the tabs don't shift on other tabs */}
+                    <div className="flex flex-col justify-between gap-2.5 lg:min-h-5.5 lg:flex-row lg:gap-2">
                         <h1 className="font-heading text-foreground sm:text-md text-base leading-4 text-pretty">
                             The most complete aRPG season tracker
                         </h1>

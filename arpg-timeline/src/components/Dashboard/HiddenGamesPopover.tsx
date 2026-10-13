@@ -111,7 +111,7 @@ export const HiddenGamesPopover = ({
                             {TITLE}
                         </div>
                         <HiddenGameRow entry={entry} />
-                        <div className="border-muted grid grid-cols-2 gap-3 border-t pt-2 text-center text-xs">
+                        <div className="border-foreground/10 grid grid-cols-2 gap-3 border-t pt-2 text-center text-xs">
                             <Link
                                 href={`/game/${entry.game.slug}`}
                                 className={footerActionClassName}
