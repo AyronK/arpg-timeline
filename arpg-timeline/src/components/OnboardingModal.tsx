@@ -13,8 +13,6 @@ import {
     getVisitCount,
     incrementVisitCount,
     ONBOARDING_VISIT_THRESHOLD,
-    setFilterHintDismissed,
-    setFilterPingSeen,
     setOnboardingSeen,
 } from "@/lib/storage/filterOnboardingStorage";
 import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
@@ -65,21 +63,14 @@ export const OnboardingModal = () => {
         return () => clearTimeout(timer);
     }, [isMounted, category]);
 
-    const dismissHints = () => {
-        setFilterHintDismissed();
-        setFilterPingSeen();
-    };
-
     const handleAllGames = () => {
         updateFilters([]);
-        dismissHints();
         setOnboardingSeen();
         setOpen(false);
         sa_event("onboarding_all_games");
     };
 
     const handleFeatured = () => {
-        dismissHints();
         setOnboardingSeen();
         setOpen(false);
         sa_event("onboarding_featured");
@@ -95,7 +86,6 @@ export const OnboardingModal = () => {
         const allSlugs = gameFilters.map((f) => f.value);
         const newExcluded = allSlugs.filter((s) => !localChecked.includes(s));
         updateFilters(newExcluded);
-        dismissHints();
         setOnboardingSeen();
         setOpen(false);
         sa_event("onboarding_customize_applied");

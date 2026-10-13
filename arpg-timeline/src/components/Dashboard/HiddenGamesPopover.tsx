@@ -1,6 +1,7 @@
 "use client";
 
 import { EyeOff } from "lucide-react";
+import Link from "next/link";
 import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -12,10 +13,13 @@ import { cn } from "@/lib/utils";
 
 const GAP = 6;
 const VIEWPORT_MARGIN = 8;
+const footerActionClassName =
+    "hover:text-foreground text-muted-foreground w-full cursor-pointer underline-offset-2 hover:underline";
+
+const TITLE = "Hidden by filters";
 
 type HiddenGamesPopoverProps = {
-    title: string;
-    entries: HiddenGame[];
+    entry: HiddenGame;
     trigger: ReactNode;
     triggerClassName?: string;
     // Sent with hidden_marker_opened
@@ -23,8 +27,7 @@ type HiddenGamesPopoverProps = {
 };
 
 export const HiddenGamesPopover = ({
-    title,
-    entries,
+    entry,
     trigger,
     triggerClassName,
     eventProps,
@@ -99,28 +102,34 @@ export const HiddenGamesPopover = ({
                     <div
                         ref={panelRef}
                         role="dialog"
-                        aria-label={title}
+                        aria-label={TITLE}
                         style={pos ?? { top: 0, left: 0, visibility: "hidden" }}
                         className="bg-popover text-popover-foreground fixed z-[90] flex w-max max-w-[min(18rem,calc(100vw-1rem))] min-w-48 flex-col gap-2 rounded-md border p-3 text-sm shadow-lg"
                     >
                         <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                             <EyeOff className="h-3.5 w-3.5" />
-                            {title}
+                            {TITLE}
                         </div>
-                        <ul className="flex flex-col gap-2">
-                            {entries.map((entry) => (
-                                <HiddenGameRow key={entry.game.slug} entry={entry} />
-                            ))}
-                        </ul>
-                        <div className="flex items-center justify-end border-t pt-2 text-xs">
-                            <FooterButton
+                        <HiddenGameRow entry={entry} />
+                        <div className="border-muted grid grid-cols-2 gap-3 border-t pt-2 text-center text-xs">
+                            <Link
+                                href={`/game/${entry.game.slug}`}
+                                className={footerActionClassName}
+                                aria-label={`View ${entry.game.name} overview`}
+                                data-sa-click="hidden-popover-overview"
+                            >
+                                Overview
+                            </Link>
+                            <button
+                                type="button"
                                 onClick={() => {
                                     close();
                                     setFiltersOpen(true);
                                 }}
+                                className={footerActionClassName}
                             >
                                 Edit filters
-                            </FooterButton>
+                            </button>
                         </div>
                     </div>,
                     document.body,
@@ -145,8 +154,8 @@ const StartText = ({ entry: { game, startedAt } }: { entry: HiddenGame }) => {
 };
 
 const HiddenGameRow = ({ entry }: { entry: HiddenGame }) => (
-    <li className="flex min-w-0 flex-col">
-        <span className="truncate font-medium">{entry.game.name}</span>
+    <div className="flex min-w-0 flex-col">
+        <span className="font-medium break-words">{entry.game.name}</span>
         <span className="text-muted-foreground text-xs">
             {!entry.game.isDormant && (
                 <>
@@ -156,15 +165,5 @@ const HiddenGameRow = ({ entry }: { entry: HiddenGame }) => (
             )}
             {entry.reason}
         </span>
-    </li>
-);
-
-const FooterButton = ({ onClick, children }: { onClick: () => void; children: ReactNode }) => (
-    <button
-        type="button"
-        onClick={onClick}
-        className="hover:text-foreground text-muted-foreground cursor-pointer underline-offset-2 hover:underline"
-    >
-        {children}
-    </button>
+    </div>
 );

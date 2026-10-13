@@ -35,7 +35,7 @@ export const Games = ({
     );
 };
 
-export const gridOrderClass = (idx: number) =>
+const gridOrderClass = (idx: number) =>
     cn("order-4 flex", {
         "order-first": idx <= 1,
         "xl:order-first": idx <= 2,
@@ -43,7 +43,7 @@ export const gridOrderClass = (idx: number) =>
         "4xl:order-first": idx <= 4,
     });
 
-export const GameTile = ({
+const GameTile = ({
     game,
     statistics = {},
     loadEager,

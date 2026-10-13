@@ -161,7 +161,12 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         updateFilters,
         resetToPreset,
     } = useGameFilterState(games, category, searchParams);
-    const [isFiltersOpen, setFiltersOpen] = useState(false);
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+    // Every entry point opens Filters through here, so adoption counts include all of them
+    const setFiltersOpen = useCallback((open: boolean) => {
+        if (open) sa_event("filters_opened");
+        setIsFiltersOpen(open);
+    }, []);
     const [isHiddenStripEnabled, setIsHiddenStripEnabled] = useState(getStoredHiddenStripEnabled);
 
     const setHiddenStripEnabled = useCallback((enabled: boolean) => {
@@ -216,6 +221,7 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         [
             hiddenGamesSummary,
             isFiltersOpen,
+            setFiltersOpen,
             resetToPreset,
             isHiddenStripEnabled,
             setHiddenStripEnabled,

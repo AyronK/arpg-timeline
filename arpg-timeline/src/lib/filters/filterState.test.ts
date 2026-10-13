@@ -222,7 +222,7 @@ describe("getHiddenGamesSummary reasons", () => {
 describe("getHiddenGamesSummary starting soon", () => {
     it("includes day 30 and excludes day 31 and past dates", () => {
         const summary = summarize([
-            game("day30", { nextSeason: startingIn(30) }),
+            game("day30", { nextSeason: startingIn(30.5) }),
             game("day31", { nextSeason: startingIn(31) }),
             game("past", { nextSeason: startingIn(-2) }),
         ]);
@@ -311,6 +311,7 @@ describe("getMobilePresetTabLabel", () => {
 
     it("says when all games are shown", () => {
         expect(getMobilePresetTabLabel(summarize([]))).toBe("All games shown");
+        expect(getMobilePresetTabLabel(summarize([], { isPreset: true }))).toBe("All games shown");
     });
 });
 
@@ -425,6 +426,6 @@ describe("just started", () => {
         expect(label(game("a", { currentSeason: startedAgo(1) }))).toBe("just started");
         expect(label(game("a", { currentSeason: startedAgo(5) }))).toBe("started 5h ago");
         expect(label(game("a", { nextSeason: startingIn(4.5 / 24) }))).toBe("in 5h");
-        expect(label(game("a", { nextSeason: startingIn(1.5) }))).toBe("in 2d");
+        expect(label(game("a", { nextSeason: startingIn(1.5) }))).toBe("in 1d");
     });
 });

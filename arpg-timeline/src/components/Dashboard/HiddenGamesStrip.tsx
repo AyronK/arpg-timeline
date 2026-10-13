@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useOpenFiltersFromHiddenMarker } from "@/hooks/useOpenFiltersFromHiddenMarker";
 import { getStripEntries, getStripTimeLabel, HiddenGame } from "@/lib/filters/filterState";
-import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 
 import { HiddenGamesPopover } from "./HiddenGamesPopover";
@@ -37,7 +37,8 @@ const useOverflowsRight = (el: HTMLElement | null) => {
 };
 
 export const HiddenGamesStrip = () => {
-    const { hiddenGamesSummary, isHiddenStripEnabled, setFiltersOpen } = useGameFilterContext();
+    const { hiddenGamesSummary, isHiddenStripEnabled } = useGameFilterContext();
+    const openFilters = useOpenFiltersFromHiddenMarker();
     const cap = useChipCap();
     const [row, setRow] = useState<HTMLDivElement | null>(null);
     const overflowsRight = useOverflowsRight(row);
@@ -68,8 +69,7 @@ export const HiddenGamesStrip = () => {
             {chips.map((entry) => (
                 <HiddenGamesPopover
                     key={entry.game.slug}
-                    title="Hidden by filters"
-                    entries={[entry]}
+                    entry={entry}
                     eventProps={{ entry: "chip", game: entry.game.slug }}
                     triggerClassName="group hover:bg-accent/50 hover:text-accent-foreground flex shrink-0 items-center gap-2 rounded-full border px-2.5 py-0.5 transition-[color,box-shadow]"
                     trigger={<StripChip entry={entry} now={hiddenGamesSummary.now} />}
@@ -78,13 +78,12 @@ export const HiddenGamesStrip = () => {
             {moreLabel && (
                 <button
                     type="button"
-                    onClick={() => {
-                        sa_event("hidden_marker_opened", {
+                    onClick={() =>
+                        openFilters({
                             entry: chips.length > 0 ? "more" : "all",
                             count: more.length,
-                        });
-                        setFiltersOpen(true);
-                    }}
+                        })
+                    }
                     className="hover:bg-accent/50 hover:text-accent-foreground shrink-0 cursor-pointer rounded-full border border-transparent px-1.5 py-0.5 transition-[color,box-shadow]"
                 >
                     {moreLabel}

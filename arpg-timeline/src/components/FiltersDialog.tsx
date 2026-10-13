@@ -7,7 +7,6 @@ import { forwardRef } from "react";
 import { SanityImage } from "@/components/SanityImage";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 import {
@@ -90,9 +89,6 @@ const Trigger = forwardRef<
         variant="default"
         size={"sm"}
         disabled={disabled}
-        onMouseDown={() => {
-            sa_event("filters_opened");
-        }}
         className="relative inline-flex h-9! min-w-0 flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap"
     >
         <Filter className="h-4 w-4" />
@@ -120,7 +116,7 @@ export const FilterPresetControls = () => {
                 disabled={hiddenGamesSummary.state === "preset"}
                 onClick={resetToPreset}
             >
-                <RotateCcw className="h-4 w-4 mr-2" />
+                <RotateCcw className="mr-2 h-4 w-4" />
                 Reset to Featured preset
             </Button>
         </div>

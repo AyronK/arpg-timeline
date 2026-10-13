@@ -5,7 +5,6 @@ import { GRACE_PERIOD } from "@/lib/games/sortBySeasons";
 import type { GameFiltersStorage } from "@/lib/storage/gameFiltersStorage";
 
 export const STARTING_SOON_WINDOW_DAYS = 30;
-const DAY_MS = 24 * 60 * 60 * 1000;
 
 export type HiddenReason =
     "No recent updates" | "Community" | "Non-seasonal" | "Hidden by your filters";
@@ -75,11 +74,8 @@ export const getUrlExcludesToPersist = ({
         ? urlExcludes
         : null;
 
-// Rounds away from now, so a season that already started is never "in 0d"
-const daysUntil = (start: number, now: number) => {
-    const days = (start - now) / DAY_MS;
-    return days < 0 ? Math.floor(days) : Math.ceil(days);
-};
+// Whole days, floored like the grid's countdown; a season that already started is negative
+const daysUntil = (start: number, now: number) => Math.floor((start - now) / DAY);
 
 // A confirmed next start that passed counts too: games are parsed once per page load
 const getStartedAt = (game: Game, now: number): number | null => {
@@ -157,7 +153,7 @@ const gamesHidden = (count: number) => `${count} ${count === 1 ? "game" : "games
 
 export const getMobilePresetTabLabel = ({ state, hiddenCount }: HiddenGamesSummary): string => {
     // Kept short: the dashboard selector already names Featured, and the tab must clear it
-    if (state === "all-shown") return "All games shown";
+    if (hiddenCount === 0) return "All games shown";
     return state === "preset" ? gamesHidden(hiddenCount) : `${hiddenCount} hidden by you`;
 };
 

@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Fragment, ReactNode } from "react";
 
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
+import { useOpenFiltersFromHiddenMarker } from "@/hooks/useOpenFiltersFromHiddenMarker";
 import { getHiddenByFiltersLabel } from "@/lib/filters/filterState";
-import { sa_event } from "@/lib/sa_event";
 
 import { DashboardConfig } from "./DashboardConfig";
 
@@ -15,7 +15,8 @@ const linkClassName =
     "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center underline-offset-2 hover:underline";
 
 export const CantFindGame = () => {
-    const { hiddenGamesSummary: summary, category, setFiltersOpen } = useGameFilterContext();
+    const { hiddenGamesSummary: summary, category } = useGameFilterContext();
+    const openFilters = useOpenFiltersFromHiddenMarker();
     // Stored filters are only known in the browser
     const hiddenGamesSummary = useHasMounted() ? summary : null;
     const hasHidden = !!hiddenGamesSummary && hiddenGamesSummary.hiddenCount > 0;
@@ -69,13 +70,9 @@ export const CantFindGame = () => {
                 <button
                     type="button"
                     className="text-foreground/80 hover:text-foreground decoration-muted-foreground hover:decoration-foreground cursor-pointer text-sm font-semibold underline underline-offset-2 transition-colors"
-                    onClick={() => {
-                        sa_event("hidden_marker_opened", {
-                            entry: "cant-find",
-                            count: hiddenGamesSummary.hiddenCount,
-                        });
-                        setFiltersOpen(true);
-                    }}
+                    onClick={() =>
+                        openFilters({ entry: "cant-find", count: hiddenGamesSummary.hiddenCount })
+                    }
                 >
                     {hiddenLabel}
                 </button>
