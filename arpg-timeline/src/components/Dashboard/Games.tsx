@@ -14,41 +14,26 @@ import { GracePeriodSeasonWidgetHoC } from "./GracePeriodSeasonWidgetHoC";
 export const Games = ({
     games,
     statistics = {},
-    peekedSlugs = [],
 }: {
     games: Game[];
     statistics?: Record<string, GameStatistics>;
-    peekedSlugs?: string[];
 }) => {
     const { shouldLoadImage } = useDashboardImageLoadingOptimization();
 
     return (
         <>
-            {games.map((game, idx) => {
-                const isPeeked = peekedSlugs.includes(game.slug);
-                return (
-                    <div
-                        key={game.slug}
-                        className={cn(gridOrderClass(idx), { "relative opacity-80": isPeeked })}
-                    >
-                        {isPeeked && <PeekLabel />}
-                        <GameTile
-                            game={game}
-                            statistics={statistics}
-                            loadEager={shouldLoadImage(idx)}
-                        />
-                    </div>
-                );
-            })}
+            {games.map((game, idx) => (
+                <div key={game.slug} className={gridOrderClass(idx)}>
+                    <GameTile
+                        game={game}
+                        statistics={statistics}
+                        loadEager={shouldLoadImage(idx)}
+                    />
+                </div>
+            ))}
         </>
     );
 };
-
-const PeekLabel = () => (
-    <span className="bg-background/90 text-muted-foreground absolute top-2 left-1/2 z-10 -translate-x-1/2 rounded-full border px-2 py-0.5 text-[10px] tracking-wide whitespace-nowrap uppercase">
-        Hidden by filters · until reload
-    </span>
-);
 
 export const gridOrderClass = (idx: number) =>
     cn("order-4 flex", {

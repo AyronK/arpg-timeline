@@ -140,7 +140,7 @@ export const FilterPresetControls = () => {
         <div className="border-border mb-6 flex flex-wrap items-center justify-between gap-3 border-b px-6 pb-4 lg:px-0">
             <label className="flex cursor-pointer items-center gap-2 text-sm">
                 <Switch checked={isHiddenStripEnabled} onCheckedChange={setHiddenStripEnabled} />
-                Show hidden games starting soon
+                Show filtered-out games starting soon
             </label>
             <Button
                 variant="outline"

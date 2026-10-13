@@ -197,8 +197,10 @@ describe("getHiddenGamesSummary state", () => {
 describe("getHiddenGamesSummary reasons", () => {
     const reasonOf = (g: Game) => summarize([g]).hidden[0].reason;
 
-    it("puts Dormant before Community", () => {
-        expect(reasonOf(game("a", { isDormant: true, categories: ["community"] }))).toBe("Dormant");
+    it("puts No recent updates before Community", () => {
+        expect(reasonOf(game("a", { isDormant: true, categories: ["community"] }))).toBe(
+            "No recent updates",
+        );
     });
 
     it("gives Community for community games", () => {
@@ -262,6 +264,26 @@ describe("getHiddenGamesSummary starting soon", () => {
         ]);
         expect(slugs(summary.others)).toEqual(["later", "undated"]);
         expect(summary.others.length + summary.startingSoon.length).toBe(summary.hiddenCount);
+    });
+
+    it("puts no-recent-updates games last in hidden and others", () => {
+        const summary = summarize([
+            game("old", { isDormant: true }),
+            game("a"),
+            game("soon", { nextSeason: startingIn(5) }),
+            game("b"),
+        ]);
+        expect(slugs(summary.hidden)).toEqual(["a", "soon", "b", "old"]);
+        expect(slugs(summary.others)).toEqual(["a", "b", "old"]);
+    });
+
+    it("leaves unconfirmed starts out of startingSoon", () => {
+        const summary = summarize([
+            game("estimated", { nextSeason: startingIn(7, false) }),
+            game("confirmed", { nextSeason: startingIn(12) }),
+        ]);
+        expect(slugs(summary.startingSoon)).toEqual(["confirmed"]);
+        expect(slugs(summary.others)).toEqual(["estimated"]);
     });
 
     it("passes through confirmed and startsInDays", () => {
@@ -345,25 +367,6 @@ describe("getStripEntries", () => {
         expect(chips).toEqual([]);
         expect(slugs(more)).toEqual(["a", "b"]);
         expect(moreLabel).toBe("2 games hidden");
-    });
-
-    it("leaves peeked games out of chips and more, keeping the hidden count", () => {
-        const summary = summarize([soon("a", 3), soon("b", 5), soon("c", 9), game("d")]);
-        const { chips, more, moreLabel } = getStripEntries(summary, 2, ["a", "d"]);
-        expect(slugs(chips)).toEqual(["b", "c"]);
-        expect(more).toEqual([]);
-        expect(moreLabel).toBeNull();
-        expect(getStripEntries(summarize([game("x"), game("y")]), 2, ["x"]).moreLabel).toBe(
-            "2 games hidden",
-        );
-    });
-
-    it("is empty when every hidden game is peeked", () => {
-        expect(getStripEntries(summarize([game("a")]), 2, ["a"])).toEqual({
-            chips: [],
-            more: [],
-            moreLabel: null,
-        });
     });
 
     it("uses the singular for one hidden game", () => {

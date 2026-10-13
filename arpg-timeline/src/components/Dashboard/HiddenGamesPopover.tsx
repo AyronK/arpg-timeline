@@ -5,12 +5,11 @@ import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import LocalDate from "@/components/LocalDate";
-import { SanityImage } from "@/components/SanityImage";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
+import { Game } from "@/lib/cms/games.types";
 import { HiddenGame } from "@/lib/filters/filterState";
 import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
-import { Button } from "@/ui/Button";
 
 const GAP = 6;
 const VIEWPORT_MARGIN = 8;
@@ -22,8 +21,6 @@ type HiddenGamesPopoverProps = {
     triggerClassName?: string;
     // Sent with hidden_marker_opened
     eventProps: Record<string, string | number>;
-    onHideStrip?: () => void;
-    onPeek?: (slug: string) => void;
 };
 
 export const HiddenGamesPopover = ({
@@ -32,8 +29,6 @@ export const HiddenGamesPopover = ({
     trigger,
     triggerClassName,
     eventProps,
-    onHideStrip,
-    onPeek,
 }: HiddenGamesPopoverProps) => {
     const { setFiltersOpen } = useGameFilterContext();
     const [open, setOpen] = useState(false);
@@ -107,28 +102,18 @@ export const HiddenGamesPopover = ({
                         role="dialog"
                         aria-label={title}
                         style={pos ?? { top: 0, left: 0, visibility: "hidden" }}
-                        className="bg-popover text-popover-foreground fixed z-[90] flex w-72 max-w-[calc(100vw-1rem)] flex-col gap-2 rounded-md border p-3 text-sm shadow-lg"
+                        className="bg-popover text-popover-foreground fixed z-[90] flex w-max max-w-[min(18rem,calc(100vw-1rem))] min-w-48 flex-col gap-2 rounded-md border p-3 text-sm shadow-lg"
                     >
                         <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                             <EyeOff className="h-3.5 w-3.5" />
                             {title}
                         </div>
-                        <ul className="flex max-h-64 flex-col gap-2 overflow-y-auto">
+                        <ul className="flex flex-col gap-2">
                             {entries.map((entry) => (
-                                <HiddenGameRow
-                                    key={entry.game.slug}
-                                    entry={entry}
-                                    onPeek={
-                                        onPeek &&
-                                        (() => {
-                                            close();
-                                            onPeek(entry.game.slug);
-                                        })
-                                    }
-                                />
+                                <HiddenGameRow key={entry.game.slug} entry={entry} />
                             ))}
                         </ul>
-                        <div className="flex items-center justify-between border-t pt-2 text-xs">
+                        <div className="flex items-center justify-end border-t pt-2 text-xs">
                             <FooterButton
                                 onClick={() => {
                                     close();
@@ -137,16 +122,6 @@ export const HiddenGamesPopover = ({
                             >
                                 Edit filters
                             </FooterButton>
-                            {onHideStrip && (
-                                <FooterButton
-                                    onClick={() => {
-                                        close();
-                                        onHideStrip();
-                                    }}
-                                >
-                                    Hide this strip
-                                </FooterButton>
-                            )}
                         </div>
                     </div>,
                     document.body,
@@ -155,46 +130,35 @@ export const HiddenGamesPopover = ({
     );
 };
 
-const HiddenGameRow = ({
-    entry: { game, reason, confirmed },
-    onPeek,
-}: {
-    entry: HiddenGame;
-    onPeek?: () => void;
-}) => {
-    const startDate = game.isDormant ? null : game.nextSeason?.start?.startDate;
-    return (
-        <li className="flex items-center gap-2">
-            <div className="relative h-8 w-8 shrink-0 opacity-70 grayscale">
-                {game.logo && <SanityImage src={game.logo} alt="" fill objectFit="contain" />}
-            </div>
-            <div className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate font-medium">{game.name}</span>
-                <span className="text-muted-foreground text-xs">
-                    {startDate && (
-                        <>
-                            {!confirmed && "Est. "}
-                            <LocalDate utcDate={startDate} dateOnly />
-                            {" · "}
-                        </>
-                    )}
-                    {reason}
-                </span>
-            </div>
-            {onPeek && (
-                <Button size="sm" variant="outline" className="h-7 px-2 text-xs" onClick={onPeek}>
-                    Show here
-                </Button>
-            )}
-        </li>
-    );
+// Same start text as the grid's next-season widget
+const StartText = ({ game }: { game: Game }) => {
+    const start = game.nextSeason?.start;
+    if (start?.confirmed && start.startDate)
+        return start.overrideText || <LocalDate utcDate={start.startDate} dateOnly />;
+    // || so empty CMS strings fall through too
+    return start?.overrideText || game.currentSeason?.end?.overrideText || "To be announced";
 };
+
+const HiddenGameRow = ({ entry: { game, reason } }: { entry: HiddenGame }) => (
+    <li className="flex min-w-0 flex-col">
+        <span className="truncate font-medium">{game.name}</span>
+        <span className="text-muted-foreground text-xs">
+            {!game.isDormant && (
+                <>
+                    <StartText game={game} />
+                    {" · "}
+                </>
+            )}
+            {reason}
+        </span>
+    </li>
+);
 
 const FooterButton = ({ onClick, children }: { onClick: () => void; children: ReactNode }) => (
     <button
         type="button"
         onClick={onClick}
-        className="hover:text-foreground text-muted-foreground underline-offset-2 hover:underline"
+        className="hover:text-foreground text-muted-foreground cursor-pointer underline-offset-2 hover:underline"
     >
         {children}
     </button>

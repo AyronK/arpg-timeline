@@ -7,44 +7,21 @@ import { Fragment, ReactNode } from "react";
 
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { getHiddenByFiltersLabel } from "@/lib/filters/filterState";
+import { sa_event } from "@/lib/sa_event";
 
 import { DashboardConfig } from "./DashboardConfig";
-import { HiddenGamesPopover } from "./HiddenGamesPopover";
 
 const linkClassName =
-    "text-muted-foreground hover:text-foreground inline-flex items-center underline-offset-2 hover:underline";
+    "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center underline-offset-2 hover:underline";
 
-export const CantFindGame = ({
-    peekedSlugs = [],
-    onPeek,
-}: {
-    peekedSlugs?: string[];
-    onPeek?: (slug: string) => void;
-}) => {
+export const CantFindGame = () => {
     const { hiddenGamesSummary: summary, category, setFiltersOpen } = useGameFilterContext();
     // Stored filters are only known in the browser
     const hiddenGamesSummary = useHasMounted() ? summary : null;
     const hasHidden = !!hiddenGamesSummary && hiddenGamesSummary.hiddenCount > 0;
     const hiddenLabel = hiddenGamesSummary ? getHiddenByFiltersLabel(hiddenGamesSummary) : "";
-    const entries = (hiddenGamesSummary?.hidden ?? []).filter(
-        (h) => !peekedSlugs.includes(h.game.slug),
-    );
 
     const links: { key: string; node: ReactNode }[] = [];
-    if (hasHidden) {
-        links.push({
-            key: "edit",
-            node: (
-                <button
-                    type="button"
-                    className={linkClassName}
-                    onClick={() => setFiltersOpen(true)}
-                >
-                    Edit filters
-                </button>
-            ),
-        });
-    }
     if (category !== "all") {
         links.push({
             key: "catalog",
@@ -88,18 +65,20 @@ export const CantFindGame = ({
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Can&apos;t find a game?
             </h3>
-            {hasHidden && entries.length === 0 && (
-                <span className="text-sm font-semibold">{hiddenLabel}</span>
-            )}
-            {hasHidden && entries.length > 0 && (
-                <HiddenGamesPopover
-                    title={hiddenLabel}
-                    entries={entries}
-                    eventProps={{ entry: "cant-find", count: hiddenGamesSummary.hiddenCount }}
-                    onPeek={onPeek}
-                    triggerClassName="text-sm font-semibold underline underline-offset-2"
-                    trigger={hiddenLabel}
-                />
+            {hasHidden && (
+                <button
+                    type="button"
+                    className="cursor-pointer text-sm font-semibold underline underline-offset-2"
+                    onClick={() => {
+                        sa_event("hidden_marker_opened", {
+                            entry: "cant-find",
+                            count: hiddenGamesSummary.hiddenCount,
+                        });
+                        setFiltersOpen(true);
+                    }}
+                >
+                    {hiddenLabel}
+                </button>
             )}
             <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm">
                 {links.map(({ key, node }, idx) => (

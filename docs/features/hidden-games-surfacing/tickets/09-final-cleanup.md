@@ -21,7 +21,6 @@ Raised in reviews of tickets 04–08 and deliberately not fixed. Decide on each 
 
 - [ ] `getFilterPingSeen` has no callers; `OnboardingModal` still calls `setFilterPingSeen`, but nothing reads the flag. Delete both, or keep them if the modal should keep writing the flag.
 - [ ] The Can't-find card's Full Catalog link is a plain `<Link href="/dashboard/all">`. Unlike the tab buttons (`useDashboardNavigation`), the grid doesn't fade while loading and URL params aren't kept. The hook uses `useSearchParams`, which is risky in `GamesAndEventsGridFallback`.
-- [ ] On the news page, the mobile drawer shows the "Show hidden games starting soon" switch even though that page has no strip.
+- [ ] On the news page, the mobile drawer shows the "Show filtered-out games starting soon" switch even though that page has no strip.
 - [ ] The strip, mobile tab label and Can't-find hidden line now render only after mount, which avoids hydration mismatches (breakpoint cap, strip switch, stored filters). The grid itself still reads stored filters on its first render (pre-existing), so a visitor with custom filters may still get a hydration mismatch in the grid.
-- [ ] Once every starting-soon game is peeked, the strip falls back to "N games hidden" with the full `hiddenCount`, while the list leaves out the peeked games.
 - [ ] `HiddenGamesPopover` is hand-built (no Radix popover dependency), so it has no focus management. Consider `@radix-ui/react-popover` if adding a dependency is OK.

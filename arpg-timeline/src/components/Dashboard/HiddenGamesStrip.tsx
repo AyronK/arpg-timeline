@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { getStripEntries, HiddenGame } from "@/lib/filters/filterState";
+import { sa_event } from "@/lib/sa_event";
 import { cn } from "@/lib/utils";
 
 import { HiddenGamesPopover } from "./HiddenGamesPopover";
@@ -35,15 +36,8 @@ const useOverflowsRight = (el: HTMLElement | null) => {
     return overflows;
 };
 
-export const HiddenGamesStrip = ({
-    peekedSlugs,
-    onPeek,
-}: {
-    peekedSlugs: string[];
-    onPeek: (slug: string) => void;
-}) => {
-    const { hiddenGamesSummary, isHiddenStripEnabled, setHiddenStripEnabled } =
-        useGameFilterContext();
+export const HiddenGamesStrip = () => {
+    const { hiddenGamesSummary, isHiddenStripEnabled, setFiltersOpen } = useGameFilterContext();
     const cap = useChipCap();
     const [row, setRow] = useState<HTMLDivElement | null>(null);
     const overflowsRight = useOverflowsRight(row);
@@ -58,9 +52,8 @@ export const HiddenGamesStrip = ({
     )
         return null;
 
-    const { chips, more, moreLabel } = getStripEntries(hiddenGamesSummary, cap, peekedSlugs);
+    const { chips, more, moreLabel } = getStripEntries(hiddenGamesSummary, cap);
     if (chips.length === 0 && !moreLabel) return null;
-    const hideStrip = () => setHiddenStripEnabled(false);
 
     return (
         <div
@@ -78,33 +71,32 @@ export const HiddenGamesStrip = ({
                     title="Hidden by filters"
                     entries={[entry]}
                     eventProps={{ entry: "chip", game: entry.game.slug }}
-                    onHideStrip={hideStrip}
-                    onPeek={onPeek}
                     triggerClassName="group hover:bg-accent/50 hover:text-accent-foreground flex shrink-0 items-center gap-2 rounded-full border px-2.5 py-0.5 transition-[color,box-shadow]"
                     trigger={<StripChip entry={entry} />}
                 />
             ))}
             {moreLabel && (
-                <HiddenGamesPopover
-                    title={chips.length > 0 ? `${more.length} more hidden by filters` : moreLabel}
-                    entries={more}
-                    eventProps={{ entry: chips.length > 0 ? "more" : "all", count: more.length }}
-                    onHideStrip={hideStrip}
-                    onPeek={onPeek}
-                    triggerClassName="hover:bg-accent/50 hover:text-accent-foreground shrink-0 rounded-full border border-transparent px-1.5 py-0.5 transition-[color,box-shadow]"
-                    trigger={moreLabel}
-                />
+                <button
+                    type="button"
+                    onClick={() => {
+                        sa_event("hidden_marker_opened", {
+                            entry: chips.length > 0 ? "more" : "all",
+                            count: more.length,
+                        });
+                        setFiltersOpen(true);
+                    }}
+                    className="hover:bg-accent/50 hover:text-accent-foreground shrink-0 cursor-pointer rounded-full border border-transparent px-1.5 py-0.5 transition-[color,box-shadow]"
+                >
+                    {moreLabel}
+                </button>
             )}
         </div>
     );
 };
 
-const StripChip = ({ entry: { game, startsInDays, confirmed } }: { entry: HiddenGame }) => (
+const StripChip = ({ entry: { game, startsInDays } }: { entry: HiddenGame }) => (
     <>
         <span className="text-foreground/80 group-hover:text-accent-foreground">{game.name}</span>
-        <span className="opacity-70">
-            in {!confirmed && "~"}
-            {startsInDays}d
-        </span>
+        <span className="opacity-70">in {startsInDays}d</span>
     </>
 );

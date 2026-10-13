@@ -1,5 +1,7 @@
 # 06: Peek
 
+**Dropped after implementation** (README decision 27): the code was removed. Kept for history until the folder is deleted.
+
 Context: [SPEC](../SPEC.md) → Peek. User stories 22–25.
 
 **What to build:** each game row in the popover gets **Show here**. It renders that hidden game's full card in its normal sorted position in the grid, labelled "Hidden by filters · until reload". The filters, the hidden count and storage are unchanged, and a reload removes it.

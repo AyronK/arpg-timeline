@@ -6,7 +6,7 @@ export const STARTING_SOON_WINDOW_DAYS = 30;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export type HiddenReason =
-    "Dormant" | "Community" | "No confirmed season" | "Hidden by your filters";
+    "No recent updates" | "Community" | "No confirmed season" | "Hidden by your filters";
 
 export type HiddenGame = {
     game: Game;
@@ -27,7 +27,7 @@ export type HiddenGamesSummary = {
 const getDefaultHiddenReason = (
     g: Game,
 ): Exclude<HiddenReason, "Hidden by your filters"> | null => {
-    if (g.isDormant) return "Dormant";
+    if (g.isDormant) return "No recent updates";
     if (g.categories?.includes("community")) return "Community";
     if (
         !g.categories?.includes("seasonal") &&
@@ -85,8 +85,12 @@ const toHiddenGame = (game: Game, now: number): HiddenGame => {
     };
 };
 
-const isStartingSoon = ({ startsInDays }: HiddenGame) =>
-    startsInDays !== null && startsInDays >= 0 && startsInDays <= STARTING_SOON_WINDOW_DAYS;
+// Unconfirmed dates are placeholders the grid never shows, so they don't count
+const isStartingSoon = ({ startsInDays, confirmed }: HiddenGame) =>
+    confirmed &&
+    startsInDays !== null &&
+    startsInDays >= 0 &&
+    startsInDays <= STARTING_SOON_WINDOW_DAYS;
 
 const startTime = ({ game }: HiddenGame) => new Date(game.nextSeason!.start!.startDate!).getTime();
 
@@ -103,7 +107,9 @@ export const getHiddenGamesSummary = ({
 }): HiddenGamesSummary => {
     const hidden = games
         .filter((g) => excludedSlugs.includes(g.slug))
-        .map((g) => toHiddenGame(g, now));
+        .map((g) => toHiddenGame(g, now))
+        // Games with no recent updates go last; sort is stable
+        .sort((a, b) => Number(!!a.game.isDormant) - Number(!!b.game.isDormant));
     const startingSoon = hidden.filter(isStartingSoon).sort((a, b) => startTime(a) - startTime(b));
 
     return {
@@ -145,22 +151,17 @@ export type StripEntries = { chips: HiddenGame[]; more: HiddenGame[]; moreLabel:
 export const getStripEntries = (
     { hiddenCount, hidden, startingSoon, others }: HiddenGamesSummary,
     cap: number,
-    // Peeked games leave the strip, but the hidden count stays
-    peekedSlugs: string[] = [],
 ): StripEntries => {
-    const notPeeked = (h: HiddenGame) => !peekedSlugs.includes(h.game.slug);
-    const soon = startingSoon.filter(notPeeked);
-    if (soon.length === 0) {
-        const all = hidden.filter(notPeeked);
+    if (startingSoon.length === 0) {
         return {
             chips: [],
-            more: all,
-            moreLabel: all.length > 0 ? gamesHidden(hiddenCount) : null,
+            more: hidden,
+            moreLabel: hidden.length > 0 ? gamesHidden(hiddenCount) : null,
         };
     }
-    const more = [...soon.slice(cap), ...others.filter(notPeeked)];
+    const more = [...startingSoon.slice(cap), ...others];
     return {
-        chips: soon.slice(0, cap),
+        chips: startingSoon.slice(0, cap),
         more,
         moreLabel: more.length > 0 ? `+${more.length} more` : null,
     };

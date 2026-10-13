@@ -5,9 +5,9 @@ Context: [SPEC](../SPEC.md) → Desktop header; Strip and popover. User stories 
 **What to build:** a one-line strip that shows hidden games about to start, plus a popover explaining each one.
 - **Desktop:** the strip sits in header row 1, where the old hint and count were.
 - **Mobile:** it sits under the page title, on one line that scrolls sideways.
-- **Chips:** after a muted `Filtered out:` label, each shows the full game name and `in Nd`, with no logo, with `~` before estimated dates. Capped at lg 2 / xl 3 / 2xl+ 4 / mobile 1 (right edge fades if it still overflows).
-- **After the chips:** "+N more". With nothing starting soon, the strip shows "N games hidden" instead.
-- **Popover:** tapping or clicking an entry lists each game with its logo, name, `Est.` or confirmed date and reason, plus **Edit filters** and **Hide this strip**.
+- **Chips:** after a muted `Filtered out:` label, each shows the full game name and `in Nd`, with no logo. Only confirmed starts become chips. Capped at lg 2 / xl 3 / 2xl+ 4 / mobile 1 (right edge fades if it still overflows).
+- **After the chips:** "+N more", or "N games hidden" with nothing starting soon. Either opens the Filters dialog or drawer (README decision 29).
+- **Popover:** tapping or clicking an entry lists each game with its name, the grid's start text (date, override text or "To be announced") and reason, plus **Edit filters**.
 
 **Blocked by:** 03, 04.
 
@@ -22,11 +22,10 @@ Context: [SPEC](../SPEC.md) → Desktop header; Strip and popover. User stories 
   - Stays within the viewport.
 - [x] The popover footer:
   - **Edit filters** opens the desktop dialog or the mobile drawer through the controls from 03/04, with no DOM lookup.
-  - **Hide this strip** hides it for the session; ticket 07 makes it persist.
 - [x] No in-grid markers; the grid layout is unchanged.
 - [x] Opening a popover fires `hidden_marker_opened`.
 - [ ] Manual check on desktop (lg, xl, 2xl) and mobile:
   - caps per width
-  - `~` on estimates
+  - unconfirmed games only in "+N more"
   - the "N games hidden" fallback (fake it by temporarily widening exclusions or narrowing the window)
   - the popover on touch
