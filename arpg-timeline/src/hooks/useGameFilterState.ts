@@ -2,11 +2,8 @@ import { startTransition, useCallback, useEffect, useRef, useState } from "react
 
 import { Game } from "@/lib/cms/games.types";
 import { GameFilterCategory } from "@/lib/cms/gameTags";
-import {
-    GameFiltersStorage,
-    getStoredFilters,
-    setStoredFilters,
-} from "@/lib/storage/gameFiltersStorage";
+import { getUrlExcludesToPersist, resolveExcludedSlugs } from "@/lib/filters/filterState";
+import { getStoredFilters, setStoredFilters } from "@/lib/storage/gameFiltersStorage";
 import { getUrlFilters, updateUrlFilters } from "@/lib/url/gameFiltersUrl";
 
 export const useGameFilterState = (
@@ -14,66 +11,19 @@ export const useGameFilterState = (
     category: GameFilterCategory,
     searchParams: URLSearchParams,
 ) => {
-    const getDefaultExcludedSlugs = useCallback(() => {
-        if (category === "featured") {
-            return games
-                .filter(
-                    (g) =>
-                        g.isDormant ||
-                        g.categories?.includes("community") ||
-                        (!g.categories?.includes("seasonal") &&
-                            !g.categories?.includes("early-access") &&
-                            !g.nextSeason?.start?.confirmed),
-                )
-                .map((g) => g.slug!)
-                .filter(Boolean);
-        }
-        return [];
-    }, [category, games]);
-
     const initializeFilters = useCallback(() => {
         const stored = getStoredFilters();
-        const urlFilters = getUrlFilters(searchParams);
+        const urlExcludes = getUrlFilters(searchParams);
 
-        let initialFilters: string[];
-
-        if (stored && stored.category === category) {
-            initialFilters = stored.excludedSlugs;
-        } else if (urlFilters.length > 0) {
-            initialFilters = urlFilters;
-            const storageData: GameFiltersStorage = {
-                excludedSlugs: urlFilters,
-                category,
-            };
-            setStoredFilters(storageData);
-        } else {
-            initialFilters = getDefaultExcludedSlugs();
+        const toPersist = getUrlExcludesToPersist({ category, stored, urlExcludes });
+        if (toPersist) {
+            setStoredFilters({ excludedSlugs: toPersist, category: "featured" });
         }
 
-        return initialFilters;
-    }, [category, searchParams, getDefaultExcludedSlugs]);
+        return resolveExcludedSlugs({ category, games, stored, urlExcludes });
+    }, [category, games, searchParams]);
 
-    const [excludedSlugs, setExcludedSlugs] = useState<string[]>(() => {
-        const stored = getStoredFilters();
-        const urlFilters = getUrlFilters(searchParams);
-
-        let initialFilters: string[];
-
-        if (stored && stored.category === category) {
-            initialFilters = stored.excludedSlugs;
-        } else if (urlFilters.length > 0) {
-            initialFilters = urlFilters;
-            const storageData: GameFiltersStorage = {
-                excludedSlugs: urlFilters,
-                category,
-            };
-            setStoredFilters(storageData);
-        } else {
-            initialFilters = getDefaultExcludedSlugs();
-        }
-
-        return initialFilters;
-    });
+    const [excludedSlugs, setExcludedSlugs] = useState<string[]>(initializeFilters);
 
     const prevCategoryRef = useRef(category);
     const prevSearchParamsRef = useRef(searchParams);
@@ -98,14 +48,10 @@ export const useGameFilterState = (
 
     const updateFilters = useCallback(
         (newExcludedSlugs: string[]) => {
+            if (category !== "featured") return;
+
             setExcludedSlugs(newExcludedSlugs);
-
-            const storageData: GameFiltersStorage = {
-                excludedSlugs: newExcludedSlugs,
-                category,
-            };
-
-            setStoredFilters(storageData);
+            setStoredFilters({ excludedSlugs: newExcludedSlugs, category: "featured" });
             updateUrlFilters(newExcludedSlugs);
         },
         [category],
@@ -153,6 +99,5 @@ export const useGameFilterState = (
         toggleGameFilter,
         toggleGroupFilter,
         updateFilters,
-        defaultExcludedSlugs: getDefaultExcludedSlugs(),
     };
 };

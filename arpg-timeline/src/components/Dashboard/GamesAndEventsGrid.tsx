@@ -72,7 +72,7 @@ export const GamesAndEventsGrid = ({
                             category={category}
                             onLoadingChange={handleLoadingChange}
                         />
-                        <GameFilters {...filtersProps} disabled={category === "all"} />
+                        <GameFilters {...filtersProps} disabled={category !== "featured"} />
                     </div>
                 </div>
                 <h2 className="sr-only">Seasons</h2>
@@ -89,7 +89,7 @@ export const GamesAndEventsGrid = ({
             </article>
             <MobileBottomMenu
                 category={category}
-                isFiltersDisabled={category === "all"}
+                isFiltersDisabled={category !== "featured"}
                 onLoadingChange={handleLoadingChange}
                 filtersProps={filtersProps}
                 shownGames={shownGames}
