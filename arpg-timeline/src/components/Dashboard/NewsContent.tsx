@@ -28,8 +28,7 @@ interface NewsContentProps {
 
 export const NewsContent = ({ gamesNews }: NewsContentProps) => {
     const [isLoading, setIsLoading] = useState(false);
-    const { category, totalGames, shownGames, filteredGames, ...filtersProps } =
-        useGameFilterContext();
+    const { category, filteredGames, ...filtersProps } = useGameFilterContext();
     const pathname = usePathname();
     const currentCategory = (pathname === "/games/news" ? "news" : category) as
         GameFilterCategory | "news";
@@ -84,8 +83,6 @@ export const NewsContent = ({ gamesNews }: NewsContentProps) => {
                 isFiltersDisabled={false}
                 onLoadingChange={handleLoadingChange}
                 filtersProps={filtersProps}
-                shownGames={shownGames}
-                totalGames={totalGames}
             />
         </>
     );

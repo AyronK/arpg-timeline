@@ -5,6 +5,7 @@ import type { GameFilterCategory } from "@/lib/cms/gameTags";
 
 import {
     getHiddenGamesSummary,
+    getMobilePresetTabLabel,
     getPresetControlLabel,
     getUrlExcludesToPersist,
     resolveExcludedSlugs,
@@ -295,5 +296,21 @@ describe("getPresetControlLabel", () => {
             full: "Filters · All games shown",
             short: "Filters · All games shown",
         });
+    });
+});
+
+describe("getMobilePresetTabLabel", () => {
+    it("names the preset and count", () => {
+        expect(getMobilePresetTabLabel(summarize([game("a"), game("b")], { isPreset: true }))).toBe(
+            "Featured preset · 2 hidden",
+        );
+    });
+
+    it("names a custom selection", () => {
+        expect(getMobilePresetTabLabel(summarize([game("a")]))).toBe("Custom filters · 1 hidden");
+    });
+
+    it("says when all games are shown", () => {
+        expect(getMobilePresetTabLabel(summarize([]))).toBe("All games shown");
     });
 });

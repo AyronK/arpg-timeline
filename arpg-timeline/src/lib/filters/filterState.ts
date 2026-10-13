@@ -130,3 +130,9 @@ export const getPresetControlLabel = ({
         short: `Filters · ${hiddenCount} hidden`,
     };
 };
+
+export const getMobilePresetTabLabel = ({ state, hiddenCount }: HiddenGamesSummary): string => {
+    if (state === "all-shown") return "All games shown";
+    const preset = state === "preset" ? "Featured preset" : "Custom filters";
+    return `${preset} · ${hiddenCount} hidden`;
+};

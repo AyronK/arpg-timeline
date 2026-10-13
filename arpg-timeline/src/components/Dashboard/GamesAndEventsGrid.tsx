@@ -22,8 +22,7 @@ export const GamesAndEventsGrid = ({
     statistics: Record<string, GameStatistics>;
 }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const { filteredGames, totalGames, shownGames, category, ...filtersProps } =
-        useGameFilterContext();
+    const { filteredGames, totalGames, category, ...filtersProps } = useGameFilterContext();
     const events = useTimelineEvents(filteredGames);
     const { allGames } = useGameCategories(filteredGames);
 
@@ -72,8 +71,6 @@ export const GamesAndEventsGrid = ({
                 isFiltersDisabled={category !== "featured"}
                 onLoadingChange={handleLoadingChange}
                 filtersProps={filtersProps}
-                shownGames={shownGames}
-                totalGames={totalGames}
             />
         </>
     );

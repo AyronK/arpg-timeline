@@ -5,6 +5,7 @@ import { SanityImageAssetDocument } from "next-sanity";
 import { forwardRef } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
     getPresetControlLabel,
     HiddenGamesSummary,
@@ -54,6 +55,7 @@ export const FiltersDialog = ({
     onOpenChange: (open: boolean) => void;
 }) => {
     const isMounted = useHasMounted();
+    const { isLg } = useBreakpoint("lg");
 
     if (!isMounted) {
         return <Trigger label={null} />;
@@ -63,7 +65,7 @@ export const FiltersDialog = ({
         hiddenGamesSummary && !disabled ? getPresetControlLabel(hiddenGamesSummary) : null;
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog open={open && isLg} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
                 <Trigger
                     label={label}
