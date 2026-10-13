@@ -1,0 +1,1085 @@
+diff --git a/arpg-timeline/src/components/Dashboard/Games.tsx b/arpg-timeline/src/components/Dashboard/Games.tsx
+index f798596..5224f82 100644
+--- a/arpg-timeline/src/components/Dashboard/Games.tsx
++++ b/arpg-timeline/src/components/Dashboard/Games.tsx
+@@ -23,52 +23,64 @@ export const Games = ({
+     return (
+         <>
+             {games.map((game, idx) => (
+-                <div
+-                    key={game.slug}
+-                    className={cn("order-4 flex", {
+-                        "order-first": idx <= 1,
+-                        "xl:order-first": idx <= 2,
+-                        "2xl:order-first": idx <= 3,
+-                        "4xl:order-first": idx <= 4,
+-                    })}
+-                >
+-                    <ErrorBoundary fallback={<WidgetDiedFallback />}>
+-                        <GameCard
+-                            name={game.name}
+-                            gameLogo={
+-                                <SanityImage
+-                                    loading={shouldLoadImage(idx) ? "eager" : "lazy"}
+-                                    priority={shouldLoadImage(idx)}
+-                                    src={
+-                                        game.nextSeason?.logo ??
+-                                        game.currentSeason?.logo ??
+-                                        game.logo!
+-                                    }
+-                                    alt={`${game.name} logo`}
+-                                    className="my-auto"
+-                                    width={256}
+-                                    height={256}
+-                                    objectFit="contain"
+-                                />
+-                            }
+-                            slug={game.slug}
+-                            shortName={game.shortName!}
+-                            url={game.url!}
+-                            buildsUrl={game.buildsUrl}
+-                            guidesUrl={game.guidesUrl}
+-                            nextSeasonStartDate={game.nextSeason?.start?.startDate}
+-                            nextSeasonConfirmed={game.nextSeason?.start?.confirmed}
+-                            currentSeasonStartDate={game.currentSeason?.start?.startDate}
+-                            currentSeasonEndDate={game.currentSeason?.end?.endDate}
+-                            official={game.isOfficial}
+-                            stats={statistics[game.slug]}
+-                        >
+-                            <GameToSeasonWidget game={game} selector="current" />
+-                            <GracePeriodSeasonWidgetHoC game={game} />
+-                        </GameCard>
+-                    </ErrorBoundary>
++                <div key={game.slug} className={gridOrderClass(idx)}>
++                    <GameTile
++                        game={game}
++                        statistics={statistics}
++                        loadEager={shouldLoadImage(idx)}
++                    />
+                 </div>
+             ))}
+         </>
+     );
+ };
++
++export const gridOrderClass = (idx: number) =>
++    cn("order-4 flex", {
++        "order-first": idx <= 1,
++        "xl:order-first": idx <= 2,
++        "2xl:order-first": idx <= 3,
++        "4xl:order-first": idx <= 4,
++    });
++
++export const GameTile = ({
++    game,
++    statistics = {},
++    loadEager,
++}: {
++    game: Game;
++    statistics?: Record<string, GameStatistics>;
++    loadEager: boolean;
++}) => (
++    <ErrorBoundary fallback={<WidgetDiedFallback />}>
++        <GameCard
++            name={game.name}
++            gameLogo={
++                <SanityImage
++                    loading={loadEager ? "eager" : "lazy"}
++                    priority={loadEager}
++                    src={game.nextSeason?.logo ?? game.currentSeason?.logo ?? game.logo!}
++                    alt={`${game.name} logo`}
++                    className="my-auto"
++                    width={256}
++                    height={256}
++                    objectFit="contain"
++                />
++            }
++            slug={game.slug}
++            shortName={game.shortName!}
++            url={game.url!}
++            buildsUrl={game.buildsUrl}
++            guidesUrl={game.guidesUrl}
++            nextSeasonStartDate={game.nextSeason?.start?.startDate}
++            nextSeasonConfirmed={game.nextSeason?.start?.confirmed}
++            currentSeasonStartDate={game.currentSeason?.start?.startDate}
++            currentSeasonEndDate={game.currentSeason?.end?.endDate}
++            official={game.isOfficial}
++            stats={statistics[game.slug]}
++        >
++            <GameToSeasonWidget game={game} selector="current" />
++            <GracePeriodSeasonWidgetHoC game={game} />
++        </GameCard>
++    </ErrorBoundary>
++);
+diff --git a/arpg-timeline/src/components/Dashboard/GamesAndEventsGrid.tsx b/arpg-timeline/src/components/Dashboard/GamesAndEventsGrid.tsx
+index 9573a94..25f6040 100644
+--- a/arpg-timeline/src/components/Dashboard/GamesAndEventsGrid.tsx
++++ b/arpg-timeline/src/components/Dashboard/GamesAndEventsGrid.tsx
+@@ -5,6 +5,7 @@ import { useState } from "react";
+ 
+ import { GameFilters } from "@/components/GameFilters";
+ import { OnboardingModal } from "@/components/OnboardingModal";
++import { usePrototypeVariant } from "@/components/PrototypeSwitcher";
+ import { useGameFilterContext } from "@/contexts/GameFilterContext";
+ import { useGameCategories } from "@/hooks/useGameCategories";
+ import { useTimelineEvents } from "@/hooks/useTimelineEvents";
+@@ -18,6 +19,11 @@ import { DashboardSelector } from "./DashboardSelector";
+ import { Events } from "./Events";
+ import { GameCountDisplay } from "./GameCountDisplay";
+ import { Games } from "./Games";
++import {
++    HIDDEN_MARKER_VARIANTS,
++    HIDDEN_PROTOTYPE_HEADER_SLOT,
++    HiddenGamesPrototype,
++} from "./HiddenGamesPrototype";
+ import { MobileBottomMenu } from "./MobileBottomMenu";
+ 
+ export const GamesAndEventsGrid = ({
+@@ -31,6 +37,7 @@ export const GamesAndEventsGrid = ({
+         useGameFilterContext();
+     const events = useTimelineEvents(filteredGames);
+     const { allGames } = useGameCategories(filteredGames);
++    const prototypeVariant = usePrototypeVariant(HIDDEN_MARKER_VARIANTS);
+ 
+     const handleLoadingChange = (loading: boolean) => {
+         setIsLoading(loading);
+@@ -74,6 +81,7 @@ export const GamesAndEventsGrid = ({
+                         />
+                         <GameFilters {...filtersProps} disabled={category === "all"} />
+                     </div>
++                    {prototypeVariant && <div id={HIDDEN_PROTOTYPE_HEADER_SLOT} />}
+                 </div>
+                 <h2 className="sr-only">Seasons</h2>
+                 <div
+@@ -82,7 +90,11 @@ export const GamesAndEventsGrid = ({
+                         { "opacity-0": isLoading },
+                     )}
+                 >
+-                    <Games games={allGames} statistics={statistics} />
++                    {prototypeVariant ? (
++                        <HiddenGamesPrototype variant={prototypeVariant} statistics={statistics} />
++                    ) : (
++                        <Games games={allGames} statistics={statistics} />
++                    )}
+                     <CantFindGame />
+                     {filteredGames.length > 1 && <Events events={events} />}
+                 </div>
+diff --git a/arpg-timeline/src/contexts/GameFilterContext.tsx b/arpg-timeline/src/contexts/GameFilterContext.tsx
+index 1f0e64e..18cc95d 100644
+--- a/arpg-timeline/src/contexts/GameFilterContext.tsx
++++ b/arpg-timeline/src/contexts/GameFilterContext.tsx
+@@ -37,6 +37,9 @@ interface GameFilterContextType {
+     totalGames: number;
+     shownGames: number;
+     category: GameFilterCategory;
++    // PROTOTYPE(hidden-markers): sorted category games ignoring exclusions
++    categoryGames?: Game[];
++    excludedSlugs?: string[];
+ }
+ 
+ const GameFilterContext = createContext<GameFilterContextType | undefined>(undefined);
+@@ -141,6 +144,11 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
+         return getFilteredGames(excludedSlugs, category);
+     }, [getFilteredGames, excludedSlugs, category]);
+ 
++    const categoryGames = useMemo(
++        () => getFilteredGames([], category),
++        [getFilteredGames, category],
++    );
++
+     useGameFiltersAnalytics(excludedSlugs, filteredGames, category);
+ 
+     const activeFilters = useMemo(() => {
+@@ -158,8 +166,12 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
+             shownGames: filteredGames.length,
+             totalGames: games.length,
+             category,
++            categoryGames,
++            excludedSlugs,
+         }),
+         [
++            categoryGames,
++            excludedSlugs,
+             gameFilters,
+             toggleGameFilter,
+             toggleGroupFilter,
+diff --git a/arpg-timeline/src/components/Dashboard/HiddenGamesPrototype.tsx b/arpg-timeline/src/components/Dashboard/HiddenGamesPrototype.tsx
+new file mode 100644
+index 0000000..5555005
+--- /dev/null
++++ b/arpg-timeline/src/components/Dashboard/HiddenGamesPrototype.tsx
+@@ -0,0 +1,798 @@
++"use client";
++
++// PROTOTYPE(hidden-markers): ways to surface filter-hidden games, picked via ?variant=A..H
++import { useHasMounted } from "@react-hooks-library/core";
++import { EyeOff, Star } from "lucide-react";
++import { ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
++import { createPortal } from "react-dom";
++
++import LocalDate from "@/components/LocalDate";
++import { PrototypeSwitcher } from "@/components/PrototypeSwitcher";
++import { SanityImage } from "@/components/SanityImage";
++import { useGameFilterContext } from "@/contexts/GameFilterContext";
++import { useDashboardImageLoadingOptimization } from "@/hooks/useDashboardImageLoadingOptimization";
++import { Game, GameStatistics } from "@/lib/cms/games.types";
++import { getStoredFilters } from "@/lib/storage/gameFiltersStorage";
++import { cn } from "@/lib/utils";
++import { Button } from "@/ui/Button";
++
++import { GameTile, gridOrderClass } from "./Games";
++
++export const HIDDEN_MARKER_VARIANTS = ["A", "B", "C", "D", "E", "F", "G", "H"] as const;
++export type HiddenMarkerVariant = (typeof HIDDEN_MARKER_VARIANTS)[number];
++
++const VARIANT_NAMES: Record<HiddenMarkerVariant, string> = {
++    A: "Gap marker",
++    B: "Docked pill",
++    C: "Compact cell",
++    D: "Gap rail with logos",
++    E: "Launching-soon strip",
++    F: "30-day timeline strip",
++    G: "Preset chip + soon strip",
++    H: "Ghost cards (7d) + strip",
++};
++
++export const HIDDEN_PROTOTYPE_HEADER_SLOT = "hidden-prototype-header-slot";
++const SOON_WINDOW_DAYS = 30;
++const GHOST_WINDOW_DAYS = 7;
++
++type Slot = { game: Game; peeked: boolean; ghost?: boolean; hiddenBefore: Game[] };
++
++const hiddenReason = (g: Game) => {
++    if (g.isDormant) return "Dormant";
++    if (g.categories?.includes("community")) return "Community";
++    if (
++        !g.categories?.includes("seasonal") &&
++        !g.categories?.includes("early-access") &&
++        !g.nextSeason?.start?.confirmed
++    )
++        return "No confirmed season";
++    return "Hidden by your filters";
++};
++
++const openFiltersDialog = () => {
++    const btn = Array.from(document.querySelectorAll("button")).find(
++        (b) => b.textContent?.trim().startsWith("Filters") && b.offsetParent !== null,
++    );
++    btn?.click();
++};
++
++const buildSlots = (
++    categoryGames: Game[],
++    excluded: Set<string>,
++    peeked: Set<string>,
++    ghosts: Set<string>,
++) => {
++    const ordered = [
++        ...categoryGames.filter((g) => !g.isDormant && !g.isComingSoon),
++        ...categoryGames.filter((g) => g.isComingSoon),
++        ...categoryGames.filter((g) => g.isDormant).map((g) => ({ ...g, nextSeason: null })),
++    ];
++    const slots: Slot[] = [];
++    const tail: Game[] = [];
++    let run: Game[] = [];
++    for (const game of ordered) {
++        const isHidden = excluded.has(game.slug);
++        if (isHidden && ghosts.has(game.slug) && !peeked.has(game.slug)) {
++            slots.push({ game, peeked: false, ghost: true, hiddenBefore: run });
++            run = [];
++            continue;
++        }
++        if (isHidden && !peeked.has(game.slug)) {
++            if (game.isDormant) tail.push(game);
++            else run.push(game);
++            continue;
++        }
++        slots.push({ game, peeked: isHidden, hiddenBefore: run });
++        run = [];
++    }
++    return { slots, tail: [...run, ...tail] };
++};
++
++const HiddenPopover = ({
++    games,
++    title,
++    onPeek,
++    onHideMarkers,
++    trigger,
++    className,
++}: {
++    games: Game[];
++    title: string;
++    onPeek: (slugs: string[]) => void;
++    onHideMarkers: () => void;
++    trigger: ReactNode;
++    className?: string;
++}) => {
++    const [open, setOpen] = useState(false);
++    const [pos, setPos] = useState({ top: 0, left: 0 });
++    const triggerRef = useRef<HTMLButtonElement>(null);
++    const panelRef = useRef<HTMLDivElement>(null);
++    const closeTimer = useRef<NodeJS.Timeout | null>(null);
++
++    const place = () => {
++        const r = triggerRef.current?.getBoundingClientRect();
++        if (!r) return;
++        const width = 288;
++        setPos({
++            top: r.bottom + 6,
++            left: Math.min(
++                Math.max(r.left + r.width / 2 - width / 2, 8),
++                window.innerWidth - width - 8,
++            ),
++        });
++    };
++
++    const show = () => {
++        if (closeTimer.current) clearTimeout(closeTimer.current);
++        place();
++        setOpen(true);
++    };
++    const scheduleClose = (e: React.PointerEvent) => {
++        if (e.pointerType !== "mouse") return;
++        closeTimer.current = setTimeout(() => setOpen(false), 200);
++    };
++
++    useEffect(() => {
++        if (!open) return;
++        const onDown = (e: PointerEvent) => {
++            const t = e.target as Node;
++            if (triggerRef.current?.contains(t) || panelRef.current?.contains(t)) return;
++            setOpen(false);
++        };
++        const onScroll = () => setOpen(false);
++        document.addEventListener("pointerdown", onDown);
++        window.addEventListener("scroll", onScroll, { passive: true });
++        return () => {
++            document.removeEventListener("pointerdown", onDown);
++            window.removeEventListener("scroll", onScroll);
++        };
++    }, [open]);
++
++    return (
++        <>
++            <button
++                ref={triggerRef}
++                type="button"
++                aria-label={title}
++                className={cn("cursor-pointer", className)}
++                onPointerEnter={(e) => e.pointerType === "mouse" && show()}
++                onPointerLeave={scheduleClose}
++                onClick={() => (open ? setOpen(false) : show())}
++            >
++                {trigger}
++            </button>
++            {open &&
++                createPortal(
++                    <div
++                        ref={panelRef}
++                        style={{ top: pos.top, left: pos.left }}
++                        onPointerEnter={() =>
++                            closeTimer.current && clearTimeout(closeTimer.current)
++                        }
++                        onPointerLeave={scheduleClose}
++                        className="bg-popover text-popover-foreground fixed z-[90] flex w-72 flex-col gap-2 rounded-md border p-3 text-sm shadow-lg"
++                    >
++                        <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
++                            <EyeOff className="h-3.5 w-3.5" />
++                            {title}
++                        </div>
++                        <ul className="flex max-h-64 flex-col gap-2 overflow-y-auto">
++                            {games.map((g) => (
++                                <li key={g.slug} className="flex items-center gap-2">
++                                    <div className="relative h-8 w-8 shrink-0 opacity-70 grayscale">
++                                        {g.logo && (
++                                            <SanityImage
++                                                src={g.logo}
++                                                alt=""
++                                                fill
++                                                objectFit="contain"
++                                            />
++                                        )}
++                                    </div>
++                                    <div className="flex min-w-0 flex-1 flex-col">
++                                        <span className="truncate font-medium">{g.name}</span>
++                                        <span className="text-muted-foreground text-xs">
++                                            {g.nextSeason?.start?.startDate ? (
++                                                <>
++                                                    {g.nextSeason.start.confirmed ? "" : "Est. "}
++                                                    <LocalDate
++                                                        utcDate={g.nextSeason.start.startDate}
++                                                        dateOnly
++                                                    />
++                                                    {" · "}
++                                                </>
++                                            ) : null}
++                                            {hiddenReason(g)}
++                                        </span>
++                                    </div>
++                                    <Button
++                                        size="sm"
++                                        variant="outline"
++                                        className="h-7 px-2 text-xs"
++                                        onClick={() => {
++                                            onPeek([g.slug]);
++                                            setOpen(false);
++                                        }}
++                                    >
++                                        Show here
++                                    </Button>
++                                </li>
++                            ))}
++                        </ul>
++                        <div className="flex items-center justify-between border-t pt-2 text-xs">
++                            <button
++                                className="hover:text-foreground text-muted-foreground underline-offset-2 hover:underline"
++                                onClick={() => {
++                                    setOpen(false);
++                                    openFiltersDialog();
++                                }}
++                            >
++                                Edit filters
++                            </button>
++                            <button
++                                className="hover:text-foreground text-muted-foreground underline-offset-2 hover:underline"
++                                onClick={() => {
++                                    setOpen(false);
++                                    onHideMarkers();
++                                }}
++                            >
++                                Hide these markers
++                            </button>
++                        </div>
++                    </div>,
++                    document.body,
++                )}
++        </>
++    );
++};
++
++const PeekLabel = () => (
++    <span className="bg-background/90 text-muted-foreground absolute top-2 left-1/2 z-10 -translate-x-1/2 rounded-full border px-2 py-0.5 text-[10px] tracking-wide uppercase">
++        Hidden by filters · until reload
++    </span>
++);
++
++type MarkerProps = {
++    games: Game[];
++    tail?: boolean;
++    onPeek: (slugs: string[]) => void;
++    onHideMarkers: () => void;
++};
++
++const popoverTitle = (games: Game[], tail?: boolean) =>
++    `${games.length} ${tail ? "more " : ""}hidden by filters`;
++
++// A: thin line in the grid gap, no layout impact
++const GapMarker = ({ games, tail, ...rest }: MarkerProps) => (
++    <HiddenPopover
++        games={games}
++        title={popoverTitle(games, tail)}
++        {...rest}
++        className={cn(
++            "group absolute z-20 flex items-center justify-center",
++            // mobile: horizontal in the row gap above; md+: vertical in the column gap
++            tail
++                ? "inset-x-6 -bottom-4 h-4 md:inset-x-auto md:inset-y-6 md:-right-5 md:h-auto md:w-5"
++                : "inset-x-6 -top-4 h-4 md:inset-x-auto md:inset-y-6 md:-left-5 md:h-auto md:w-5",
++        )}
++        trigger={
++            <>
++                <span className="bg-muted-foreground/30 group-hover:bg-primary/70 absolute inset-x-0 top-1/2 h-px md:inset-x-auto md:inset-y-0 md:left-1/2 md:h-auto md:w-px" />
++                <span className="bg-background text-muted-foreground group-hover:text-primary group-hover:border-primary/70 relative flex h-4 min-w-4 items-center justify-center rounded-full border px-1 text-[9px] leading-none">
++                    {games.length}
++                </span>
++            </>
++        }
++    />
++);
++
++// B: small pill docked on the card edge
++const DockedPill = ({ games, tail, ...rest }: MarkerProps) => (
++    <HiddenPopover
++        games={games}
++        title={popoverTitle(games, tail)}
++        {...rest}
++        className={cn("absolute z-20", tail ? "right-4 -bottom-2.5" : "-top-2.5 left-4")}
++        trigger={
++            <span className="bg-background text-muted-foreground hover:text-foreground hover:border-foreground/40 flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-wide whitespace-nowrap uppercase">
++                <EyeOff className="h-3 w-3" />+{games.length} hidden
++            </span>
++        }
++    />
++);
++
++// C: its own compact grid cell with greyed logos
++const CompactCell = ({ games, tail, ...rest }: MarkerProps) => (
++    <HiddenPopover
++        games={games}
++        title={popoverTitle(games, tail)}
++        {...rest}
++        className="border-muted-foreground/25 hover:border-foreground/40 flex w-full items-center gap-3 rounded-md border border-dashed px-3 py-2 text-left"
++        trigger={
++            <>
++                <div className="flex -space-x-2">
++                    {games.slice(0, 4).map((g) => (
++                        <div
++                            key={g.slug}
++                            className="bg-card relative h-7 w-7 rounded-full border opacity-60 grayscale"
++                        >
++                            {g.logo && (
++                                <SanityImage
++                                    src={g.logo}
++                                    alt=""
++                                    fill
++                                    objectFit="contain"
++                                    className="p-0.5"
++                                />
++                            )}
++                        </div>
++                    ))}
++                </div>
++                <span className="text-muted-foreground min-w-0 flex-1 truncate text-xs">
++                    {games.length === 1 ? games[0].name : `${games.length} games`} hidden by filters
++                </span>
++                <EyeOff className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
++            </>
++        }
++    />
++);
++
++const MiniLogo = ({ game, className }: { game: Game; className?: string }) => (
++    <span
++        className={cn(
++            "bg-background relative block shrink-0 rounded-full border opacity-70 grayscale transition group-hover:opacity-100 group-hover:grayscale-0",
++            className,
++        )}
++    >
++        {game.logo && (
++            <SanityImage src={game.logo} alt="" fill objectFit="contain" className="p-px" />
++        )}
++    </span>
++);
++
++// D: A's gap placement with C's logos; flips to the row gap for first-column cards
++const GapRail = ({ games, tail, ...rest }: MarkerProps) => {
++    const probeRef = useRef<HTMLSpanElement>(null);
++    const [horizontal, setHorizontal] = useState(false);
++
++    useLayoutEffect(() => {
++        const measure = () => {
++            const slot = probeRef.current?.parentElement;
++            if (!slot) return;
++            const isMd = window.matchMedia("(min-width: 768px)").matches;
++            const edgeColumn = tail
++                ? slot.offsetLeft + slot.offsetWidth >= (slot.parentElement?.clientWidth ?? 0) - 4
++                : slot.offsetLeft < 4;
++            setHorizontal(!isMd || edgeColumn);
++        };
++        measure();
++        window.addEventListener("resize", measure);
++        return () => window.removeEventListener("resize", measure);
++    }, [tail]);
++
++    const shown = games.slice(0, 3);
++    const more = games.length - shown.length;
++
++    return (
++        <>
++            <span ref={probeRef} className="hidden" />
++            <HiddenPopover
++                games={games}
++                title={popoverTitle(games, tail)}
++                {...rest}
++                className={cn(
++                    "group absolute z-20 flex items-center justify-center",
++                    horizontal
++                        ? cn(
++                              "inset-x-0 h-4 md:h-5",
++                              tail ? "-bottom-4 md:-bottom-5" : "-top-4 md:-top-5",
++                          )
++                        : cn("inset-y-0 w-5", tail ? "-right-5" : "-left-5"),
++                )}
++                trigger={
++                    <>
++                        <span
++                            className={cn(
++                                "border-muted-foreground/40 group-hover:border-primary/70 absolute border-dashed",
++                                horizontal
++                                    ? "inset-x-8 top-1/2 border-t"
++                                    : "inset-y-8 left-1/2 border-l",
++                            )}
++                        />
++                        <span
++                            className={cn(
++                                "bg-background text-muted-foreground group-hover:text-foreground group-hover:border-primary/70 relative flex items-center gap-1 rounded-full border p-0.5",
++                                horizontal ? "flex-row pr-2" : "flex-col py-1",
++                            )}
++                        >
++                            <EyeOff className="h-3 w-3 shrink-0" />
++                            {shown.map((g) => (
++                                <MiniLogo key={g.slug} game={g} className="h-3.5 w-3.5" />
++                            ))}
++                            {more > 0 && (
++                                <span className="text-[9px] leading-none font-medium">+{more}</span>
++                            )}
++                            {horizontal && (
++                                <span className="text-[10px] leading-none whitespace-nowrap">
++                                    {games.length === 1 ? games[0].name : `${games.length} games`}{" "}
++                                    hidden
++                                </span>
++                            )}
++                        </span>
++                    </>
++                }
++            />
++        </>
++    );
++};
++
++const daysUntil = (iso: string) =>
++    Math.ceil((new Date(iso).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
++
++const startsWithin = (g: Game, days: number) => {
++    const start = g.nextSeason?.start?.startDate;
++    if (!start) return false;
++    const d = daysUntil(start);
++    return d >= 0 && d <= days;
++};
++
++const byStart = (a: Game, b: Game) =>
++    a.nextSeason!.start!.startDate!.localeCompare(b.nextSeason!.start!.startDate!);
++
++type PeekProps = { onPeek: (slugs: string[]) => void; onHideMarkers: () => void };
++
++const HeaderSlot = ({ children }: { children: ReactNode }) => {
++    const isMounted = useHasMounted();
++    const target = isMounted ? document.getElementById(HIDDEN_PROTOTYPE_HEADER_SLOT) : null;
++    return target ? createPortal(children, target) : null;
++};
++
++const PresetChip = ({ hiddenCount }: { hiddenCount: number }) => {
++    const isPreset = getStoredFilters() === null;
++    return (
++        <button
++            onClick={openFiltersDialog}
++            className="border-primary/40 bg-primary/5 hover:bg-primary/10 text-foreground flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium"
++        >
++            {isPreset && <Star className="text-primary h-3.5 w-3.5" />}
++            {isPreset ? "Featured preset" : "Custom filters"}
++            <span className="text-muted-foreground font-normal">· {hiddenCount} hidden</span>
++        </button>
++    );
++};
++
++// E/G/H: no grid markers; a single strip under the tabs for hidden games launching soon
++const SoonStrip = ({
++    hidden,
++    large,
++    lead,
++    ...rest
++}: PeekProps & { hidden: Game[]; large?: boolean; lead?: ReactNode }) => {
++    const soon = hidden.filter((g) => startsWithin(g, SOON_WINDOW_DAYS)).sort(byStart);
++    const others = hidden.filter((g) => !soon.includes(g));
++
++    if (hidden.length === 0 && !lead) return null;
++
++    return (
++        <HeaderSlot>
++            <div
++                className={cn(
++                    "text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs",
++                    large && "pt-1",
++                )}
++            >
++                {lead}
++                {!lead && <EyeOff className="h-3.5 w-3.5 shrink-0" />}
++                {hidden.length > 0 && (
++                    <span>
++                        {soon.length > 0
++                            ? lead
++                                ? "Starting soon among hidden:"
++                                : "Hidden by filters, starting soon:"
++                            : lead
++                              ? null
++                              : "Hidden by filters:"}
++                    </span>
++                )}
++                {soon.map((g) => (
++                    <HiddenPopover
++                        key={g.slug}
++                        games={[g]}
++                        title="Hidden by filters"
++                        {...rest}
++                        className={cn(
++                            "group hover:border-foreground/40 hover:text-foreground flex items-center rounded-full border",
++                            large ? "gap-2 py-0.5 pr-2.5 pl-0.5" : "gap-1.5 py-0.5 pr-2 pl-0.5",
++                        )}
++                        trigger={
++                            <>
++                                <MiniLogo game={g} className={large ? "h-6 w-6" : "h-4 w-4"} />
++                                <span className={cn(large && "text-foreground/80")}>
++                                    {g.shortName || g.name}
++                                </span>
++                                <span className="opacity-70">
++                                    {large ? "in " : ""}
++                                    {g.nextSeason?.start?.confirmed ? "" : "~"}
++                                    {daysUntil(g.nextSeason!.start!.startDate!)}d
++                                </span>
++                            </>
++                        }
++                    />
++                ))}
++                {others.length > 0 && (
++                    <HiddenPopover
++                        games={others}
++                        title={`${others.length} more hidden by filters`}
++                        {...rest}
++                        className="hover:text-foreground underline-offset-2 hover:underline"
++                        trigger={
++                            <span>
++                                {soon.length > 0
++                                    ? `+${others.length} more`
++                                    : `${others.length} games`}
++                            </span>
++                        }
++                    />
++                )}
++            </div>
++        </HeaderSlot>
++    );
++};
++
++// F: 30-day axis; hidden games as logo pins at their start date, shown games as dots
++const TimelineStrip = ({
++    hidden,
++    shown,
++    ...rest
++}: PeekProps & { hidden: Game[]; shown: Game[] }) => {
++    const pins = hidden.filter((g) => startsWithin(g, SOON_WINDOW_DAYS)).sort(byStart);
++    const dots = shown.filter((g) => startsWithin(g, SOON_WINDOW_DAYS));
++    const others = hidden.filter((g) => !pins.includes(g));
++    const pct = (g: Game) =>
++        Math.min(
++            Math.max((daysUntil(g.nextSeason!.start!.startDate!) / SOON_WINDOW_DAYS) * 100, 0),
++            100,
++        );
++
++    const lanes: number[] = [];
++    const placed = pins.map((g) => {
++        const left = pct(g);
++        let lane = 0;
++        while (lanes[lane] !== undefined && left - lanes[lane] < 4) lane++;
++        lanes[lane] = left;
++        return { g, left, lane };
++    });
++    const height = 28 + lanes.length * 28;
++
++    return (
++        <HeaderSlot>
++            <div className="text-muted-foreground flex flex-col gap-1 pt-1 text-xs">
++                <div className="flex items-center justify-between">
++                    <span className="flex items-center gap-1.5">
++                        <EyeOff className="h-3.5 w-3.5" />
++                        Next {SOON_WINDOW_DAYS} days · logos are hidden by filters
++                    </span>
++                    {others.length > 0 && (
++                        <HiddenPopover
++                            games={others}
++                            title={`${others.length} more hidden by filters`}
++                            {...rest}
++                            className="hover:text-foreground underline-offset-2 hover:underline"
++                            trigger={<span>+{others.length} more hidden</span>}
++                        />
++                    )}
++                </div>
++                <div className="relative mx-3" style={{ height }}>
++                    <div className="bg-muted-foreground/30 absolute inset-x-0 bottom-4 h-px" />
++                    {[0, 7, 14, 21, 28].map((d) => (
++                        <span
++                            key={d}
++                            className="absolute bottom-0 -translate-x-1/2 text-[10px] opacity-60"
++                            style={{ left: `${(d / SOON_WINDOW_DAYS) * 100}%` }}
++                        >
++                            {d === 0 ? "Today" : `${d / 7}w`}
++                        </span>
++                    ))}
++                    {dots.map((g) => (
++                        <span
++                            key={g.slug}
++                            title={`${g.name} (shown)`}
++                            className="bg-foreground/40 absolute bottom-[13px] h-1.5 w-1.5 -translate-x-1/2 rounded-full"
++                            style={{ left: `${pct(g)}%` }}
++                        />
++                    ))}
++                    {placed.map(({ g, left, lane }) => (
++                        <div
++                            key={g.slug}
++                            className="absolute -translate-x-1/2"
++                            style={{ left: `${left}%`, bottom: 22 + lane * 28 }}
++                        >
++                            <HiddenPopover
++                                games={[g]}
++                                title="Hidden by filters"
++                                {...rest}
++                                className="group block"
++                                trigger={
++                                    <MiniLogo
++                                        game={g}
++                                        className={cn(
++                                            "h-6 w-6",
++                                            !g.nextSeason?.start?.confirmed && "border-dashed",
++                                        )}
++                                    />
++                                }
++                            />
++                        </div>
++                    ))}
++                </div>
++            </div>
++        </HeaderSlot>
++    );
++};
++
++// H: hidden games starting within a week take a real slot, greyed
++const GhostCard = ({ game, onPeek }: { game: Game; onPeek: (slugs: string[]) => void }) => (
++    <div className="border-muted-foreground/30 bg-card/40 flex w-full flex-col items-center justify-center gap-3 rounded-md border border-dashed p-6 text-center">
++        <div className="relative h-20 w-40 opacity-50 grayscale">
++            {game.logo && <SanityImage src={game.logo} alt="" fill objectFit="contain" />}
++        </div>
++        <div className="flex flex-col gap-1">
++            <span className="font-medium">{game.name}</span>
++            <span className="text-muted-foreground text-xs">
++                {game.nextSeason?.start?.confirmed ? "Starts" : "Expected"} in{" "}
++                {daysUntil(game.nextSeason!.start!.startDate!)}d · hidden by filters (
++                {hiddenReason(game).toLowerCase()})
++            </span>
++        </div>
++        <div className="flex gap-2">
++            <Button size="sm" variant="outline" onClick={() => onPeek([game.slug])}>
++                Show here
++            </Button>
++            <Button size="sm" variant="ghost" onClick={openFiltersDialog}>
++                Edit filters
++            </Button>
++        </div>
++    </div>
++);
++
++export const HiddenGamesPrototype = ({
++    variant,
++    statistics,
++}: {
++    variant: HiddenMarkerVariant;
++    statistics: Record<string, GameStatistics>;
++}) => {
++    const { categoryGames = [], excludedSlugs = [], category } = useGameFilterContext();
++    const { shouldLoadImage } = useDashboardImageLoadingOptimization();
++    const [peeked, setPeeked] = useState<Set<string>>(new Set());
++    const [markersOn, setMarkersOn] = useState(true);
++
++    const ghosts = useMemo(
++        () =>
++            new Set(
++                variant === "H" && markersOn
++                    ? categoryGames
++                          .filter((g) => startsWithin(g, GHOST_WINDOW_DAYS))
++                          .map((g) => g.slug)
++                    : [],
++            ),
++        [variant, markersOn, categoryGames],
++    );
++    const { slots, tail } = useMemo(
++        () =>
++            buildSlots(
++                categoryGames,
++                new Set(category === "all" ? [] : excludedSlugs),
++                peeked,
++                ghosts,
++            ),
++        [categoryGames, excludedSlugs, category, peeked, ghosts],
++    );
++
++    const markerProps = {
++        onPeek: (slugs: string[]) => setPeeked((p) => new Set([...p, ...slugs])),
++        onHideMarkers: () => setMarkersOn(false),
++    };
++    const Marker = variant === "A" ? GapMarker : variant === "B" ? DockedPill : GapRail;
++    const inGrid = ["A", "B", "D"].includes(variant) && markersOn;
++
++    let slotIdx = 0;
++    const items: ReactNode[] = [];
++    slots.forEach((slot, i) => {
++        const isLast = i === slots.length - 1;
++        if (variant === "C" && markersOn && slot.hiddenBefore.length > 0) {
++            items.push(
++                <div
++                    key={`hidden-${slot.game.slug}`}
++                    className={cn(gridOrderClass(slotIdx++), "min-h-0! self-start")}
++                >
++                    <CompactCell games={slot.hiddenBefore} {...markerProps} />
++                </div>,
++            );
++        }
++        const idx = slotIdx++;
++        if (slot.ghost) {
++            items.push(
++                <div key={slot.game.slug} className={gridOrderClass(idx)}>
++                    <GhostCard game={slot.game} onPeek={markerProps.onPeek} />
++                </div>,
++            );
++            return;
++        }
++        items.push(
++            <div key={slot.game.slug} className={cn(gridOrderClass(idx), "relative")}>
++                {slot.peeked && <PeekLabel />}
++                <div className={cn("flex w-full", slot.peeked && "opacity-80")}>
++                    <GameTile
++                        game={slot.game}
++                        statistics={statistics}
++                        loadEager={shouldLoadImage(idx)}
++                    />
++                </div>
++                {inGrid && slot.hiddenBefore.length > 0 && (
++                    <Marker games={slot.hiddenBefore} {...markerProps} />
++                )}
++                {inGrid && isLast && tail.length > 0 && (
++                    <Marker games={tail} tail {...markerProps} />
++                )}
++            </div>,
++        );
++    });
++    if (variant === "C" && markersOn && tail.length > 0) {
++        items.push(
++            <div key="hidden-tail" className={cn(gridOrderClass(slotIdx++), "min-h-0! self-start")}>
++                <CompactCell games={tail} tail {...markerProps} />
++            </div>,
++        );
++    }
++
++    const inPlaceCount = slots.reduce((n, s) => n + s.hiddenBefore.length, 0);
++    const hiddenList = [...slots.flatMap((s) => s.hiddenBefore), ...tail];
++    const ghostCount = slots.filter((s) => s.ghost).length;
++
++    return (
++        <>
++            {items}
++            {variant === "E" && markersOn && <SoonStrip hidden={hiddenList} {...markerProps} />}
++            {variant === "F" && markersOn && (
++                <TimelineStrip
++                    hidden={hiddenList}
++                    shown={slots.filter((s) => !s.ghost).map((s) => s.game)}
++                    {...markerProps}
++                />
++            )}
++            {variant === "G" && markersOn && (
++                <SoonStrip
++                    hidden={hiddenList}
++                    large
++                    lead={<PresetChip hiddenCount={hiddenList.length} />}
++                    {...markerProps}
++                />
++            )}
++            {variant === "H" && markersOn && <SoonStrip hidden={hiddenList} {...markerProps} />}
++            <PrototypeSwitcher
++                variants={HIDDEN_MARKER_VARIANTS.map((key) => ({ key, name: VARIANT_NAMES[key] }))}
++                current={variant}
++                status={
++                    <span className="flex items-center gap-2">
++                        hidden {inPlaceCount + tail.length + ghostCount} · ghosts {ghostCount} ·
++                        in-place {inPlaceCount} · tail {tail.length} · peeked {peeked.size} ·
++                        markers {markersOn ? "on" : "off"}
++                        {(!markersOn || peeked.size > 0) && (
++                            <button
++                                className="underline"
++                                onClick={() => {
++                                    setMarkersOn(true);
++                                    setPeeked(new Set());
++                                }}
++                            >
++                                reset
++                            </button>
++                        )}
++                    </span>
++                }
++            />
++        </>
++    );
++};
+diff --git a/arpg-timeline/src/components/PrototypeSwitcher.tsx b/arpg-timeline/src/components/PrototypeSwitcher.tsx
+new file mode 100644
+index 0000000..5832b3e
+--- /dev/null
++++ b/arpg-timeline/src/components/PrototypeSwitcher.tsx
+@@ -0,0 +1,70 @@
++"use client";
++
++// PROTOTYPE: floating variant switcher, never rendered in production builds
++import { ChevronLeft, ChevronRight } from "lucide-react";
++import { usePathname, useRouter, useSearchParams } from "next/navigation";
++import { ReactNode, useCallback, useEffect } from "react";
++
++export const usePrototypeVariant = <T extends string>(variants: readonly T[]): T | null => {
++    const searchParams = useSearchParams();
++    if (process.env.NODE_ENV === "production") return null;
++    const value = searchParams.get("variant") as T | null;
++    return value && variants.includes(value) ? value : variants[0];
++};
++
++export const PrototypeSwitcher = ({
++    variants,
++    current,
++    status,
++}: {
++    variants: { key: string; name: string }[];
++    current: string;
++    status?: ReactNode;
++}) => {
++    const router = useRouter();
++    const pathname = usePathname();
++    const searchParams = useSearchParams();
++
++    const go = useCallback(
++        (step: number) => {
++            const idx = variants.findIndex((v) => v.key === current);
++            const next = variants[(idx + step + variants.length) % variants.length];
++            const params = new URLSearchParams(searchParams.toString());
++            params.set("variant", next.key);
++            router.replace(`${pathname}?${params.toString()}`, { scroll: false });
++        },
++        [variants, current, searchParams, router, pathname],
++    );
++
++    useEffect(() => {
++        const onKey = (e: KeyboardEvent) => {
++            const el = e.target as HTMLElement | null;
++            if (el?.closest("input, textarea, [contenteditable]")) return;
++            if (e.key === "ArrowLeft") go(-1);
++            if (e.key === "ArrowRight") go(1);
++        };
++        window.addEventListener("keydown", onKey);
++        return () => window.removeEventListener("keydown", onKey);
++    }, [go]);
++
++    if (process.env.NODE_ENV === "production") return null;
++
++    const active = variants.find((v) => v.key === current);
++
++    return (
++        <div className="fixed bottom-24 left-1/2 z-[100] flex -translate-x-1/2 flex-col items-center gap-1 rounded-2xl bg-fuchsia-600 px-2 py-1.5 text-xs font-medium text-white shadow-xl lg:bottom-4">
++            <div className="flex items-center gap-2">
++                <button onClick={() => go(-1)} className="rounded-full p-1 hover:bg-white/20">
++                    <ChevronLeft className="h-4 w-4" />
++                </button>
++                <span className="whitespace-nowrap">
++                    {current} ({active?.name})
++                </span>
++                <button onClick={() => go(1)} className="rounded-full p-1 hover:bg-white/20">
++                    <ChevronRight className="h-4 w-4" />
++                </button>
++            </div>
++            {status && <div className="px-2 pb-0.5 text-[10px] opacity-80">{status}</div>}
++        </div>
++    );
++};

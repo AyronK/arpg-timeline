@@ -37,6 +37,9 @@ interface GameFilterContextType {
     totalGames: number;
     shownGames: number;
     category: GameFilterCategory;
+    // PROTOTYPE(hidden-markers): sorted category games ignoring exclusions
+    categoryGames?: Game[];
+    excludedSlugs?: string[];
 }
 
 const GameFilterContext = createContext<GameFilterContextType | undefined>(undefined);
@@ -141,6 +144,11 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
         return getFilteredGames(excludedSlugs, category);
     }, [getFilteredGames, excludedSlugs, category]);
 
+    const categoryGames = useMemo(
+        () => getFilteredGames([], category),
+        [getFilteredGames, category],
+    );
+
     useGameFiltersAnalytics(excludedSlugs, filteredGames, category);
 
     const activeFilters = useMemo(() => {
@@ -158,8 +166,12 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
             shownGames: filteredGames.length,
             totalGames: games.length,
             category,
+            categoryGames,
+            excludedSlugs,
         }),
         [
+            categoryGames,
+            excludedSlugs,
             gameFilters,
             toggleGameFilter,
             toggleGroupFilter,

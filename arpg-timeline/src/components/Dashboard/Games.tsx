@@ -23,52 +23,64 @@ export const Games = ({
     return (
         <>
             {games.map((game, idx) => (
-                <div
-                    key={game.slug}
-                    className={cn("order-4 flex", {
-                        "order-first": idx <= 1,
-                        "xl:order-first": idx <= 2,
-                        "2xl:order-first": idx <= 3,
-                        "4xl:order-first": idx <= 4,
-                    })}
-                >
-                    <ErrorBoundary fallback={<WidgetDiedFallback />}>
-                        <GameCard
-                            name={game.name}
-                            gameLogo={
-                                <SanityImage
-                                    loading={shouldLoadImage(idx) ? "eager" : "lazy"}
-                                    priority={shouldLoadImage(idx)}
-                                    src={
-                                        game.nextSeason?.logo ??
-                                        game.currentSeason?.logo ??
-                                        game.logo!
-                                    }
-                                    alt={`${game.name} logo`}
-                                    className="my-auto"
-                                    width={256}
-                                    height={256}
-                                    objectFit="contain"
-                                />
-                            }
-                            slug={game.slug}
-                            shortName={game.shortName!}
-                            url={game.url!}
-                            buildsUrl={game.buildsUrl}
-                            guidesUrl={game.guidesUrl}
-                            nextSeasonStartDate={game.nextSeason?.start?.startDate}
-                            nextSeasonConfirmed={game.nextSeason?.start?.confirmed}
-                            currentSeasonStartDate={game.currentSeason?.start?.startDate}
-                            currentSeasonEndDate={game.currentSeason?.end?.endDate}
-                            official={game.isOfficial}
-                            stats={statistics[game.slug]}
-                        >
-                            <GameToSeasonWidget game={game} selector="current" />
-                            <GracePeriodSeasonWidgetHoC game={game} />
-                        </GameCard>
-                    </ErrorBoundary>
+                <div key={game.slug} className={gridOrderClass(idx)}>
+                    <GameTile
+                        game={game}
+                        statistics={statistics}
+                        loadEager={shouldLoadImage(idx)}
+                    />
                 </div>
             ))}
         </>
     );
 };
+
+export const gridOrderClass = (idx: number) =>
+    cn("order-4 flex", {
+        "order-first": idx <= 1,
+        "xl:order-first": idx <= 2,
+        "2xl:order-first": idx <= 3,
+        "4xl:order-first": idx <= 4,
+    });
+
+export const GameTile = ({
+    game,
+    statistics = {},
+    loadEager,
+}: {
+    game: Game;
+    statistics?: Record<string, GameStatistics>;
+    loadEager: boolean;
+}) => (
+    <ErrorBoundary fallback={<WidgetDiedFallback />}>
+        <GameCard
+            name={game.name}
+            gameLogo={
+                <SanityImage
+                    loading={loadEager ? "eager" : "lazy"}
+                    priority={loadEager}
+                    src={game.nextSeason?.logo ?? game.currentSeason?.logo ?? game.logo!}
+                    alt={`${game.name} logo`}
+                    className="my-auto"
+                    width={256}
+                    height={256}
+                    objectFit="contain"
+                />
+            }
+            slug={game.slug}
+            shortName={game.shortName!}
+            url={game.url!}
+            buildsUrl={game.buildsUrl}
+            guidesUrl={game.guidesUrl}
+            nextSeasonStartDate={game.nextSeason?.start?.startDate}
+            nextSeasonConfirmed={game.nextSeason?.start?.confirmed}
+            currentSeasonStartDate={game.currentSeason?.start?.startDate}
+            currentSeasonEndDate={game.currentSeason?.end?.endDate}
+            official={game.isOfficial}
+            stats={statistics[game.slug]}
+        >
+            <GameToSeasonWidget game={game} selector="current" />
+            <GracePeriodSeasonWidgetHoC game={game} />
+        </GameCard>
+    </ErrorBoundary>
+);
