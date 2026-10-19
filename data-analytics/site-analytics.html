@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>aRPG Timeline - Site Analytics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #111110;
+        --surface: #1c1c1b;
+        --surface2: #252524;
+        --border: #2e2e2c;
+        --border2: #3a3a38;
+        --text: #e8e8e4;
+        --text2: #a8a8a2;
+        --text3: #66665e;
+        --accent: #3b82f6;
+        --accent-light: #1e2a3d;
+        --green: #22c55e;
+        --red: #ef4444;
+        --purple: #8b5cf6;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .page {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 24px 80px;
+      }
+      header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+      }
+      .header-left h1 {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+      }
+      .header-left p {
+        color: var(--text3);
+        font-size: 13px;
+        margin-top: 3px;
+      }
+      .upload-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border: 1px solid var(--border2);
+        border-radius: 6px;
+        background: var(--surface);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text2);
+        transition: border-color 0.15s;
+        white-space: nowrap;
+      }
+      .upload-label:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .upload-label input {
+        display: none;
+      }
+      .file-loaded {
+        color: var(--green);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+      }
+      #empty-state {
+        text-align: center;
+        padding: 100px 0;
+        color: var(--text3);
+      }
+      #empty-state h2 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text2);
+      }
+      #dashboard {
+        display: none;
+      }
+      .kpi-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 32px;
+      }
+      .kpi {
+        background: var(--surface);
+        padding: 16px 20px;
+      }
+      .kpi-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+      }
+      .kpi-value {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+      .kpi-sub {
+        font-size: 12px;
+        color: var(--text3);
+        margin-top: 4px;
+      }
+      .section {
+        margin-bottom: 36px;
+      }
+      .section-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .section-title .hint {
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--text3);
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+      }
+      .card-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 900px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      /* Engagement: donut (fixed width) + two insight columns */
+      .engage-row {
+        display: grid;
+        grid-template-columns: 220px 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .engage-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      .donut-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+      .donut-legend {
+        width: 100%;
+      }
+      .legend-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px;
+      }
+      .legend-row:last-child {
+        border-bottom: none;
+      }
+      .legend-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        margin-right: 6px;
+      }
+      .legend-label {
+        display: flex;
+        align-items: center;
+        color: var(--text2);
+      }
+      .legend-val {
+        font-weight: 600;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+      }
+      .insight-col {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .insight-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px 20px;
+      }
+      .insight-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text3);
+        margin-bottom: 6px;
+      }
+      .insight-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .insight-sub {
+        font-size: 12px;
+        color: var(--text3);
+        line-height: 1.5;
+      }
+      .tabs {
+        display: flex;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        width: fit-content;
+        margin-bottom: 12px;
+      }
+      .tab-btn {
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border: none;
+        border-right: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text2);
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .tab-btn:last-child {
+        border-right: none;
+      }
+      .tab-btn.active {
+        background: var(--accent);
+        color: white;
+      }
+      .tab-btn:hover:not(.active) {
+        background: var(--surface2);
+      }
+      .bar-list {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .bar-row {
+        display: grid;
+        grid-template-columns: 150px 1fr 52px;
+        align-items: center;
+        gap: 8px;
+      }
+      .bar-label {
+        font-size: 12px;
+        color: var(--text2);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .bar-track {
+        height: 6px;
+        background: var(--surface2);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: 3px;
+      }
+      .bar-pct {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        color: var(--text3);
+        text-align: right;
+      }
+      .heatmap-scroll {
+        overflow: auto;
+      }
+      #heatmap-canvas {
+        display: block;
+      }
+      .tooltip {
+        position: fixed;
+        z-index: 9999;
+        background: #0a0a09;
+        color: #e8e8e4;
+        border: 1px solid var(--border2);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 12px;
+        line-height: 1.6;
+        pointer-events: none;
+        display: none;
+        max-width: 300px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      }
+      .tooltip strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+      .card-scroll {
+        max-height: 420px;
+        overflow-y: auto;
+      }
+      .card-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .card-scroll::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 2px;
+      }
+      .combo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .combo-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 12px;
+        background: var(--surface2);
+        border-radius: 6px;
+      }
+      .combo-rank {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text3);
+        min-width: 22px;
+        padding-top: 2px;
+      }
+      .combo-games {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .game-chip {
+        padding: 2px 7px;
+        border-radius: 3px;
+        font-size: 11px;
+        background: var(--accent-light);
+        color: var(--accent);
+        border: 1px solid #2a4070;
+        white-space: nowrap;
+      }
+      .combo-count {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        color: var(--text3);
+        white-space: nowrap;
+        padding-top: 2px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      th {
+        text-align: left;
+        padding: 8px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--text3);
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text2);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: var(--surface2);
+      }
+      .mono {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+      }
+      .net-pos {
+        color: var(--green);
+        font-weight: 600;
+      }
+      .net-neg {
+        color: var(--red);
+        font-weight: 600;
+      }
+      .pct-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .pct-bar-inline {
+        width: 50px;
+        height: 4px;
+        background: var(--surface2);
+        border-radius: 2px;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .pct-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+      }
+      #graph-canvas {
+        display: block;
+        width: 100%;
+        cursor: grab;
+      }
+      #graph-canvas:active {
+        cursor: grabbing;
+      }
+      .graph-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .graph-controls select {
+        font-size: 12px;
+        border: 1px solid var(--border2);
+        border-radius: 4px;
+        padding: 4px 8px;
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .graph-controls input[type="range"] {
+        cursor: pointer;
+        accent-color: var(--accent);
+        width: 120px;
+      }
+      .graph-hint {
+        font-size: 11px;
+        color: var(--text3);
+        margin-top: 8px;
+      }
+      .graph-legend {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--text3);
+        align-items: center;
+      }
+      .graph-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .graph-legend-line {
+        width: 20px;
+        height: 3px;
+        border-radius: 2px;
+      }
+
+      /* ---- site-analytics additions ---- */
+      .main-tabs {
+        display: flex;
+        gap: 2px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 24px;
+        overflow-x: auto;
+      }
+      .main-tab {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--text2);
+        font: 500 13px "Inter", sans-serif;
+        padding: 10px 14px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .main-tab:hover {
+        color: var(--text);
+      }
+      .main-tab.active {
+        color: var(--text);
+        border-bottom-color: var(--accent);
+      }
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+      .insight-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      @media (max-width: 1000px) {
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+      }
+      .grid-2.section {
+        margin-bottom: 36px;
+      }
+      .cv {
+        display: block;
+        width: 100%;
+      }
+      .stack {
+        display: flex;
+        gap: 2px;
+        height: 14px;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .stack-seg {
+        min-width: 3px;
+      }
+      .legend-inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .legend-inline i {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        margin-right: 6px;
+      }
+      .legend-inline b {
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 500;
+        color: var(--text);
+        margin-left: 4px;
+      }
+      .muted {
+        color: var(--text3);
+      }
+      .kpi[data-tip] {
+        cursor: help;
+      }
+      .kpi[data-tip] .kpi-label {
+        text-decoration: underline dotted var(--text3);
+        text-underline-offset: 3px;
+      }
+      .empty {
+        color: var(--text3);
+        font-size: 12px;
+        padding: 8px 0;
+      }
+      .bar-row {
+        grid-template-columns: 150px 1fr 64px;
+      }
+      .bar-list.wide .bar-row {
+        grid-template-columns: minmax(160px, 45%) 1fr 52px;
+      }
+      .table-wrap {
+        overflow-x: auto;
+      }
+      .card-scroll.tall {
+        max-height: 560px;
+      }
+      thead th {
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        z-index: 1;
+      }
+      th.num,
+      td.num {
+        text-align: right;
+      }
+      td.num .pct-cell {
+        justify-content: flex-end;
+      }
+      th.sortable {
+        cursor: pointer;
+        user-select: none;
+      }
+      th.sortable:hover,
+      th.sorted {
+        color: var(--text);
+      }
+      tr.clickable {
+        cursor: pointer;
+      }
+      tr[data-sel] td {
+        background: var(--accent-light);
+      }
+      .tab-error {
+        border: 1px solid var(--red);
+        color: var(--red);
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        font-size: 12px;
+        font-family: "IBM Plex Mono", monospace;
+        white-space: pre-wrap;
+      }
+      .engage-row .card-title {
+        margin-bottom: 12px;
+      }
+      @media (max-width: 600px) {
+        .page {
+          padding: 20px 16px 60px;
+        }
+        .bar-row,
+        .bar-list.wide .bar-row {
+          grid-template-columns: 110px 1fr 52px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="header-left">
+          <h1>aRPG Timeline - Site Analytics</h1>
+          <p id="subtitle">
+            Features, games, engagement and audience from a raw Simple Analytics
+            export (pageviews + events). Definitions: SIMPLE_ANALYTICS.md
+          </p>
+        </div>
+        <label class="upload-label" id="drop-zone">
+          <input type="file" id="csv-input" accept=".csv" />
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="flex-shrink: 0">
+            <path d="M8 10V2M5 5l3-3 3 3M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2" />
+          </svg>
+          <span id="upload-text">Upload CSV</span>
+        </label>
+      </header>
+
+      <div id="empty-state">
+        <h2>No data loaded</h2>
+        <p>Upload or drop a raw Simple Analytics export (CSV with pageviews and events).</p>
+      </div>
+
+      <div id="app" style="display: none">
+        <nav class="main-tabs" id="main-tabs"></nav>
+        <section class="tab-panel" id="tab-overview"></section>
+        <section class="tab-panel" id="tab-features"></section>
+        <section class="tab-panel" id="tab-games"></section>
+        <section class="tab-panel" id="tab-engagement"></section>
+        <section class="tab-panel" id="tab-audience"></section>
+        <section class="tab-panel" id="tab-filters">
+          <div id="fo-new"></div>
+          <div id="legacy-filters">
+        <div class="kpi-row" id="kpi-row"></div>
+
+        <!-- Engagement -->
+        <div class="section">
+          <div class="section-title">
+            Filter engagement
+            <span class="hint"
+              >- how many visitors customized their view vs left defaults
+              unchanged</span
+            >
+          </div>
+          <div class="engage-row">
+            <div class="donut-card">
+              <canvas id="donut-canvas" width="130" height="130"></canvas>
+              <div class="donut-legend" id="donut-legend"></div>
+            </div>
+            <div class="insight-col" id="ins1"></div>
+            <div class="insight-col" id="ins2"></div>
+          </div>
+        </div>
+
+        <!-- Game popularity -->
+        <div class="section">
+          <div class="section-title">
+            Game popularity
+            <span class="hint"
+              >- % of active filter events where the game was included or
+              excluded</span
+            >
+          </div>
+          <div class="tabs" id="pop-tabs">
+            <button class="tab-btn active" data-tab="visible">
+              Included (visible)
+            </button>
+            <button class="tab-btn" data-tab="hidden">Excluded (hidden)</button>
+            <button class="tab-btn" data-tab="delta">Net preference</button>
+          </div>
+          <div class="grid-2">
+            <div class="card card-scroll">
+              <div class="card-title" id="btl">Most included</div>
+              <div class="bar-list" id="bl"></div>
+            </div>
+            <div class="card card-scroll">
+              <div class="card-title" id="btr">Least included</div>
+              <div class="bar-list" id="br"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Heatmap -->
+        <div class="section">
+          <div class="section-title">
+            Co-occurrence heatmap
+            <span class="hint"
+              >- how often two games appear in the same active filter
+              configuration</span
+            >
+          </div>
+          <div class="card">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 14px;
+                flex-wrap: wrap;
+              "
+            >
+              <div class="card-title" style="margin: 0">
+                Pair frequency - hover cells for details
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  font-size: 11px;
+                  color: var(--text3);
+                "
+              >
+                <span>Fewer</span>
+                <canvas
+                  id="scale-canvas"
+                  width="100"
+                  height="8"
+                  style="border-radius: 2px; vertical-align: middle"
+                ></canvas>
+                <span>More co-occurrences</span>
+              </div>
+            </div>
+            <div class="heatmap-scroll">
+              <canvas id="heatmap-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graph -->
+        <div class="section">
+          <div class="section-title">
+            Game similarity graph
+            <span class="hint"
+              >- node size = inclusion frequency; edge = co-occurrence
+              strength</span
+            >
+          </div>
+          <div class="card">
+            <div class="graph-controls">
+              <label
+                >Mode:
+                <select id="graph-mode">
+                  <option value="both">Co-selected + Co-excluded</option>
+                  <option value="visible">Co-selected only</option>
+                  <option value="hidden">Co-excluded only</option>
+                </select></label
+              >
+              <label
+                >Min pair strength:
+                <input type="range" id="edge-thresh" min="1" max="50" value="8"
+              /></label>
+              <span
+                id="thresh-label"
+                style="
+                  font-family: &quot;IBM Plex Mono&quot;, monospace;
+                  color: var(--text3);
+                  min-width: 36px;
+                "
+              ></span>
+            </div>
+            <canvas id="graph-canvas" height="480"></canvas>
+            <div class="graph-hint">
+              Scroll to zoom - drag background to pan - drag nodes to reposition
+            </div>
+            <div class="graph-legend">
+              <div class="graph-legend-item">
+                <div
+                  class="graph-legend-line"
+                  style="background: var(--accent)"
+                ></div>
+                Included together
+              </div>
+              <div class="graph-legend-item">
+                <div
+                  class="graph-legend-line"
+                  style="background: var(--red)"
+                ></div>
+                Excluded together
+              </div>
+              <div class="graph-legend-item">
+                <div
+                  class="graph-legend-line"
+                  style="background: var(--purple)"
+                ></div>
+                Both signals
+              </div>
+              <span>Node size = inclusion frequency</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top combos -->
+        <div class="section">
+          <div class="section-title">
+            Popular filter configurations
+            <span class="hint"
+              >- exact game sets chosen by active visitors</span
+            >
+          </div>
+          <div class="card card-scroll">
+            <div class="card-title">Top included sets</div>
+            <div class="combo-list" id="top-combos"></div>
+          </div>
+        </div>
+
+        <!-- Size dist + dropout/addin -->
+        <div class="section">
+          <div class="section-title">Filter set size &amp; default changes</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Visitors by number of visible games</div>
+              <canvas
+                id="dist-canvas"
+                height="220"
+                style="display: block; width: 100%"
+              ></canvas>
+            </div>
+            <div class="card card-scroll">
+              <div class="card-title" style="margin-bottom: 8px">
+                Default vs active - what changed?
+              </div>
+              <div class="tabs" id="dropout-tabs" style="margin-bottom: 12px">
+                <button class="tab-btn active" data-dtype="out">
+                  Removed from default
+                </button>
+                <button class="tab-btn" data-dtype="in">
+                  Added beyond default
+                </button>
+              </div>
+              <div class="bar-list" id="dropout-bars"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Config diversity log scale -->
+        <div class="section">
+          <div class="section-title">
+            Configuration diversity
+            <span class="hint"
+              >- each bar = one unique filter config, sorted by popularity. Log
+              scale reveals the long tail.</span
+            >
+          </div>
+          <div class="card">
+            <canvas
+              id="combo-dist-canvas"
+              height="180"
+              style="display: block; width: 100%"
+            ></canvas>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="section">
+          <div class="section-title">All games - full statistics</div>
+          <div class="card">
+            <div class="card-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Game</th>
+                    <th>Included in</th>
+                    <th>Excluded in</th>
+                    <th>Visible events</th>
+                    <th>Hidden events</th>
+                    <th>
+                      Net score
+                      <span
+                        id="net-q"
+                        style="
+                          cursor: help;
+                          color: var(--accent);
+                          border-bottom: 1px dotted var(--accent);
+                        "
+                        >?</span
+                      >
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="stats-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="tooltip" id="tooltip"></div>
+
+    <script src="js/sa-core.js"></script>
+    <script src="js/sa-ui.js"></script>
+    <script src="js/tab-overview.js"></script>
+    <script src="js/tab-features.js"></script>
+    <script src="js/tab-games.js"></script>
+    <script src="js/tab-engagement.js"></script>
+    <script src="js/tab-audience.js"></script>
+    <script src="js/tab-filters-legacy.js"></script>
+    <script src="js/tab-filters.js"></script>
+    <script>
+      (function () {
+        const TABS = [
+          ["overview", "Overview"],
+          ["features", "Features"],
+          ["games", "Games"],
+          ["engagement", "Engagement"],
+          ["audience", "Audience & acquisition"],
+          ["filters", "Filters & onboarding"],
+        ];
+        const $ = (id) => document.getElementById(id);
+        let model = null;
+        const rendered = new Set();
+        let active = TABS.some(([k]) => k === location.hash.slice(1)) ? location.hash.slice(1) : "overview";
+
+        $("main-tabs").innerHTML = TABS.map(([k, l]) => `<button class="main-tab" data-k="${k}">${l}</button>`).join("");
+        $("main-tabs").onclick = (e) => {
+          const b = e.target.closest(".main-tab");
+          if (b) activate(b.dataset.k);
+        };
+
+        function render(k) {
+          const panel = $("tab-" + k);
+          panel.querySelectorAll(":scope > .tab-error").forEach((n) => n.remove());
+          try {
+            SAD.tabs[k](model, panel);
+            rendered.add(k);
+          } catch (err) {
+            console.error(err);
+            const div = document.createElement("div");
+            div.className = "tab-error";
+            div.textContent = "Failed to render this tab: " + (err && err.stack ? err.stack : err);
+            panel.prepend(div);
+          }
+        }
+        function activate(k) {
+          active = k;
+          document.querySelectorAll(".main-tab").forEach((b) => b.classList.toggle("active", b.dataset.k === k));
+          document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.id === "tab-" + k));
+          history.replaceState(null, "", "#" + k);
+          if (model && !rendered.has(k)) render(k);
+        }
+
+        function load(text, name) {
+          $("upload-text").textContent = "Parsing…";
+          setTimeout(() => {
+            try {
+              model = SAD.build(text);
+            } catch (err) {
+              console.error(err);
+              alert("Could not parse this CSV: " + err.message);
+              $("upload-text").textContent = "Upload CSV";
+              return;
+            }
+            if (!model.pvs.length && !model.evs.length) {
+              alert("No data found");
+              return;
+            }
+            $("upload-text").textContent = name;
+            $("upload-text").className = "file-loaded";
+            const f = (t) => new Date(t).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+            $("subtitle").textContent = `${f(model.range[0])} – ${f(model.range[1])} · ${model.recs.length.toLocaleString()} rows · ${model.pvs.length.toLocaleString()} pageviews · ${model.evs.length.toLocaleString()} events · times in your local zone`;
+            $("empty-state").style.display = "none";
+            $("app").style.display = "block";
+            rendered.clear();
+            activate(active);
+          }, 30);
+        }
+        function handleFile(file) {
+          if (!file || !file.name.endsWith(".csv")) {
+            alert("Please upload a .csv file");
+            return;
+          }
+          const r = new FileReader();
+          r.onload = (e) => load(e.target.result, file.name);
+          r.readAsText(file);
+        }
+        $("csv-input").onchange = (e) => handleFile(e.target.files[0]);
+        window.addEventListener("dragover", (e) => e.preventDefault());
+        window.addEventListener("drop", (e) => {
+          e.preventDefault();
+          handleFile(e.dataTransfer.files[0]);
+        });
+        let rt = null;
+        window.addEventListener("resize", () => {
+          if (!model) return;
+          clearTimeout(rt);
+          rt = setTimeout(() => {
+            rendered.clear();
+            render(active);
+          }, 250);
+        });
+        activate(active);
+      })();
+    </script>
+  </body>
+</html>
