@@ -4,7 +4,7 @@ import type { ArticleListItem } from "@/lib/cms/queries/articleQuery";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-export const DEFAULT_MAX_ARTICLE_AGE_DAYS = 30;
+export const DEFAULT_MAX_ARTICLE_AGE_DAYS = 90;
 
 export interface DashboardArticlesOptions {
     /** Applies to game-specific articles only. */
