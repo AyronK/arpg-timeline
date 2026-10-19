@@ -5,6 +5,7 @@ import { Cinzel, Montserrat } from "next/font/google";
 import Script from "next/script";
 
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
+import { isAnalyticsEnabled } from "@/lib/sa_event";
 
 const cinzel = Cinzel({
     subsets: ["latin"],
@@ -24,11 +25,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
             <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col bg-transparent">
                 <div className="relative">
-                    <SimpleAnalytics />
+                    {isAnalyticsEnabled && <SimpleAnalytics />}
                     {children}
                 </div>
+                {isAnalyticsEnabled && (
+                    <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
+                )}
             </body>
-            <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
         </html>
     );
 }

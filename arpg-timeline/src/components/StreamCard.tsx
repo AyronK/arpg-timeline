@@ -146,7 +146,7 @@ export const StreamCard = ({ stream, priority }: { stream: GameStream; priority:
             <div className="flex items-center justify-center">
                 <div className="xs:w-8 xs:min-w-8 sm:h-12 sm:w-12 sm:min-w-12 lg:h-16 lg:w-16">
                     <SanityImage
-                        priority={priority}
+                        preload={priority}
                         loading={priority ? "eager" : "lazy"}
                         src={stream.gameLogo!}
                         alt={`${stream.gameName} logo`}

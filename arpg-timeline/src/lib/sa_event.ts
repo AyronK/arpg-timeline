@@ -5,8 +5,11 @@ declare global {
     }
 }
 
+// Analytics stays off on the local dev server.
+export const isAnalyticsEnabled = process.env.NODE_ENV !== "development";
+
 export const sa_event = (...args: any[]) => {
-    if (typeof window !== "undefined") {
+    if (isAnalyticsEnabled && typeof window !== "undefined") {
         window.sa_event =
             window.sa_event ||
             ((...eventArgs: any[]) => {
