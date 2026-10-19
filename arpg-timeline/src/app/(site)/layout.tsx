@@ -9,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { PartnerPromosDrawer } from "@/components/PartnerPromosDrawer";
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
+import { isAnalyticsEnabled } from "@/lib/sa_event";
 import { PartnerPromosProvider } from "@/contexts/PartnerPromosContext";
 import { Toaster } from "@/ui/Toaster";
 
@@ -54,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
             <body className="scrollbar scrollbar-thumb-muted-foreground scrollbar-track-muted scrollbar-w-1.5 scrollbar-h-1.5 flex min-h-screen flex-col overflow-x-hidden">
-                <SimpleAnalytics />
+                {isAnalyticsEnabled && <SimpleAnalytics />}
                 {process.env.SPEED_INSIGHTS_ENABLED && <SpeedInsights />}
                 <Toaster />
                 <PartnerPromosProvider>
@@ -63,13 +64,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Footer />
                     <PartnerPromosDrawer />
                 </PartnerPromosProvider>
+                {isAnalyticsEnabled && (
+                    <>
+                        <Script async src="https://scripts.simpleanalyticscdn.com/latest.js" />
+                        <Script async src="https://scripts.simpleanalyticscdn.com/auto-events.js" />
+                    </>
+                )}
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                />
             </body>
-            <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
-            <Script src="https://scripts.simpleanalyticscdn.com/auto-events.js" />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
         </html>
     );
 }
