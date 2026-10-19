@@ -47,6 +47,7 @@ export function MobileBottomMenuFilters({
         <div className="flex flex-1 justify-around">
             <Link
                 href={newsHref}
+                prefetch={false}
                 className={cn(
                     "flex flex-col items-center justify-center gap-1 px-2 py-1 text-gray-300 hover:bg-transparent hover:text-blue-400",
                 )}
