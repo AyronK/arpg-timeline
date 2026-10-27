@@ -75,7 +75,7 @@
         "storybook": "^10.6.1",
         "@storybook/nextjs-vite": "^10.6.1",
         "@chromatic-com/storybook": "^5.4.0",
-        "@storybook/addon-vitest": "^10.6.1",
+        "@storybook/addon-vitest": "^10.6.5",
         "@storybook/addon-a11y": "^10.6.1",
         "@storybook/addon-docs": "^10.6.1",
         "@storybook/addon-onboarding": "^10.6.1",
