@@ -1,7 +1,6 @@
 import { GameCategory, GameFilterCategory } from "@/lib/cms/gameTags";
 
-export type DashboardStatus =
-    { kind: "visible" } | { kind: "hidden" } | { kind: "other-tab"; category: GameFilterCategory };
+export type DashboardStatus = { kind: "visible" } | { kind: "hidden" } | { kind: "other-tab" };
 
 const belongsTo = (categories: GameCategory[], category: GameFilterCategory) => {
     switch (category) {
@@ -16,15 +15,6 @@ const belongsTo = (categories: GameCategory[], category: GameFilterCategory) => 
             return categories.includes("early-access");
     }
 };
-
-export const getHomeCategory = (categories: GameCategory[]): GameFilterCategory =>
-    categories.includes("early-access")
-        ? "early-access"
-        : categories.includes("community")
-          ? "community"
-          : !categories.includes("seasonal")
-            ? "non-seasonal"
-            : "featured";
 
 export const getDashboardStatus = ({
     slug,
@@ -43,5 +33,5 @@ export const getDashboardStatus = ({
     if (belongsTo(categories, category)) {
         return { kind: "hidden" };
     }
-    return { kind: "other-tab", category: getHomeCategory(categories) };
+    return { kind: "other-tab" };
 };

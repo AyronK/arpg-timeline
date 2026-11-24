@@ -11,7 +11,8 @@ import { useOptionalSearch } from "./SearchProvider";
 
 export const SearchDashboardBridge = () => {
     const registerDashboard = useOptionalSearch()?.registerDashboard;
-    const { games, filteredGames, category, setFiltersOpen } = useGameFilterContext();
+    const { games, filteredGames, category, setFiltersOpen, toggleGameFilter } =
+        useGameFilterContext();
 
     const searchGames = useMemo(() => games.map(toSearchGame), [games]);
 
@@ -35,8 +36,9 @@ export const SearchDashboardBridge = () => {
                 ]),
             ),
             openFilters: () => setFiltersOpen(true),
+            showGame: (slug) => toggleGameFilter(slug, true),
         };
-    }, [games, searchGames, filteredGames, category, setFiltersOpen]);
+    }, [games, searchGames, filteredGames, category, setFiltersOpen, toggleGameFilter]);
 
     useEffect(() => {
         if (!registerDashboard) {

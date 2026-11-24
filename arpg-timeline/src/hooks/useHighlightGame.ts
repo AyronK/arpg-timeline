@@ -7,6 +7,7 @@ export const HIGHLIGHT_PARAM = "highlight";
 
 const HIGHLIGHT_MS = 1600;
 const MAX_WAIT_FRAMES = 120;
+const SCROLL_FALLBACK_MS = 1000;
 
 export const getGameCardId = (slug: string) => parseToValidHtmlId(`game-card-${slug}`);
 
@@ -22,10 +23,31 @@ export const highlightGameCard = (slug: string) => {
             }
             return;
         }
+        const flash = () => {
+            card.dataset.highlighted = "";
+            window.setTimeout(() => delete card.dataset.highlighted, HIGHLIGHT_MS);
+        };
+        const { top, bottom } = card.getBoundingClientRect();
+        if (top >= 0 && bottom <= window.innerHeight) {
+            flash();
+            return;
+        }
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         card.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
-        card.dataset.highlighted = "";
-        window.setTimeout(() => delete card.dataset.highlighted, HIGHLIGHT_MS);
+        if (reduceMotion) {
+            flash();
+            return;
+        }
+        let hasFlashed = false;
+        const flashOnce = () => {
+            if (!hasFlashed) {
+                hasFlashed = true;
+                window.removeEventListener("scrollend", flashOnce);
+                flash();
+            }
+        };
+        window.addEventListener("scrollend", flashOnce, { once: true });
+        window.setTimeout(flashOnce, SCROLL_FALLBACK_MS);
     };
 
     frame = requestAnimationFrame(tryHighlight);

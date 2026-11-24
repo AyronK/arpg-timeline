@@ -1,15 +1,14 @@
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowLeft, EyeOff, Search, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Eye, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { KeyboardEvent, ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { DashboardStatus } from "@/lib/search/dashboardStatus";
+import { HIGHLIGHT_PARAM, highlightGameCard } from "@/hooks/useHighlightGame";
 import {
     formatGameMeta,
     getDatelessDescription,
@@ -35,8 +34,9 @@ import {
 import { DashboardSearch, SearchGame } from "@/lib/search/types";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogClose, DialogOverlay, DialogPortal, DialogTitle } from "@/ui/Dialog";
+import { toast } from "@/ui/hooks/useToast";
 
-import { GameTile, IconTile, RowBadge, SearchResultRow } from "./SearchResultRow";
+import { GameTile, IconTile, RowAction, SearchResultRow } from "./SearchResultRow";
 import { SEARCH_TRIGGER_ATTRIBUTE } from "./SearchTrigger";
 
 const NO_ACTIVE_INDEX = -1;
@@ -51,21 +51,11 @@ const CHIP_CLASS_NAME =
 const NO_RESULTS_ACTION_CLASS_NAME =
     "border-foreground/20 hover:border-foreground/40 text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-hidden";
 
-const getStatusBadge = (status: DashboardStatus): RowBadge | null => {
-    if (status.kind === "visible") {
-        return null;
-    }
-    if (status.kind === "hidden") {
-        return { label: "Hidden", description: "Hidden by your filters", icon: EyeOff };
-    }
-    const tab = DashboardConfig[status.category]?.description;
-    return { label: `${tab} tab`, description: `On the ${tab} tab` };
-};
-
 const ResultRow = ({
     match: { item, matchedAlias, highlight },
     dashboard,
     now,
+    action,
     onNavigate,
     onClose,
     onCommand,
@@ -74,6 +64,7 @@ const ResultRow = ({
     match: SearchMatch<SearchItem>;
     dashboard: DashboardSearch | null;
     now: number;
+    action: RowAction | null;
     id: string;
     isActive: boolean;
     replace: boolean;
@@ -94,7 +85,7 @@ const ResultRow = ({
                 href={getItemHref(item)}
                 title={item.game.name}
                 meta={formatGameMeta(item.game, description, matchedAlias)}
-                badge={detail && getStatusBadge(detail.status)}
+                action={action}
                 tile={<GameTile name={item.game.name} logoSrc={item.game.logoSrc} />}
                 highlight={highlight}
             />
@@ -122,7 +113,7 @@ const focusVisibleTrigger = (e: Event) => {
     const triggers = document.querySelectorAll<HTMLElement>(`[${SEARCH_TRIGGER_ATTRIBUTE}]`);
     Array.from(triggers)
         .find((trigger) => trigger.offsetParent !== null)
-        ?.focus();
+        ?.focus({ preventScroll: true });
 };
 
 const useSearchGames = (open: boolean, providedGames?: SearchGame[]) => {
@@ -153,9 +144,12 @@ const useSearchGames = (open: boolean, providedGames?: SearchGame[]) => {
 const useCloseOnBrowserBack = (isActive: boolean, onClose: () => void) => {
     const onCloseRef = useRef(onClose);
     const isReleasedRef = useRef(false);
+    const isActiveRef = useRef(isActive);
+    const afterCloseRef = useRef<(() => void) | null>(null);
 
     useEffect(() => {
         onCloseRef.current = onClose;
+        isActiveRef.current = isActive;
     });
 
     useEffect(() => {
@@ -172,15 +166,30 @@ const useCloseOnBrowserBack = (isActive: boolean, onClose: () => void) => {
         window.addEventListener("popstate", onPopState);
         return () => {
             window.removeEventListener("popstate", onPopState);
+            const afterClose = afterCloseRef.current;
+            afterCloseRef.current = null;
             if (!isReleasedRef.current && window.history.state?.[HISTORY_MARKER]) {
+                if (afterClose) {
+                    window.addEventListener("popstate", afterClose, { once: true });
+                }
                 window.history.back();
+            } else {
+                afterClose?.();
             }
         };
     }, [isActive]);
 
-    return () => {
+    const release = () => {
         isReleasedRef.current = true;
     };
+    const runAfterClose = (callback: () => void) => {
+        if (isActiveRef.current) {
+            afterCloseRef.current = callback;
+        } else {
+            requestAnimationFrame(callback);
+        }
+    };
+    return { release, runAfterClose };
 };
 
 interface PaletteBodyProps {
@@ -190,6 +199,7 @@ interface PaletteBodyProps {
     dashboard: DashboardSearch | null;
     onNavigate: () => void;
     onClose: () => void;
+    onCloseThen: (callback: () => void) => void;
 }
 
 const PaletteBody = ({
@@ -199,6 +209,7 @@ const PaletteBody = ({
     dashboard,
     onNavigate,
     onClose,
+    onCloseThen,
 }: PaletteBodyProps) => {
     const router = useRouter();
     const [query, setQuery] = useState("");
@@ -224,14 +235,53 @@ const PaletteBody = ({
     );
 
     const runCommand = (entry: StaticEntry) => {
-        onClose();
         if (entry.command === "open-filters") {
-            requestAnimationFrame(() => dashboard?.openFilters());
+            onCloseThen(() => dashboard?.openFilters());
         }
     };
+
+    const navigateTo = (href: string) => {
+        onNavigate();
+        if (isSheet) {
+            router.replace(href);
+        } else {
+            router.push(href);
+        }
+    };
+
+    const getAction = (item: SearchItem): RowAction | null => {
+        const detail = item.kind === "game" ? dashboard?.details.get(item.game.slug) : null;
+        if (!detail || detail.status.kind === "visible" || item.kind !== "game") {
+            return null;
+        }
+        const { game } = item;
+        if (detail.status.kind === "hidden") {
+            return {
+                label: "Show",
+                description: `Hidden by your filters. Show ${game.name} on the dashboard`,
+                hint: "show on dashboard",
+                icon: Eye,
+                run: () =>
+                    onCloseThen(() => {
+                        dashboard?.showGame(game.slug);
+                        highlightGameCard(game.slug);
+                        toast({ title: `${game.name} is now on your dashboard`, duration: 3000 });
+                    }),
+            };
+        }
+        return {
+            label: "Full Catalog",
+            description: `Not on this tab. Show ${game.name} in the Full Catalog`,
+            hint: "show in Full Catalog",
+            icon: ArrowRight,
+            run: () => navigateTo(`/dashboard/all?${HIGHLIGHT_PARAM}=${game.slug}`),
+        };
+    };
+
     const results = useMemo(() => groups.flatMap((group) => group.results), [groups]);
     const safeIndex = Math.min(activeIndex, results.length - 1);
     const activeResult = results[safeIndex];
+    const activeAction = activeResult ? getAction(activeResult.item) : null;
     const hasQuery = query.trim().length > 0;
 
     useEffect(() => {
@@ -252,12 +302,7 @@ const PaletteBody = ({
             }
             return;
         }
-        onNavigate();
-        if (isSheet) {
-            router.replace(getItemHref(item));
-        } else {
-            router.push(getItemHref(item));
-        }
+        navigateTo(getItemHref(item));
     };
 
     const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -268,6 +313,9 @@ const PaletteBody = ({
         } else if (e.key === "ArrowUp" && count) {
             e.preventDefault();
             setActiveIndex(safeIndex < 0 ? count - 1 : (safeIndex - 1 + count) % count);
+        } else if (e.key === "Enter" && e.shiftKey && activeAction) {
+            e.preventDefault();
+            activeAction.run();
         } else if (e.key === "Enter" && activeResult) {
             e.preventDefault();
             openItem(activeResult.item, e.metaKey || e.ctrlKey);
@@ -443,6 +491,7 @@ const PaletteBody = ({
                                         onHover={() => setActiveIndex(index)}
                                         dashboard={dashboard}
                                         now={now}
+                                        action={getAction(match.item)}
                                         onNavigate={onNavigate}
                                         onClose={onClose}
                                         onCommand={runCommand}
@@ -499,7 +548,8 @@ const PaletteBody = ({
 
             {!isSheet && (
                 <p className="text-muted-foreground text-xs pointer-coarse:hidden">
-                    Use arrows to move, Enter to open, Esc to close
+                    Use arrows to move, Enter to open
+                    {activeAction ? `, Shift+Enter to ${activeAction.hint}` : ""}, Esc to close
                 </p>
             )}
         </>
@@ -523,7 +573,8 @@ const SearchPalette = ({
     const { isMd } = useBreakpoint("md");
     const isSheet = !isMd;
     const close = () => onOpenChange(false);
-    const releaseHistoryEntry = useCloseOnBrowserBack(open && isSheet, close);
+    const sheetHistory = useCloseOnBrowserBack(open && isSheet, close);
+    const afterDialogCloseRef = useRef<(() => void) | null>(null);
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -531,7 +582,12 @@ const SearchPalette = ({
                 <DialogOverlay className="z-[70] bg-black/60 backdrop-blur-sm motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none" />
                 <DialogPrimitive.Content
                     aria-describedby={undefined}
-                    onCloseAutoFocus={focusVisibleTrigger}
+                    onCloseAutoFocus={(e) => {
+                        focusVisibleTrigger(e);
+                        const afterClose = afterDialogCloseRef.current;
+                        afterDialogCloseRef.current = null;
+                        afterClose?.();
+                    }}
                     className={cn(
                         "bg-card text-card-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed z-[70] flex flex-col duration-150 focus-visible:outline-hidden motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none",
                         isSheet
@@ -545,10 +601,18 @@ const SearchPalette = ({
                         isSheet={isSheet}
                         dashboard={dashboard}
                         onNavigate={() => {
-                            releaseHistoryEntry();
+                            sheetHistory.release();
                             close();
                         }}
                         onClose={close}
+                        onCloseThen={(callback) => {
+                            if (isSheet) {
+                                sheetHistory.runAfterClose(callback);
+                            } else {
+                                afterDialogCloseRef.current = callback;
+                            }
+                            close();
+                        }}
                     />
                 </DialogPrimitive.Content>
             </DialogPortal>

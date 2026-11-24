@@ -18,12 +18,26 @@ export const getSeasonStatusText = (game: Game, now: number): string => {
 
     const keyword = game.seasonKeyword || "season";
     const nextStart = toTime(game.nextSeason?.start?.startDate);
+    const currentStart = toTime(game.currentSeason?.start?.startDate);
+    const currentEnd = toTime(game.currentSeason?.end?.endDate);
+
+    if (!game.categories?.includes("seasonal")) {
+        if (game.nextSeason?.start?.confirmed && nextStart > now) {
+            return `Next ${keyword} in ${formatDuration(nextStart - now)}`;
+        }
+        if (currentStart <= now && now - currentStart < 2 * DAY) {
+            return `${capitalizeFirstChar(keyword)} released ${formatDuration(now - currentStart)} ago`;
+        }
+        if (game.isComingSoon) {
+            return "Coming soon";
+        }
+        return game.categories?.includes("early-access") ? "Early access" : "Non-seasonal";
+    }
+
     if (game.nextSeason?.start?.confirmed && nextStart > now) {
         return `Next ${keyword} starts in ${formatDuration(nextStart - now)}`;
     }
 
-    const currentStart = toTime(game.currentSeason?.start?.startDate);
-    const currentEnd = toTime(game.currentSeason?.end?.endDate);
     if (currentStart <= now && !(currentEnd <= now)) {
         if (now - currentStart < 2 * DAY) {
             return `${capitalizeFirstChar(keyword)} started ${formatDuration(now - currentStart)} ago`;

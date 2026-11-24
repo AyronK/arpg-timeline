@@ -31,6 +31,7 @@ const game = (overrides: Partial<Game> = {}): Game => ({
     group: null,
     logo: {} as Game["logo"],
     isOfficial: true,
+    categories: ["seasonal"],
     ...overrides,
 });
 
@@ -89,5 +90,24 @@ describe("getSeasonStatusText", () => {
         ).toBe("No recent updates");
         expect(text({ isComingSoon: true })).toBe("Coming soon");
         expect(text({})).toBe("No seasons");
+    });
+
+    it("treats non-seasonal updates as releases, not seasons", () => {
+        const patch = { categories: [], seasonKeyword: "patch" } satisfies Partial<Game>;
+
+        expect(
+            text({ ...patch, nextSeason: season({ startDate: at(3 * DAY), confirmed: true }) }),
+        ).toBe("Next patch in 3 days");
+        expect(text({ ...patch, currentSeason: season({ startDate: at(-5 * HOUR) }) })).toBe(
+            "Patch released 5 hours ago",
+        );
+        expect(
+            text({
+                ...patch,
+                currentSeason: season({ startDate: at(-30 * DAY) }, { endDate: at(30 * DAY) }),
+            }),
+        ).toBe("Non-seasonal");
+        expect(text({ ...patch, isComingSoon: true })).toBe("Coming soon");
+        expect(text({ ...patch, categories: ["early-access"] })).toBe("Early access");
     });
 });

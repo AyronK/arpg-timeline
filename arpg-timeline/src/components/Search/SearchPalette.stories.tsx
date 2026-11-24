@@ -22,7 +22,7 @@ const inDays = (days: number) => new Date(Date.now() + days * DAY).toISOString()
 const STATUSES: DashboardStatus[] = [
     { kind: "visible" },
     { kind: "hidden" },
-    { kind: "other-tab", category: "community" },
+    { kind: "other-tab" },
 ];
 
 const SEASONS: Partial<Game>[] = [
@@ -69,6 +69,7 @@ const dashboard: DashboardSearch = {
         ]),
     ),
     openFilters: () => {},
+    showGame: () => {},
 };
 
 const typeQuery = (query: string) => async () => {

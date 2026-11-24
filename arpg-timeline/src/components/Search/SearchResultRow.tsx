@@ -68,10 +68,12 @@ export const IconTile = ({ icon: Icon, iconSrc }: { icon: LucideIcon; iconSrc?: 
     </Tile>
 );
 
-export interface RowBadge {
+export interface RowAction {
     label: string;
     description: string;
-    icon?: LucideIcon;
+    hint: string;
+    icon: LucideIcon;
+    run: () => void;
 }
 
 interface SearchResultRowProps {
@@ -80,7 +82,7 @@ interface SearchResultRowProps {
     title: string;
     meta: string;
     tile: ReactNode;
-    badge?: RowBadge | null;
+    action?: RowAction | null;
     highlight: HighlightRange | null;
     isActive: boolean;
     replace: boolean;
@@ -95,7 +97,7 @@ export const SearchResultRow = ({
     title,
     meta,
     tile,
-    badge,
+    action,
     highlight,
     isActive,
     replace,
@@ -114,12 +116,8 @@ export const SearchResultRow = ({
         role: "option",
         "aria-selected": isActive,
         tabIndex: -1,
-        onMouseMove: onHover,
         onClick,
-        className: cn(
-            "bg-background/40 flex cursor-pointer items-center gap-3 rounded-md border border-transparent p-2 transition-colors",
-            isActive && "border-foreground/30 bg-accent/40",
-        ),
+        className: "flex min-w-0 flex-1 cursor-pointer items-center gap-3 p-2",
     };
 
     const content = (
@@ -131,16 +129,7 @@ export const SearchResultRow = ({
                 </span>
                 {meta && <span className="text-muted-foreground truncate text-xs">{meta}</span>}
             </div>
-            {badge ? (
-                <span
-                    title={badge.description}
-                    className="border-foreground/15 text-muted-foreground inline-flex shrink-0 items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] whitespace-nowrap"
-                >
-                    {badge.icon && <badge.icon aria-hidden className="h-3 w-3" />}
-                    <span aria-hidden>{badge.label}</span>
-                    <span className="sr-only">{badge.description}</span>
-                </span>
-            ) : (
+            {!action && (
                 <ChevronRight
                     className={cn(
                         "text-muted-foreground h-4 w-4 shrink-0 transition-opacity",
@@ -151,17 +140,41 @@ export const SearchResultRow = ({
         </>
     );
 
-    return href ? (
-        <Link
-            {...optionProps}
-            href={href}
-            replace={!external && replace}
-            prefetch={false}
-            {...(external && { target: "_blank", rel: "noopener noreferrer nofollow" })}
+    return (
+        <div
+            role="presentation"
+            onMouseMove={onHover}
+            className={cn(
+                "bg-background/40 flex items-center rounded-md border border-transparent transition-colors",
+                isActive && "border-foreground/30 bg-accent/40",
+            )}
         >
-            {content}
-        </Link>
-    ) : (
-        <div {...optionProps}>{content}</div>
+            {href ? (
+                <Link
+                    {...optionProps}
+                    href={href}
+                    replace={!external && replace}
+                    prefetch={false}
+                    {...(external && { target: "_blank", rel: "noopener noreferrer nofollow" })}
+                >
+                    {content}
+                </Link>
+            ) : (
+                <div {...optionProps}>{content}</div>
+            )}
+            {action && (
+                <button
+                    type="button"
+                    tabIndex={-1}
+                    title={action.description}
+                    onClick={action.run}
+                    className="border-foreground/20 text-muted-foreground hover:text-foreground hover:border-foreground/40 mr-2 inline-flex shrink-0 cursor-pointer items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] font-medium whitespace-nowrap transition-colors"
+                >
+                    <action.icon aria-hidden className="h-3 w-3" />
+                    <span aria-hidden>{action.label}</span>
+                    <span className="sr-only">{action.description}</span>
+                </button>
+            )}
+        </div>
     );
 };

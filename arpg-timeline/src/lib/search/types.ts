@@ -23,4 +23,5 @@ export interface DashboardSearch {
     games: SearchGame[];
     details: Map<string, { game: Game; status: DashboardStatus }>;
     openFilters: () => void;
+    showGame: (slug: string) => void;
 }
