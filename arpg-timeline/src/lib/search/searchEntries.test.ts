@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 
 import { SEARCH_GAMES } from "./__fixtures__/searchGames";
-import { getItemHref, GROUP_LIMITS, prepareSearch, runSearch, SearchGroup } from "./searchEntries";
+import {
+    getItemHref,
+    GROUP_LIMITS,
+    isItemExternal,
+    prepareSearch,
+    runSearch,
+    SearchGroup,
+} from "./searchEntries";
 import { QUICK_LINK_IDS, STATIC_ENTRIES } from "./staticEntries";
 import { SearchGame } from "./types";
 
@@ -48,8 +55,26 @@ describe("runSearch", () => {
         );
     });
 
-    it("finds pages by keyword", () => {
-        expect(summary(runSearch(prepared, "patreon"))).toEqual([["pages", ["/support"]]]);
+    it.each([
+        ["patreon", "/support"],
+        ["gdpr", "/privacy"],
+        ["privacy policy", "/privacy"],
+        ["toc", "/terms"],
+        ["credits", "/support#supporters"],
+        ["launcher", "/community-launchers"],
+        ["license", "/transparency"],
+    ])("%s finds %s first", (query, href) => {
+        const pages = runSearch(prepared, query).find((g) => g.id === "pages")!;
+
+        expect(getItemHref(pages.results[0]!.item)).toBe(href);
+    });
+
+    it("finds the Discord server as an external action", () => {
+        const actions = runSearch(prepared, "discord").find((g) => g.id === "actions")!;
+        const [first] = actions.results;
+
+        expect(first!.item.kind === "entry" && first!.item.entry.id).toBe("join-discord");
+        expect(isItemExternal(first!.item)).toBe(true);
     });
 
     it("still searches pages and actions before games load", () => {

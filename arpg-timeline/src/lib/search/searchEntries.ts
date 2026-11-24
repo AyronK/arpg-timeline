@@ -102,5 +102,7 @@ export const runSearch = (
 export const getItemHref = (item: SearchItem) =>
     item.kind === "game" ? `/game/${item.game.slug}` : item.entry.href;
 
+export const isItemExternal = (item: SearchItem) => item.kind === "entry" && !!item.entry.external;
+
 export const getItemKey = (item: SearchItem) =>
     item.kind === "game" ? `game:${item.game.slug}` : `entry:${item.entry.id}`;
