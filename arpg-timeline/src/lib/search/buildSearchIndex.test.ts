@@ -70,7 +70,7 @@ describe("buildSearchIndex", () => {
         const src = new URL(row[4], "https://example.com");
 
         expect(src.pathname).toBe("/_next/image");
-        expect(src.searchParams.get("url")).toMatch(/^https:\/\/cdn\.sanity\.io\/.*\bw=128\b/);
+        expect(src.searchParams.get("url")).toMatch(/^https:\/\/cdn\.sanity\.io\/.*\bw=256\b/);
     });
 
     it("exposes no Sanity ids, seasons or dates", () => {

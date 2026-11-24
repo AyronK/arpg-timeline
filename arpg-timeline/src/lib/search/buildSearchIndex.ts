@@ -6,14 +6,14 @@ import {
     DORMANT_FLAG,
     EncodedSearchGame,
     EncodedSearchIndex,
-    LOGO_RENDER_SIZE,
+    LOGO_RENDER_WIDTH,
 } from "./searchIndexCodec";
 
-const LOGO_WIDTH = 128;
+const LOGO_WIDTH = 256;
 const LOGO_QUALITY = 75;
 
 const getLogoSrc = (logo: SearchIndexSanityGame["logo"]) => {
-    const url = logo && getSanityImageUrl(logo, LOGO_RENDER_SIZE, LOGO_QUALITY);
+    const url = logo && getSanityImageUrl(logo, LOGO_RENDER_WIDTH, LOGO_QUALITY);
     return url
         ? `/_next/image?url=${encodeURIComponent(url)}&w=${LOGO_WIDTH}&q=${LOGO_QUALITY}`
         : "";

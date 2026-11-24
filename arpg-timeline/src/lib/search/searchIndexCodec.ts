@@ -14,7 +14,8 @@ export type EncodedSearchGame = [
 
 export type EncodedSearchIndex = EncodedSearchGame[];
 
-export const LOGO_RENDER_SIZE = 40;
+export const LOGO_RENDER_WIDTH = 80;
+export const LOGO_RENDER_HEIGHT = 40;
 
 export const DORMANT_FLAG = 1;
 export const COMING_SOON_FLAG = 2;

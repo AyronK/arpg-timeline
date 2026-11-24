@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MouseEvent } from "react";
 
 import { HighlightRange } from "@/lib/search/match";
-import { LOGO_RENDER_SIZE } from "@/lib/search/searchIndexCodec";
+import { LOGO_RENDER_HEIGHT, LOGO_RENDER_WIDTH } from "@/lib/search/searchIndexCodec";
 import { cn } from "@/lib/utils";
 
 const HighlightedText = ({ text, range }: { text: string; range: HighlightRange | null }) =>
@@ -72,15 +72,15 @@ export const GameResultRow = ({
                 isActive && "border-foreground/30 bg-accent/40",
             )}
         >
-            <div className="bg-muted/50 grid h-10 w-10 shrink-0 place-content-center overflow-hidden rounded-md">
+            <div className="bg-muted/50 flex h-10 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md">
                 {logoSrc ? (
                     <Image
                         unoptimized
                         src={logoSrc}
                         alt=""
-                        width={LOGO_RENDER_SIZE}
-                        height={LOGO_RENDER_SIZE}
-                        className="h-8 w-8 object-contain"
+                        width={LOGO_RENDER_WIDTH}
+                        height={LOGO_RENDER_HEIGHT}
+                        className="h-full w-full object-contain p-1"
                     />
                 ) : (
                     <span className="font-heading text-muted-foreground text-xs">

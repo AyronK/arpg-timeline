@@ -2,10 +2,13 @@
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Search, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { KeyboardEvent, useEffect, useId, useMemo, useState } from "react";
+import { KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { toGameCandidate } from "@/lib/search/aliases";
+import { formatGameMeta, getDatelessDescription } from "@/lib/search/gameMeta";
 import { loadSearchIndex } from "@/lib/search/loadSearchIndex";
 import { prepareCandidates, PreparedCandidate, searchCandidates } from "@/lib/search/match";
 import { SearchGame } from "@/lib/search/types";
@@ -27,10 +30,10 @@ const getPreparedGames = (games: SearchGame[]) => {
     return prepared;
 };
 
-const gameHref = (game: SearchGame) => `/game/${game.slug}`;
+const NO_RESULTS_ACTION_CLASS_NAME =
+    "border-foreground/20 hover:border-foreground/40 text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-hidden";
 
-const gameMeta = (game: SearchGame) =>
-    game.isComingSoon ? "Coming soon" : game.isDormant ? "No recent updates" : (game.group ?? "");
+const gameHref = (game: SearchGame) => `/game/${game.slug}`;
 
 const focusVisibleTrigger = (e: Event) => {
     e.preventDefault();
@@ -75,6 +78,7 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
     const router = useRouter();
     const [query, setQuery] = useState("");
     const [activeIndex, setActiveIndex] = useState(0);
+    const inputRef = useRef<HTMLInputElement>(null);
     const baseId = useId();
     const listboxId = `${baseId}-listbox`;
     const groupLabelId = `${baseId}-games`;
@@ -117,18 +121,27 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
         }
     };
 
+    const hasNoResults = hasQuery && !!games && results.length === 0;
     const status = hasFailed
         ? "Couldn't load games. Close and try again."
         : !hasQuery
           ? "Type a game name or a short name like poe2."
           : !games
             ? "Loading games..."
-            : results.length === 0
-              ? `No results for "${query.trim()}"`
-              : null;
+            : null;
 
     const announcement =
-        hasQuery && games ? `${results.length} ${results.length === 1 ? "result" : "results"}` : "";
+        !hasQuery || !games
+            ? ""
+            : results.length === 0
+              ? "No results"
+              : `${results.length} ${results.length === 1 ? "result" : "results"}`;
+
+    const clearSearch = () => {
+        setQuery("");
+        setActiveIndex(0);
+        inputRef.current?.focus();
+    };
 
     return (
         <>
@@ -152,6 +165,7 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
             <div className="border-foreground/20 bg-background/60 focus-within:border-foreground/40 flex items-center gap-2 rounded-md border px-3 transition-colors">
                 <Search className="text-muted-foreground h-4 w-4 shrink-0" />
                 <input
+                    ref={inputRef}
                     autoFocus
                     type="search"
                     role="combobox"
@@ -200,7 +214,11 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                                 id={optionId(index)}
                                 href={gameHref(result.item)}
                                 name={result.item.name}
-                                meta={gameMeta(result.item)}
+                                meta={formatGameMeta(
+                                    result.item,
+                                    getDatelessDescription(result.item),
+                                    result.matchedAlias,
+                                )}
                                 logoSrc={result.item.logoSrc}
                                 highlight={result.highlight}
                                 isActive={index === safeIndex}
@@ -208,6 +226,40 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                                 onNavigate={onClose}
                             />
                         ))}
+                    </div>
+                )}
+                {hasNoResults && (
+                    <div className="flex flex-col items-center gap-1 py-6 text-center text-sm">
+                        <p className="text-foreground">No results for &quot;{query.trim()}&quot;</p>
+                        <p className="text-muted-foreground text-xs">
+                            Try a short name like d4 or poe2. Can&apos;t find your game? Request it
+                            on Discord.
+                        </p>
+                        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+                            <button
+                                type="button"
+                                onClick={clearSearch}
+                                className={NO_RESULTS_ACTION_CLASS_NAME}
+                            >
+                                Clear search
+                            </button>
+                            <Link
+                                href={process.env.NEXT_PUBLIC_DISCORD_URL}
+                                rel="noopener noreferrer nofollow"
+                                target="_blank"
+                                className={NO_RESULTS_ACTION_CLASS_NAME}
+                            >
+                                <Image
+                                    unoptimized
+                                    src="/assets/third-party/discord-logo.svg"
+                                    className="h-3.5 w-3.5 brightness-200 grayscale-100"
+                                    alt=""
+                                    width={14}
+                                    height={14}
+                                />
+                                Request on Discord
+                            </Link>
+                        </div>
                     </div>
                 )}
                 {status && (

@@ -43,6 +43,20 @@ export const Results: Story = {
     play: typeQuery("poe"),
 };
 
+export const AliasMatch: Story = {
+    play: typeQuery("d4"),
+};
+
+export const WithLogos: Story = {
+    args: {
+        games: games.map((game, index) => ({
+            ...game,
+            logoSrc: index % 2 ? "/assets/logo.png" : null,
+        })),
+    },
+    play: typeQuery("diablo"),
+};
+
 export const SquashedMatch: Story = {
     play: typeQuery("grimdawn"),
 };
