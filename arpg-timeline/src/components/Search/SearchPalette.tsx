@@ -1,14 +1,20 @@
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowLeft, Search, X } from "lucide-react";
+import { ArrowLeft, EyeOff, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { KeyboardEvent, ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 
+import { DashboardConfig } from "@/components/Dashboard/DashboardConfig";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { formatGameMeta, getDatelessDescription } from "@/lib/search/gameMeta";
+import { DashboardStatus } from "@/lib/search/dashboardStatus";
+import {
+    formatGameMeta,
+    getDatelessDescription,
+    getSeasonDescription,
+} from "@/lib/search/gameMeta";
 import { loadSearchIndex } from "@/lib/search/loadSearchIndex";
 import { SearchMatch } from "@/lib/search/match";
 import {
@@ -19,12 +25,18 @@ import {
     runSearch,
     SearchItem,
 } from "@/lib/search/searchEntries";
-import { MOBILE_CHIP_IDS, STATIC_ENTRIES } from "@/lib/search/staticEntries";
-import { SearchGame } from "@/lib/search/types";
+import { getSeasonStatusText } from "@/lib/search/seasonStatus";
+import {
+    isEntryAvailable,
+    MOBILE_CHIP_IDS,
+    STATIC_ENTRIES,
+    StaticEntry,
+} from "@/lib/search/staticEntries";
+import { DashboardSearch, SearchGame } from "@/lib/search/types";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogClose, DialogOverlay, DialogPortal, DialogTitle } from "@/ui/Dialog";
 
-import { GameTile, IconTile, SearchResultRow } from "./SearchResultRow";
+import { GameTile, IconTile, RowBadge, SearchResultRow } from "./SearchResultRow";
 import { SEARCH_TRIGGER_ATTRIBUTE } from "./SearchTrigger";
 
 const NO_ACTIVE_INDEX = -1;
@@ -33,45 +45,77 @@ const HISTORY_MARKER = "searchSheet";
 
 const MOBILE_CHIPS = MOBILE_CHIP_IDS.map((id) => STATIC_ENTRIES.find((entry) => entry.id === id)!);
 
+const CHIP_CLASS_NAME =
+    "border-foreground/20 text-muted-foreground hover:text-foreground inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-medium whitespace-nowrap";
+
 const NO_RESULTS_ACTION_CLASS_NAME =
     "border-foreground/20 hover:border-foreground/40 text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-hidden";
 
+const getStatusBadge = (status: DashboardStatus): RowBadge | null => {
+    if (status.kind === "visible") {
+        return null;
+    }
+    if (status.kind === "hidden") {
+        return { label: "Hidden", description: "Hidden by your filters", icon: EyeOff };
+    }
+    const tab = DashboardConfig[status.category]?.description;
+    return { label: `${tab} tab`, description: `On the ${tab} tab` };
+};
+
 const ResultRow = ({
     match: { item, matchedAlias, highlight },
+    dashboard,
+    now,
     onNavigate,
     onClose,
+    onCommand,
     ...rowProps
 }: {
     match: SearchMatch<SearchItem>;
+    dashboard: DashboardSearch | null;
+    now: number;
     id: string;
     isActive: boolean;
     replace: boolean;
     onHover: () => void;
     onNavigate: () => void;
     onClose: () => void;
-}) =>
-    item.kind === "game" ? (
+    onCommand: (entry: StaticEntry) => void;
+}) => {
+    if (item.kind === "game") {
+        const detail = dashboard?.details.get(item.game.slug);
+        const description = detail
+            ? getSeasonDescription(item.game, getSeasonStatusText(detail.game, now))
+            : getDatelessDescription(item.game);
+        return (
+            <SearchResultRow
+                {...rowProps}
+                onNavigate={onNavigate}
+                href={getItemHref(item)}
+                title={item.game.name}
+                meta={formatGameMeta(item.game, description, matchedAlias)}
+                badge={detail && getStatusBadge(detail.status)}
+                tile={<GameTile name={item.game.name} logoSrc={item.game.logoSrc} />}
+                highlight={highlight}
+            />
+        );
+    }
+    const { entry } = item;
+    return (
         <SearchResultRow
             {...rowProps}
-            onNavigate={onNavigate}
-            href={getItemHref(item)}
-            title={item.game.name}
-            meta={formatGameMeta(item.game, getDatelessDescription(item.game), matchedAlias)}
-            tile={<GameTile name={item.game.name} logoSrc={item.game.logoSrc} />}
-            highlight={highlight}
-        />
-    ) : (
-        <SearchResultRow
-            {...rowProps}
-            external={item.entry.external}
-            onNavigate={item.entry.external ? onClose : onNavigate}
-            href={getItemHref(item)}
-            title={item.entry.title}
-            meta={item.entry.description}
-            tile={<IconTile icon={item.entry.icon} iconSrc={item.entry.iconSrc} />}
+            external={entry.external}
+            onNavigate={
+                entry.command ? () => onCommand(entry) : entry.external ? onClose : onNavigate
+            }
+            href={entry.command ? null : getItemHref(item)}
+            title={entry.title}
+            meta={entry.description}
+            tile={<IconTile icon={entry.icon} iconSrc={entry.iconSrc} />}
             highlight={highlight}
         />
     );
+};
 
 const focusVisibleTrigger = (e: Event) => {
     e.preventDefault();
@@ -143,11 +187,19 @@ interface PaletteBodyProps {
     games: SearchGame[] | null;
     hasFailed: boolean;
     isSheet: boolean;
+    dashboard: DashboardSearch | null;
     onNavigate: () => void;
     onClose: () => void;
 }
 
-const PaletteBody = ({ games, hasFailed, isSheet, onNavigate, onClose }: PaletteBodyProps) => {
+const PaletteBody = ({
+    games,
+    hasFailed,
+    isSheet,
+    dashboard,
+    onNavigate,
+    onClose,
+}: PaletteBodyProps) => {
     const router = useRouter();
     const [query, setQuery] = useState("");
     const [activeIndex, setActiveIndex] = useState(NO_ACTIVE_INDEX);
@@ -156,7 +208,27 @@ const PaletteBody = ({ games, hasFailed, isSheet, onNavigate, onClose }: Palette
     const listboxId = `${baseId}-listbox`;
     const optionId = (index: number) => `${baseId}-option-${index}`;
 
-    const groups = useMemo(() => runSearch(prepareSearch(games), query), [games, query]);
+    const [now] = useState(Date.now);
+    const groups = useMemo(
+        () =>
+            runSearch(prepareSearch(games), query, {
+                canOpenFilters: dashboard?.category === "featured",
+                isVisible: (item) =>
+                    item.kind === "game" &&
+                    dashboard?.details.get(item.game.slug)?.status.kind === "visible",
+            }),
+        [games, query, dashboard],
+    );
+    const mobileChips = MOBILE_CHIPS.filter((entry) =>
+        isEntryAvailable(entry, dashboard?.category === "featured"),
+    );
+
+    const runCommand = (entry: StaticEntry) => {
+        onClose();
+        if (entry.command === "open-filters") {
+            requestAnimationFrame(() => dashboard?.openFilters());
+        }
+    };
     const results = useMemo(() => groups.flatMap((group) => group.results), [groups]);
     const safeIndex = Math.min(activeIndex, results.length - 1);
     const activeResult = results[safeIndex];
@@ -169,6 +241,10 @@ const PaletteBody = ({ games, hasFailed, isSheet, onNavigate, onClose }: Palette
     }, [baseId, safeIndex]);
 
     const openItem = (item: SearchItem, inNewTab: boolean) => {
+        if (item.kind === "entry" && item.entry.command) {
+            runCommand(item.entry);
+            return;
+        }
         if (inNewTab || isItemExternal(item)) {
             window.open(getItemHref(item), "_blank", "noopener,noreferrer");
             if (!inNewTab) {
@@ -296,19 +372,35 @@ const PaletteBody = ({ games, hasFailed, isSheet, onNavigate, onClose }: Palette
 
             {isSheet && (
                 <div className="flex shrink-0 [scrollbar-width:none] gap-2 overflow-x-auto px-3 py-2 [&::-webkit-scrollbar]:hidden">
-                    {MOBILE_CHIPS.map((entry) => (
-                        <Link
-                            key={entry.id}
-                            href={entry.href}
-                            replace
-                            prefetch={false}
-                            onClick={onNavigate}
-                            className="border-foreground/20 text-muted-foreground hover:text-foreground inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-3 text-xs font-medium whitespace-nowrap"
-                        >
-                            <entry.icon className="h-3.5 w-3.5" />
-                            {entry.shortTitle ?? entry.title}
-                        </Link>
-                    ))}
+                    {mobileChips.map((entry) => {
+                        const chipContent = (
+                            <>
+                                <entry.icon className="h-3.5 w-3.5" />
+                                {entry.shortTitle ?? entry.title}
+                            </>
+                        );
+                        return entry.command ? (
+                            <button
+                                key={entry.id}
+                                type="button"
+                                onClick={() => runCommand(entry)}
+                                className={CHIP_CLASS_NAME}
+                            >
+                                {chipContent}
+                            </button>
+                        ) : (
+                            <Link
+                                key={entry.id}
+                                href={entry.href}
+                                replace
+                                prefetch={false}
+                                onClick={onNavigate}
+                                className={CHIP_CLASS_NAME}
+                            >
+                                {chipContent}
+                            </Link>
+                        );
+                    })}
                 </div>
             )}
 
@@ -349,8 +441,11 @@ const PaletteBody = ({ games, hasFailed, isSheet, onNavigate, onClose }: Palette
                                         isActive={index === safeIndex}
                                         replace={isSheet}
                                         onHover={() => setActiveIndex(index)}
+                                        dashboard={dashboard}
+                                        now={now}
                                         onNavigate={onNavigate}
                                         onClose={onClose}
+                                        onCommand={runCommand}
                                     />
                                 );
                             })}
@@ -415,10 +510,16 @@ export interface SearchPaletteProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     games?: SearchGame[];
+    dashboard?: DashboardSearch | null;
 }
 
-const SearchPalette = ({ open, onOpenChange, games: providedGames }: SearchPaletteProps) => {
-    const { games, hasFailed } = useSearchGames(open, providedGames);
+const SearchPalette = ({
+    open,
+    onOpenChange,
+    games: providedGames,
+    dashboard = null,
+}: SearchPaletteProps) => {
+    const { games, hasFailed } = useSearchGames(open, providedGames ?? dashboard?.games);
     const { isMd } = useBreakpoint("md");
     const isSheet = !isMd;
     const close = () => onOpenChange(false);
@@ -442,6 +543,7 @@ const SearchPalette = ({ open, onOpenChange, games: providedGames }: SearchPalet
                         games={games}
                         hasFailed={hasFailed}
                         isSheet={isSheet}
+                        dashboard={dashboard}
                         onNavigate={() => {
                             releaseHistoryEntry();
                             close();

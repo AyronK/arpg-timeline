@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatGameMeta, getDatelessDescription } from "./gameMeta";
+import { formatGameMeta, getDatelessDescription, getSeasonDescription } from "./gameMeta";
 import { SearchGame } from "./types";
 
 const game = (overrides: Partial<SearchGame> = {}): SearchGame => ({
@@ -44,5 +44,16 @@ describe("formatGameMeta", () => {
         expect(formatGameMeta(game(), "", "Path of Exile")).toBe("");
         expect(formatGameMeta(game(), "Coming soon", null)).toBe("Coming soon");
         expect(formatGameMeta(game(), "", null)).toBe("");
+    });
+});
+
+describe("getSeasonDescription", () => {
+    it("keeps the origin label in front of the season text", () => {
+        expect(getSeasonDescription(game(), "Season ends in 12 days")).toBe(
+            "Official • Season ends in 12 days",
+        );
+        expect(getSeasonDescription(game({ categories: ["community"] }), "No seasons")).toBe(
+            "Community • No seasons",
+        );
     });
 });

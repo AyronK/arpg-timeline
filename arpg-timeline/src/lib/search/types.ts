@@ -1,4 +1,7 @@
-import { GameCategory } from "@/lib/cms/gameTags";
+import { Game } from "@/lib/cms/games.types";
+import { GameCategory, GameFilterCategory } from "@/lib/cms/gameTags";
+
+import { DashboardStatus } from "./dashboardStatus";
 
 export interface SearchGame {
     slug: string;
@@ -13,4 +16,11 @@ export interface SearchGame {
 
 export interface SearchIndex {
     games: SearchGame[];
+}
+
+export interface DashboardSearch {
+    category: GameFilterCategory;
+    games: SearchGame[];
+    details: Map<string, { game: Game; status: DashboardStatus }>;
+    openFilters: () => void;
 }

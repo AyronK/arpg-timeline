@@ -14,6 +14,7 @@ import {
     Rocket,
     ScrollText,
     ShieldCheck,
+    SlidersHorizontal,
 } from "lucide-react";
 
 export interface StaticEntry {
@@ -27,6 +28,7 @@ export interface StaticEntry {
     keywords: string[];
     icon: LucideIcon;
     iconSrc?: string;
+    command?: "open-filters";
 }
 
 export const STATIC_ENTRIES: StaticEntry[] = [
@@ -150,6 +152,17 @@ export const STATIC_ENTRIES: StaticEntry[] = [
         icon: Newspaper,
     },
     {
+        id: "open-filters",
+        kind: "action",
+        title: "Open game filters",
+        shortTitle: "Filters",
+        description: "Choose which games this dashboard shows",
+        href: "",
+        command: "open-filters",
+        keywords: ["filters", "hide games", "show games", "hidden"],
+        icon: SlidersHorizontal,
+    },
+    {
         id: "join-discord",
         kind: "action",
         title: "Join Discord",
@@ -162,6 +175,9 @@ export const STATIC_ENTRIES: StaticEntry[] = [
     },
 ];
 
-export const QUICK_LINK_IDS = ["full-catalog", "calendar", "faq", "discord-bot"];
+export const QUICK_LINK_IDS = ["full-catalog", "calendar", "faq", "discord-bot", "open-filters"];
 
-export const MOBILE_CHIP_IDS = ["full-catalog", "calendar", "faq"];
+export const MOBILE_CHIP_IDS = ["full-catalog", "calendar", "faq", "open-filters"];
+
+export const isEntryAvailable = (entry: StaticEntry, canOpenFilters: boolean) =>
+    canOpenFilters || !entry.command;

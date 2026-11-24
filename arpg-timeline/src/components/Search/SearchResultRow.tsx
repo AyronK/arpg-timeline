@@ -68,12 +68,19 @@ export const IconTile = ({ icon: Icon, iconSrc }: { icon: LucideIcon; iconSrc?: 
     </Tile>
 );
 
+export interface RowBadge {
+    label: string;
+    description: string;
+    icon?: LucideIcon;
+}
+
 interface SearchResultRowProps {
     id: string;
-    href: string;
+    href: string | null;
     title: string;
     meta: string;
     tile: ReactNode;
+    badge?: RowBadge | null;
     highlight: HighlightRange | null;
     isActive: boolean;
     replace: boolean;
@@ -88,6 +95,7 @@ export const SearchResultRow = ({
     title,
     meta,
     tile,
+    badge,
     highlight,
     isActive,
     replace,
@@ -101,23 +109,21 @@ export const SearchResultRow = ({
         }
     };
 
-    return (
-        <Link
-            id={id}
-            href={href}
-            replace={!external && replace}
-            prefetch={false}
-            {...(external && { target: "_blank", rel: "noopener noreferrer nofollow" })}
-            role="option"
-            aria-selected={isActive}
-            tabIndex={-1}
-            onMouseMove={onHover}
-            onClick={onClick}
-            className={cn(
-                "bg-background/40 flex items-center gap-3 rounded-md border border-transparent p-2 transition-colors",
-                isActive && "border-foreground/30 bg-accent/40",
-            )}
-        >
+    const optionProps = {
+        id,
+        role: "option",
+        "aria-selected": isActive,
+        tabIndex: -1,
+        onMouseMove: onHover,
+        onClick,
+        className: cn(
+            "bg-background/40 flex cursor-pointer items-center gap-3 rounded-md border border-transparent p-2 transition-colors",
+            isActive && "border-foreground/30 bg-accent/40",
+        ),
+    };
+
+    const content = (
+        <>
             {tile}
             <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span className="font-heading text-foreground truncate text-sm">
@@ -125,12 +131,37 @@ export const SearchResultRow = ({
                 </span>
                 {meta && <span className="text-muted-foreground truncate text-xs">{meta}</span>}
             </div>
-            <ChevronRight
-                className={cn(
-                    "text-muted-foreground h-4 w-4 shrink-0 transition-opacity",
-                    !isActive && "opacity-0",
-                )}
-            />
+            {badge ? (
+                <span
+                    title={badge.description}
+                    className="border-foreground/15 text-muted-foreground inline-flex shrink-0 items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] whitespace-nowrap"
+                >
+                    {badge.icon && <badge.icon aria-hidden className="h-3 w-3" />}
+                    <span aria-hidden>{badge.label}</span>
+                    <span className="sr-only">{badge.description}</span>
+                </span>
+            ) : (
+                <ChevronRight
+                    className={cn(
+                        "text-muted-foreground h-4 w-4 shrink-0 transition-opacity",
+                        !isActive && "opacity-0",
+                    )}
+                />
+            )}
+        </>
+    );
+
+    return href ? (
+        <Link
+            {...optionProps}
+            href={href}
+            replace={!external && replace}
+            prefetch={false}
+            {...(external && { target: "_blank", rel: "noopener noreferrer nofollow" })}
+        >
+            {content}
         </Link>
+    ) : (
+        <div {...optionProps}>{content}</div>
     );
 };

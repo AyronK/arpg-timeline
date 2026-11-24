@@ -1,13 +1,16 @@
 import { getSanityImageUrl } from "@/components/SanityImage";
+import { Game } from "@/lib/cms/games.types";
 import { SearchIndexQueryResult, SearchIndexSanityGame } from "@/lib/cms/queries/searchIndexQuery";
 
 import {
     COMING_SOON_FLAG,
+    decodeSearchIndex,
     DORMANT_FLAG,
     EncodedSearchGame,
     EncodedSearchIndex,
     LOGO_RENDER_WIDTH,
 } from "./searchIndexCodec";
+import { SearchGame } from "./types";
 
 const LOGO_WIDTH = 256;
 const LOGO_QUALITY = 75;
@@ -31,3 +34,12 @@ export const encodeSearchGame = (game: SearchIndexSanityGame): EncodedSearchGame
 
 export const buildSearchIndex = ({ games }: SearchIndexQueryResult): EncodedSearchIndex =>
     games.map(encodeSearchGame);
+
+export const toSearchGame = (game: Game): SearchGame =>
+    decodeSearchIndex([
+        encodeSearchGame({
+            ...game,
+            shortName: game.shortName ?? undefined,
+            group: game.group ?? undefined,
+        }),
+    ]).games[0]!;

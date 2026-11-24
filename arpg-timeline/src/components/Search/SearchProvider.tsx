@@ -1,7 +1,17 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
+
+import { DashboardSearch } from "@/lib/search/types";
 
 const SearchPalette = dynamic(() => import("./SearchPalette"), { ssr: false });
 
@@ -12,6 +22,7 @@ export const preloadSearchPalette = () => {
 interface SearchContextType {
     isOpen: boolean;
     setOpen: (open: boolean) => void;
+    registerDashboard: (dashboard: DashboardSearch | null) => void;
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
@@ -23,6 +34,7 @@ const isEditableTarget = (target: EventTarget | null) =>
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [hasOpened, setHasOpened] = useState(false);
+    const [dashboard, setDashboard] = useState<DashboardSearch | null>(null);
 
     const setOpen = useCallback((open: boolean) => {
         setIsOpen(open);
@@ -51,13 +63,22 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
         return () => window.removeEventListener("keydown", onKeyDown);
     }, [setOpen]);
 
+    const value = useMemo(
+        () => ({ isOpen, setOpen, registerDashboard: setDashboard }),
+        [isOpen, setOpen],
+    );
+
     return (
-        <SearchContext.Provider value={{ isOpen, setOpen }}>
+        <SearchContext.Provider value={value}>
             {children}
-            {hasOpened && <SearchPalette open={isOpen} onOpenChange={setOpen} />}
+            {hasOpened && (
+                <SearchPalette open={isOpen} onOpenChange={setOpen} dashboard={dashboard} />
+            )}
         </SearchContext.Provider>
     );
 };
+
+export const useOptionalSearch = () => useContext(SearchContext);
 
 export const useSearch = () => {
     const context = useContext(SearchContext);

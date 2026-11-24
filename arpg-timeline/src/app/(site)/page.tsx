@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { LayoutCarousel } from "@/components/LayoutCarousel";
 import { DashboardPage } from "@/components/Pages/DashboardPage";
+import { SearchDashboardBridge } from "@/components/Search/SearchDashboardBridge";
 import { DashboardArticlesProvider } from "@/contexts/DashboardArticlesContext";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
 import { getDashboardArticles } from "@/lib/articles/getDashboardArticles";
@@ -29,6 +30,7 @@ const Home = async () => {
 
     return (
         <GameFilterProvider games={sanityGames} category={"featured"}>
+            <SearchDashboardBridge />
             <div className="sr-only absolute h-px w-px overflow-hidden p-0 [-webkit-clip-path:inset(50%)] [clip-path:inset(50%)]">
                 <Image
                     unoptimized

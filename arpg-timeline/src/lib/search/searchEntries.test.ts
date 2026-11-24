@@ -26,12 +26,26 @@ const summary = (groups: SearchGroup[]) =>
     groups.map((group) => [group.id, group.results.map((r) => getItemHref(r.item))]);
 
 describe("runSearch", () => {
+    const entryIds = (group: SearchGroup | undefined) =>
+        group?.results.map((r) => r.item.kind === "entry" && r.item.entry.id) ?? [];
+
     it("shows only quick links for an empty query", () => {
         const groups = runSearch(prepared, "  ");
 
         expect(groups.map((g) => g.id)).toEqual(["quick-links"]);
-        expect(groups[0]!.results.map((r) => r.item.kind === "entry" && r.item.entry.id)).toEqual(
-            QUICK_LINK_IDS,
+        expect(entryIds(groups[0])).toEqual(QUICK_LINK_IDS.filter((id) => id !== "open-filters"));
+    });
+
+    it("offers game filters only where filters can open", () => {
+        const actions = (canOpenFilters: boolean) =>
+            entryIds(
+                runSearch(prepared, "filters", { canOpenFilters }).find((g) => g.id === "actions"),
+            );
+
+        expect(actions(false)).toEqual([]);
+        expect(actions(true)).toEqual(["open-filters"]);
+        expect(entryIds(runSearch(prepared, "", { canOpenFilters: true })[0])).toContain(
+            "open-filters",
         );
     });
 

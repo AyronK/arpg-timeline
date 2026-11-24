@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { userEvent, within } from "storybook/test";
 
+import { Game } from "@/lib/cms/games.types";
 import { SEARCH_GAMES } from "@/lib/search/__fixtures__/searchGames";
-import { SearchGame } from "@/lib/search/types";
+import { DashboardStatus } from "@/lib/search/dashboardStatus";
+import { DashboardSearch, SearchGame } from "@/lib/search/types";
 
 import SearchPalette from "./SearchPalette";
 
@@ -13,6 +15,61 @@ const games: SearchGame[] = SEARCH_GAMES.map((game) => ({
     isDormant: false,
     isComingSoon: false,
 }));
+
+const DAY = 24 * 60 * 60 * 1000;
+const inDays = (days: number) => new Date(Date.now() + days * DAY).toISOString();
+
+const STATUSES: DashboardStatus[] = [
+    { kind: "visible" },
+    { kind: "hidden" },
+    { kind: "other-tab", category: "community" },
+];
+
+const SEASONS: Partial<Game>[] = [
+    {
+        nextSeason: {
+            _id: "n",
+            _updatedAt: "",
+            name: "",
+            start: { startDate: inDays(3), confirmed: true },
+        },
+    },
+    {
+        currentSeason: {
+            _id: "c",
+            _updatedAt: "",
+            name: "",
+            start: { startDate: inDays(-30) },
+            end: { endDate: inDays(12), confirmed: true },
+        },
+    },
+    {},
+];
+
+const dashboard: DashboardSearch = {
+    category: "featured",
+    games,
+    details: new Map(
+        games.map((game, index) => [
+            game.slug,
+            {
+                game: {
+                    ...game,
+                    _id: game.slug,
+                    _updatedAt: "",
+                    _createdAt: "",
+                    seasonKeyword: "season",
+                    url: null,
+                    logo: {} as Game["logo"],
+                    isOfficial: true,
+                    ...SEASONS[index % SEASONS.length],
+                },
+                status: STATUSES[index % STATUSES.length]!,
+            },
+        ]),
+    ),
+    openFilters: () => {},
+};
 
 const typeQuery = (query: string) => async () => {
     const input = await within(document.body).findByRole("combobox");
@@ -81,4 +138,13 @@ export const Loading: Story = {
 export const MobileSheet: Story = {
     globals: { viewport: { value: "mobile1", isRotated: false } },
     play: typeQuery("poe"),
+};
+
+export const OnDashboard: Story = {
+    args: { games: undefined, dashboard },
+    play: typeQuery("diablo"),
+};
+
+export const DashboardQuickLinks: Story = {
+    args: { games: undefined, dashboard },
 };

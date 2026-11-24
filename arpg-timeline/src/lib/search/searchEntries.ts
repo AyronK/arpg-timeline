@@ -1,7 +1,7 @@
 import { toGameCandidate } from "./aliases";
 import { prepareCandidates, PreparedCandidate, searchCandidates, SearchMatch } from "./match";
 import { normalize } from "./normalize";
-import { QUICK_LINK_IDS, STATIC_ENTRIES, StaticEntry } from "./staticEntries";
+import { isEntryAvailable, QUICK_LINK_IDS, STATIC_ENTRIES, StaticEntry } from "./staticEntries";
 import { SearchGame } from "./types";
 
 export type SearchItem = { kind: "game"; game: SearchGame } | { kind: "entry"; entry: StaticEntry };
@@ -67,13 +67,30 @@ const asMatch = (entry: StaticEntry): SearchMatch<SearchItem> => ({
 
 const QUICK_LINKS = QUICK_LINK_IDS.map((id) => STATIC_ENTRIES.find((entry) => entry.id === id)!);
 
+interface SearchOptions {
+    canOpenFilters?: boolean;
+    isVisible?: (item: SearchItem) => boolean;
+}
+
+const isAvailable = (item: SearchItem, canOpenFilters: boolean) =>
+    item.kind === "game" || isEntryAvailable(item.entry, canOpenFilters);
+
 export const runSearch = (
     prepared: PreparedSearch,
     query: string,
-    isVisible?: (item: SearchItem) => boolean,
+    { canOpenFilters = false, isVisible }: SearchOptions = {},
 ): SearchGroup[] => {
+    const available = (matches: SearchMatch<SearchItem>[]) =>
+        matches.filter((match) => isAvailable(match.item, canOpenFilters));
+
     if (!normalize(query)) {
-        return [{ id: "quick-links", label: "Quick links", results: QUICK_LINKS.map(asMatch) }];
+        return [
+            {
+                id: "quick-links",
+                label: "Quick links",
+                results: available(QUICK_LINKS.map(asMatch)),
+            },
+        ];
     }
 
     const groups: SearchGroup[] = [
@@ -88,12 +105,18 @@ export const runSearch = (
         {
             id: "pages",
             label: "Pages",
-            results: searchCandidates(prepared.pages, query).slice(0, GROUP_LIMITS.pages),
+            results: available(searchCandidates(prepared.pages, query)).slice(
+                0,
+                GROUP_LIMITS.pages,
+            ),
         },
         {
             id: "actions",
             label: "Actions",
-            results: searchCandidates(prepared.actions, query).slice(0, GROUP_LIMITS.actions),
+            results: available(searchCandidates(prepared.actions, query)).slice(
+                0,
+                GROUP_LIMITS.actions,
+            ),
         },
     ];
     return groups.filter((group) => group.results.length > 0);
