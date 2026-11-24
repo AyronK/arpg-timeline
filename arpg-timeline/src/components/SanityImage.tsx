@@ -28,6 +28,18 @@ export const urlForImage = (source: SanityImageAssetDocument) => {
     return imageBuilder?.image(source).auto("format");
 };
 
+export const getSanityImageUrl = (
+    source: SanityImageAssetDocument,
+    renderWidth: number | undefined,
+    quality: number,
+) =>
+    urlForImage(source)
+        ?.width(upstreamWidth(renderWidth))
+        .fit("max")
+        .format("webp")
+        .quality(quality)
+        .url();
+
 export const SanityImage = ({
     src,
     quality = 75,
@@ -40,12 +52,11 @@ export const SanityImage = ({
         return null;
     }
 
-    const imageUrl = urlForImage(src)
-        ?.width(upstreamWidth(typeof remaining.width === "number" ? remaining.width : undefined))
-        .fit("max")
-        .format("webp")
-        .quality(Number(quality))
-        .url();
+    const imageUrl = getSanityImageUrl(
+        src,
+        typeof remaining.width === "number" ? remaining.width : undefined,
+        Number(quality),
+    );
     const imageLqip = src.metadata?.lqip;
 
     if (!imageUrl) {
