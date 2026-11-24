@@ -77,3 +77,8 @@ export const Loading: Story = {
     args: { games: undefined },
     play: typeQuery("diablo"),
 };
+
+export const MobileSheet: Story = {
+    globals: { viewport: { value: "mobile1", isRotated: false } },
+    play: typeQuery("poe"),
+};

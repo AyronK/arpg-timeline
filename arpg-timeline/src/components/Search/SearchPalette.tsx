@@ -1,46 +1,59 @@
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Search, X } from "lucide-react";
+import { ArrowLeft, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
+import { KeyboardEvent, ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { formatGameMeta, getDatelessDescription } from "@/lib/search/gameMeta";
 import { loadSearchIndex } from "@/lib/search/loadSearchIndex";
 import { SearchMatch } from "@/lib/search/match";
 import {
     getItemHref,
     getItemKey,
+    isItemExternal,
     prepareSearch,
     runSearch,
     SearchItem,
 } from "@/lib/search/searchEntries";
+import { MOBILE_CHIP_IDS, STATIC_ENTRIES } from "@/lib/search/staticEntries";
 import { SearchGame } from "@/lib/search/types";
+import { cn } from "@/lib/utils";
 import { Dialog, DialogClose, DialogOverlay, DialogPortal, DialogTitle } from "@/ui/Dialog";
 
 import { GameTile, IconTile, SearchResultRow } from "./SearchResultRow";
 import { SEARCH_TRIGGER_ATTRIBUTE } from "./SearchTrigger";
 
 const NO_ACTIVE_INDEX = -1;
+const MAX_QUERY_LENGTH = 64;
+const HISTORY_MARKER = "searchSheet";
+
+const MOBILE_CHIPS = MOBILE_CHIP_IDS.map((id) => STATIC_ENTRIES.find((entry) => entry.id === id)!);
 
 const NO_RESULTS_ACTION_CLASS_NAME =
     "border-foreground/20 hover:border-foreground/40 text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-hidden";
 
 const ResultRow = ({
     match: { item, matchedAlias, highlight },
+    onNavigate,
+    onClose,
     ...rowProps
 }: {
     match: SearchMatch<SearchItem>;
     id: string;
     isActive: boolean;
+    replace: boolean;
     onHover: () => void;
     onNavigate: () => void;
+    onClose: () => void;
 }) =>
     item.kind === "game" ? (
         <SearchResultRow
             {...rowProps}
+            onNavigate={onNavigate}
             href={getItemHref(item)}
             title={item.game.name}
             meta={formatGameMeta(item.game, getDatelessDescription(item.game), matchedAlias)}
@@ -50,10 +63,12 @@ const ResultRow = ({
     ) : (
         <SearchResultRow
             {...rowProps}
+            external={item.entry.external}
+            onNavigate={item.entry.external ? onClose : onNavigate}
             href={getItemHref(item)}
             title={item.entry.title}
             meta={item.entry.description}
-            tile={<IconTile icon={item.entry.icon} />}
+            tile={<IconTile icon={item.entry.icon} iconSrc={item.entry.iconSrc} />}
             highlight={highlight}
         />
     );
@@ -91,13 +106,48 @@ const useSearchGames = (open: boolean, providedGames?: SearchGame[]) => {
     return { games: providedGames ?? loadedGames, hasFailed };
 };
 
+const useCloseOnBrowserBack = (isActive: boolean, onClose: () => void) => {
+    const onCloseRef = useRef(onClose);
+    const isReleasedRef = useRef(false);
+
+    useEffect(() => {
+        onCloseRef.current = onClose;
+    });
+
+    useEffect(() => {
+        if (!isActive) {
+            return;
+        }
+        isReleasedRef.current = false;
+        window.history.pushState({ ...window.history.state, [HISTORY_MARKER]: true }, "");
+        const onPopState = () => {
+            if (!window.history.state?.[HISTORY_MARKER]) {
+                onCloseRef.current();
+            }
+        };
+        window.addEventListener("popstate", onPopState);
+        return () => {
+            window.removeEventListener("popstate", onPopState);
+            if (!isReleasedRef.current && window.history.state?.[HISTORY_MARKER]) {
+                window.history.back();
+            }
+        };
+    }, [isActive]);
+
+    return () => {
+        isReleasedRef.current = true;
+    };
+};
+
 interface PaletteBodyProps {
     games: SearchGame[] | null;
     hasFailed: boolean;
+    isSheet: boolean;
+    onNavigate: () => void;
     onClose: () => void;
 }
 
-const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
+const PaletteBody = ({ games, hasFailed, isSheet, onNavigate, onClose }: PaletteBodyProps) => {
     const router = useRouter();
     const [query, setQuery] = useState("");
     const [activeIndex, setActiveIndex] = useState(NO_ACTIVE_INDEX);
@@ -119,12 +169,19 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
     }, [baseId, safeIndex]);
 
     const openItem = (item: SearchItem, inNewTab: boolean) => {
-        if (inNewTab) {
-            window.open(getItemHref(item), "_blank", "noopener");
+        if (inNewTab || isItemExternal(item)) {
+            window.open(getItemHref(item), "_blank", "noopener,noreferrer");
+            if (!inNewTab) {
+                onClose();
+            }
             return;
         }
-        router.push(getItemHref(item));
-        onClose();
+        onNavigate();
+        if (isSheet) {
+            router.replace(getItemHref(item));
+        } else {
+            router.push(getItemHref(item));
+        }
     };
 
     const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -167,57 +224,104 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
         inputRef.current?.focus();
     };
 
+    const searchField: ReactNode = (
+        <div
+            className={cn(
+                "border-foreground/20 bg-background/60 focus-within:border-foreground/40 flex items-center gap-2 rounded-md border px-3 transition-colors",
+                isSheet && "min-w-0 flex-1",
+            )}
+        >
+            <Search className="text-muted-foreground h-4 w-4 shrink-0" />
+            <input
+                ref={inputRef}
+                autoFocus
+                type="search"
+                role="combobox"
+                aria-label="Search games and pages"
+                aria-expanded={results.length > 0}
+                aria-controls={listboxId}
+                aria-autocomplete="list"
+                aria-activedescendant={activeResult ? optionId(safeIndex) : undefined}
+                autoComplete="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                enterKeyHint="search"
+                maxLength={MAX_QUERY_LENGTH}
+                placeholder="Search games, pages..."
+                value={query}
+                onChange={(e) => {
+                    setQuery(e.target.value);
+                    setActiveIndex(e.target.value.trim() ? 0 : NO_ACTIVE_INDEX);
+                }}
+                onKeyDown={onKeyDown}
+                className="placeholder:text-muted-foreground h-11 flex-1 bg-transparent text-base outline-hidden md:text-sm [&::-webkit-search-cancel-button]:hidden"
+            />
+        </div>
+    );
+
     return (
         <>
-            <div className="flex items-start justify-between gap-4">
-                <div className="flex flex-col gap-0.5">
-                    <DialogTitle className="font-heading text-foreground text-base font-medium">
-                        Find a game
-                    </DialogTitle>
-                    <p className="text-muted-foreground text-xs">
-                        Search by name or short name, like poe2 or d4
-                    </p>
+            {isSheet ? (
+                <div className="border-foreground/10 flex items-center gap-1 border-b py-2 pr-3 pl-1">
+                    <DialogTitle className="sr-only">Find a game</DialogTitle>
+                    <DialogClose
+                        aria-label="Close search"
+                        className="text-muted-foreground hover:text-foreground focus-visible:ring-ring grid h-10 w-10 shrink-0 cursor-pointer place-content-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-hidden"
+                    >
+                        <ArrowLeft className="h-5 w-5" />
+                    </DialogClose>
+                    {searchField}
                 </div>
-                <DialogClose
-                    aria-label="Close search"
-                    className="text-muted-foreground hover:text-foreground focus-visible:ring-ring cursor-pointer rounded-sm p-1 transition-colors focus-visible:ring-2 focus-visible:outline-hidden"
-                >
-                    <X className="h-4 w-4" />
-                </DialogClose>
-            </div>
+            ) : (
+                <>
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="flex flex-col gap-0.5">
+                            <DialogTitle className="font-heading text-foreground text-base font-medium">
+                                Find a game
+                            </DialogTitle>
+                            <p className="text-muted-foreground text-xs">
+                                Search by name or short name, like poe2 or d4
+                            </p>
+                        </div>
+                        <DialogClose
+                            aria-label="Close search"
+                            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring cursor-pointer rounded-sm p-1 transition-colors focus-visible:ring-2 focus-visible:outline-hidden"
+                        >
+                            <X className="h-4 w-4" />
+                        </DialogClose>
+                    </div>
+                    {searchField}
+                </>
+            )}
 
-            <div className="border-foreground/20 bg-background/60 focus-within:border-foreground/40 flex items-center gap-2 rounded-md border px-3 transition-colors">
-                <Search className="text-muted-foreground h-4 w-4 shrink-0" />
-                <input
-                    ref={inputRef}
-                    autoFocus
-                    type="search"
-                    role="combobox"
-                    aria-label="Search games and pages"
-                    aria-expanded={results.length > 0}
-                    aria-controls={listboxId}
-                    aria-autocomplete="list"
-                    aria-activedescendant={activeResult ? optionId(safeIndex) : undefined}
-                    autoComplete="off"
-                    autoCapitalize="off"
-                    spellCheck={false}
-                    enterKeyHint="search"
-                    placeholder="Search games, pages..."
-                    value={query}
-                    onChange={(e) => {
-                        setQuery(e.target.value);
-                        setActiveIndex(e.target.value.trim() ? 0 : NO_ACTIVE_INDEX);
-                    }}
-                    onKeyDown={onKeyDown}
-                    className="placeholder:text-muted-foreground h-11 flex-1 bg-transparent text-base outline-hidden md:text-sm [&::-webkit-search-cancel-button]:hidden"
-                />
-            </div>
+            {isSheet && (
+                <div className="flex shrink-0 [scrollbar-width:none] gap-2 overflow-x-auto px-3 py-2 [&::-webkit-scrollbar]:hidden">
+                    {MOBILE_CHIPS.map((entry) => (
+                        <Link
+                            key={entry.id}
+                            href={entry.href}
+                            replace
+                            prefetch={false}
+                            onClick={onNavigate}
+                            className="border-foreground/20 text-muted-foreground hover:text-foreground inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-3 text-xs font-medium whitespace-nowrap"
+                        >
+                            <entry.icon className="h-3.5 w-3.5" />
+                            {entry.shortTitle ?? entry.title}
+                        </Link>
+                    ))}
+                </div>
+            )}
 
             <div
                 id={listboxId}
                 role="listbox"
                 aria-label="Search results"
-                className="-mx-1 max-h-[380px] overflow-y-auto px-1"
+                className={cn(
+                    "overflow-x-hidden overflow-y-auto",
+                    isSheet
+                        ? "min-h-0 flex-1 px-3 pt-1 pb-[calc(1rem+env(safe-area-inset-bottom))]"
+                        : "-mx-1 max-h-[380px] px-1",
+                )}
             >
                 {groups.map((group, groupIndex) => {
                     const labelId = `${baseId}-${group.id}`;
@@ -243,8 +347,10 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                                         match={match}
                                         id={optionId(index)}
                                         isActive={index === safeIndex}
+                                        replace={isSheet}
                                         onHover={() => setActiveIndex(index)}
-                                        onNavigate={onClose}
+                                        onNavigate={onNavigate}
+                                        onClose={onClose}
                                     />
                                 );
                             })}
@@ -253,7 +359,9 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                 })}
                 {hasNoResults && (
                     <div className="flex flex-col items-center gap-1 py-6 text-center text-sm">
-                        <p className="text-foreground">No results for &quot;{query.trim()}&quot;</p>
+                        <p className="text-foreground w-full truncate">
+                            No results for &quot;{query.trim()}&quot;
+                        </p>
                         <p className="text-muted-foreground text-xs">
                             Try a short name like d4 or poe2. Can&apos;t find your game? Request it
                             on Discord.
@@ -294,9 +402,11 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                 {announcement}
             </div>
 
-            <p className="text-muted-foreground text-xs pointer-coarse:hidden">
-                Use arrows to move, Enter to open, Esc to close
-            </p>
+            {!isSheet && (
+                <p className="text-muted-foreground text-xs pointer-coarse:hidden">
+                    Use arrows to move, Enter to open, Esc to close
+                </p>
+            )}
         </>
     );
 };
@@ -309,20 +419,34 @@ export interface SearchPaletteProps {
 
 const SearchPalette = ({ open, onOpenChange, games: providedGames }: SearchPaletteProps) => {
     const { games, hasFailed } = useSearchGames(open, providedGames);
+    const { isMd } = useBreakpoint("md");
+    const isSheet = !isMd;
+    const close = () => onOpenChange(false);
+    const releaseHistoryEntry = useCloseOnBrowserBack(open && isSheet, close);
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogPortal>
-                <DialogOverlay className="bg-black/60 backdrop-blur-sm motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none" />
+                <DialogOverlay className="z-[70] bg-black/60 backdrop-blur-sm motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none" />
                 <DialogPrimitive.Content
                     aria-describedby={undefined}
                     onCloseAutoFocus={focusVisibleTrigger}
-                    className="bg-card text-card-foreground border-foreground/20 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[10vh] left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-[560px] -translate-x-1/2 flex-col gap-4 overflow-hidden rounded-lg border-2 p-4 shadow-2xl duration-150 focus-visible:outline-hidden motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none md:p-6"
+                    className={cn(
+                        "bg-card text-card-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed z-[70] flex flex-col duration-150 focus-visible:outline-hidden motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none",
+                        isSheet
+                            ? "inset-0 h-dvh w-full pt-[env(safe-area-inset-top)]"
+                            : "border-foreground/20 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 top-[10vh] left-1/2 w-[calc(100%-2rem)] max-w-[560px] -translate-x-1/2 gap-4 overflow-hidden rounded-lg border-2 p-6 shadow-2xl",
+                    )}
                 >
                     <PaletteBody
                         games={games}
                         hasFailed={hasFailed}
-                        onClose={() => onOpenChange(false)}
+                        isSheet={isSheet}
+                        onNavigate={() => {
+                            releaseHistoryEntry();
+                            close();
+                        }}
+                        onClose={close}
                     />
                 </DialogPrimitive.Content>
             </DialogPortal>

@@ -51,9 +51,20 @@ export const GameTile = ({ name, logoSrc }: { name: string; logoSrc: string | nu
     </Tile>
 );
 
-export const IconTile = ({ icon: Icon }: { icon: LucideIcon }) => (
+export const IconTile = ({ icon: Icon, iconSrc }: { icon: LucideIcon; iconSrc?: string }) => (
     <Tile>
-        <Icon className="text-muted-foreground h-4 w-4" />
+        {iconSrc ? (
+            <Image
+                unoptimized
+                src={iconSrc}
+                alt=""
+                width={16}
+                height={16}
+                className="h-4 w-4 opacity-70 brightness-200 grayscale-100"
+            />
+        ) : (
+            <Icon className="text-muted-foreground h-4 w-4" />
+        )}
     </Tile>
 );
 
@@ -65,6 +76,8 @@ interface SearchResultRowProps {
     tile: ReactNode;
     highlight: HighlightRange | null;
     isActive: boolean;
+    replace: boolean;
+    external?: boolean;
     onHover: () => void;
     onNavigate: () => void;
 }
@@ -77,6 +90,8 @@ export const SearchResultRow = ({
     tile,
     highlight,
     isActive,
+    replace,
+    external,
     onHover,
     onNavigate,
 }: SearchResultRowProps) => {
@@ -90,7 +105,9 @@ export const SearchResultRow = ({
         <Link
             id={id}
             href={href}
+            replace={!external && replace}
             prefetch={false}
+            {...(external && { target: "_blank", rel: "noopener noreferrer nofollow" })}
             role="option"
             aria-selected={isActive}
             tabIndex={-1}
