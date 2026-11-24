@@ -1,7 +1,7 @@
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { KeyboardEvent, useEffect, useId, useMemo, useState } from "react";
 
@@ -10,7 +10,6 @@ import { loadSearchIndex } from "@/lib/search/loadSearchIndex";
 import { prepareCandidates, PreparedCandidate, searchCandidates } from "@/lib/search/match";
 import { SearchGame } from "@/lib/search/types";
 import { Dialog, DialogClose, DialogOverlay, DialogPortal, DialogTitle } from "@/ui/Dialog";
-import { Kbd } from "@/ui/Kbd";
 
 import { GameResultRow } from "./SearchResultRow";
 import { SEARCH_TRIGGER_ATTRIBUTE } from "./SearchTrigger";
@@ -29,6 +28,9 @@ const getPreparedGames = (games: SearchGame[]) => {
 };
 
 const gameHref = (game: SearchGame) => `/game/${game.slug}`;
+
+const gameMeta = (game: SearchGame) =>
+    game.isComingSoon ? "Coming soon" : game.isDormant ? "No recent updates" : (game.group ?? "");
 
 const focusVisibleTrigger = (e: Event) => {
     e.preventDefault();
@@ -130,9 +132,27 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
 
     return (
         <>
-            <div className="flex items-center gap-2 border-b px-3">
+            <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-0.5">
+                    <DialogTitle className="font-heading text-foreground text-base font-medium">
+                        Find a game
+                    </DialogTitle>
+                    <p className="text-muted-foreground text-xs">
+                        Search by name or short name, like poe2 or d4
+                    </p>
+                </div>
+                <DialogClose
+                    aria-label="Close search"
+                    className="text-muted-foreground hover:text-foreground focus-visible:ring-ring cursor-pointer rounded-sm p-1 transition-colors focus-visible:ring-2 focus-visible:outline-hidden"
+                >
+                    <X className="h-4 w-4" />
+                </DialogClose>
+            </div>
+
+            <div className="border-foreground/20 bg-background/60 focus-within:border-foreground/40 flex items-center gap-2 rounded-md border px-3 transition-colors">
                 <Search className="text-muted-foreground h-4 w-4 shrink-0" />
                 <input
+                    autoFocus
                     type="search"
                     role="combobox"
                     aria-label="Search games and pages"
@@ -151,25 +171,26 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                         setActiveIndex(0);
                     }}
                     onKeyDown={onKeyDown}
-                    className="placeholder:text-muted-foreground h-12 flex-1 bg-transparent text-base outline-hidden md:text-sm [&::-webkit-search-cancel-button]:hidden"
+                    className="placeholder:text-muted-foreground h-11 flex-1 bg-transparent text-base outline-hidden md:text-sm [&::-webkit-search-cancel-button]:hidden"
                 />
-                <DialogClose className="cursor-pointer" aria-label="Close search">
-                    <Kbd>Esc</Kbd>
-                </DialogClose>
             </div>
 
             <div
                 id={listboxId}
                 role="listbox"
                 aria-label="Search results"
-                className="max-h-[380px] overflow-y-auto p-2"
+                className="-mx-1 max-h-[380px] overflow-y-auto px-1"
             >
                 {results.length > 0 && (
-                    <div role="group" aria-labelledby={groupLabelId}>
+                    <div
+                        role="group"
+                        aria-labelledby={groupLabelId}
+                        className="flex flex-col gap-1.5"
+                    >
                         <div
                             id={groupLabelId}
                             role="presentation"
-                            className="text-muted-foreground px-3 pt-1 pb-1.5 text-[11px] font-semibold tracking-wider uppercase"
+                            className="text-muted-foreground pb-0.5 text-xs font-semibold tracking-wider uppercase"
                         >
                             Games
                         </div>
@@ -179,6 +200,8 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                                 id={optionId(index)}
                                 href={gameHref(result.item)}
                                 name={result.item.name}
+                                meta={gameMeta(result.item)}
+                                logoSrc={result.item.logoSrc}
                                 highlight={result.highlight}
                                 isActive={index === safeIndex}
                                 onHover={() => setActiveIndex(index)}
@@ -188,7 +211,7 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                     </div>
                 )}
                 {status && (
-                    <p className="text-muted-foreground px-3 py-6 text-center text-sm">{status}</p>
+                    <p className="text-muted-foreground py-6 text-center text-sm">{status}</p>
                 )}
             </div>
 
@@ -196,21 +219,9 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                 {announcement}
             </div>
 
-            <div className="text-muted-foreground flex items-center gap-4 border-t px-3 py-2 text-xs">
-                <span className="flex items-center gap-1">
-                    <Kbd>↑</Kbd>
-                    <Kbd>↓</Kbd>
-                    navigate
-                </span>
-                <span className="flex items-center gap-1">
-                    <Kbd>↵</Kbd>
-                    open
-                </span>
-                <span className="flex items-center gap-1">
-                    <Kbd>Esc</Kbd>
-                    close
-                </span>
-            </div>
+            <p className="text-muted-foreground text-xs pointer-coarse:hidden">
+                Use arrows to move, Enter to open, Esc to close
+            </p>
         </>
     );
 };
@@ -231,9 +242,8 @@ const SearchPalette = ({ open, onOpenChange, games: providedGames }: SearchPalet
                 <DialogPrimitive.Content
                     aria-describedby={undefined}
                     onCloseAutoFocus={focusVisibleTrigger}
-                    className="font-ui bg-card text-card-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[10vh] left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-[560px] -translate-x-1/2 flex-col overflow-hidden rounded-xl border shadow-2xl duration-150 focus-visible:outline-hidden motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none"
+                    className="bg-card text-card-foreground border-foreground/20 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[10vh] left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-[560px] -translate-x-1/2 flex-col gap-4 overflow-hidden rounded-lg border-2 p-4 shadow-2xl duration-150 focus-visible:outline-hidden motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none md:p-6"
                 >
-                    <DialogTitle className="sr-only">Search</DialogTitle>
                     <PaletteBody
                         games={games}
                         hasFailed={hasFailed}

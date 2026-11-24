@@ -6,7 +6,6 @@ import { useSyncExternalStore } from "react";
 import { prefetchSearchIndex } from "@/lib/search/loadSearchIndex";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
-import { Kbd } from "@/ui/Kbd";
 
 import { preloadSearchPalette, useSearch } from "./SearchProvider";
 
@@ -56,15 +55,20 @@ export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
         <button
             {...triggerProps}
             className={cn(
-                "font-ui border-foreground/15 bg-muted/60 text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-ring flex h-9 cursor-pointer items-center gap-2 rounded-full border pr-1.5 pl-3 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-hidden",
+                "group bg-card text-card-foreground border-foreground/20 hover:border-foreground/40 focus-visible:border-foreground/60 flex h-9 cursor-pointer items-center gap-2.5 rounded-md border-2 pr-2 pl-3 transition-colors focus-visible:outline-hidden",
                 className,
             )}
         >
-            <Search className="h-4 w-4 shrink-0" />
-            <span className="flex-1 text-left whitespace-nowrap">Search games, pages...</span>
-            <Kbd className={cn("w-13 rounded-full", isApple === null && "invisible")}>
-                {isApple ? "⌘" : "Ctrl"} K
-            </Kbd>
+            <Search className="text-muted-foreground group-hover:text-foreground h-4 w-4 shrink-0 transition-colors" />
+            <span className="font-heading text-sm font-medium">Find a game</span>
+            <span
+                className={cn(
+                    "text-muted-foreground bg-foreground/10 w-13 rounded-sm px-1.5 py-0.5 text-center text-[11px] font-medium",
+                    isApple === null && "invisible",
+                )}
+            >
+                {isApple ? "⌘ K" : "Ctrl K"}
+            </span>
         </button>
     );
 };
