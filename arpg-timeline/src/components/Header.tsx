@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/Dro
 
 import { DiscordMemberCard } from "./DiscordMemberCard";
 import { Logo } from "./Logo";
+import { SearchTrigger } from "./Search/SearchTrigger";
 
 interface SocialButtonProps {
     href: string;
@@ -71,7 +72,9 @@ export const Header = () => {
                     </div>
                 </Link>
                 <div className="flex h-full items-center justify-between gap-2 px-2">
+                    <SearchTrigger variant="pill" className="relative z-30 hidden xl:flex" />
                     <div className="ml-auto flex items-center">
+                        <SearchTrigger variant="icon" className="xl:hidden" />
                         <SocialButton
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}
                             rel="noopener noreferrer nofollow"
