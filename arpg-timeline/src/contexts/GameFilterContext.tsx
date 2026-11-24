@@ -242,6 +242,8 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
     return <GameFilterContext.Provider value={value}>{children}</GameFilterContext.Provider>;
 };
 
+export const useOptionalGameFilterContext = () => useContext(GameFilterContext);
+
 export const useGameFilterContext = () => {
     const context = useContext(GameFilterContext);
     if (context === undefined) {
