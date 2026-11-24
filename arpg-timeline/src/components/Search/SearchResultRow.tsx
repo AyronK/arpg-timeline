@@ -1,7 +1,7 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, LucideIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { MouseEvent } from "react";
+import { MouseEvent, ReactNode } from "react";
 
 import { HighlightRange } from "@/lib/search/match";
 import { LOGO_RENDER_HEIGHT, LOGO_RENDER_WIDTH } from "@/lib/search/searchIndexCodec";
@@ -28,29 +28,58 @@ const initials = (name: string) =>
         .join("")
         .toUpperCase();
 
-interface GameResultRowProps {
+const Tile = ({ children }: { children: ReactNode }) => (
+    <div className="bg-muted/50 flex h-10 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md">
+        {children}
+    </div>
+);
+
+export const GameTile = ({ name, logoSrc }: { name: string; logoSrc: string | null }) => (
+    <Tile>
+        {logoSrc ? (
+            <Image
+                unoptimized
+                src={logoSrc}
+                alt=""
+                width={LOGO_RENDER_WIDTH}
+                height={LOGO_RENDER_HEIGHT}
+                className="h-full w-full object-contain p-1"
+            />
+        ) : (
+            <span className="font-heading text-muted-foreground text-xs">{initials(name)}</span>
+        )}
+    </Tile>
+);
+
+export const IconTile = ({ icon: Icon }: { icon: LucideIcon }) => (
+    <Tile>
+        <Icon className="text-muted-foreground h-4 w-4" />
+    </Tile>
+);
+
+interface SearchResultRowProps {
     id: string;
     href: string;
-    name: string;
+    title: string;
     meta: string;
-    logoSrc: string | null;
+    tile: ReactNode;
     highlight: HighlightRange | null;
     isActive: boolean;
     onHover: () => void;
     onNavigate: () => void;
 }
 
-export const GameResultRow = ({
+export const SearchResultRow = ({
     id,
     href,
-    name,
+    title,
     meta,
-    logoSrc,
+    tile,
     highlight,
     isActive,
     onHover,
     onNavigate,
-}: GameResultRowProps) => {
+}: SearchResultRowProps) => {
     const onClick = (e: MouseEvent) => {
         if (!e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) {
             onNavigate();
@@ -72,25 +101,10 @@ export const GameResultRow = ({
                 isActive && "border-foreground/30 bg-accent/40",
             )}
         >
-            <div className="bg-muted/50 flex h-10 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md">
-                {logoSrc ? (
-                    <Image
-                        unoptimized
-                        src={logoSrc}
-                        alt=""
-                        width={LOGO_RENDER_WIDTH}
-                        height={LOGO_RENDER_HEIGHT}
-                        className="h-full w-full object-contain p-1"
-                    />
-                ) : (
-                    <span className="font-heading text-muted-foreground text-xs">
-                        {initials(name)}
-                    </span>
-                )}
-            </div>
+            {tile}
             <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span className="font-heading text-foreground truncate text-sm">
-                    <HighlightedText text={name} range={highlight} />
+                    <HighlightedText text={title} range={highlight} />
                 </span>
                 {meta && <span className="text-muted-foreground truncate text-xs">{meta}</span>}
             </div>

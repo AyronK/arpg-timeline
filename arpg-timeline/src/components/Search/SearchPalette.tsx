@@ -7,33 +7,56 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { toGameCandidate } from "@/lib/search/aliases";
 import { formatGameMeta, getDatelessDescription } from "@/lib/search/gameMeta";
 import { loadSearchIndex } from "@/lib/search/loadSearchIndex";
-import { prepareCandidates, PreparedCandidate, searchCandidates } from "@/lib/search/match";
+import { SearchMatch } from "@/lib/search/match";
+import {
+    getItemHref,
+    getItemKey,
+    prepareSearch,
+    runSearch,
+    SearchItem,
+} from "@/lib/search/searchEntries";
 import { SearchGame } from "@/lib/search/types";
 import { Dialog, DialogClose, DialogOverlay, DialogPortal, DialogTitle } from "@/ui/Dialog";
 
-import { GameResultRow } from "./SearchResultRow";
+import { GameTile, IconTile, SearchResultRow } from "./SearchResultRow";
 import { SEARCH_TRIGGER_ATTRIBUTE } from "./SearchTrigger";
 
-const GAME_LIMIT = 6;
-
-const preparedGames = new WeakMap<SearchGame[], PreparedCandidate<SearchGame>[]>();
-
-const getPreparedGames = (games: SearchGame[]) => {
-    let prepared = preparedGames.get(games);
-    if (!prepared) {
-        prepared = prepareCandidates(games.map(toGameCandidate));
-        preparedGames.set(games, prepared);
-    }
-    return prepared;
-};
+const NO_ACTIVE_INDEX = -1;
 
 const NO_RESULTS_ACTION_CLASS_NAME =
     "border-foreground/20 hover:border-foreground/40 text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-hidden";
 
-const gameHref = (game: SearchGame) => `/game/${game.slug}`;
+const ResultRow = ({
+    match: { item, matchedAlias, highlight },
+    ...rowProps
+}: {
+    match: SearchMatch<SearchItem>;
+    id: string;
+    isActive: boolean;
+    onHover: () => void;
+    onNavigate: () => void;
+}) =>
+    item.kind === "game" ? (
+        <SearchResultRow
+            {...rowProps}
+            href={getItemHref(item)}
+            title={item.game.name}
+            meta={formatGameMeta(item.game, getDatelessDescription(item.game), matchedAlias)}
+            tile={<GameTile name={item.game.name} logoSrc={item.game.logoSrc} />}
+            highlight={highlight}
+        />
+    ) : (
+        <SearchResultRow
+            {...rowProps}
+            href={getItemHref(item)}
+            title={item.entry.title}
+            meta={item.entry.description}
+            tile={<IconTile icon={item.entry.icon} />}
+            highlight={highlight}
+        />
+    );
 
 const focusVisibleTrigger = (e: Event) => {
     e.preventDefault();
@@ -77,17 +100,14 @@ interface PaletteBodyProps {
 const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
     const router = useRouter();
     const [query, setQuery] = useState("");
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(NO_ACTIVE_INDEX);
     const inputRef = useRef<HTMLInputElement>(null);
     const baseId = useId();
     const listboxId = `${baseId}-listbox`;
-    const groupLabelId = `${baseId}-games`;
     const optionId = (index: number) => `${baseId}-option-${index}`;
 
-    const results = useMemo(
-        () => (games ? searchCandidates(getPreparedGames(games), query).slice(0, GAME_LIMIT) : []),
-        [games, query],
-    );
+    const groups = useMemo(() => runSearch(prepareSearch(games), query), [games, query]);
+    const results = useMemo(() => groups.flatMap((group) => group.results), [groups]);
     const safeIndex = Math.min(activeIndex, results.length - 1);
     const activeResult = results[safeIndex];
     const hasQuery = query.trim().length > 0;
@@ -98,12 +118,12 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
             ?.scrollIntoView({ block: "nearest" });
     }, [baseId, safeIndex]);
 
-    const openGame = (game: SearchGame, inNewTab: boolean) => {
+    const openItem = (item: SearchItem, inNewTab: boolean) => {
         if (inNewTab) {
-            window.open(gameHref(game), "_blank", "noopener");
+            window.open(getItemHref(item), "_blank", "noopener");
             return;
         }
-        router.push(gameHref(game));
+        router.push(getItemHref(item));
         onClose();
     };
 
@@ -114,18 +134,18 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
             setActiveIndex((safeIndex + 1) % count);
         } else if (e.key === "ArrowUp" && count) {
             e.preventDefault();
-            setActiveIndex((safeIndex - 1 + count) % count);
+            setActiveIndex(safeIndex < 0 ? count - 1 : (safeIndex - 1 + count) % count);
         } else if (e.key === "Enter" && activeResult) {
             e.preventDefault();
-            openGame(activeResult.item, e.metaKey || e.ctrlKey);
+            openItem(activeResult.item, e.metaKey || e.ctrlKey);
         }
     };
 
     const hasNoResults = hasQuery && !!games && results.length === 0;
-    const status = hasFailed
-        ? "Couldn't load games. Close and try again."
-        : !hasQuery
-          ? "Type a game name or a short name like poe2."
+    const status = !hasQuery
+        ? null
+        : hasFailed
+          ? "Couldn't load games. Close and try again."
           : !games
             ? "Loading games..."
             : null;
@@ -137,9 +157,13 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
               ? "No results"
               : `${results.length} ${results.length === 1 ? "result" : "results"}`;
 
+    const groupOffsets = groups.map((_, groupIndex) =>
+        groups.slice(0, groupIndex).reduce((count, group) => count + group.results.length, 0),
+    );
+
     const clearSearch = () => {
         setQuery("");
-        setActiveIndex(0);
+        setActiveIndex(NO_ACTIVE_INDEX);
         inputRef.current?.focus();
     };
 
@@ -182,7 +206,7 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                     value={query}
                     onChange={(e) => {
                         setQuery(e.target.value);
-                        setActiveIndex(0);
+                        setActiveIndex(e.target.value.trim() ? 0 : NO_ACTIVE_INDEX);
                     }}
                     onKeyDown={onKeyDown}
                     className="placeholder:text-muted-foreground h-11 flex-1 bg-transparent text-base outline-hidden md:text-sm [&::-webkit-search-cancel-button]:hidden"
@@ -195,39 +219,38 @@ const PaletteBody = ({ games, hasFailed, onClose }: PaletteBodyProps) => {
                 aria-label="Search results"
                 className="-mx-1 max-h-[380px] overflow-y-auto px-1"
             >
-                {results.length > 0 && (
-                    <div
-                        role="group"
-                        aria-labelledby={groupLabelId}
-                        className="flex flex-col gap-1.5"
-                    >
+                {groups.map((group, groupIndex) => {
+                    const labelId = `${baseId}-${group.id}`;
+                    return (
                         <div
-                            id={groupLabelId}
-                            role="presentation"
-                            className="text-muted-foreground pb-0.5 text-xs font-semibold tracking-wider uppercase"
+                            key={group.id}
+                            role="group"
+                            aria-labelledby={labelId}
+                            className="flex flex-col gap-1.5 not-first:mt-4"
                         >
-                            Games
+                            <div
+                                id={labelId}
+                                role="presentation"
+                                className="text-muted-foreground pb-0.5 text-xs font-semibold tracking-wider uppercase"
+                            >
+                                {group.label}
+                            </div>
+                            {group.results.map((match, resultIndex) => {
+                                const index = groupOffsets[groupIndex]! + resultIndex;
+                                return (
+                                    <ResultRow
+                                        key={getItemKey(match.item)}
+                                        match={match}
+                                        id={optionId(index)}
+                                        isActive={index === safeIndex}
+                                        onHover={() => setActiveIndex(index)}
+                                        onNavigate={onClose}
+                                    />
+                                );
+                            })}
                         </div>
-                        {results.map((result, index) => (
-                            <GameResultRow
-                                key={result.item.slug}
-                                id={optionId(index)}
-                                href={gameHref(result.item)}
-                                name={result.item.name}
-                                meta={formatGameMeta(
-                                    result.item,
-                                    getDatelessDescription(result.item),
-                                    result.matchedAlias,
-                                )}
-                                logoSrc={result.item.logoSrc}
-                                highlight={result.highlight}
-                                isActive={index === safeIndex}
-                                onHover={() => setActiveIndex(index)}
-                                onNavigate={onClose}
-                            />
-                        ))}
-                    </div>
-                )}
+                    );
+                })}
                 {hasNoResults && (
                     <div className="flex flex-col items-center gap-1 py-6 text-center text-sm">
                         <p className="text-foreground">No results for &quot;{query.trim()}&quot;</p>

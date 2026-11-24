@@ -37,7 +37,15 @@ export default meta;
 
 type Story = StoryObj<typeof SearchPalette>;
 
-export const Empty: Story = {};
+export const QuickLinks: Story = {};
+
+export const PagesAndActions: Story = {
+    play: typeQuery("news"),
+};
+
+export const MixedGroups: Story = {
+    play: typeQuery("d"),
+};
 
 export const Results: Story = {
     play: typeQuery("poe"),
