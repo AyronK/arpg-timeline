@@ -299,3 +299,21 @@
         }
     }
 }
+
+@keyframes highlight-game-card {
+    0%,
+    35% {
+        border-color: hsl(var(--primary) / 0.8);
+        box-shadow:
+            0 0 0 1px hsl(var(--primary) / 0.35),
+            0 0 24px hsl(var(--primary) / 0.18);
+    }
+}
+
+[data-highlighted] > * {
+    animation: highlight-game-card 1.6s ease-out;
+
+    @media (prefers-reduced-motion: reduce) {
+        animation-timing-function: steps(1, end);
+    }
+}
