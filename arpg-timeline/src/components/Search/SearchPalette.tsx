@@ -445,7 +445,7 @@ const PaletteBody = ({
         <>
             {isSheet ? (
                 <div className="border-foreground/10 flex items-center gap-1 border-b py-2 pr-3 pl-1">
-                    <DialogTitle className="sr-only">Find a game</DialogTitle>
+                    <DialogTitle className="sr-only">Search</DialogTitle>
                     <DialogClose
                         aria-label="Close search"
                         className="text-muted-foreground hover:text-foreground focus-visible:ring-ring grid h-10 w-10 shrink-0 cursor-pointer place-content-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-hidden"
@@ -459,10 +459,10 @@ const PaletteBody = ({
                     <div className="flex items-start justify-between gap-4">
                         <div className="flex flex-col gap-0.5">
                             <DialogTitle className="font-heading text-foreground text-base font-medium">
-                                Find a game
+                                Search
                             </DialogTitle>
                             <p className="text-muted-foreground text-xs">
-                                Search by name or short name, like poe2 or d4
+                                Games by name or short name, like poe2 or d4, plus site pages
                             </p>
                         </div>
                         <DialogClose

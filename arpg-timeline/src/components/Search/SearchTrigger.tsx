@@ -60,7 +60,7 @@ export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
             )}
         >
             <Search className="text-muted-foreground group-hover:text-foreground h-4 w-4 shrink-0 transition-colors" />
-            <span className="font-heading text-sm font-medium">Find a game</span>
+            <span className="font-heading text-sm font-medium">Search</span>
             <span
                 className={cn(
                     "text-muted-foreground bg-foreground/10 w-13 rounded-sm px-1.5 py-0.5 text-center text-[11px] font-medium",
