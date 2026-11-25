@@ -25,12 +25,25 @@ export const HubBreadcrumbs = ({ gameName, tabs }: { gameName: string; tabs: Hub
 };
 
 // Overview owns the game-name h1; sub-pages render their own h1.
-export const HubTitle = ({ name }: { name: string }) => {
+export const HubTitle = ({ name, nickname }: { name: string; nickname: string | null }) => {
     const className = "font-heading text-2xl leading-tight md:text-3xl";
+    const content = (
+        <>
+            {name}
+            {nickname && (
+                <>
+                    {" "}
+                    <span className="text-muted-foreground align-middle text-lg md:text-xl">
+                        ({nickname})
+                    </span>
+                </>
+            )}
+        </>
+    );
     return useActiveTab() === "overview" ? (
-        <h1 className={className}>{name}</h1>
+        <h1 className={className}>{content}</h1>
     ) : (
-        <p className={className}>{name}</p>
+        <p className={className}>{content}</p>
     );
 };
 

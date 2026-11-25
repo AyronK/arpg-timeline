@@ -2,6 +2,7 @@ import { CommunityLabel } from "@/components/CommunityLabel";
 import { SanityImage } from "@/components/SanityImage";
 import { SteamPlayersChip } from "@/components/SteamPlayersChip";
 import { Game, Season } from "@/lib/cms/games.types";
+import { getGameNickname } from "@/lib/games/alternateNames";
 import { cn } from "@/lib/utils";
 
 import { getHubTabs, HubTabFlags } from "../../hub";
@@ -51,7 +52,7 @@ export const GameHubHeader = ({
                             !game.logo && "col-span-2",
                         )}
                     >
-                        <HubTitle name={game.name} />
+                        <HubTitle name={game.name} nickname={getGameNickname(game)} />
                         {/* One group so the badges wrap together */}
                         {(isCommunity || showStage || steam) && (
                             <div className="flex items-center gap-2">

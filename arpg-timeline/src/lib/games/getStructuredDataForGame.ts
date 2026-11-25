@@ -1,10 +1,12 @@
 import { Game } from "@/lib/cms/games.types";
 
+import { getGameAlternateNames } from "./alternateNames";
+
 type SoftwareApplicationNode = {
     "@type": ["SoftwareApplication", "VideoGame"];
     "@id": string;
     name: string;
-    alternateName?: string;
+    alternateName?: string[];
     url: string;
     applicationCategory: string;
     operatingSystem: string;
@@ -235,8 +237,9 @@ export const getStructuredDataForGame = (game: Game): GameStructuredData | null 
         },
     };
 
-    if (game.shortName) {
-        gameNode.alternateName = game.shortName;
+    const alternateNames = getGameAlternateNames(game);
+    if (alternateNames.length > 0) {
+        gameNode.alternateName = alternateNames;
     }
 
     const graph: StructuredData["@graph"] = [gameNode, ...articles];
