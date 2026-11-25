@@ -236,8 +236,13 @@ describe("buildGamePageDescription", () => {
     it("returns base description when no confirmed seasons", () => {
         const game = makeGame();
         expect(buildGamePageDescription(game)).toBe(
-            "Track Test Game seasons and updates. Get countdowns, start dates, and never miss a Test Game season launch.",
+            "Track Test Game (TG) seasons and updates. Get countdowns, start dates, and never miss a Test Game season launch.",
         );
+    });
+
+    it("leaves out a short name that only repeats the name", () => {
+        const game = makeGame({ shortName: "testgame" });
+        expect(buildGamePageDescription(game)).toMatch(/^Track Test Game seasons/);
     });
 
     it("does not include past next season in description", () => {

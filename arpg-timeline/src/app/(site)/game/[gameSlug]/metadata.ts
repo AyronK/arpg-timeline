@@ -1,4 +1,5 @@
 import { Game } from "@/lib/cms/games.types";
+import { getGameNickname } from "@/lib/games/alternateNames";
 
 export function formatUtcDateTime(startDate: string, timeUnknown?: boolean | null): string {
     const date = new Date(startDate);
@@ -46,14 +47,16 @@ export function buildGamePageTitle(game: Game): string {
 }
 
 export function buildGamePageDescription(game: Game): string {
-    const base = `Track ${game.name} ${game.seasonKeyword}s and updates. Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
+    const nickname = getGameNickname(game);
+    const tracked = nickname ? `${game.name} (${nickname})` : game.name;
+    const base = `Track ${tracked} ${game.seasonKeyword}s and updates. Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
 
     if (isNextSeasonConfirmed(game)) {
         const formattedDate = formatUtcDateTime(
             game.nextSeason!.start!.startDate!,
             game.nextSeason!.start!.timeUnknown,
         );
-        return `Track ${game.name} ${game.seasonKeyword}s and updates. Next ${game.seasonKeyword}: ${game.nextSeason!.name} (starts ${formattedDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
+        return `Track ${tracked} ${game.seasonKeyword}s and updates. Next ${game.seasonKeyword}: ${game.nextSeason!.name} (starts ${formattedDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
     }
 
     if (
@@ -65,7 +68,7 @@ export function buildGamePageDescription(game: Game): string {
             game.currentSeason.start.startDate,
             game.currentSeason.start.timeUnknown,
         );
-        return `Track ${game.name} ${game.seasonKeyword}s and updates. Current ${game.seasonKeyword}: ${game.currentSeason.name} (started ${formattedDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
+        return `Track ${tracked} ${game.seasonKeyword}s and updates. Current ${game.seasonKeyword}: ${game.currentSeason.name} (started ${formattedDate}). Get countdowns, start dates, and never miss a ${game.name} ${game.seasonKeyword} launch.`;
     }
 
     return base;
