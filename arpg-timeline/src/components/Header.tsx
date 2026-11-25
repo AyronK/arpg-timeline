@@ -78,7 +78,11 @@ export const Header = () => {
                         className="relative z-30 hidden w-56 xl:flex 2xl:w-72"
                     />
                     <div className="ml-auto flex items-center">
-                        <SearchTrigger variant="icon" location="header_icon" className="xl:hidden" />
+                        <SearchTrigger
+                            variant="icon"
+                            location="header_icon"
+                            className="xl:hidden"
+                        />
                         <SocialButton
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}
                             rel="noopener noreferrer nofollow"
