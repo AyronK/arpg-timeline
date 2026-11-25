@@ -69,7 +69,7 @@ export const STATIC_ENTRIES: StaticEntry[] = [
         title: "Support",
         description: "Ways to support aRPG Timeline",
         href: "/support",
-        keywords: ["patreon", "donate"],
+        keywords: ["patreon", "donate", "tip"],
         icon: Heart,
     },
     {
