@@ -8,7 +8,7 @@ export const updateUrlFilters = (excludedSlugs: string[]): void => {
     }
 
     const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
-    window.history.pushState({}, "", newUrl);
+    window.history.replaceState({}, "", newUrl);
 };
 
 export const getUrlFilters = (searchParams: URLSearchParams): string[] => {

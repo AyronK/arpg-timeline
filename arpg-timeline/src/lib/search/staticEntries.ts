@@ -58,9 +58,9 @@ export const STATIC_ENTRIES: StaticEntry[] = [
         id: "discord-bot",
         kind: "page",
         title: "Discord bot",
-        description: "Season announcements in your Discord server",
+        description: "Season events in your Discord server",
         href: "/discord-bot",
-        keywords: ["bot", "server", "announcements"],
+        keywords: ["bot", "server", "events"],
         icon: Bot,
     },
     {

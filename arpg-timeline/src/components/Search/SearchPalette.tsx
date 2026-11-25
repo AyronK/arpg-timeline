@@ -182,6 +182,9 @@ const useSearchGames = (open: boolean, providedGames?: SearchGame[]) => {
     return { games: providedGames ?? loadedGames, hasFailed };
 };
 
+// Deferred so a remount while open (e.g. StrictMode) can keep the entry instead of racing back()
+let pendingSheetBack: ReturnType<typeof setTimeout> | null = null;
+
 const useCloseOnBrowserBack = (isActive: boolean, onClose: () => void) => {
     const onCloseRef = useRef(onClose);
     const isReleasedRef = useRef(false);
@@ -198,7 +201,14 @@ const useCloseOnBrowserBack = (isActive: boolean, onClose: () => void) => {
             return;
         }
         isReleasedRef.current = false;
-        window.history.pushState({ ...window.history.state, [HISTORY_MARKER]: true }, "");
+        const canReuseEntry = pendingSheetBack !== null && !!window.history.state?.[HISTORY_MARKER];
+        if (pendingSheetBack !== null) {
+            clearTimeout(pendingSheetBack);
+            pendingSheetBack = null;
+        }
+        if (!canReuseEntry) {
+            window.history.pushState({ ...window.history.state, [HISTORY_MARKER]: true }, "");
+        }
         const onPopState = () => {
             if (!window.history.state?.[HISTORY_MARKER]) {
                 onCloseRef.current();
@@ -210,10 +220,13 @@ const useCloseOnBrowserBack = (isActive: boolean, onClose: () => void) => {
             const afterClose = afterCloseRef.current;
             afterCloseRef.current = null;
             if (!isReleasedRef.current && window.history.state?.[HISTORY_MARKER]) {
-                if (afterClose) {
-                    window.addEventListener("popstate", afterClose, { once: true });
-                }
-                window.history.back();
+                pendingSheetBack = setTimeout(() => {
+                    pendingSheetBack = null;
+                    if (afterClose) {
+                        window.addEventListener("popstate", afterClose, { once: true });
+                    }
+                    window.history.back();
+                });
             } else {
                 afterClose?.();
             }
