@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { userEvent, within } from "storybook/test";
 
 import { Game } from "@/lib/cms/games.types";
-import { SEARCH_GAMES } from "@/lib/search/__fixtures__/searchGames";
+import { COMMUNITY_SLUGS, SEARCH_GAMES } from "@/lib/search/__fixtures__/searchGames";
 import { DashboardStatus } from "@/lib/search/dashboardStatus";
 import { DashboardSearch, SearchGame } from "@/lib/search/types";
 
@@ -11,9 +11,10 @@ import SearchPalette from "./SearchPalette";
 const games: SearchGame[] = SEARCH_GAMES.map((game) => ({
     ...game,
     logoSrc: null,
-    categories: [],
+    categories: COMMUNITY_SLUGS.has(game.slug) ? ["community"] : [],
     isDormant: false,
     isComingSoon: false,
+    url: `https://${game.slug}.example.com`,
 }));
 
 const DAY = 24 * 60 * 60 * 1000;

@@ -12,6 +12,7 @@ const game = (overrides: Partial<SearchGame> = {}): SearchGame => ({
     categories: [],
     isDormant: false,
     isComingSoon: false,
+    url: null,
     ...overrides,
 });
 

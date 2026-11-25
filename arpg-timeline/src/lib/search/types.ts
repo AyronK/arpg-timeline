@@ -12,6 +12,7 @@ export interface SearchGame {
     categories: GameCategory[];
     isDormant: boolean;
     isComingSoon: boolean;
+    url: string | null;
 }
 
 export interface SearchIndex {

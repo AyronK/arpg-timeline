@@ -10,6 +10,7 @@ export type EncodedSearchGame = [
     logoSrc: string,
     categories: GameCategory[],
     flags: number,
+    url?: string,
 ];
 
 export type EncodedSearchIndex = EncodedSearchGame[];
@@ -21,14 +22,17 @@ export const DORMANT_FLAG = 1;
 export const COMING_SOON_FLAG = 2;
 
 export const decodeSearchIndex = (rows: EncodedSearchIndex): SearchIndex => ({
-    games: rows.map(([slug, name, shortName, group, logoSrc, categories, flags]): SearchGame => ({
-        slug,
-        name,
-        shortName: shortName || null,
-        group: group || null,
-        logoSrc: logoSrc || null,
-        categories,
-        isDormant: !!(flags & DORMANT_FLAG),
-        isComingSoon: !!(flags & COMING_SOON_FLAG),
-    })),
+    games: rows.map(
+        ([slug, name, shortName, group, logoSrc, categories, flags, url]): SearchGame => ({
+            slug,
+            name,
+            shortName: shortName || null,
+            group: group || null,
+            logoSrc: logoSrc || null,
+            categories,
+            isDormant: !!(flags & DORMANT_FLAG),
+            isComingSoon: !!(flags & COMING_SOON_FLAG),
+            url: url || null,
+        }),
+    ),
 });

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { COMMUNITY_SLUGS, SEARCH_GAMES } from "./__fixtures__/searchGames";
 import {
     getItemHref,
+    getItemKey,
     GROUP_LIMITS,
     isItemExternal,
     prepareSearch,
@@ -18,6 +19,7 @@ const games: SearchGame[] = SEARCH_GAMES.map((game) => ({
     categories: COMMUNITY_SLUGS.has(game.slug) ? ["community"] : [],
     isDormant: false,
     isComingSoon: false,
+    url: game.slug === "crystalfall" ? null : `https://${game.slug}.example.com`,
 }));
 
 const prepared = prepareSearch(games);
@@ -54,7 +56,7 @@ describe("runSearch", () => {
             ["pages", ["/news"]],
             ["actions", ["/games/news"]],
         ]);
-        expect(runSearch(prepared, "grim dawn").map((g) => g.id)).toEqual(["games"]);
+        expect(runSearch(prepared, "grimdwn").map((g) => g.id)).toEqual(["games"]);
     });
 
     it("caps each group", () => {
@@ -128,8 +130,11 @@ describe("runSearch", () => {
     });
 
     it("keeps two letter queries free of substring noise", () => {
-        expect(summary(runSearch(prepared, "le"))).toEqual([["games", ["/game/last-epoch"]]]);
-        expect(summary(runSearch(prepared, "po"))).toEqual([
+        const gamesAndPages = (query: string) =>
+            summary(runSearch(prepared, query)).filter(([id]) => id !== "actions");
+
+        expect(gamesAndPages("le")).toEqual([["games", ["/game/last-epoch"]]]);
+        expect(gamesAndPages("po")).toEqual([
             [
                 "games",
                 [
@@ -150,6 +155,55 @@ describe("runSearch", () => {
         const actions = runSearch(prepared, query).find((g) => g.id === "actions")!;
 
         expect(getItemHref(actions.results[0]!.item)).toBe(href);
+    });
+
+    describe("game links", () => {
+        const actionKeys = (query: string) =>
+            runSearch(prepared, query)
+                .find((g) => g.id === "actions")
+                ?.results.map((r) => getItemKey(r.item)) ?? [];
+
+        it.each([
+            ["grim dawn", "grim-dawn"],
+            ["grim", "grim-dawn"],
+            ["d4", "diablo-iv"],
+            ["d4 patch notes", "diablo-iv"],
+            ["pd2", "pd2"],
+        ])("%s offers website and calendar for %s", (query, slug) => {
+            expect(actionKeys(query)).toEqual([
+                `game-link:${slug}:website`,
+                `game-link:${slug}:calendar`,
+            ]);
+        });
+
+        it("skips them when the top game is only a loose match", () => {
+            expect(actionKeys("dawn")).toEqual([]);
+            expect(actionKeys("grimdwn")).toEqual([]);
+        });
+
+        it("offers only the calendar for a game without a website", () => {
+            expect(actionKeys("crystalfall")).toEqual(["game-link:crystalfall:calendar"]);
+        });
+
+        it("comes before other actions and respects the cap", () => {
+            const keys = actionKeys("community");
+
+            expect(keys.length).toBeLessThanOrEqual(GROUP_LIMITS.actions);
+            expect(actionKeys("diablo iv")).toEqual([
+                "game-link:diablo-iv:website",
+                "game-link:diablo-iv:calendar",
+            ]);
+        });
+
+        it("links the website with the game page UTM and opens it externally", () => {
+            const [website] = runSearch(prepared, "d4").find((g) => g.id === "actions")!.results;
+            const url = new URL(getItemHref(website!.item));
+
+            expect(url.origin).toBe("https://diablo-iv.example.com");
+            expect(url.searchParams.get("utm_campaign")).toBe("official-website");
+            expect(url.searchParams.get("utm_content")).toBe("diablo-iv");
+            expect(isItemExternal(website!.item)).toBe(true);
+        });
     });
 
     it("finds the Discord server as an external action", () => {

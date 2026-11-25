@@ -30,6 +30,7 @@ export const encodeSearchGame = (game: SearchIndexSanityGame): EncodedSearchGame
     getLogoSrc(game.logo),
     game.categories ?? [],
     (game.isDormant ? DORMANT_FLAG : 0) | (game.isComingSoon ? COMING_SOON_FLAG : 0),
+    game.url ?? "",
 ];
 
 export const buildSearchIndex = ({ games }: SearchIndexQueryResult): EncodedSearchIndex =>
@@ -41,5 +42,6 @@ export const toSearchGame = (game: Game): SearchGame =>
             ...game,
             shortName: game.shortName ?? undefined,
             group: game.group ?? undefined,
+            url: game.url ?? undefined,
         }),
     ]).games[0]!;

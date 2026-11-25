@@ -1,10 +1,23 @@
+import { addGameLinkUTM } from "@/lib/utm";
+
 import { toGameCandidate } from "./aliases";
-import { prepareCandidates, PreparedCandidate, searchCandidates, SearchMatch } from "./match";
+import {
+    isStrongMatch,
+    prepareCandidates,
+    PreparedCandidate,
+    searchCandidates,
+    SearchMatch,
+} from "./match";
 import { normalize } from "./normalize";
 import { isEntryAvailable, QUICK_LINK_IDS, STATIC_ENTRIES, StaticEntry } from "./staticEntries";
 import { SearchGame } from "./types";
 
-export type SearchItem = { kind: "game"; game: SearchGame } | { kind: "entry"; entry: StaticEntry };
+export type GameLink = "website" | "calendar";
+
+export type SearchItem =
+    | { kind: "game"; game: SearchGame }
+    | { kind: "game-link"; game: SearchGame; link: GameLink }
+    | { kind: "entry"; entry: StaticEntry };
 
 export type SearchGroupId = "games" | "pages" | "actions" | "quick-links";
 
@@ -58,8 +71,8 @@ export const prepareSearch = (games: SearchGame[] | null): PreparedSearch => {
     return { games: prepared, ...preparedEntries };
 };
 
-const asMatch = (entry: StaticEntry): SearchMatch<SearchItem> => ({
-    item: { kind: "entry", entry },
+const asMatch = (item: SearchItem): SearchMatch<SearchItem> => ({
+    item,
     score: 0,
     matchedAlias: null,
     highlight: null,
@@ -73,10 +86,20 @@ interface SearchOptions {
 }
 
 const isAvailable = (item: SearchItem, canOpenFilters: boolean) =>
-    item.kind === "game" || isEntryAvailable(item.entry, canOpenFilters);
+    item.kind !== "entry" || isEntryAvailable(item.entry, canOpenFilters);
 
-const isCommunityGame = (item: SearchItem) =>
-    item.kind === "game" && item.game.categories.includes("community");
+export const isCommunity = (game: SearchGame) => game.categories.includes("community");
+
+const isCommunityGame = (item: SearchItem) => item.kind === "game" && isCommunity(item.game);
+
+const getGameLinks = (top: SearchMatch<SearchItem> | undefined): SearchMatch<SearchItem>[] => {
+    if (!top || top.item.kind !== "game" || !isStrongMatch(top.score)) {
+        return [];
+    }
+    const { game } = top.item;
+    const links: GameLink[] = game.url ? ["website", "calendar"] : ["calendar"];
+    return links.map((link) => asMatch({ kind: "game-link", game, link }));
+};
 
 const searchGroups = (
     prepared: PreparedSearch,
@@ -86,12 +109,13 @@ const searchGroups = (
 ): SearchGroup[] => {
     const available = (matches: SearchMatch<SearchItem>[]) =>
         matches.filter((match) => isAvailable(match.item, canOpenFilters));
+    const games = searchCandidates(prepared.games, query, priority).slice(0, GROUP_LIMITS.games);
 
     const groups: SearchGroup[] = [
         {
             id: "games",
             label: "Games",
-            results: searchCandidates(prepared.games, query, priority).slice(0, GROUP_LIMITS.games),
+            results: games,
         },
         {
             id: "pages",
@@ -104,10 +128,10 @@ const searchGroups = (
         {
             id: "actions",
             label: "Actions",
-            results: available(searchCandidates(prepared.actions, query)).slice(
-                0,
-                GROUP_LIMITS.actions,
-            ),
+            results: [
+                ...getGameLinks(games[0]),
+                ...available(searchCandidates(prepared.actions, query)),
+            ].slice(0, GROUP_LIMITS.actions),
         },
     ];
     return groups.filter((group) => group.results.length > 0);
@@ -124,8 +148,8 @@ export const runSearch = (
             {
                 id: "quick-links",
                 label: "Quick links",
-                results: QUICK_LINKS.map(asMatch).filter((match) =>
-                    isAvailable(match.item, canOpenFilters),
+                results: QUICK_LINKS.map((entry) => asMatch({ kind: "entry", entry })).filter(
+                    (match) => isAvailable(match.item, canOpenFilters),
                 ),
             },
         ];
@@ -148,10 +172,31 @@ export const runSearch = (
     return [];
 };
 
-export const getItemHref = (item: SearchItem) =>
-    item.kind === "game" ? `/game/${item.game.slug}` : item.entry.href;
+export const getItemHref = (item: SearchItem) => {
+    switch (item.kind) {
+        case "game":
+            return `/game/${item.game.slug}`;
+        case "game-link":
+            return item.link === "website"
+                ? addGameLinkUTM("official-website", item.game.slug)(item.game.url ?? "")
+                : `/calendar/subscribe/${item.game.slug}`;
+        case "entry":
+            return item.entry.href;
+    }
+};
 
-export const isItemExternal = (item: SearchItem) => item.kind === "entry" && !!item.entry.external;
+export const isItemExternal = (item: SearchItem) =>
+    item.kind === "entry"
+        ? !!item.entry.external
+        : item.kind === "game-link" && item.link === "website";
 
-export const getItemKey = (item: SearchItem) =>
-    item.kind === "game" ? `game:${item.game.slug}` : `entry:${item.entry.id}`;
+export const getItemKey = (item: SearchItem) => {
+    switch (item.kind) {
+        case "game":
+            return `game:${item.game.slug}`;
+        case "game-link":
+            return `game-link:${item.game.slug}:${item.link}`;
+        case "entry":
+            return `entry:${item.entry.id}`;
+    }
+};

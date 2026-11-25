@@ -1,12 +1,17 @@
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowLeft, ArrowRight, Eye, Search, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarPlus, Eye, Globe, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { KeyboardEvent, ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 
+import { CalendarSubscribeDialog } from "@/components/CalendarSubscribeDialog";
+import {
+    COMMUNITY_LAUNCHER_MODAL_STORAGE_KEY,
+    CommunityWebsiteModal,
+} from "@/components/CommunityWebsiteModal";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { HIGHLIGHT_PARAM, highlightGameCard } from "@/hooks/useHighlightGame";
 import {
@@ -19,6 +24,7 @@ import { SearchMatch } from "@/lib/search/match";
 import {
     getItemHref,
     getItemKey,
+    isCommunity,
     isItemExternal,
     prepareSearch,
     runSearch,
@@ -38,6 +44,18 @@ import { toast } from "@/ui/hooks/useToast";
 
 import { GameTile, IconTile, RowAction, SearchResultRow } from "./SearchResultRow";
 import { SEARCH_TRIGGER_ATTRIBUTE } from "./SearchTrigger";
+
+type GameLinkItem = Extract<SearchItem, { kind: "game-link" }>;
+
+const getGameLinkLabel = ({ game, link }: GameLinkItem) =>
+    link === "calendar"
+        ? "Subscribe to calendar"
+        : isCommunity(game)
+          ? "Project website"
+          : "Official website";
+
+const isCommunityWarningDismissed = () =>
+    localStorage.getItem(COMMUNITY_LAUNCHER_MODAL_STORAGE_KEY) === "true";
 
 const NO_ACTIVE_INDEX = -1;
 const MAX_QUERY_LENGTH = 64;
@@ -59,6 +77,7 @@ const ResultRow = ({
     onNavigate,
     onClose,
     onCommand,
+    onGameLink,
     ...rowProps
 }: {
     match: SearchMatch<SearchItem>;
@@ -72,6 +91,7 @@ const ResultRow = ({
     onNavigate: () => void;
     onClose: () => void;
     onCommand: (entry: StaticEntry) => void;
+    onGameLink: (item: GameLinkItem) => void;
 }) => {
     if (item.kind === "game") {
         const detail = dashboard?.details.get(item.game.slug);
@@ -88,6 +108,22 @@ const ResultRow = ({
                 action={action}
                 tile={<GameTile name={item.game.name} logoSrc={item.game.logoSrc} />}
                 highlight={highlight}
+            />
+        );
+    }
+    if (item.kind === "game-link") {
+        const isWebsite = item.link === "website";
+        const isDirect = isWebsite && !isCommunity(item.game);
+        return (
+            <SearchResultRow
+                {...rowProps}
+                external={isDirect}
+                onNavigate={isDirect ? onClose : () => onGameLink(item)}
+                href={isDirect ? getItemHref(item) : null}
+                title={`${item.game.name}: ${getGameLinkLabel(item)}`}
+                meta={isWebsite ? "Opens in a new tab" : "Season dates in your calendar"}
+                tile={<IconTile icon={isWebsite ? Globe : CalendarPlus} />}
+                highlight={null}
             />
         );
     }
@@ -200,6 +236,8 @@ interface PaletteBodyProps {
     onNavigate: () => void;
     onClose: () => void;
     onCloseThen: (callback: () => void) => void;
+    onOpenCalendar: (game: SearchGame) => void;
+    onConfirmCommunityLink: (href: string) => void;
 }
 
 const PaletteBody = ({
@@ -210,6 +248,8 @@ const PaletteBody = ({
     onNavigate,
     onClose,
     onCloseThen,
+    onOpenCalendar,
+    onConfirmCommunityLink,
 }: PaletteBodyProps) => {
     const router = useRouter();
     const [query, setQuery] = useState("");
@@ -238,6 +278,20 @@ const PaletteBody = ({
         if (entry.command === "open-filters") {
             onCloseThen(() => dashboard?.openFilters());
         }
+    };
+
+    const runGameLink = (item: GameLinkItem) => {
+        if (item.link === "calendar") {
+            onCloseThen(() => onOpenCalendar(item.game));
+            return;
+        }
+        const href = getItemHref(item);
+        if (isCommunityWarningDismissed()) {
+            window.open(href, "_blank", "noopener,noreferrer");
+            onClose();
+            return;
+        }
+        onCloseThen(() => onConfirmCommunityLink(href));
     };
 
     const navigateTo = (href: string) => {
@@ -293,6 +347,10 @@ const PaletteBody = ({
     const openItem = (item: SearchItem, inNewTab: boolean) => {
         if (item.kind === "entry" && item.entry.command) {
             runCommand(item.entry);
+            return;
+        }
+        if (item.kind === "game-link" && (item.link === "calendar" || isCommunity(item.game))) {
+            runGameLink(item);
             return;
         }
         if (inNewTab || isItemExternal(item)) {
@@ -495,6 +553,7 @@ const PaletteBody = ({
                                         onNavigate={onNavigate}
                                         onClose={onClose}
                                         onCommand={runCommand}
+                                        onGameLink={runGameLink}
                                     />
                                 );
                             })}
@@ -575,48 +634,70 @@ const SearchPalette = ({
     const close = () => onOpenChange(false);
     const sheetHistory = useCloseOnBrowserBack(open && isSheet, close);
     const afterDialogCloseRef = useRef<(() => void) | null>(null);
+    const [calendarGame, setCalendarGame] = useState<SearchGame | null>(null);
+    const [communityHref, setCommunityHref] = useState<string | null>(null);
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogPortal>
-                <DialogOverlay className="z-[70] bg-black/60 backdrop-blur-sm motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none" />
-                <DialogPrimitive.Content
-                    aria-describedby={undefined}
-                    onCloseAutoFocus={(e) => {
-                        focusVisibleTrigger(e);
-                        const afterClose = afterDialogCloseRef.current;
-                        afterDialogCloseRef.current = null;
-                        afterClose?.();
-                    }}
-                    className={cn(
-                        "bg-card text-card-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed z-[70] flex flex-col duration-150 focus-visible:outline-hidden motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none",
-                        isSheet
-                            ? "inset-0 h-dvh w-full pt-[env(safe-area-inset-top)]"
-                            : "border-foreground/20 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 top-[10vh] left-1/2 w-[calc(100%-2rem)] max-w-[560px] -translate-x-1/2 gap-4 overflow-hidden rounded-lg border-2 p-6 shadow-2xl",
-                    )}
-                >
-                    <PaletteBody
-                        games={games}
-                        hasFailed={hasFailed}
-                        isSheet={isSheet}
-                        dashboard={dashboard}
-                        onNavigate={() => {
-                            sheetHistory.release();
-                            close();
+        <>
+            <Dialog open={open} onOpenChange={onOpenChange}>
+                <DialogPortal>
+                    <DialogOverlay className="z-[70] bg-black/60 backdrop-blur-sm motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none" />
+                    <DialogPrimitive.Content
+                        aria-describedby={undefined}
+                        onCloseAutoFocus={(e) => {
+                            focusVisibleTrigger(e);
+                            const afterClose = afterDialogCloseRef.current;
+                            afterDialogCloseRef.current = null;
+                            afterClose?.();
                         }}
-                        onClose={close}
-                        onCloseThen={(callback) => {
-                            if (isSheet) {
-                                sheetHistory.runAfterClose(callback);
-                            } else {
-                                afterDialogCloseRef.current = callback;
-                            }
-                            close();
-                        }}
-                    />
-                </DialogPrimitive.Content>
-            </DialogPortal>
-        </Dialog>
+                        className={cn(
+                            "bg-card text-card-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed z-[70] flex flex-col duration-150 focus-visible:outline-hidden motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none",
+                            isSheet
+                                ? "inset-0 h-dvh w-full pt-[env(safe-area-inset-top)]"
+                                : "border-foreground/20 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 top-[10vh] left-1/2 w-[calc(100%-2rem)] max-w-[560px] -translate-x-1/2 gap-4 overflow-hidden rounded-lg border-2 p-6 shadow-2xl",
+                        )}
+                    >
+                        <PaletteBody
+                            games={games}
+                            hasFailed={hasFailed}
+                            isSheet={isSheet}
+                            dashboard={dashboard}
+                            onNavigate={() => {
+                                sheetHistory.release();
+                                close();
+                            }}
+                            onClose={close}
+                            onCloseThen={(callback) => {
+                                if (isSheet) {
+                                    sheetHistory.runAfterClose(callback);
+                                } else {
+                                    afterDialogCloseRef.current = callback;
+                                }
+                                close();
+                            }}
+                            onOpenCalendar={setCalendarGame}
+                            onConfirmCommunityLink={setCommunityHref}
+                        />
+                    </DialogPrimitive.Content>
+                </DialogPortal>
+            </Dialog>
+            <CalendarSubscribeDialog
+                open={!!calendarGame}
+                onOpenChange={(isOpen) => !isOpen && setCalendarGame(null)}
+                gameSlug={calendarGame?.slug}
+                gameName={calendarGame?.name}
+            />
+            <CommunityWebsiteModal
+                open={!!communityHref}
+                onOpenChange={() => setCommunityHref(null)}
+                onConfirm={() => {
+                    if (communityHref) {
+                        window.open(communityHref, "_blank", "noopener,noreferrer");
+                    }
+                    setCommunityHref(null);
+                }}
+            />
+        </>
     );
 };
 

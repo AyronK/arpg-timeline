@@ -28,6 +28,7 @@ const game = (i: number): SearchIndexSanityGame => ({
     isComingSoon: true,
     categories: ["seasonal", "early-access"],
     logo: logo(`logo${i}`),
+    url: `https://www.game-title-number-${i}.com/news/latest`,
 });
 
 describe("buildSearchIndex", () => {
@@ -44,6 +45,7 @@ describe("buildSearchIndex", () => {
             categories: g.categories,
             isDormant: true,
             isComingSoon: true,
+            url: g.url,
         });
     });
 
@@ -62,7 +64,15 @@ describe("buildSearchIndex", () => {
             logoSrc: null,
             isDormant: false,
             isComingSoon: false,
+            url: null,
         });
+    });
+
+    it("decodes rows cached before the website field existed", () => {
+        const [row] = buildSearchIndex({ games: [game(3)] });
+        const [decoded] = decodeSearchIndex([row.slice(0, 7) as typeof row]).games;
+
+        expect(decoded!.url).toBeNull();
     });
 
     it("serves logos through the Next image optimizer, resized", () => {

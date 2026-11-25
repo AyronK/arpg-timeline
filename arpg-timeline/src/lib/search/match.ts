@@ -16,6 +16,8 @@ const MIN_SUBSEQUENCE_QUERY_LENGTH = 4;
 const MAX_SUBSEQUENCE_SPREAD = 2;
 const MAX_ABBREVIATION_LENGTH = 4;
 
+export const isStrongMatch = (score: number) => score > (MATCH_TIER.prefix - 1) * TIER_WEIGHT;
+
 export interface SearchCandidate<T> {
     item: T;
     name: string;
