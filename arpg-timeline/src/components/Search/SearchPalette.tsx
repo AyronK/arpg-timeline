@@ -429,7 +429,7 @@ const PaletteBody = ({
                 spellCheck={false}
                 enterKeyHint="search"
                 maxLength={MAX_QUERY_LENGTH}
-                placeholder="Search games, pages..."
+                placeholder="Search games and more…"
                 value={query}
                 onChange={(e) => {
                     setQuery(e.target.value);

@@ -20,7 +20,7 @@ const prefetch = () => {
 };
 
 interface SearchTriggerProps {
-    variant: "pill" | "icon";
+    variant: "field" | "icon";
     className?: string;
 }
 
@@ -55,15 +55,17 @@ export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
         <button
             {...triggerProps}
             className={cn(
-                "group bg-card text-card-foreground border-foreground/20 hover:border-foreground/40 focus-visible:border-foreground/60 flex h-9 cursor-pointer items-center gap-2.5 rounded-md border-2 pr-2 pl-3 transition-colors focus-visible:outline-hidden",
+                "group border-foreground/20 hover:border-foreground/40 focus-visible:border-foreground/60 focus-visible:ring-ring flex h-9 w-56 cursor-pointer items-center gap-2 rounded-t-sm border-b px-1 text-left transition-colors focus-visible:ring-2 focus-visible:outline-hidden 2xl:w-72",
                 className,
             )}
         >
             <Search className="text-muted-foreground group-hover:text-foreground h-4 w-4 shrink-0 transition-colors" />
-            <span className="font-heading text-sm font-medium">Search</span>
+            <span className="text-muted-foreground flex-1 truncate text-sm">
+                Search games and more…
+            </span>
             <span
                 className={cn(
-                    "text-muted-foreground bg-foreground/10 w-13 rounded-sm px-1.5 py-0.5 text-center text-[11px] font-medium",
+                    "text-muted-foreground hidden w-11 shrink-0 text-right text-xs 2xl:block",
                     isApple === null && "invisible",
                 )}
             >

@@ -49,7 +49,7 @@ export const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="max-xl:bg-card 3xl:container 3xl:mx-auto relative h-[56px] max-sm:shadow-sm xl:h-[80px] xl:pt-6 xl:pb-0">
+        <header className="max-xl:bg-card relative h-[56px] max-sm:shadow-sm xl:container xl:mx-auto xl:h-[80px] xl:pt-6 xl:pb-0">
             <div className="relative h-full w-full">
                 <Link
                     href="/"
@@ -71,8 +71,8 @@ export const Header = () => {
                         </span>
                     </div>
                 </Link>
-                <div className="flex h-full items-center justify-between gap-2 px-2">
-                    <SearchTrigger variant="pill" className="relative z-30 hidden xl:flex" />
+                <div className="flex h-full items-center justify-between gap-2 px-2 xl:px-0">
+                    <SearchTrigger variant="field" className="relative z-30 hidden xl:flex" />
                     <div className="ml-auto flex items-center">
                         <SearchTrigger variant="icon" className="xl:hidden" />
                         <SocialButton
