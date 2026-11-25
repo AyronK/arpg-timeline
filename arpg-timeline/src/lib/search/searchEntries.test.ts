@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { SEARCH_GAMES } from "./__fixtures__/searchGames";
+import { COMMUNITY_SLUGS, SEARCH_GAMES } from "./__fixtures__/searchGames";
 import {
     getItemHref,
     GROUP_LIMITS,
@@ -15,7 +15,7 @@ import { SearchGame } from "./types";
 const games: SearchGame[] = SEARCH_GAMES.map((game) => ({
     ...game,
     logoSrc: null,
-    categories: [],
+    categories: COMMUNITY_SLUGS.has(game.slug) ? ["community"] : [],
     isDormant: false,
     isComingSoon: false,
 }));
@@ -81,6 +81,75 @@ describe("runSearch", () => {
         const pages = runSearch(prepared, query).find((g) => g.id === "pages")!;
 
         expect(getItemHref(pages.results[0]!.item)).toBe(href);
+    });
+
+    it.each([
+        ["d4 patch notes", "/game/diablo-iv"],
+        ["diablo 4 patch notes", "/game/diablo-iv"],
+        ["d4 season 11", "/game/diablo-iv"],
+        ["d4 battle pass", "/game/diablo-iv"],
+        ["poe2 new league date", "/game/path-of-exile2"],
+        ["poe2 release date", "/game/path-of-exile2"],
+        ["path of exile 2 new league", "/game/path-of-exile2"],
+        ["grim dawn patch notes", "/game/grim-dawn"],
+    ])("%s drops trailing words and finds %s first", (query, href) => {
+        const [first] = runSearch(prepared, query);
+
+        expect(getItemHref(first!.results[0]!.item)).toBe(href);
+    });
+
+    it("prefers a full-query match over dropping words", () => {
+        expect(summary(runSearch(prepared, "community launchers"))).toEqual([
+            ["pages", ["/community-launchers"]],
+        ]);
+    });
+
+    it("ranks official games above community ones on ties", () => {
+        const gameHrefs = (query: string) =>
+            runSearch(prepared, query)[0]!.results.map((r) => getItemHref(r.item));
+
+        expect(gameHrefs("diablo")).toEqual([
+            "/game/diablo-ii-resurrected",
+            "/game/diablo-iii",
+            "/game/diablo-iv",
+            "/game/diablo-v",
+            "/game/diablo-2-evolution",
+            "/game/blizzless-d2r",
+        ]);
+        expect(gameHrefs("diablo 2")[0]).toBe("/game/diablo-ii-resurrected");
+    });
+
+    it("ranks games visible on the dashboard above official ones on ties", () => {
+        const [games] = runSearch(prepared, "diablo", {
+            isVisible: (item) => item.kind === "game" && item.game.slug === "diablo-2-evolution",
+        });
+
+        expect(getItemHref(games!.results[0]!.item)).toBe("/game/diablo-2-evolution");
+    });
+
+    it("keeps two letter queries free of substring noise", () => {
+        expect(summary(runSearch(prepared, "le"))).toEqual([["games", ["/game/last-epoch"]]]);
+        expect(summary(runSearch(prepared, "po"))).toEqual([
+            [
+                "games",
+                [
+                    "/game/path-of-exile",
+                    "/game/path-of-exile2",
+                    "/game/path-of-diablo",
+                    "/game/path-of-terraria",
+                ],
+            ],
+        ]);
+    });
+
+    it.each([
+        ["community", "/dashboard/community"],
+        ["early access", "/dashboard/early-access"],
+        ["non seasonal", "/dashboard/non-seasonal"],
+    ])("%s offers the %s tab", (query, href) => {
+        const actions = runSearch(prepared, query).find((g) => g.id === "actions")!;
+
+        expect(getItemHref(actions.results[0]!.item)).toBe(href);
     });
 
     it("finds the Discord server as an external action", () => {

@@ -75,32 +75,23 @@ interface SearchOptions {
 const isAvailable = (item: SearchItem, canOpenFilters: boolean) =>
     item.kind === "game" || isEntryAvailable(item.entry, canOpenFilters);
 
-export const runSearch = (
+const isCommunityGame = (item: SearchItem) =>
+    item.kind === "game" && item.game.categories.includes("community");
+
+const searchGroups = (
     prepared: PreparedSearch,
     query: string,
-    { canOpenFilters = false, isVisible }: SearchOptions = {},
+    canOpenFilters: boolean,
+    priority: (item: SearchItem) => number,
 ): SearchGroup[] => {
     const available = (matches: SearchMatch<SearchItem>[]) =>
         matches.filter((match) => isAvailable(match.item, canOpenFilters));
-
-    if (!normalize(query)) {
-        return [
-            {
-                id: "quick-links",
-                label: "Quick links",
-                results: available(QUICK_LINKS.map(asMatch)),
-            },
-        ];
-    }
 
     const groups: SearchGroup[] = [
         {
             id: "games",
             label: "Games",
-            results: searchCandidates(prepared.games, query, isVisible).slice(
-                0,
-                GROUP_LIMITS.games,
-            ),
+            results: searchCandidates(prepared.games, query, priority).slice(0, GROUP_LIMITS.games),
         },
         {
             id: "pages",
@@ -120,6 +111,41 @@ export const runSearch = (
         },
     ];
     return groups.filter((group) => group.results.length > 0);
+};
+
+export const runSearch = (
+    prepared: PreparedSearch,
+    query: string,
+    { canOpenFilters = false, isVisible = () => false }: SearchOptions = {},
+): SearchGroup[] => {
+    const words = normalize(query).split(" ").filter(Boolean);
+    if (!words.length) {
+        return [
+            {
+                id: "quick-links",
+                label: "Quick links",
+                results: QUICK_LINKS.map(asMatch).filter((match) =>
+                    isAvailable(match.item, canOpenFilters),
+                ),
+            },
+        ];
+    }
+
+    const priority = (item: SearchItem) =>
+        (isVisible(item) ? 2 : 0) + (isCommunityGame(item) ? 0 : 1);
+
+    for (let count = words.length; count > 0; count--) {
+        const groups = searchGroups(
+            prepared,
+            count === words.length ? query : words.slice(0, count).join(" "),
+            canOpenFilters,
+            priority,
+        );
+        if (groups.length) {
+            return groups;
+        }
+    }
+    return [];
 };
 
 export const getItemHref = (item: SearchItem) =>

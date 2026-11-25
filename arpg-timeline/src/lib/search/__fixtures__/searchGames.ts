@@ -73,3 +73,16 @@ export const SEARCH_GAMES: GameNames[] = [
         group: "PoE Community",
     },
 ];
+
+export const COMMUNITY_SLUGS = new Set([
+    "blizzless-d2r",
+    "d2r-reimagined",
+    "diablo-2-evolution",
+    "grim-dawn-community-league",
+    "median-xl",
+    "path-of-diablo",
+    "path-of-terraria",
+    "pd2",
+    "slash-diablo",
+    "zizaran-s-path-of-exile-gauntlet",
+]);

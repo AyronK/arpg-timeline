@@ -7,13 +7,16 @@ const aliasesOf = (slug: string) =>
     deriveGameAliases(SEARCH_GAMES.find((game) => game.slug === slug)!);
 
 describe("deriveGameAliases", () => {
-    it("adds short name, slug, group, acronym and numeral variants", () => {
-        expect(aliasesOf("path-of-exile2")).toEqual(["PoE2", "path of exile ii", "Path of Exile"]);
+    it("adds short name, slug, group and acronym", () => {
+        expect(aliasesOf("path-of-exile2")).toEqual(["PoE2", "Path of Exile"]);
         expect(aliasesOf("torchlite-infinite")).toContain("torchlite-infinite");
-        expect(aliasesOf("diablo-ii-resurrected")).toEqual(
-            expect.arrayContaining(["D2", "diablo 2 resurrected", "d2r"]),
-        );
-        expect(aliasesOf("diablo-iv")).toEqual(expect.arrayContaining(["D4", "diablo 4"]));
+        expect(aliasesOf("diablo-ii-resurrected")).toEqual(expect.arrayContaining(["D2", "d2r"]));
+        expect(aliasesOf("diablo-iv")).toContain("D4");
+    });
+
+    it("leaves numeral variants out, since they count as the name", () => {
+        expect(aliasesOf("diablo-iv")).not.toContain("diablo 4");
+        expect(aliasesOf("path-of-exile2")).not.toContain("path of exile ii");
     });
 
     it("drops duplicates of the name and of each other", () => {

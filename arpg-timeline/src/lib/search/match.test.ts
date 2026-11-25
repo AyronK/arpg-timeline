@@ -22,7 +22,6 @@ describe("searchCandidates on real games", () => {
         ["diablo 4", "diablo-iv"],
         ["diablo iv", "diablo-iv"],
         ["d2r", "diablo-ii-resurrected"],
-        ["diablo 2", "diablo-2-evolution"],
         ["grimdawn", "grim-dawn"],
         ["grim dawn", "grim-dawn"],
         ["grimdwn", "grim-dawn"],
@@ -34,6 +33,7 @@ describe("searchCandidates on real games", () => {
         ["epo", "last-epoch"],
         ["lsst epoch", "last-epoch"],
         ["diablp iv", "diablo-iv"],
+        ["pd2", "pd2"],
     ])("%s finds %s first", (query, slug) => {
         expect(topSlug(query)).toBe(slug);
     });
@@ -52,8 +52,27 @@ describe("searchCandidates on real games", () => {
         const [match] = searchCandidates(games, "poe2");
 
         expect(match!.matchedAlias).toBe("PoE2");
-        expect(searchCandidates(games, "titan quest 2")[0]!.matchedAlias).toBe("titan quest 2");
         expect(searchCandidates(games, "grim")[0]!.matchedAlias).toBeNull();
+    });
+
+    it("treats numeral spellings as the name, not an alias", () => {
+        expect(searchCandidates(games, "titan quest 2")[0]!.matchedAlias).toBeNull();
+        expect(searchCandidates(games, "diablo 4")[0]!.matchedAlias).toBeNull();
+    });
+
+    it("does not reach unrelated games through scattered letters", () => {
+        expect(slugsFor("poe2")).not.toContain("pd2");
+        expect(slugsFor("poe")).not.toContain("pd2");
+    });
+
+    it("keeps one and two letter queries to name prefixes and abbreviations", () => {
+        expect(slugsFor("le")).toEqual(["last-epoch"]);
+        expect(slugsFor("po")).toEqual([
+            "path-of-diablo",
+            "path-of-exile",
+            "path-of-exile2",
+            "path-of-terraria",
+        ]);
     });
 
     it("returns nothing for an empty or punctuation-only query", () => {
@@ -89,17 +108,20 @@ describe("ranking", () => {
         expect(searchCandidates(candidates, "hero").map((m) => m.item)).toEqual(["name", "alias"]);
     });
 
-    it("breaks ties by visibility, then alphabetically", () => {
+    it("breaks ties by priority, then alphabetically", () => {
         const candidates = named("Dawn B", "Dawn C", "Dawn A");
 
         expect(
-            searchCandidates(candidates, "dawn", (item) => item === "Dawn C").map((m) => m.item),
+            searchCandidates(candidates, "dawn", (item) => (item === "Dawn C" ? 1 : 0)).map(
+                (m) => m.item,
+            ),
         ).toEqual(["Dawn C", "Dawn A", "Dawn B"]);
     });
 
     it("skips subsequence for short queries and typos for queries under 4 chars", () => {
         expect(searchCandidates(named("Dxaxwxn"), "dw")).toEqual([]);
         expect(searchCandidates(named("Dwa"), "daw")).toEqual([]);
+        expect(searchCandidates(named("Xdawn", "Grim Dawn"), "da")).toEqual([]);
     });
 });
 

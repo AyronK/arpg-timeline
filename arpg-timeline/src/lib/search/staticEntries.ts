@@ -1,4 +1,5 @@
 import {
+    ArrowRightToLine,
     Award,
     Bot,
     CalendarPlus,
@@ -6,6 +7,7 @@ import {
     Code,
     Eye,
     FileText,
+    FlaskConical,
     Heart,
     Library,
     LucideIcon,
@@ -15,6 +17,7 @@ import {
     ScrollText,
     ShieldCheck,
     SlidersHorizontal,
+    Users,
 } from "lucide-react";
 
 export interface StaticEntry {
@@ -141,6 +144,33 @@ export const STATIC_ENTRIES: StaticEntry[] = [
         href: "/dashboard/all",
         keywords: ["all games", "catalog"],
         icon: Library,
+    },
+    {
+        id: "community-tab",
+        kind: "action",
+        title: "Go to Community",
+        description: "Community-driven mods, events and fan projects",
+        href: "/dashboard/community",
+        keywords: ["community", "private servers", "mods", "fan projects"],
+        icon: Users,
+    },
+    {
+        id: "early-access-tab",
+        kind: "action",
+        title: "Go to Early Access",
+        description: "Games in early access or open beta",
+        href: "/dashboard/early-access",
+        keywords: ["early access", "beta"],
+        icon: FlaskConical,
+    },
+    {
+        id: "non-seasonal-tab",
+        kind: "action",
+        title: "Go to Non-Seasonal",
+        description: "Games without seasonal updates",
+        href: "/dashboard/non-seasonal",
+        keywords: ["non seasonal", "no seasons"],
+        icon: ArrowRightToLine,
     },
     {
         id: "latest-news",

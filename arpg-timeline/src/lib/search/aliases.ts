@@ -16,20 +16,13 @@ const acronym = (normalizedName: string) => {
         : words.map((word) => (/^\d+$/.test(word) ? word : word[0])).join("");
 };
 
-export const deriveGameAliases = ({ slug, name, shortName, group }: AliasSource): string[] => {
-    const normalizedName = normalize(name);
-    const candidates = [
-        shortName,
-        romanToDigits(normalizedName),
-        digitsToRoman(normalizedName),
-        acronym(normalizedName),
-        ...(HARDCODED_ALIASES[slug] ?? []),
-        group,
-        slug,
-    ];
+const deriveNameVariants = (normalizedName: string) => [
+    romanToDigits(normalizedName),
+    digitsToRoman(normalizedName),
+];
 
-    const seen = new Set([squash(normalizedName)]);
-    return candidates.filter((alias): alias is string => {
+const uniqueAliases = (aliases: (string | null)[], seen: Set<string>) =>
+    aliases.filter((alias): alias is string => {
         const key = alias ? squash(normalize(alias)) : "";
         if (!key || seen.has(key)) {
             return false;
@@ -37,10 +30,22 @@ export const deriveGameAliases = ({ slug, name, shortName, group }: AliasSource)
         seen.add(key);
         return true;
     });
+
+const deriveGameCandidate = ({ slug, name, shortName, group }: AliasSource) => {
+    const normalizedName = normalize(name);
+    const seen = new Set([squash(normalizedName)]);
+    const nameVariants = uniqueAliases(deriveNameVariants(normalizedName), seen);
+    const aliases = uniqueAliases(
+        [shortName, acronym(normalizedName), ...(HARDCODED_ALIASES[slug] ?? []), group, slug],
+        seen,
+    );
+    return { nameVariants, aliases };
 };
+
+export const deriveGameAliases = (game: AliasSource): string[] => deriveGameCandidate(game).aliases;
 
 export const toGameCandidate = <T extends AliasSource>(game: T): SearchCandidate<T> => ({
     item: game,
     name: game.name,
-    aliases: deriveGameAliases(game),
+    ...deriveGameCandidate(game),
 });

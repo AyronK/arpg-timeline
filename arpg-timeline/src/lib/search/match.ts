@@ -11,10 +11,15 @@ export const MATCH_TIER = {
 
 const TIER_WEIGHT = 10;
 const ALIAS_PENALTY = 1;
+const MIN_LOOSE_QUERY_LENGTH = 3;
+const MIN_SUBSEQUENCE_QUERY_LENGTH = 4;
+const MAX_SUBSEQUENCE_SPREAD = 2;
+const MAX_ABBREVIATION_LENGTH = 4;
 
 export interface SearchCandidate<T> {
     item: T;
     name: string;
+    nameVariants?: string[];
     aliases: string[];
 }
 
@@ -45,20 +50,25 @@ const prepareField = (text: string, alias: string | null): PreparedField => {
 };
 
 export const prepareCandidates = <T>(candidates: SearchCandidate<T>[]): PreparedCandidate<T>[] =>
-    candidates.map(({ item, name, aliases }) => ({
+    candidates.map(({ item, name, nameVariants = [], aliases }) => ({
         item,
         name,
-        fields: [prepareField(name, null), ...aliases.map((alias) => prepareField(alias, alias))],
+        fields: [
+            prepareField(name, null),
+            ...nameVariants.map((variant) => prepareField(variant, null)),
+            ...aliases.map((alias) => prepareField(alias, alias)),
+        ],
     }));
 
-const isSubsequence = (needle: string, haystack: string) => {
+const isCompactSubsequence = (needle: string, haystack: string) => {
+    const maxEnd = needle.length * MAX_SUBSEQUENCE_SPREAD;
     let i = 0;
-    for (const char of haystack) {
-        if (char === needle[i]) {
-            i++;
+    for (let j = 0; j < haystack.length && j < maxEnd; j++) {
+        if (haystack[j] === needle[i] && ++i === needle.length) {
+            return true;
         }
     }
-    return i === needle.length;
+    return false;
 };
 
 const isWithinOneEdit = (a: string, b: string) => {
@@ -92,15 +102,22 @@ const isWithinOneEdit = (a: string, b: string) => {
 const isTypoOf = (query: string, text: string) =>
     [-1, 0, 1].some((delta) => isWithinOneEdit(query, text.slice(0, query.length + delta)));
 
-const matchTier = ({ text, squashed }: PreparedField, query: string, squashedQuery: string) => {
+const matchTier = (
+    { text, squashed, alias }: PreparedField,
+    query: string,
+    squashedQuery: string,
+) => {
+    const isShortQuery = squashedQuery.length < MIN_LOOSE_QUERY_LENGTH;
     if (text === query || squashed === squashedQuery) return MATCH_TIER.exact;
+    if (isShortQuery && alias && squashed.length > MAX_ABBREVIATION_LENGTH) return 0;
     if (text.startsWith(query) || squashed.startsWith(squashedQuery)) return MATCH_TIER.prefix;
+    if (isShortQuery) return 0;
     if (text.includes(` ${query}`)) return MATCH_TIER.wordPrefix;
     if (text.includes(query) || squashed.includes(squashedQuery)) return MATCH_TIER.substring;
     if (
-        squashedQuery.length >= 3 &&
+        squashedQuery.length >= MIN_SUBSEQUENCE_QUERY_LENGTH &&
         squashed[0] === squashedQuery[0] &&
-        isSubsequence(squashedQuery, squashed)
+        isCompactSubsequence(squashedQuery, squashed)
     ) {
         return MATCH_TIER.subsequence;
     }
@@ -141,7 +158,7 @@ export const getHighlight = (name: string, query: string): HighlightRange | null
 export const searchCandidates = <T>(
     candidates: PreparedCandidate<T>[],
     query: string,
-    isVisible: (item: T) => boolean = () => false,
+    priority: (item: T) => number = () => 0,
 ): SearchMatch<T>[] => {
     const normalizedQuery = normalize(query);
     if (!normalizedQuery) {
@@ -163,7 +180,7 @@ export const searchCandidates = <T>(
                   {
                       item,
                       name,
-                      visible: isVisible(item),
+                      priority: priority(item),
                       score: best.score,
                       matchedAlias: best.alias,
                       highlight: getHighlight(name, query),
@@ -174,10 +191,7 @@ export const searchCandidates = <T>(
 
     return matches
         .sort(
-            (a, b) =>
-                b.score - a.score ||
-                Number(b.visible) - Number(a.visible) ||
-                a.name.localeCompare(b.name),
+            (a, b) => b.score - a.score || b.priority - a.priority || a.name.localeCompare(b.name),
         )
         .map(({ item, score, matchedAlias, highlight }) => ({
             item,
