@@ -43,39 +43,8 @@ npm run typecheck    # TypeScript check
 - Maintain full backward compatibility; no dependency changes without discussion
 - Path alias `@/*` maps to `./src/*` in the main app
 
-## Architecture: Main App (`arpg-timeline/src/`)
+## Private context
 
-**App Router structure:**
+The owner's agent context (architecture notes, specs, tickets, analytics, skills) lives in a private repository cloned at `.context/` (gitignored). When it exists, read it first:
 
-- `app/(site)/` — Main site with shared layout (dashboard, game pages, FAQ, privacy, docs)
-- `app/api/v1/` — Public API endpoints
-- `app/api/webhook/` — Sanity webhook handlers that trigger ISR revalidation
-- `app/api/cron/` — Scheduled tasks (Vercel cron)
-- `app/embed/` — Embeddable countdown and season widgets (CSP headers configured to allow embedding)
-- `app/calendar/subscribe/` — iCalendar subscription endpoints
-
-**Source directories:**
-
-- `components/` — Feature-specific React components
-- `ui/` — Base UI component library (shadcn/ui-based)
-- `hooks/` — Custom React hooks
-- `contexts/` — React context providers (filters, preferences, etc.)
-- `lib/` — Sanity client setup and data fetching utilities
-- `types/` — TypeScript type definitions
-- `utils/` — Helper functions
-
-**Data flow:** Sanity CMS → Sanity webhooks → API revalidation → Next.js ISR cache → React components.
-
-**Key config notes:**
-
-- `next.config.ts` sets aggressive cache headers for static assets and shorter TTLs for dynamic content
-- CSP headers block embedding everywhere except `/embed/` routes
-- Image optimization is configured for Sanity CDN (`cdn.sanity.io`)
-
-## Environment Variables
-
-The main app requires these in `.env.local`:
-
-- `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_READ_TOKEN`, `SANITY_WEBHOOK_SECRET`
-- `NEXT_PUBLIC_SITE_URL`
-- Discord, GitHub, Patreon URLs; Google verification; affiliate tokens
+@.context/CLAUDE.md
