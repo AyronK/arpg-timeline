@@ -29,6 +29,7 @@ import {
 } from "@/lib/storage/filterOnboardingStorage";
 
 interface GameFilterContextType {
+    games: Game[];
     gameFilters: {
         label: string;
         value: string;
@@ -114,6 +115,7 @@ export const GameFilterProvider = ({ children, games, category }: GameFilterProv
                 <div className="after:bg-background relative animate-pulse after:absolute after:inset-0 after:rounded-md">
                     <GameFilterContext.Provider
                         value={{
+                            games: parsedGames,
                             gameFilters: [],
                             toggleGameFilter: () => {},
                             toggleGroupFilter: () => {},
@@ -202,6 +204,7 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
 
     const value = useMemo<GameFilterContextType>(
         () => ({
+            games,
             gameFilters,
             toggleGameFilter,
             toggleGroupFilter,
@@ -231,13 +234,15 @@ const UnsafeGameFilterProvider = ({ children, games, category }: UnsafeGameFilte
             updateFilters,
             filteredGames,
             activeFilters,
-            games.length,
+            games,
             category,
         ],
     );
 
     return <GameFilterContext.Provider value={value}>{children}</GameFilterContext.Provider>;
 };
+
+export const useOptionalGameFilterContext = () => useContext(GameFilterContext);
 
 export const useGameFilterContext = () => {
     const context = useContext(GameFilterContext);

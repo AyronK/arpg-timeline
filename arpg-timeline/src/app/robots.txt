@@ -4,6 +4,7 @@ Disallow: /embed
 Disallow: /api
 Disallow: /docs/api
 Disallow: /calendar/subscribe
+Disallow: /search/index
 Disallow: /assets/third-party/
 Disallow: /_next/image/
 Disallow: /_next/static/

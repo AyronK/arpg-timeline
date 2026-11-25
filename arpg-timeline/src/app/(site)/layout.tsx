@@ -8,9 +8,10 @@ import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { PartnerPromosDrawer } from "@/components/PartnerPromosDrawer";
+import { SearchProvider } from "@/components/Search/SearchProvider";
 import { SimpleAnalytics } from "@/components/SimpleAnalytics";
-import { isAnalyticsEnabled } from "@/lib/sa_event";
 import { PartnerPromosProvider } from "@/contexts/PartnerPromosContext";
+import { isAnalyticsEnabled } from "@/lib/sa_event";
 import { Toaster } from "@/ui/Toaster";
 
 const cinzel = Cinzel({
@@ -59,10 +60,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {process.env.SPEED_INSIGHTS_ENABLED && <SpeedInsights />}
                 <Toaster />
                 <PartnerPromosProvider>
-                    <Header />
-                    <main className="flex flex-1 flex-col">{children}</main>
-                    <Footer />
-                    <PartnerPromosDrawer />
+                    <SearchProvider>
+                        <Header />
+                        <main className="flex flex-1 flex-col">{children}</main>
+                        <Footer />
+                        <PartnerPromosDrawer />
+                    </SearchProvider>
                 </PartnerPromosProvider>
                 {isAnalyticsEnabled && (
                     <>

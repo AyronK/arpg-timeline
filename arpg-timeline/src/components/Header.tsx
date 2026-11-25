@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/Dro
 
 import { DiscordMemberCard } from "./DiscordMemberCard";
 import { Logo } from "./Logo";
+import { SearchTrigger } from "./Search/SearchTrigger";
 
 interface SocialButtonProps {
     href: string;
@@ -48,7 +49,7 @@ export const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="max-xl:bg-card 3xl:container 3xl:mx-auto relative h-[56px] max-sm:shadow-sm xl:h-[80px] xl:pt-6 xl:pb-0">
+        <header className="max-xl:bg-card relative h-[56px] max-sm:shadow-sm xl:container xl:mx-auto xl:h-[80px] xl:pt-6 xl:pb-0">
             <div className="relative h-full w-full">
                 <Link
                     href="/"
@@ -70,8 +71,18 @@ export const Header = () => {
                         </span>
                     </div>
                 </Link>
-                <div className="flex h-full items-center justify-between gap-2 px-2">
+                <div className="flex h-full items-center justify-between gap-2 px-2 xl:px-0">
+                    <SearchTrigger
+                        variant="field"
+                        location="header"
+                        className="relative z-30 hidden w-56 xl:flex 2xl:w-72"
+                    />
                     <div className="ml-auto flex items-center">
+                        <SearchTrigger
+                            variant="icon"
+                            location="header_icon"
+                            className="xl:hidden"
+                        />
                         <SocialButton
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}
                             rel="noopener noreferrer nofollow"

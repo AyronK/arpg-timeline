@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
+import { HubSidebarTop } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import {
     articleIndexGameParams,
@@ -25,7 +25,7 @@ export default async function GameNewsIndexPage({ params }: Props) {
         category: "news",
         gameSlug,
         extra: feed.length > 0 && <OfficialAnnouncements entries={feed} gameSlug={gameSlug} />,
-        aside: <SupportCard />,
+        aside: <HubSidebarTop />,
         emptyText: "No news yet.",
     });
 }

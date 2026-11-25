@@ -4,6 +4,7 @@ import type { Game } from "@/lib/cms/games.types";
 import type { GameFilterCategory } from "@/lib/cms/gameTags";
 
 import {
+    getFeaturedExcludes,
     getHiddenByFiltersLabel,
     getHiddenGamesSummary,
     getMobilePresetTabLabel,
@@ -11,6 +12,7 @@ import {
     getStripTimeLabel,
     getUrlExcludesToPersist,
     resolveExcludedSlugs,
+    setFeaturedVisibility,
 } from "./filterState";
 
 const game = (slug: string, overrides: Partial<Game> = {}): Game =>
@@ -427,5 +429,34 @@ describe("just started", () => {
         expect(label(game("a", { currentSeason: startedAgo(5) }))).toBe("started 5h ago");
         expect(label(game("a", { nextSeason: startingIn(4.5 / 24) }))).toBe("in 5h");
         expect(label(game("a", { nextSeason: startingIn(1.5) }))).toBe("in 1d");
+    });
+});
+
+describe("getFeaturedExcludes", () => {
+    it("uses the preset until a Featured record exists", () => {
+        expect(getFeaturedExcludes(null, PRESET)).toEqual(PRESET);
+        expect(getFeaturedExcludes({ category: "all", excludedSlugs: ["poe"] }, PRESET)).toEqual(
+            PRESET,
+        );
+    });
+
+    it("uses the saved Featured record", () => {
+        expect(
+            getFeaturedExcludes({ category: "featured", excludedSlugs: ["poe"] }, PRESET),
+        ).toEqual(["poe"]);
+    });
+});
+
+describe("setFeaturedVisibility", () => {
+    it("shows a hidden game", () => {
+        expect(setFeaturedVisibility(PRESET, "community", true)).toEqual([
+            "dormant",
+            "unconfirmed-non-seasonal",
+        ]);
+    });
+
+    it("hides a game once", () => {
+        expect(setFeaturedVisibility(["poe"], "poe", false)).toEqual(["poe"]);
+        expect(setFeaturedVisibility([], "poe", false)).toEqual(["poe"]);
     });
 });

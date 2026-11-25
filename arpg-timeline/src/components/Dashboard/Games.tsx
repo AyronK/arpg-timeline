@@ -4,6 +4,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { GameCard } from "@/components/GameCard/GameCard";
 import { WidgetDiedFallback } from "@/components/WidgetDiedFallback";
 import { GameToSeasonWidget } from "@/hoc/GameToSeasonWidget/GameToSeasonWidget";
+import { getGameCardId } from "@/hooks/useHighlightGame";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +21,7 @@ export const Games = ({
     return (
         <>
             {games.map((game, idx) => (
-                <div key={game.slug} className={gridOrderClass(idx)}>
+                <div key={game.slug} id={getGameCardId(game.slug)} className={gridOrderClass(idx)}>
                     <GameTile
                         game={game}
                         statistics={statistics}

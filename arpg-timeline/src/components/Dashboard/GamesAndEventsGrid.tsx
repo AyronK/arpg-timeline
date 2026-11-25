@@ -6,6 +6,7 @@ import { GameFilters } from "@/components/GameFilters";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { useGameFilterContext } from "@/contexts/GameFilterContext";
 import { useGameCategories } from "@/hooks/useGameCategories";
+import { useHighlightGame } from "@/hooks/useHighlightGame";
 import { useTimelineEvents } from "@/hooks/useTimelineEvents";
 import { Game, GameStatistics } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
@@ -26,6 +27,7 @@ export const GamesAndEventsGrid = ({
     const { filteredGames, totalGames, category, ...filtersProps } = useGameFilterContext();
     const events = useTimelineEvents(filteredGames);
     const { allGames } = useGameCategories(filteredGames);
+    useHighlightGame();
 
     const handleLoadingChange = (loading: boolean) => {
         setIsLoading(loading);

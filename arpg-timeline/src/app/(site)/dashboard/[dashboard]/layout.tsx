@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 import { LayoutCarousel } from "@/components/LayoutCarousel";
+import { SearchDashboardBridge } from "@/components/Search/SearchDashboardBridge";
 import { DashboardArticlesProvider } from "@/contexts/DashboardArticlesContext";
 import { GameFilterProvider } from "@/contexts/GameFilterContext";
 import { getDashboardArticles } from "@/lib/articles/getDashboardArticles";
@@ -41,6 +42,7 @@ const DashboardLayout = async ({ children, params }: PropsWithChildren<Dashboard
 
     return (
         <GameFilterProvider games={sanityGames} category={dashboard}>
+            <SearchDashboardBridge />
             <LayoutCarousel />
             <DashboardArticlesProvider articles={articles}>{children}</DashboardArticlesProvider>
         </GameFilterProvider>

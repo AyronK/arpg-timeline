@@ -1,12 +1,13 @@
 "use client";
 
-import { CodeXml, MoreHorizontal, Rss } from "lucide-react";
+import { CodeXml, EyeOff, MoreHorizontal, Rss } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { SiObsstudio } from "react-icons/si";
 
 import { CalendarSubscribeDialog } from "@/components/CalendarSubscribeDialog";
 import { DropdownMenuSeparator } from "@/components/DropdownMenu";
+import { useOptionalGameFilterContext } from "@/contexts/GameFilterContext";
 import { sa_event } from "@/lib/sa_event";
 import { Button } from "@/ui/Button";
 import {
@@ -15,11 +16,14 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/ui/DropdownMenu";
+import { toast } from "@/ui/hooks/useToast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
 export function GameMenu({ game, gameName }: { game: string; gameName?: string }) {
     const [subscribeDialogOpen, setSubscribeDialogOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const filters = useOptionalGameFilterContext();
+    const canHide = filters?.category === "featured";
 
     return (
         <>
@@ -70,6 +74,24 @@ export function GameMenu({ game, gameName }: { game: string; gameName?: string }
                             OBS Widget
                         </DropdownMenuItem>
                     </Link>
+                    {canHide && (
+                        <>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                data-sa-click={`${game}-hide`}
+                                onClick={() => {
+                                    filters.toggleGameFilter(game, false);
+                                    toast({
+                                        title: `${gameName ?? "Game"} is hidden from your dashboard`,
+                                        duration: 3000,
+                                    });
+                                }}
+                            >
+                                <EyeOff className="mr-2 h-4 w-4" />
+                                Hide from dashboard
+                            </DropdownMenuItem>
+                        </>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
 

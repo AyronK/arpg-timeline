@@ -37,3 +37,7 @@ npm-debug.log*
 # Env files created by scripts for working locally
 studio/.env.development
 studio/sanity-codegen.d.ts
+
+# private agent context
+/.context/
+/.claude/skills
