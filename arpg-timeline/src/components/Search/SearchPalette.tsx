@@ -437,7 +437,7 @@ const PaletteBody = ({
                 autoFocus
                 type="search"
                 role="combobox"
-                aria-label="Search games and pages"
+                aria-label="Search games and more"
                 aria-expanded={results.length > 0}
                 aria-controls={listboxId}
                 aria-autocomplete="list"

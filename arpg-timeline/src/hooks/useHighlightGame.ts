@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { parseToValidHtmlId } from "@/lib/parseToValidHtmlId";
 
@@ -59,16 +59,20 @@ export const useHighlightGame = () => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const slug = searchParams.get(HIGHLIGHT_PARAM);
+    const cancelRef = useRef<(() => void) | null>(null);
+
+    useEffect(() => () => cancelRef.current?.(), []);
 
     useEffect(() => {
         if (!slug) {
             return;
         }
-        const cancel = highlightGameCard(slug);
+        // Not cancelled by the param removal below, only by a newer highlight or unmount
+        cancelRef.current?.();
+        cancelRef.current = highlightGameCard(slug);
         const params = new URLSearchParams(searchParams.toString());
         params.delete(HIGHLIGHT_PARAM);
         const query = params.toString();
         router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-        return cancel;
     }, [slug, searchParams, pathname, router]);
 };

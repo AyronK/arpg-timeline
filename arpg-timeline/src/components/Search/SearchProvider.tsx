@@ -23,6 +23,7 @@ interface SearchContextType {
     isOpen: boolean;
     setOpen: (open: boolean) => void;
     registerDashboard: (dashboard: DashboardSearch | null) => void;
+    hasDashboard: boolean;
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
@@ -30,6 +31,11 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
 const isEditableTarget = (target: EventTarget | null) =>
     target instanceof HTMLElement &&
     (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
+
+const isOtherDialogOpen = () =>
+    !!document.querySelector(
+        '[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]',
+    );
 
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -49,23 +55,33 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
                 return;
             }
             if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key.toLowerCase() === "k") {
+                if (!isOpen && isOtherDialogOpen()) {
+                    return;
+                }
                 e.preventDefault();
                 setIsOpen((open) => !open);
                 setHasOpened(true);
                 return;
             }
-            if (e.key === "/" && !e.metaKey && !e.ctrlKey && !isEditableTarget(e.target)) {
+            if (
+                e.key === "/" &&
+                !e.metaKey &&
+                !e.ctrlKey &&
+                !isEditableTarget(e.target) &&
+                !isOtherDialogOpen()
+            ) {
                 e.preventDefault();
                 setOpen(true);
             }
         };
         window.addEventListener("keydown", onKeyDown);
         return () => window.removeEventListener("keydown", onKeyDown);
-    }, [setOpen]);
+    }, [isOpen, setOpen]);
 
+    const hasDashboard = dashboard !== null;
     const value = useMemo(
-        () => ({ isOpen, setOpen, registerDashboard: setDashboard }),
-        [isOpen, setOpen],
+        () => ({ isOpen, setOpen, registerDashboard: setDashboard, hasDashboard }),
+        [isOpen, setOpen, hasDashboard],
     );
 
     return (

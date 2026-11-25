@@ -22,11 +22,6 @@ export const takeClickedTrigger = () => {
 const subscribeNoop = () => () => {};
 const isApplePlatform = () => /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
 
-const prefetch = () => {
-    preloadSearchPalette();
-    prefetchSearchIndex();
-};
-
 interface SearchTriggerProps {
     variant: "field" | "icon";
     className?: string;
@@ -40,9 +35,16 @@ export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
         return null;
     }
 
+    const prefetch = () => {
+        preloadSearchPalette();
+        if (!search.hasDashboard) {
+            prefetchSearchIndex();
+        }
+    };
+
     const triggerProps = {
         type: "button" as const,
-        "aria-label": "Search games and pages",
+        "aria-label": "Search games and more",
         "aria-haspopup": "dialog" as const,
         [SEARCH_TRIGGER_ATTRIBUTE]: "",
         onClick: (e: MouseEvent<HTMLButtonElement>) => {
