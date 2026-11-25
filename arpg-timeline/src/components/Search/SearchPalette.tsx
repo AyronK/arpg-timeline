@@ -21,6 +21,7 @@ import {
 } from "@/lib/search/gameMeta";
 import { loadSearchIndex } from "@/lib/search/loadSearchIndex";
 import { SearchMatch } from "@/lib/search/match";
+import { createSearchSession, getItemSelection } from "@/lib/search/searchAnalytics";
 import {
     getItemHref,
     getItemKey,
@@ -92,6 +93,7 @@ const ResultRow = ({
     onClose: () => void;
     onCommand: (entry: StaticEntry) => void;
     onGameLink: (item: GameLinkItem) => void;
+    onActivate: () => void;
 }) => {
     if (item.kind === "game") {
         const detail = dashboard?.details.get(item.game.slug);
@@ -278,6 +280,11 @@ const PaletteBody = ({
     const optionId = (index: number) => `${baseId}-option-${index}`;
 
     const [now] = useState(Date.now);
+    const [session] = useState(createSearchSession);
+    const track = session.select;
+
+    useEffect(() => session.close, [session]);
+
     const groups = useMemo(
         () =>
             runSearch(prepareSearch(games), query, {
@@ -321,7 +328,7 @@ const PaletteBody = ({
         }
     };
 
-    const getAction = (item: SearchItem): RowAction | null => {
+    const getAction = (item: SearchItem, position: number): RowAction | null => {
         const detail = item.kind === "game" ? dashboard?.details.get(item.game.slug) : null;
         if (!detail || detail.status.kind === "visible" || item.kind !== "game") {
             return null;
@@ -333,12 +340,14 @@ const PaletteBody = ({
                 description: `Hidden by your filters. Show ${game.name} on the dashboard`,
                 hint: "show on dashboard",
                 icon: Eye,
-                run: () =>
+                run: (input) => {
+                    track({ kind: "show", target: game.slug }, input, position);
                     onCloseThen(() => {
                         dashboard?.showGame(game.slug);
                         highlightGameCard(game.slug);
                         toast({ title: `${game.name} is now on your dashboard`, duration: 3000 });
-                    }),
+                    });
+                },
             };
         }
         return {
@@ -346,14 +355,17 @@ const PaletteBody = ({
             description: `Not on this tab. Show ${game.name} in the Full Catalog`,
             hint: "show in Full Catalog",
             icon: ArrowRight,
-            run: () => navigateTo(`/dashboard/all?${HIGHLIGHT_PARAM}=${game.slug}`),
+            run: (input) => {
+                track({ kind: "full_catalog", target: game.slug }, input, position);
+                navigateTo(`/dashboard/all?${HIGHLIGHT_PARAM}=${game.slug}`);
+            },
         };
     };
 
     const results = useMemo(() => groups.flatMap((group) => group.results), [groups]);
     const safeIndex = Math.min(activeIndex, results.length - 1);
     const activeResult = results[safeIndex];
-    const activeAction = activeResult ? getAction(activeResult.item) : null;
+    const activeAction = activeResult ? getAction(activeResult.item, safeIndex + 1) : null;
     const hasQuery = query.trim().length > 0;
 
     useEffect(() => {
@@ -391,14 +403,21 @@ const PaletteBody = ({
             setActiveIndex(safeIndex < 0 ? count - 1 : (safeIndex - 1 + count) % count);
         } else if (e.key === "Enter" && e.shiftKey && activeAction) {
             e.preventDefault();
-            activeAction.run();
+            activeAction.run("keyboard");
         } else if (e.key === "Enter" && activeResult) {
             e.preventDefault();
+            track(getItemSelection(activeResult.item, hasQuery), "keyboard", safeIndex + 1);
             openItem(activeResult.item, e.metaKey || e.ctrlKey);
         }
     };
 
     const hasNoResults = hasQuery && !!games && results.length === 0;
+
+    useEffect(() => {
+        if (hasNoResults) {
+            session.markNoResults();
+        }
+    }, [hasNoResults, session]);
     const status = !hasQuery
         ? null
         : hasFailed
@@ -451,6 +470,9 @@ const PaletteBody = ({
                 value={query}
                 onChange={(e) => {
                     setQuery(e.target.value);
+                    if (e.target.value.trim()) {
+                        session.markTyped();
+                    }
                     setActiveIndex(e.target.value.trim() ? 0 : NO_ACTIVE_INDEX);
                 }}
                 onKeyDown={onKeyDown}
@@ -507,7 +529,10 @@ const PaletteBody = ({
                             <button
                                 key={entry.id}
                                 type="button"
-                                onClick={() => runCommand(entry)}
+                                onClick={() => {
+                                    track({ kind: "chip", target: entry.id }, "pointer");
+                                    runCommand(entry);
+                                }}
                                 className={CHIP_CLASS_NAME}
                             >
                                 {chipContent}
@@ -518,7 +543,10 @@ const PaletteBody = ({
                                 href={entry.href}
                                 replace
                                 prefetch={false}
-                                onClick={onNavigate}
+                                onClick={() => {
+                                    track({ kind: "chip", target: entry.id }, "pointer");
+                                    onNavigate();
+                                }}
                                 className={CHIP_CLASS_NAME}
                             >
                                 {chipContent}
@@ -567,7 +595,14 @@ const PaletteBody = ({
                                         onHover={() => setActiveIndex(index)}
                                         dashboard={dashboard}
                                         now={now}
-                                        action={getAction(match.item)}
+                                        action={getAction(match.item, index + 1)}
+                                        onActivate={() =>
+                                            track(
+                                                getItemSelection(match.item, hasQuery),
+                                                "pointer",
+                                                index + 1,
+                                            )
+                                        }
                                         onNavigate={onNavigate}
                                         onClose={onClose}
                                         onCommand={runCommand}

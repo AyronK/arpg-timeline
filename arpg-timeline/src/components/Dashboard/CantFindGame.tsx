@@ -68,7 +68,7 @@ export const CantFindGame = () => {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Can&apos;t find a game?
                 </h3>
-                <SearchTrigger variant="field" className="w-full max-w-72" />
+                <SearchTrigger variant="field" location="card" className="w-full max-w-72" />
             </div>
             <div className="flex flex-col items-center gap-1.5 text-sm">
                 {links.map(({ key, node }) => (

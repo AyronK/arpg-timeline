@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { MouseEvent, useSyncExternalStore } from "react";
 
 import { prefetchSearchIndex } from "@/lib/search/loadSearchIndex";
+import { SearchTriggerLocation } from "@/lib/search/searchAnalytics";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
@@ -24,10 +25,11 @@ const isApplePlatform = () => /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
 
 interface SearchTriggerProps {
     variant: "field" | "icon";
+    location: SearchTriggerLocation;
     className?: string;
 }
 
-export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
+export const SearchTrigger = ({ variant, location, className }: SearchTriggerProps) => {
     const search = useOptionalSearch();
     const isApple = useSyncExternalStore(subscribeNoop, isApplePlatform, () => null);
 
@@ -49,7 +51,7 @@ export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
         [SEARCH_TRIGGER_ATTRIBUTE]: "",
         onClick: (e: MouseEvent<HTMLButtonElement>) => {
             clickedTrigger = e.currentTarget;
-            search.setOpen(true);
+            search.openSearch("click", location);
         },
         onPointerEnter: prefetch,
         onFocus: prefetch,

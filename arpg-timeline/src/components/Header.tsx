@@ -74,10 +74,11 @@ export const Header = () => {
                 <div className="flex h-full items-center justify-between gap-2 px-2 xl:px-0">
                     <SearchTrigger
                         variant="field"
+                        location="header"
                         className="relative z-30 hidden w-56 xl:flex 2xl:w-72"
                     />
                     <div className="ml-auto flex items-center">
-                        <SearchTrigger variant="icon" className="xl:hidden" />
+                        <SearchTrigger variant="icon" location="header_icon" className="xl:hidden" />
                         <SocialButton
                             href={process.env.NEXT_PUBLIC_DISCORD_URL}
                             rel="noopener noreferrer nofollow"

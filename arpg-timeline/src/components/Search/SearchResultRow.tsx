@@ -73,7 +73,7 @@ export interface RowAction {
     description: string;
     hint: string;
     icon: LucideIcon;
-    run: () => void;
+    run: (input: "keyboard" | "pointer") => void;
 }
 
 interface SearchResultRowProps {
@@ -89,6 +89,7 @@ interface SearchResultRowProps {
     external?: boolean;
     onHover: () => void;
     onNavigate: () => void;
+    onActivate?: () => void;
 }
 
 export const SearchResultRow = ({
@@ -104,8 +105,10 @@ export const SearchResultRow = ({
     external,
     onHover,
     onNavigate,
+    onActivate,
 }: SearchResultRowProps) => {
     const onClick = (e: MouseEvent) => {
+        onActivate?.();
         if (!e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) {
             onNavigate();
         }
@@ -167,7 +170,7 @@ export const SearchResultRow = ({
                     type="button"
                     tabIndex={-1}
                     title={action.description}
-                    onClick={action.run}
+                    onClick={() => action.run("pointer")}
                     className="border-foreground/20 text-muted-foreground hover:text-foreground hover:border-foreground/40 mr-2 inline-flex shrink-0 cursor-pointer items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] font-medium whitespace-nowrap transition-colors"
                 >
                     <action.icon aria-hidden className="h-3 w-3" />

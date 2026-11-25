@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import {
     createContext,
     ReactNode,
@@ -11,6 +12,12 @@ import {
     useState,
 } from "react";
 
+import {
+    getSearchPageType,
+    SearchOpenVia,
+    SearchTriggerLocation,
+    trackSearchOpen,
+} from "@/lib/search/searchAnalytics";
 import { DashboardSearch } from "@/lib/search/types";
 
 const SearchPalette = dynamic(() => import("./SearchPalette"), { ssr: false });
@@ -22,6 +29,7 @@ export const preloadSearchPalette = () => {
 interface SearchContextType {
     isOpen: boolean;
     setOpen: (open: boolean) => void;
+    openSearch: (via: SearchOpenVia, trigger?: SearchTriggerLocation) => void;
     registerDashboard: (dashboard: DashboardSearch | null) => void;
     hasDashboard: boolean;
 }
@@ -41,6 +49,8 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [hasOpened, setHasOpened] = useState(false);
     const [dashboard, setDashboard] = useState<DashboardSearch | null>(null);
+    const pathname = usePathname();
+    const hasDashboard = dashboard !== null;
 
     const setOpen = useCallback((open: boolean) => {
         setIsOpen(open);
@@ -48,6 +58,14 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
             setHasOpened(true);
         }
     }, []);
+
+    const openSearch = useCallback(
+        (via: SearchOpenVia, trigger?: SearchTriggerLocation) => {
+            trackSearchOpen(via, getSearchPageType(pathname, hasDashboard), trigger);
+            setOpen(true);
+        },
+        [pathname, hasDashboard, setOpen],
+    );
 
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
@@ -59,8 +77,11 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
                     return;
                 }
                 e.preventDefault();
-                setIsOpen((open) => !open);
-                setHasOpened(true);
+                if (isOpen) {
+                    setOpen(false);
+                } else {
+                    openSearch("ctrl_k");
+                }
                 return;
             }
             if (
@@ -71,17 +92,16 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
                 !isOtherDialogOpen()
             ) {
                 e.preventDefault();
-                setOpen(true);
+                openSearch("slash");
             }
         };
         window.addEventListener("keydown", onKeyDown);
         return () => window.removeEventListener("keydown", onKeyDown);
-    }, [isOpen, setOpen]);
+    }, [isOpen, setOpen, openSearch]);
 
-    const hasDashboard = dashboard !== null;
     const value = useMemo(
-        () => ({ isOpen, setOpen, registerDashboard: setDashboard, hasDashboard }),
-        [isOpen, setOpen, hasDashboard],
+        () => ({ isOpen, setOpen, openSearch, registerDashboard: setDashboard, hasDashboard }),
+        [isOpen, setOpen, openSearch, hasDashboard],
     );
 
     return (
