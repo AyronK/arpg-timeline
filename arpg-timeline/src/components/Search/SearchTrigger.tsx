@@ -1,15 +1,23 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useSyncExternalStore } from "react";
+import { MouseEvent, useSyncExternalStore } from "react";
 
 import { prefetchSearchIndex } from "@/lib/search/loadSearchIndex";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/Button";
 
-import { preloadSearchPalette, useSearch } from "./SearchProvider";
+import { preloadSearchPalette, useOptionalSearch } from "./SearchProvider";
 
 export const SEARCH_TRIGGER_ATTRIBUTE = "data-search-trigger";
+
+let clickedTrigger: HTMLElement | null = null;
+
+export const takeClickedTrigger = () => {
+    const trigger = clickedTrigger;
+    clickedTrigger = null;
+    return trigger;
+};
 
 const subscribeNoop = () => () => {};
 const isApplePlatform = () => /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
@@ -25,15 +33,22 @@ interface SearchTriggerProps {
 }
 
 export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
-    const { setOpen } = useSearch();
+    const search = useOptionalSearch();
     const isApple = useSyncExternalStore(subscribeNoop, isApplePlatform, () => null);
+
+    if (!search) {
+        return null;
+    }
 
     const triggerProps = {
         type: "button" as const,
         "aria-label": "Search games and pages",
         "aria-haspopup": "dialog" as const,
         [SEARCH_TRIGGER_ATTRIBUTE]: "",
-        onClick: () => setOpen(true),
+        onClick: (e: MouseEvent<HTMLButtonElement>) => {
+            clickedTrigger = e.currentTarget;
+            search.setOpen(true);
+        },
         onPointerEnter: prefetch,
         onFocus: prefetch,
     };
@@ -55,7 +70,7 @@ export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
         <button
             {...triggerProps}
             className={cn(
-                "group border-foreground/20 hover:border-foreground/40 focus-visible:border-foreground/60 focus-visible:ring-ring flex h-9 w-56 cursor-pointer items-center gap-2 rounded-t-sm border-b px-1 text-left transition-colors focus-visible:ring-2 focus-visible:outline-hidden 2xl:w-72",
+                "group border-foreground/20 hover:border-foreground/40 focus-visible:border-foreground/60 focus-visible:ring-ring @container flex h-9 cursor-pointer items-center gap-2 rounded-t-sm border-b px-1 text-left transition-colors focus-visible:ring-2 focus-visible:outline-hidden",
                 className,
             )}
         >
@@ -65,7 +80,7 @@ export const SearchTrigger = ({ variant, className }: SearchTriggerProps) => {
             </span>
             <span
                 className={cn(
-                    "text-muted-foreground hidden w-11 shrink-0 text-right text-xs 2xl:block",
+                    "text-muted-foreground hidden w-11 shrink-0 text-right text-xs @min-[16rem]:block pointer-coarse:hidden!",
                     isApple === null && "invisible",
                 )}
             >

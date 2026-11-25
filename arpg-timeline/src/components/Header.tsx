@@ -72,7 +72,10 @@ export const Header = () => {
                     </div>
                 </Link>
                 <div className="flex h-full items-center justify-between gap-2 px-2 xl:px-0">
-                    <SearchTrigger variant="field" className="relative z-30 hidden xl:flex" />
+                    <SearchTrigger
+                        variant="field"
+                        className="relative z-30 hidden w-56 xl:flex 2xl:w-72"
+                    />
                     <div className="ml-auto flex items-center">
                         <SearchTrigger variant="icon" className="xl:hidden" />
                         <SocialButton

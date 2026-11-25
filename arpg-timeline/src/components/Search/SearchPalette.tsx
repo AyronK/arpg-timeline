@@ -43,7 +43,7 @@ import { Dialog, DialogClose, DialogOverlay, DialogPortal, DialogTitle } from "@
 import { toast } from "@/ui/hooks/useToast";
 
 import { GameTile, IconTile, RowAction, SearchResultRow } from "./SearchResultRow";
-import { SEARCH_TRIGGER_ATTRIBUTE } from "./SearchTrigger";
+import { SEARCH_TRIGGER_ATTRIBUTE, takeClickedTrigger } from "./SearchTrigger";
 
 type GameLinkItem = Extract<SearchItem, { kind: "game-link" }>;
 
@@ -146,6 +146,11 @@ const ResultRow = ({
 
 const focusVisibleTrigger = (e: Event) => {
     e.preventDefault();
+    const clicked = takeClickedTrigger();
+    if (clicked?.isConnected && clicked.offsetParent !== null) {
+        clicked.focus({ preventScroll: true });
+        return;
+    }
     const triggers = document.querySelectorAll<HTMLElement>(`[${SEARCH_TRIGGER_ATTRIBUTE}]`);
     Array.from(triggers)
         .find((trigger) => trigger.offsetParent !== null)
