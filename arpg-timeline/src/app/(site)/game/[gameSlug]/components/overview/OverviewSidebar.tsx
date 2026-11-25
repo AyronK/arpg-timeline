@@ -8,7 +8,7 @@ import { Game } from "@/lib/cms/games.types";
 import { cn } from "@/lib/utils";
 import { addGameLinkUTM } from "@/lib/utm";
 
-import { ExternalRow, hostname, linkClassName, LinkRow, SupportCard } from "../hub/SidebarParts";
+import { ExternalRow, hostname, HubSidebarTop, linkClassName, LinkRow } from "../hub/SidebarParts";
 import { cardClassName } from "./OverviewCard";
 
 const LinkGroup = ({ title, children }: { title: string; children: ReactNode[] }) => {
@@ -114,8 +114,8 @@ const GameLinks = ({ game, steamAppId }: { game: Game; steamAppId?: number | nul
 
     return (
         <section className={cn(cardClassName, "flex flex-col gap-4")}>
-            <h2 className="sr-only">Links</h2>
-            <LinkGroup title="Useful links">{actions}</LinkGroup>
+            <h2 className="font-heading mb-2 text-lg">Links</h2>
+            <LinkGroup title="Helpful">{actions}</LinkGroup>
             <LinkGroup title="Official">{official}</LinkGroup>
         </section>
     );
@@ -176,7 +176,7 @@ export const OverviewSidebar = ({
     steamAppId?: number | null;
 }) => (
     <aside className="flex flex-col gap-4 md:gap-6">
-        <SupportCard />
+        <HubSidebarTop />
         <GameLinks game={game} steamAppId={steamAppId} />
         <CreatorTools gameSlug={game.slug} />
     </aside>

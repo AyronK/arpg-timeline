@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { getGameArticlesPreview } from "@/lib/articles/getArticleListData";
 import { getSteamCurrentPlayers } from "@/lib/steam/getMultipleSteamCurrentPlayers";
 
+import { HubGameProvider } from "../components/hub/DashboardToggle";
 import { GameHubHeader } from "../components/hub/GameHubHeader";
 import { getGameFeed } from "../feed";
 import { getGameDetails } from "../gameData";
@@ -20,7 +21,7 @@ const GameHubLayout = async ({
 }) => {
     const { gameSlug } = await params;
 
-    const { data, game, steamAppId: appId } = await getGameDetails(gameSlug);
+    const { data, game, steamAppId: appId, featuredPreset } = await getGameDetails(gameSlug);
     if (!game) notFound();
 
     const [steam, articles, feed] = await Promise.all([
@@ -41,7 +42,13 @@ const GameHubLayout = async ({
                     hasStats: hasStatsTab(game, !!appId, countTrackedSeasons(data, gameSlug)),
                 }}
             />
-            {children}
+            <HubGameProvider
+                gameSlug={game.slug}
+                gameName={game.name}
+                featuredPreset={featuredPreset}
+            >
+                {children}
+            </HubGameProvider>
         </>
     );
 };

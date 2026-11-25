@@ -7,6 +7,7 @@ import { MONTHLY_VISITORS, SITE_MONTHLY_COST } from "@/components/PatreonFunding
 import { cn } from "@/lib/utils";
 
 import { cardClassName } from "../overview/OverviewCard";
+import { DashboardToggle } from "./DashboardToggle";
 
 // Sidebar pieces shared by every hub tab
 export const linkClassName =
@@ -42,6 +43,13 @@ export const SupportCard = ({ className }: { className?: string }) => {
         </section>
     );
 };
+
+export const HubSidebarTop = () => (
+    <div className="flex flex-col gap-4 md:gap-6">
+        <DashboardToggle />
+        <SupportCard />
+    </div>
+);
 
 export const hostname = (url: string) => {
     try {

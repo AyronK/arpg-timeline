@@ -43,7 +43,7 @@ const getDefaultHiddenReason = (
     return null;
 };
 
-const getFeaturedPreset = (games: Game[]): string[] =>
+export const getFeaturedPreset = (games: Game[]): string[] =>
     games.filter((g) => getDefaultHiddenReason(g) !== null).map((g) => g.slug);
 
 type FilterInputs = {
@@ -63,6 +63,14 @@ export const resolveExcludedSlugs = ({
     if (urlExcludes.length > 0) return urlExcludes;
     return getFeaturedPreset(games);
 };
+
+export const getFeaturedExcludes = (
+    stored: GameFiltersStorage | null,
+    preset: string[],
+): string[] => (stored?.category === "featured" ? stored.excludedSlugs : preset);
+
+export const setFeaturedVisibility = (excludes: string[], slug: string, visible: boolean) =>
+    visible ? excludes.filter((s) => s !== slug) : [...new Set([...excludes, slug])];
 
 // A shared Featured link is saved only when no Featured record exists yet
 export const getUrlExcludesToPersist = ({

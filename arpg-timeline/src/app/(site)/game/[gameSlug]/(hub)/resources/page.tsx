@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
+import { HubSidebarTop } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import {
     articleIndexGameParams,
     renderArticleIndex,
@@ -22,7 +22,7 @@ export default async function GameResourcesIndexPage({ params }: Props) {
         category: "resources",
         gameSlug,
         emptyState: game && <GuidesEmptyState game={game} />,
-        aside: <SupportCard />,
+        aside: <HubSidebarTop />,
     });
 }
 

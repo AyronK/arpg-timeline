@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
+import { HubSidebarTop } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { parsePageParam } from "@/lib/articles/pagination";
 import {
     gameArticleIndexPageParams,
@@ -16,7 +16,7 @@ interface Props {
 export default async function GameNewsIndexPagedPage({ params }: Props) {
     const { gameSlug, page } = await params;
     if (parsePageParam(page) < 2) notFound();
-    return renderArticleIndex({ category: "news", gameSlug, page, aside: <SupportCard /> });
+    return renderArticleIndex({ category: "news", gameSlug, page, aside: <HubSidebarTop /> });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

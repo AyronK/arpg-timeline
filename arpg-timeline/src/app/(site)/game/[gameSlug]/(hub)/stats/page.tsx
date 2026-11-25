@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
+import { HubSidebarTop } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
@@ -122,7 +122,7 @@ const StatsPage = async ({ params }: GamePageProps) => {
                 </div>
 
                 <aside className="xl:sticky xl:top-12">
-                    <SupportCard />
+                    <HubSidebarTop />
                 </aside>
             </div>
         </>

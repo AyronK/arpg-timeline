@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SupportCard } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
+import { HubSidebarTop } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
 import { parseGamesFromSanity } from "@/lib/cms/parseGamesFromSanity";
@@ -114,7 +114,7 @@ const TimelinePage = async ({ params }: GamePageProps) => {
                             </p>
                         </header>
                     }
-                    aside={<SupportCard />}
+                    aside={<HubSidebarTop />}
                     cadenceHint={cadenceHint}
                 />
             </div>
