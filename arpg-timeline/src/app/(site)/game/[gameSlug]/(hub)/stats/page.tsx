@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { HubSidebarTop } from "@/app/(site)/game/[gameSlug]/components/hub/SidebarParts";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { ClickToLoad, STEAMDB_PROVIDER } from "@/components/ClickToLoad";
 import { SteamDBEmbed } from "@/components/SteamDBEmbed";
 import type { Crumb } from "@/lib/articles/breadcrumbs";
 import { indexQuery, IndexQueryResult } from "@/lib/cms/queries/indexQuery";
@@ -109,7 +110,13 @@ const StatsPage = async ({ params }: GamePageProps) => {
                     {steam && (
                         <OverviewCard title="Players on Steam">
                             {seasonal || steam.currentPlayers > 0 ? (
-                                <SteamDBEmbed appId={steam.appId} />
+                                <ClickToLoad
+                                    providers={[STEAMDB_PROVIDER]}
+                                    actionLabel="Load player chart"
+                                    className="min-h-[389px]"
+                                >
+                                    <SteamDBEmbed appId={steam.appId} />
+                                </ClickToLoad>
                             ) : (
                                 // SteamDB has no chart for apps nobody plays yet (demos, pre-release)
                                 <p className="text-muted-foreground text-sm">

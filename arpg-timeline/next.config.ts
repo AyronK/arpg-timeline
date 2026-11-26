@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_TOPGG_BOT_ID: process.env.TOPGG_BOT_ID,
     },
     images: {
-        remotePatterns: [{ hostname: "cdn.sanity.io" }],
+        remotePatterns: [{ hostname: "cdn.sanity.io" }, { hostname: "i.ytimg.com" }],
         dangerouslyAllowSVG: true,
         minimumCacheTTL: 31536000,
         formats: ["image/webp"],

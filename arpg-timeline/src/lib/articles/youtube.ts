@@ -32,3 +32,6 @@ function isValidId(id: string | null | undefined): id is string {
 
 export const getYouTubeEmbedUrl = (id: string): string =>
     `https://www.youtube-nocookie.com/embed/${id}`;
+
+export const getYouTubeThumbnailUrl = (id: string): string =>
+    `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;

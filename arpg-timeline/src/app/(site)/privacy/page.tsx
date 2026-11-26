@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { EmbedConsentSettings } from "@/components/EmbedConsentSettings";
+
 const links = {
     gdpr: "https://docs.simpleanalytics.com/gdpr",
     github: `${process.env.NEXT_PUBLIC_GITHUB_URL}/${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues`,
@@ -109,6 +111,20 @@ const PrivacyPage = () => {
                         <li>Device screen dimensions</li>
                         <li>Page view duration</li>
                     </ul>
+                </div>
+            </section>
+
+            <section id="embeds" className="container flex scroll-mt-8 flex-col gap-4 md:my-16">
+                <h2 className="mb-4 text-center text-3xl font-semibold">Embedded Content</h2>
+                <div className="mx-auto mt-8 max-w-prose space-y-6 text-base leading-relaxed">
+                    <p>
+                        Some pages can show content from Steam, SteamDB and YouTube. It only loads
+                        after you click to load it, because these services may set cookies and
+                        receive your IP address. If you choose to always load content from a
+                        service, that choice is saved in your browser&apos;s local storage. You can
+                        change it here at any time.
+                    </p>
+                    <EmbedConsentSettings />
                 </div>
             </section>
 
