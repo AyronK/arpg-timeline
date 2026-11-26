@@ -317,3 +317,37 @@
         animation-timing-function: steps(1, end);
     }
 }
+
+/* Simple Analytics text-link badge, verbatim from https://www.simpleanalytics.com/badges.md */
+a.sa-credit,
+a.sa-credit:visited,
+a.sa-credit:hover,
+a.sa-credit:active {
+    all: unset !important;
+    display: block !important;
+    cursor: pointer !important;
+    line-height: 1.6 !important;
+}
+a.sa-credit:focus-visible {
+    outline: 2px solid currentColor !important;
+    outline-offset: 4px !important;
+}
+a.sa-credit > span {
+    all: unset !important;
+}
+a.sa-credit > .sa-credit__byline {
+    white-space: nowrap !important;
+}
+a.sa-credit svg {
+    all: unset !important;
+    display: inline-block !important;
+    height: 0.914em !important;
+    vertical-align: -0.2em !important;
+    fill: currentColor !important;
+}
+@supports (height: 1cap) {
+    a.sa-credit svg {
+        height: 1.305714cap !important;
+        vertical-align: -0.285714cap !important;
+    }
+}

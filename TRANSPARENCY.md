@@ -5,7 +5,7 @@
 This repository is public so you can:
 
 - See exactly what the site does and how it works
-- Verify privacy claims (we use [Simple Analytics](https://simpleanalytics.com) - no personal data collected)
+- Verify privacy claims (we use [Simple Analytics](https://www.simpleanalytics.com?referral=davep&utm_source=arpg-timeline.com) - no personal data collected)
 - Learn from the implementation and contribute improvements
 - Trust that there are no hidden trackers, data harvesting, or shady behavior
 

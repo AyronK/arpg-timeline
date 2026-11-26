@@ -9,6 +9,7 @@ import { RiSteamLine } from "react-icons/ri";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/Dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/Tooltip";
 
+import { ClickToLoad, STEAM_PROVIDER, STEAMDB_PROVIDER } from "./ClickToLoad";
 import { SteamDBEmbed } from "./SteamDBEmbed";
 import { SteamEmbed } from "./SteamEmbed";
 
@@ -114,8 +115,22 @@ export const SteamDialog = ({
                             <Description />
                         </DialogDescription>
                     </DialogHeader>
-                    <SteamEmbed appId={appId} />
-                    {playersCount > 0 && <SteamDBEmbed appId={appId} />}
+                    <div
+                        className={`flex flex-col gap-4 ${playersCount > 0 ? "h-[595px]" : "h-[190px]"}`}
+                    >
+                        <ClickToLoad
+                            providers={
+                                playersCount > 0
+                                    ? [STEAM_PROVIDER, STEAMDB_PROVIDER]
+                                    : [STEAM_PROVIDER]
+                            }
+                            actionLabel="Load Steam details"
+                            className="h-full"
+                        >
+                            <SteamEmbed appId={appId} />
+                            {playersCount > 0 && <SteamDBEmbed appId={appId} />}
+                        </ClickToLoad>
+                    </div>
                 </DialogContent>
             </DialogPortal>
         </Dialog>

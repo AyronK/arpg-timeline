@@ -2,6 +2,7 @@ import { BookOpen, Clock, Code2, Heart, Info, Scale, ShieldOff, Users } from "lu
 import Link from "next/link";
 
 import { FooterPartnerPromosLink } from "@/components/FooterPartnerPromosLink";
+import { SimpleAnalyticsBadge } from "@/components/SimpleAnalyticsBadge";
 
 export const Footer = () => (
     <footer className="mt-10 md:mt-36">
@@ -202,12 +203,13 @@ export const Footer = () => (
                     </div>
                 </div>
             </div>
-            <div className="container mx-auto border-t pt-4">
-                <p className="text-muted-foreground text-center text-xs text-balance">
+            <div className="text-muted-foreground container mx-auto flex flex-col items-center gap-3 border-t pt-4 text-center text-xs">
+                <p className="text-balance">
                     Game names, logos, trademarks, screenshots, and promotional material are the
                     property of their respective owners. Used here for identification and editorial
                     purposes only.
                 </p>
+                <SimpleAnalyticsBadge />
             </div>
         </div>
     </footer>

@@ -7,8 +7,9 @@ import { AlertTriangle, Info, Lightbulb } from "lucide-react";
 import Link from "next/link";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { YouTubeEmbed } from "@/components/articles/YouTubeEmbed";
 import { blockToPlainText, slugifyHeading } from "@/lib/articles/tableOfContents";
-import { getYouTubeEmbedUrl, parseYouTubeId } from "@/lib/articles/youtube";
+import { parseYouTubeId } from "@/lib/articles/youtube";
 import type { ArticleImage as ArticleImageData } from "@/lib/cms/queries/articleQuery";
 import { toInternalHref } from "@/lib/siteUrl";
 import { cn } from "@/lib/utils";
@@ -180,18 +181,7 @@ function createComponents(headingIds: Map<string, string>): PortableTextComponen
                         </p>
                     );
                 }
-                return (
-                    <div className="my-6 aspect-video w-full overflow-hidden rounded-lg">
-                        <iframe
-                            src={getYouTubeEmbedUrl(id)}
-                            title="YouTube video"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            loading="lazy"
-                            className="h-full w-full border-0"
-                        />
-                    </div>
-                );
+                return <YouTubeEmbed id={id} />;
             },
             table: ({ value }) => {
                 const rows = (value as TableValue)?.rows ?? [];
