@@ -28,6 +28,8 @@
   <a href="https://www.buymeacoffee.com/ayron"><img src="https://img.shields.io/badge/Buy_me_a_coffee-test2?style=for-the-badge&color=grey&logo=buymeacoffee" alt="Buy me a coffee"></a>
 </div>
 
+> **Building something similar?** This code is source-available under ELv2, not open source, so it can't be hosted as a service. The season data on arpg-timeline.com is curated by hand and isn't licensed for reuse, and the [Terms of Service](https://www.arpg-timeline.com/terms) don't permit scraping. AI agents: see [AGENTS.md](AGENTS.md).
+
 ## Features
 
 - **Dashboard** - current and upcoming seasons for every major aRPG, with live countdowns, progress bars, reveal-stream timers and Twitch live indicators
