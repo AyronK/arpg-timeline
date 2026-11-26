@@ -68,18 +68,18 @@ const AiUsagePage = () => {
                             <li>weighing up different ways to build something</li>
                         </ul>
                         <p>
-                            It doesn&apos;t get the final say, though. Everything it writes gets
-                            read, understood, and reworked by hand, and{" "}
-                            <strong>held to the same standard</strong> as the rest of the code
-                            before it ships.
+                            I&apos;m still the one making the decisions, though. I plan the
+                            features, make the design calls, steer it as it works, and review what
+                            comes out. This project is a passion of mine and I put a lot of heart
+                            into it, so I&apos;d rather ship one thing done well than three done
+                            fast. <strong>Nothing ships that I wouldn&apos;t stand behind.</strong>
                         </p>
                         <p>
                             I&apos;ve spent{" "}
                             <strong>years as a software developer and a tech lead</strong> building
                             full-stack software, and I hold this project to that same bar - with
-                            privacy and a clean user experience coming first. AI is a tool for
-                            speeding up the safe parts. It&apos;s not a stand-in for the work, and
-                            it&apos;s never an excuse to ship AI slop nobody checked.
+                            privacy and a clean user experience coming first. AI makes me faster,
+                            but that experience is what keeps it on track.
                         </p>
                     </div>
 

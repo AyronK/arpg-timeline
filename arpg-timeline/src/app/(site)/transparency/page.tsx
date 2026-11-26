@@ -22,7 +22,7 @@ const TransparencyPage = () => {
                                 Verify privacy claims - the site uses{" "}
                                 <Link
                                     className="underline hover:opacity-80"
-                                    href="https://simpleanalytics.com"
+                                    href="https://www.simpleanalytics.com?referral=davep&utm_source=arpg-timeline.com"
                                     rel="noopener noreferrer nofollow"
                                     target="_blank"
                                 >
